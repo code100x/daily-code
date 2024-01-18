@@ -2,7 +2,7 @@ import { getFunction } from "@repo/common";
 import { Problem } from "@repo/store";
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from 'notion-client'
-import { LessonView, NotionRenderer } from "@repo/ui/components";
+import { LessonView } from "@repo/ui/components";
 
 const notion = new NotionAPI()
 

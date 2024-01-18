@@ -19,7 +19,7 @@ export const RedirectToLastSolved = ({ trackId }: {trackId: string;}) => {
                     }
                 });
         } catch(e) {
-
+            console.error(e);
         }
     }, [])
 

@@ -29,7 +29,7 @@ export const CodeEditor = () => {
     </div>
 }
 
-function LanguageSelector() {
+function LanguageSelector({onSelect}: {onSelect: (language: string) => void}) {
     return <div className='p-2 flex'>
         <Select>
             <SelectTrigger className="w-[180px]">

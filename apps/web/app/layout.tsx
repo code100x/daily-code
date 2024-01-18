@@ -4,9 +4,8 @@ import { Inter as FontSans } from "next/font/google"
 import { cn } from "@repo/ui/utils"
 import { Auth } from "../components/Auth";
 import { Providers, ThemeProvider } from "../components/Providers";
-import { AppbarClient } from "../components/AppbarClient";
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
