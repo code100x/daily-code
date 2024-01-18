@@ -25,7 +25,7 @@ export const getTracks = onCall(async (request) => {
 
 
 export const getLastSolved = onCall(async (request) => {
-    const uid = request.auth.uid;
+    const uid = request.auth?.uid;
     const trackId = request.data.trackId;
     
     const track = await db.collection("tracks").doc(trackId.toString()).get();
