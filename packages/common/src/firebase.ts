@@ -14,9 +14,12 @@ export const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const functions = getFunctions(app, "http://127.0.0.1:5001");
+// export const functions = getFunctions(app, "http://127.0.0.1:5001");
+export const functions = getFunctions(app);
+
 export const getFunction = (name: string ) => {
-    const fn = httpsCallable(functions, `leetcode-clone-c39eb/us-central1/${name}`)
+    // const fn = httpsCallable(functions, `leetcode-clone-c39eb/us-central1/${name}`)
+    const fn = httpsCallable(functions, name)
     return fn
 }
 export { onAuthStateChanged } from "firebase/auth";
