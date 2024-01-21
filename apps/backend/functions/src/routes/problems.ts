@@ -9,6 +9,9 @@ export const getProblem = onCall(async (request) => {
     console.log(problemDetails.data())
 
     return {
-        problem: problemDetails.data()
+        problem: {
+            ...problemDetails.data(),
+            id: problemDetails.id
+        }
     }
 })

@@ -9,8 +9,9 @@ export interface Problem {
     notionDocId: string;
     notionRecordMap?: any;
     image: string;
-    type: "code";
+    type: "code" | "blog";
     title: string;
+    id: string;
 }
 
 export interface Track {

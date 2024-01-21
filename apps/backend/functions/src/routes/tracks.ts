@@ -1,5 +1,6 @@
 import { onCall } from "firebase-functions/v2/https";
 import { getFirestore } from 'firebase-admin/firestore';
+import { getLastSolvedForUser } from "../handlers/tracks";
 
 const db = getFirestore();
 
@@ -23,35 +24,26 @@ export const getTracks = onCall(async (request) => {
     }
 })
 
+export const getTrack = onCall(async (request) => {
+    const trackId = request.data.trackId;
+    const uid = request.auth?.uid;
+
+    const track = await db.collection("tracks").doc(trackId).get();
+
+    return {
+        track: {
+            id: track.id,
+            title: track.data().title,
+            image: track.data().image,
+            description: track.data().description,
+            problems: track.data().problems.map(x => x.id)
+        },
+        userProgress: await getLastSolvedForUser(trackId, uid)
+    }
+});
 
 export const getLastSolved = onCall(async (request) => {
     const uid = request.auth?.uid;
     const trackId = request.data.trackId;
-    
-    const track = await db.collection("tracks").doc(trackId.toString()).get();
-    const problemIds = track.data().problems.map(x => x.id);
-
-    if (!uid) {
-        return {
-            nextProblemId: problemIds[0],
-            lastProblemId: problemIds[0]
-        }
-    }
-
-    const lastSolvedProblem = await db.collection("trackProgress").doc(`${uid}-${trackId}`).get();
-    if (lastSolvedProblem.exists) {
-        const lastProblemId = lastSolvedProblem.data().problemId;
-        const lastProblemIdIndex = problemIds.findIndex(x => x == lastProblemId);
-        const nextProblemIdIndex = (lastProblemIdIndex == problemIds.length - 1) ? lastProblemIdIndex : lastProblemIdIndex + 1;
-        const nextProblemId = problemIds[nextProblemIdIndex];
-        return {
-            nextProblemId,
-            lastProblemId
-        }
-    }
-
-    return {
-        nextProblemId: problemIds[0],
-        lastProblemId: null,
-    }
+    return getLastSolvedForUser(trackId, uid);
 })

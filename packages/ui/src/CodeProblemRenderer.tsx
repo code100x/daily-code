@@ -1,6 +1,6 @@
 "use client";
 import { NotionRenderer } from "./NotionRenderer";
-import { Problem } from "../../store/src/atoms";
+import { Problem, Track } from "@repo/store";
 import {
     ResizableHandle,
     ResizablePanel,
@@ -11,9 +11,9 @@ import { CodeEditor } from "./CodeEditor";
 import { RunCodeOutput } from "./RunCodeOutput";
 import { ProblemAppbar } from "./ProblemAppbar";
 
-export const CodeProblemRenderer = ({ problem }: { problem: Problem }) => {
+export const CodeProblemRenderer = ({ problem, track }: { problem: Problem; track: Track }) => {
     return <div>
-        <ProblemAppbar problem={problem} />
+        <ProblemAppbar problem={problem} track={track} />
         <ResizablePanelGroup direction="horizontal">
             <ResizablePanel>
                 <ScrollArea className="h-screen p-2 rounded-lg">
