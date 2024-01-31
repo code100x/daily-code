@@ -1,0 +1,12 @@
+.grid_container {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .grid_container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
