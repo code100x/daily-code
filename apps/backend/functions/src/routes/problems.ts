@@ -31,3 +31,25 @@ export const addProblem = onCall(async (request) => {
     });
     return true;
 });
+
+
+export const allProblem = onCall(async() => {
+    
+    const problemsCollection = await db.collection('problems').get()
+
+    const allProblems = []
+    
+    problemsCollection.docs.forEach((doc)=>{
+        allProblems.push({
+            id: doc.id,
+            description: doc.data().title,
+            type:doc.data().type,
+            notionDocId:doc.data().notionDocId
+        })
+    }) 
+
+    return {
+        problems: allProblems
+    }
+
+})
