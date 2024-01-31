@@ -26,8 +26,8 @@ export async function Landing() {
                 Learning Paths
             </div>
         </div>
-            {tracks.map((t: Track) => <div style={{padding: 20}} className="flex justify-center pt-1">
-                <Link className="max-w-screen-md w-full" href={`/tracks/${t.id}`}>
+            {tracks.map((t: Track) => <div style={{padding: 20}} className="flex justify-center pt-1 items-center flex-wrap gap-8">
+                <Link className="max-w-screen-md w-[45%]" href={`/tracks/${t.id}`}>
                     <TrackCard track={t} />
                 </Link>
             </div>)}
