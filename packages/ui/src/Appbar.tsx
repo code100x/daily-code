@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 
 export const Appbar = ({user}: {user: User | null}) => {
     const router = useRouter();
+    const admin = true;
+
     return <div className="bg-zinc-950 p-3 flex justify-center">
         <div className="max-w-screen-xl flex justify-between w-full">
             <Link href={"/"}>
@@ -14,6 +16,9 @@ export const Appbar = ({user}: {user: User | null}) => {
                 </div>
             </Link>
             <div>
+                {admin? <Button variant={"outline"} onClick={() => {
+                    router.push("/auth")
+                }}>Admin</Button> : null}
                 {!user ? <Button variant={"outline"} onClick={() => {
                     router.push("/auth")
                 }}>Login</Button> : ""}

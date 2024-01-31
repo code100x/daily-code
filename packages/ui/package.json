@@ -16,9 +16,9 @@
     "generate:component": "turbo gen react-component"
   },
   "devDependencies": {
+    "@repo/common": "*",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "@repo/common": "*",
     "@turbo/gen": "^1.11.3",
     "@types/eslint": "^8.56.1",
     "@types/node": "^20.10.6",
@@ -47,4 +47,3 @@
     "tailwindcss-animate": "^1.0.7"
   }
 }
-
