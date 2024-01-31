@@ -11,7 +11,7 @@ async function getTracks() {
         const tracks: any = await getTrancksFn();
         console.log(tracks);
         return tracks.data.tracks || [];
-    } catch(e) {
+    } catch (e) {
         return [];
     }
 }
@@ -26,10 +26,14 @@ export async function Landing() {
                 Learning Paths
             </div>
         </div>
-            {tracks.map((t: Track) => <div style={{padding: 20}} className="flex justify-center pt-1">
-                <Link className="max-w-screen-md w-full" href={`/tracks/${t.id}`}>
-                    <TrackCard track={t} />
-                </Link>
-            </div>)}
+        <div>
+            <ul className="p-8 md:20 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-2">
+                {tracks.map((t: Track) => <li key={t.id}>
+                    <Link className="max-w-screen-md w-full" href={`/tracks/${t.id}`}>
+                        <TrackCard track={t} />
+                    </Link>
+                </li>)}
+            </ul>
+        </div>
     </div>
 }
