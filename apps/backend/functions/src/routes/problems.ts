@@ -65,9 +65,10 @@ export const allProblem = onCall(async() => {
     problemsCollection.docs.forEach((doc)=>{
         allProblems.push({
             id: doc.id,
-            description: doc.data().title,
+            description: doc.data().description,
             type:doc.data().type,
-            notionDocId:doc.data().notionDocId
+            notionDocId:doc.data().notionDocId,
+            title : doc.data().title
         })
     }) 
 

@@ -25,6 +25,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "react-notion-x": "^6.16.0"
+    "react-notion-x": "^6.16.0",
+    "yarn": "^1.22.21"
   }
 }
