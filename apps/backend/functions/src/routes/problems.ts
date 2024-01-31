@@ -16,6 +16,29 @@ export const getProblem = onCall(async (request) => {
     }
 });
 
+export const editProblem = onCall(async (request) => {
+    const problemId = request.data.problemId;
+    const updateTitle = request.data.title;
+    const updateDescription = request.data.description;
+    const updateType = request.data.type;
+    const updateNotionDocId = request.data.notionDocId;
+
+    const problemDetails = await db.collection("problems").doc(problemId.toString()).update({
+        title: updateTitle,
+        description: updateDescription,
+        type: updateType,
+        notionDocId: updateNotionDocId
+    });
+
+    return {
+        problem: {
+            ...problemDetails.data(),
+            id: problemDetails.id
+        }
+    }
+
+})
+
 export const addProblem = onCall(async (request) => {
     const title = request.data.title
     const description = request.data.description
