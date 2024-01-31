@@ -10,7 +10,7 @@ initializeApp();
 
 const db = getFirestore();
 
-setGlobalOptions({maxInstances: 10});
+setGlobalOptions({ maxInstances: 10 });
 
 export const helloWorld = onRequest((request, response) => {
   logger.info("Hello logs!", {structuredData: true});
@@ -85,3 +85,4 @@ export const submit = onCall(async (request) => {
 
 export * from "./routes/tracks"
 export * from "./routes/problems"
+export * from "./routes/user";

@@ -24,6 +24,7 @@ export const getTracks = onCall(async (request) => {
     }
 })
 
+
 export const getTrack = onCall(async (request) => {
     const trackId = request.data.trackId;
     const uid = request.auth?.uid;

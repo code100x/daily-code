@@ -9,7 +9,8 @@
     "./code": "./src/code.tsx",
     "./globals.css": "./app/globals.css",
     "./utils": "./lib/utils.ts",
-    "./pages": "./src/pages/index.ts"
+    "./pages": "./src/pages/index.ts",
+    "./toast": "./src/shad/ui/toast"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -34,6 +35,8 @@
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@uiw/react-textarea-code-editor": "^3.0.2",
     "class-variance-authority": "^0.7.0",

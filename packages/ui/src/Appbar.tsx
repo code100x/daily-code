@@ -3,6 +3,7 @@ import { Button } from "."
 import { User } from "@repo/store";
 import { auth } from "@repo/common";
 import { useRouter } from "next/navigation";
+import { AdminButton } from "./AdminButton";
 
 export const Appbar = ({user}: {user: User | null}) => {
     const router = useRouter();
@@ -16,9 +17,7 @@ export const Appbar = ({user}: {user: User | null}) => {
                 </div>
             </Link>
             <div>
-                {admin? <Button variant={"outline"} onClick={() => {
-                    router.push("/auth")
-                }}>Admin</Button> : null}
+                <AdminButton />
                 {!user ? <Button variant={"outline"} onClick={() => {
                     router.push("/auth")
                 }}>Login</Button> : ""}
