@@ -1,16 +1,16 @@
+import { getFunction } from "@repo/common"
 import { useState } from "react"
-import { Input } from "./shad/ui/input"
 import { Button } from "."
 import { Card } from "./shad/ui/card"
-import { getFunction } from "@repo/common"
-import { useToast } from "./shad/ui/use-toast"
+import { Input } from "./shad/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select"
+import { useToast } from "./shad/ui/use-toast"
 
 export const ProblemEditor = () => {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [notionDocId, setNotionDocId] = useState("")
-    const [type, setType] = useState("code")
+    const [type, setType] = useState("")
     const addProblemFn = getFunction("addProblem");
     const {toast} = useToast();
     
@@ -30,13 +30,13 @@ export const ProblemEditor = () => {
                     <SelectItem value="blog">Blog</SelectItem>
                 </SelectContent>
             </Select>
-            <Input type="text" placeholder="Problem title" onChange={(event) => {
+            <Input type="text" placeholder="Problem title" className="my-2" onChange={(event) => {
                 setTitle(event.target.value)
             }} />
-            <Input type="text" placeholder="Description" onChange={(event) => {
+            <Input type="text" placeholder="Description" className="my-2" onChange={(event) => {
                 setDescription(event.target.value)
             }} />
-            <Input type="text" placeholder="problem title" onChange={(event) => {
+            <Input type="text" placeholder="problem title" className="my-2" onChange={(event) => {
                 setNotionDocId(event.target.value)
             }} />
             <Button disabled={!title || !description || !type || !notionDocId} onClick={async () => {
