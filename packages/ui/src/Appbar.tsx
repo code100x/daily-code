@@ -4,6 +4,7 @@ import { User } from "@repo/store";
 import { auth } from "@repo/common";
 import { useRouter } from "next/navigation";
 import { AdminButton } from "./AdminButton";
+import { ModeToggle } from "./ModeToggle";
 
 export const Appbar = ({user}: {user: User | null}) => {
     const router = useRouter();
@@ -16,8 +17,9 @@ export const Appbar = ({user}: {user: User | null}) => {
                     DailyCode
                 </div>
             </Link>
-            <div>
+            <div className="flex items-center gap-2">
                 <AdminButton />
+                <ModeToggle />
                 {!user ? <Button variant={"outline"} onClick={() => {
                     router.push("/auth")
                 }}>Login</Button> : ""}
