@@ -4,6 +4,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 import GoogleIcon from "../assets/google.svg";
 import GithubIcon from "../assets/github.svg";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 const provider = new GoogleAuthProvider();
 
@@ -58,16 +59,16 @@ export const Signin = () => {
                                     </p>
                                     <button
                                         type='submit'
-                                        className='w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md hover:bg-gray-200 focus:outline-none focus:ring-2 '
+                                        className='w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md text-[#111] hover:bg-gray-200 focus:outline-none focus:ring-2 '
                                         onClick={() => onSignin()}
                                     >
-                                        <img src={GoogleIcon} className='w-5 h-5 mr-2' />
+                                        <Image src={GoogleIcon} className='w-5 h-5 mr-2' alt="logo-icon" />
                                         Continue with Google
                                     </button>
                                     <button
-                                        className='w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md hover:bg-gray-200 focus:outline-none focus:ring-2 -mt-2'
+                                        className='w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md text-[#111] hover:bg-gray-200 focus:outline-none focus:ring-2 -mt-2'
                                     >
-                                        <img src={GithubIcon} className='w-5 h-5 mr-2' />
+                                        <Image src={GithubIcon} className='w-5 h-5 mr-2' alt="logo-icon" />
                                         Continue with Github
                                     </button>
                                 </div>
