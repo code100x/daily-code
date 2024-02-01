@@ -92,11 +92,11 @@ export const ProblemEditor = () => {
                                         // save
                                         setIsEdit(false);
                                         await editProblemFn({
-                                            problemId: problem,
-                                            title: "",
-                                            description: "",
-                                            type: "",
-                                            notionDocId: ""
+                                            problemId: problem.id,
+                                            title: title,
+                                            description: description,
+                                            type: type,
+                                            notionDocId: problem.notionDocId
                                         });
                                     }}
                                 >
