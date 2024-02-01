@@ -20,5 +20,4 @@ export interface Track {
     title: string;
     problems: string[];
     description: string;
-    hidden: boolean;
 }
