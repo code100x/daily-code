@@ -19,7 +19,7 @@ export function TrackCard({ track }: { track: Track }) {
         <div className="flex flex-col sm:flex-row">
           <img
             src={track.image}
-            className="h-[130px] w-[130px] rounded-xl"
+            className="min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"
           ></img>
           <div className="pt-4 sm:pt-0 sm:pl-4">
             <CardTitle>{track.title}</CardTitle>
