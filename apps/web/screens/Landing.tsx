@@ -3,7 +3,6 @@ import { Track } from "@repo/store";
 import { getFunction } from "@repo/common";
 import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
-import { AppbarClient } from "../components/AppbarClient";
 
 async function getTracks() {
     const getTrancksFn = getFunction("getTracks")
@@ -20,7 +19,6 @@ export async function Landing() {
     const tracks = await getTracks()
 
     return <div>
-        <AppbarClient />
         <div className="flex justify-center pt-4">
             <div className="text-white text-4xl p-2 max-w-screen-md">
                 Learning Paths

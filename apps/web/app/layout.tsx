@@ -4,6 +4,7 @@ import { Inter as FontSans } from "next/font/google"
 import { cn } from "@repo/ui/utils"
 import { Auth } from "../components/Auth";
 import { Providers, ThemeProvider } from "../components/Providers";
+import { AppbarClient } from "../components/AppbarClient";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
           >
             <Providers>
               <Auth />
+              <AppbarClient />
               {children}
             </Providers>
           </ThemeProvider>
