@@ -15,6 +15,7 @@
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint --fix .",
     "generate:component": "turbo gen react-component"
   },
   "devDependencies": {
