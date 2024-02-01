@@ -10,10 +10,15 @@ export const BlogAppbar = ({ problem, track }: {problem: Problem; track: Track})
     }, [track, problem]);
 
     return <div className="mt-2 ml-2 mr-2 flex justify-between mb-2">
-        <div className="flex-1 flex justify-center flex-col ml-2">
+        <div className="text-white text-2xl">
+            <Link href={"/"}>
+                DailyCode
+            </Link>
+        </div>
+        <div className="flex-1 flex justify-center items-center ml-2">
             {problem.title} ({problemIndex + 1} / {track.problems.length})
         </div>
-        <div className="flex flex-1 flex-row-reverse">
+        <div className="flex  flex-row-reverse">
             <Link prefetch={true} href={problemIndex + 1 === track.problems.length ? `/tracks/${track.id}` : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`}>
                 <Button variant="outline">Next 
                     <div className="pl-2">

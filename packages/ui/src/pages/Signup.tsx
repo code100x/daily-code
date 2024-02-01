@@ -57,14 +57,16 @@ export const Signin = () => {
                                     <p className='font-light text-sm text-gray-600'>
                                         Log in to continue to DailyCode.
                                     </p>
-                                    <Button
-                                        className='w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md hover:bg-gray-200 focus:outline-none focus:ring-2 -mt-2 h-auto'
+                                    <button
+                                        type='submit'
+                                        className='w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 '
+                                        onClick={() => onSignin()}
                                     >
                                         <img src={GoogleIcon.src} className='w-5 h-5 mr-2' />
                                         Continue with Google
-                                    </Button>
-                                    <Button
-                                        className='w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md hover:bg-gray-200 focus:outline-none focus:ring-2 -mt-2 h-auto'
+                                    </button>
+                                    <button
+                                        className='w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 -mt-2'
                                     >
                                         <img src={GithubIcon.src} className='w-5 h-5 mr-2' />
                                         Continue with Github
