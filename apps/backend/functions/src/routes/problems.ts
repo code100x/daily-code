@@ -23,7 +23,7 @@ export const editProblem = onCall(async (request) => {
   const updateType = request.data.type;
   const updateNotionDocId = request.data.notionDocId;
 
-  const problemDetails = await db.collection("problems").doc(problemId.toString()).update({
+  await db.collection("problems").doc(problemId.toString()).update({
     title: updateTitle,
     description: updateDescription,
     type: updateType,
@@ -31,10 +31,7 @@ export const editProblem = onCall(async (request) => {
   });
 
   return {
-    problem: {
-      ...problemDetails.data(),
-      id: problemDetails.id,
-    },
+    updated: true,
   };
 });
 
