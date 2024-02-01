@@ -9,14 +9,16 @@ export const getTracks = onCall(async (request) => {
     const allTracks = [];
 
     tracksCollection.docs.forEach(t => {
-        allTracks.push({
-                id: t.id,
-                title: t.data().title,
-                image: t.data().image,
-                description: t.data().description,
-                problems: t.data().problems.map(x => x.id)
-            }
-        )
+        if (t.data()?.visible) {
+            allTracks.push({
+                    id: t.id,
+                    title: t.data().title,
+                    image: t.data().image,
+                    description: t.data().description,
+                    problems: t.data().problems.map(x => x.id),
+                }
+            )
+        }
     })
 
     return {

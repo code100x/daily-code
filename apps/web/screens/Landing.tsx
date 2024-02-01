@@ -6,9 +6,9 @@ import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
 
 async function getTracks() {
-    const getTrancksFn = getFunction("getTracks")
+    const getTracksFn = getFunction("getTracks")
     try {
-        const tracks: any = await getTrancksFn();
+        const tracks: any = await getTracksFn();
         console.log(tracks);
         return tracks.data.tracks || [];
     } catch (e) {
