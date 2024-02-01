@@ -10,7 +10,8 @@
     "./globals.css": "./app/globals.css",
     "./utils": "./lib/utils.ts",
     "./pages": "./src/pages/index.ts",
-    "./toast": "./src/shad/ui/toast"
+    "./toast": "./src/shad/ui/toast.tsx",
+    "./use-toast": "./src/shad/ui/use-toast.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
