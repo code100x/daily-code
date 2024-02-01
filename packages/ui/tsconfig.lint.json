@@ -3,6 +3,6 @@
   "compilerOptions": {
     "outDir": "dist"
   },
-  "include": ["src", "turbo"],
+  "include": ["src", "turbo", "tailwind.config.js"],
   "exclude": ["node_modules", "dist"]
 }

@@ -3,16 +3,18 @@
   "compilerOptions": {
     "plugins": [
       {
-        "name": "next"
-      }
-    ]
+        "name": "next",
+      },
+    ],
   },
   "include": [
     "next-env.d.ts",
     "next.config.js",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "tailwind.config.js",
+    "postcss.config.js",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

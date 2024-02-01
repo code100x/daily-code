@@ -1,8 +1,3 @@
-
-
 export const TracksEditor = () => {
-     return <div>
-        
-                
-     </div>
-}
+  return <div></div>;
+};

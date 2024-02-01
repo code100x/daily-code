@@ -1,78 +1,74 @@
 import { onCall } from "firebase-functions/v2/https";
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore } from "firebase-admin/firestore";
 
 const db = getFirestore();
 
 export const getProblem = onCall(async (request) => {
-    const problemId = request.data.problemId;
-    const problemDetails = await db.collection("problems").doc(problemId.toString()).get();
-    console.log(problemDetails.data())
+  const problemId = request.data.problemId;
+  const problemDetails = await db.collection("problems").doc(problemId.toString()).get();
+  console.log(problemDetails.data());
 
-    return {
-        problem: {
-            ...problemDetails.data(),
-            id: problemDetails.id
-        }
-    }
+  return {
+    problem: {
+      ...problemDetails.data(),
+      id: problemDetails.id,
+    },
+  };
 });
 
 export const editProblem = onCall(async (request) => {
-    const problemId = request.data.problemId;
-    const updateTitle = request.data.title;
-    const updateDescription = request.data.description;
-    const updateType = request.data.type;
-    const updateNotionDocId = request.data.notionDocId;
+  const problemId = request.data.problemId;
+  const updateTitle = request.data.title;
+  const updateDescription = request.data.description;
+  const updateType = request.data.type;
+  const updateNotionDocId = request.data.notionDocId;
 
-    const problemDetails = await db.collection("problems").doc(problemId.toString()).update({
-        title: updateTitle,
-        description: updateDescription,
-        type: updateType,
-        notionDocId: updateNotionDocId
-    });
+  const problemDetails = await db.collection("problems").doc(problemId.toString()).update({
+    title: updateTitle,
+    description: updateDescription,
+    type: updateType,
+    notionDocId: updateNotionDocId,
+  });
 
-    return {
-        problem: {
-            ...problemDetails.data(),
-            id: problemDetails.id
-        }
-    }
-
-})
-
-export const addProblem = onCall(async (request) => {
-    const title = request.data.title
-    const description = request.data.description
-    const type = request.data.type;
-    const notionDocId = request.data.notionDocId;
-    //Todo : add validation here
-
-    await db.collection("problems").add({
-        title,
-        description,
-        type,
-        notionDocId
-    });
-    return true;
+  return {
+    problem: {
+      ...problemDetails.data(),
+      id: problemDetails.id,
+    },
+  };
 });
 
+export const addProblem = onCall(async (request) => {
+  const title = request.data.title;
+  const description = request.data.description;
+  const type = request.data.type;
+  const notionDocId = request.data.notionDocId;
+  //Todo : add validation here
 
-export const allProblem = onCall(async() => {
-    
-    const problemsCollection = await db.collection('problems').get()
+  await db.collection("problems").add({
+    title,
+    description,
+    type,
+    notionDocId,
+  });
+  return true;
+});
 
-    const allProblems = []
-    
-    problemsCollection.docs.forEach((doc)=>{
-        allProblems.push({
-            id: doc.id,
-            description: doc.data().title,
-            type:doc.data().type,
-            notionDocId:doc.data().notionDocId
-        })
-    }) 
+export const allProblem = onCall(async () => {
+  const problemsCollection = await db.collection("problems").get();
 
-    return {
-        problems: allProblems
-    }
+  const allProblems = [];
 
-})
+  problemsCollection.docs.forEach((doc) => {
+    allProblems.push({
+      id: doc.id,
+      description: doc.data().title,
+      type: doc.data().type,
+      notionDocId: doc.data().notionDocId,
+    });
+  });
+
+  return {
+    problems: allProblems,
+  };
+});
