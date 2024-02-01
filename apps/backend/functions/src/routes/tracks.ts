@@ -14,7 +14,8 @@ export const getTracks = onCall(async (request) => {
                 title: t.data().title,
                 image: t.data().image,
                 description: t.data().description,
-                problems: t.data().problems.map(x => x.id)
+                problems: t.data().problems.map(x => x.id),
+                hidden: t.data().hidden
             }
         )
     })
