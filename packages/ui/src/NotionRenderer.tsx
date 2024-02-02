@@ -31,7 +31,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
           }}
           recordMap={recordMap}
           fullPage={true}
-          darkMode={theme === "dark"}
+          darkMode={theme == "dark"}
         />
       </div>
     </div>
