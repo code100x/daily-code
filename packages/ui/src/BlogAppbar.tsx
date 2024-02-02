@@ -9,8 +9,8 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }, [track, problem]);
 
   return (
-    <div className="mt-2 ml-2 mr-2 flex justify-between mb-2">
-      <div className="text-white text-2xl">
+    <div className="flex justify-between p-4">
+      <div className="dark:text-white text-2xl">
         <Link href={"/"}>DailyCode</Link>
       </div>
       <div className="flex-1 flex justify-center items-center ml-2">
@@ -25,7 +25,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
               : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`
           }
         >
-          <Button variant="outline">
+          <Button variant="outline" className="bg-black text-white">
             Next
             <div className="pl-2">
               <svg
@@ -46,7 +46,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
           prefetch={true}
           href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : `/tracks/${track.id}`}
         >
-          <Button variant="outline" className="ml-2">
+          <Button variant="outline" className="ml-2 bg-black text-white">
             <div className="pr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
