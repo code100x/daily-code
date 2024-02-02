@@ -15,6 +15,13 @@ import "katex/dist/katex.min.css";
 export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
   return (
     <div className="">
+      <style>
+        {`
+          .notion-header {
+            display: none !important;
+          }
+        `}
+      </style>
       <div className="rounded-full">
         <NotionRendererLib
           components={{
