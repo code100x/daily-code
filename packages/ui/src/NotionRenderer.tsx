@@ -1,6 +1,7 @@
 "use client";
 import { NotionRenderer as NotionRendererLib } from "react-notion-x";
 import { Code } from "react-notion-x/build/third-party/code";
+import { useTheme } from "next-themes";
 
 // core styles shared by all of react-notion-x (required)
 import "react-notion-x/src/styles.css";
@@ -13,6 +14,11 @@ import "katex/dist/katex.min.css";
 
 // Week-4-1-647987d9b1894c54ba5c822978377910
 export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
+  const { theme } = useTheme();
+  let darkMode: boolean = false;
+  if (theme === "dark") {
+    darkMode = true;
+  }
   return (
     <div className="">
       <div className="rounded-full">
@@ -22,7 +28,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
           }}
           recordMap={recordMap}
           fullPage={true}
-          darkMode={true}
+          darkMode={darkMode}
         />
       </div>
     </div>

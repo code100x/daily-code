@@ -9,14 +9,14 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }, [track, problem]);
 
   return (
-    <div className="mt-2 ml-2 mr-2 flex justify-between mb-2">
-      <div className="text-white text-2xl">
+    <div className="m-2 flex justify-between border-b-4">
+      <div className="text-2xl items-center pt-3 dark:text-white">
         <Link href={"/"}>DailyCode</Link>
       </div>
       <div className="flex-1 flex justify-center items-center ml-2">
         {problem.title} ({problemIndex + 1} / {track.problems.length})
       </div>
-      <div className="flex  flex-row-reverse">
+      <div className="flex flex-row-reverse p-3">
         <Link
           prefetch={true}
           href={
