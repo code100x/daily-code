@@ -9,7 +9,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }, [track, problem]);
 
   return (
-    <div className="flex justify-between p-4">
+    <div className="flex justify-between p-4 border-b-4">
       <div className="dark:text-white text-2xl">
         <Link href={"/"}>DailyCode</Link>
       </div>
