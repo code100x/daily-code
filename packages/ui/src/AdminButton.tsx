@@ -11,7 +11,7 @@ export const AdminButton = () => {
   const [admin, _setAdmin] = useState(false);
   const router = useRouter();
 
-  //TODO: propogate to state
+  //TODO: propagate to state
   async function fetchUserDetailsClient() {
     try {
       const userDetails = await getUserDetails();
