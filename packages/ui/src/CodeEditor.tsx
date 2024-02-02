@@ -6,11 +6,7 @@ export const CodeEditor = () => {
   const [language, setLanguage] = useState("javascript");
   return (
     <div className="bg-zinc-900">
-      <LanguageSelector
-        onSelect={(language) => {
-          setLanguage(language);
-        }}
-      />
+      <LanguageSelector />
       <Editor
         height={`80vh`}
         defaultLanguage={language}
