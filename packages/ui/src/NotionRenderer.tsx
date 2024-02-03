@@ -14,7 +14,8 @@ import { useTheme } from "next-themes";
 
 // Week-4-1-647987d9b1894c54ba5c822978377910
 export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
+
   return (
     <div className="">
       <style>
@@ -31,7 +32,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
           }}
           recordMap={recordMap}
           fullPage={true}
-          darkMode={theme == "dark"}
+          darkMode={resolvedTheme === "dark"}
         />
       </div>
     </div>
