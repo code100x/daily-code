@@ -11,6 +11,8 @@ import "prismjs/themes/prism-tomorrow.css";
 // used for rendering equations (optional)
 import "katex/dist/katex.min.css";
 import { useTheme } from "next-themes";
+import { BlogAppbar } from "./BlogAppbar";
+import { Problem, Track } from "@repo/store";
 
 // Week-4-1-647987d9b1894c54ba5c822978377910
 export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
