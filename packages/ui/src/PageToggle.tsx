@@ -17,7 +17,10 @@ export function PageToggle(props: any) {
       <DropdownMenuContent align="end">
         {props.totalPages.map((i: any, key: any): any => {
           return (
-            <DropdownMenuItem onClick={() => router.push(`/tracks/${props.track.id}/${props.track.problems[i - 1]}`)}>
+            <DropdownMenuItem
+              key={key}
+              onClick={() => router.push(`/tracks/${props.track.id}/${props.track.problems[i - 1]}`)}
+            >
               {i}
             </DropdownMenuItem>
           );
