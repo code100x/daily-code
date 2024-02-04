@@ -19,7 +19,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p === problem.id);
   }, [track, problem]);
-  console.log(track.problems);
+
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
 
   function setTheme(arg0: string) {
@@ -37,7 +37,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
         <div>
-          <PageToggle totalPages={totalPages} track={track} />
+          <PageToggle totalPages={totalPages} problemIndex={problemIndex} track={track} />
         </div>
 
         <div className="flex space-x-2">
