@@ -17,7 +17,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
   const { resolvedTheme } = useTheme();
 
   return (
-    <div className="">
+    <div>
       <style>
         {`
           .notion-header {
