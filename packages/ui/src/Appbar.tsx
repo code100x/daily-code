@@ -11,14 +11,14 @@ export const Appbar = ({ user }: { user: User | null }) => {
   const admin = false;
 
   return (
-    <div className="bg-zinc-950 p-3 flex justify-center">
+    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 flex justify-center border-b shadow-md">
       <div className="max-w-screen-xl flex justify-between w-full">
         <Link href={"/"}>
-          <div className="text-white text-2xl">DailyCode</div>
+          <div className="dark:text-zinc-100 text-zinc-950 text-2xl font-semibold">DailyCode</div>
         </Link>
         <div className="flex items-center gap-2">
           {admin && <AdminButton />}
-          <ModeToggle />
+
           {!user ? (
             <Button
               variant={"outline"}
@@ -50,6 +50,8 @@ export const Appbar = ({ user }: { user: User | null }) => {
           ) : (
             ""
           )}
+
+          <ModeToggle />
         </div>
       </div>
     </div>
