@@ -1,11 +1,12 @@
 import { Button } from "./shad/ui/button";
 import { Problem, Track } from "@repo/store";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
+  const [goToPageNumber, setGoToPageNumber] = useState(1);
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p === problem.id);
   }, [track, problem]);
@@ -22,6 +23,23 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         </p>
 
         <div className="flex space-x-2">
+          <input
+            type="number"
+            className="w-12 pl-2 rounded-md dark:bg-zinc-950 bg-zinc-50 border border-gray-800"
+            min={1}
+            max={track.problems.length}
+            value={goToPageNumber}
+            onChange={(e) => setGoToPageNumber(Number(e.target.value))}
+          />
+          <Link prefetch={true} href={`/tracks/${track.id}/${track.problems[goToPageNumber - 1]}`}>
+            <Button
+              variant="outline"
+              className="ml-2 bg-black text-white"
+              disabled={goToPageNumber < 1 || goToPageNumber > track.problems.length}
+            >
+              Go
+            </Button>
+          </Link>
           <Link
             prefetch={true}
             href={
