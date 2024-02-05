@@ -23,23 +23,25 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         </p>
 
         <div className="flex space-x-2">
-          <input
-            type="number"
-            className="w-12 pl-2 rounded-md dark:bg-zinc-950 bg-zinc-50 border border-gray-800"
-            min={1}
-            max={track.problems.length}
-            value={goToPageNumber}
-            onChange={(e) => setGoToPageNumber(Number(e.target.value))}
-          />
-          <Link prefetch={true} href={`/tracks/${track.id}/${track.problems[goToPageNumber - 1]}`}>
-            <Button
-              variant="outline"
-              className="ml-2 bg-black text-white"
-              disabled={goToPageNumber < 1 || goToPageNumber > track.problems.length}
-            >
-              Go
-            </Button>
-          </Link>
+          <div className="border border-gray-800 rounded-md">
+            <input
+              type="number"
+              className="w-12 pl-2 ml-2 rounded-md dark:bg-zinc-950 bg-zinc-50"
+              min={1}
+              max={track.problems.length}
+              value={goToPageNumber}
+              onChange={(e) => setGoToPageNumber(Number(e.target.value))}
+            />
+            <Link prefetch={true} href={`/tracks/${track.id}/${track.problems[goToPageNumber - 1]}`}>
+              <Button
+                variant="outline"
+                className="ml-2 bg-black text-white"
+                disabled={goToPageNumber < 1 || goToPageNumber > track.problems.length}
+              >
+                Go
+              </Button>
+            </Link>
+          </div>
           <Link
             prefetch={true}
             href={
