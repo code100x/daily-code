@@ -9,16 +9,17 @@ export function PageToggle(props: any) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button title="page number" variant="outline" size="icon">
           {props.problemIndex + 1}
           <span className="sr-only">Toggle Page</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent className="max-h-72  overflow-y-auto scroll-smooth webkit-scrollbar" align="end">
         {props.totalPages.map((i: any, key: any): any => {
           return (
             <DropdownMenuItem
               key={key}
+              className="mt-3"
               onClick={() => router.push(`/tracks/${props.track.id}/${props.track.problems[i - 1]}`)}
             >
               {i}
