@@ -48,7 +48,7 @@ export function PageToggle(props: any) {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className=" max-h-96 lg:max-h-[70vh] max-w-[80vw]  overflow-y-auto scroll-smooth webkit-scrollbar"
-        align="end"
+        align="center"
       >
         {allProblemTitles.map((problem: { id: string; title: string }, index: number) => (
           <DropdownMenuItem
