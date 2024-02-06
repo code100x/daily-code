@@ -4,15 +4,6 @@ import { ReactNode, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
-import { Select, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./shad/ui/select";
-import { SelectContent } from "@radix-ui/react-select";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
 import { PageToggle } from "./PageToggle";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
@@ -37,7 +28,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
         <div>
-          <PageToggle totalPages={totalPages} problemIndex={problemIndex} track={track} />
+          <PageToggle allProblemIds={track.problems} track={track} />
         </div>
 
         <div className="flex space-x-2">
