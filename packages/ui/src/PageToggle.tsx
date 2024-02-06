@@ -24,7 +24,7 @@ export function PageToggle(props: any) {
       // Check if props.allProblemIds is defined
       if (props.allProblemIds) {
         const titles = await Promise.all(
-          props.allProblemIds.map(async (problemId) => {
+          props.allProblemIds.map(async (problemId: any) => {
             const problemDetails = await getProblem(problemId);
             return { id: problemId, title: problemDetails?.title || "" };
           })
