@@ -9,9 +9,14 @@ export function PageToggle(props: any) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button title="page number" variant="outline" size="icon">
-          {props.problemIndex + 1}
-          <span className="sr-only">Toggle Page</span>
+        <Button
+          title="page number"
+          variant={"outline"}
+          className="bg-background flex gap-4  items-center rounded-lg px-2"
+        >
+          <div className="">{props.problemIndex + 1}</div>
+          <div className=" rounded-lg h-full ">/</div>
+          {props.track.problems.length}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-h-72  overflow-y-auto scroll-smooth webkit-scrollbar" align="end">

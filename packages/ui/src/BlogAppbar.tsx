@@ -4,15 +4,7 @@ import { ReactNode, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
-import { Select, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./shad/ui/select";
-import { SelectContent } from "@radix-ui/react-select";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
 import { PageToggle } from "./PageToggle";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
@@ -33,12 +25,12 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
           <Link href={"/"}>DailyCode</Link>
         </div>
 
-        <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
-          {problem.title} ({problemIndex + 1} / {track.problems.length})
-        </p>
-        <div>
+        <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex gap-3">
+          {/* ({problemIndex + 1} / {track.problems.length}) */}
+          {problem.title}
+
           <PageToggle totalPages={totalPages} problemIndex={problemIndex} track={track} />
-        </div>
+        </p>
 
         <div className="flex space-x-2">
           <Link
@@ -74,8 +66,10 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         </div>
       </div>
 
-      <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 border-t w-full text-center bg-opacity-60">
-        {problem.title} ({problemIndex + 1} / {track.problems.length})
+      <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 border-t w-full text-center bg-opacity-60 gap-3">
+        {problem.title}
+
+        <PageToggle totalPages={totalPages} problemIndex={problemIndex} track={track} />
       </p>
     </div>
   );
