@@ -13,11 +13,11 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }, [track, problem]);
 
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
-
+  const currentIndex = `${problemIndex + 1} / ${track.problems.length}`;
   function setTheme(arg0: string) {
     throw new Error("Function not implemented.");
   }
-
+  // console.log(problem, " ", track);
   return (
     <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50">
       <div className="w-full flex items-center justify-between mb-2 md:mb-0">
@@ -26,10 +26,13 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         </div>
 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex gap-3">
-          {/* ({problemIndex + 1} / {track.problems.length}) */}
-          {problem.title}
-
-          <PageToggle totalPages={totalPages} problemIndex={problemIndex} track={track} />
+          {/* {problem.title} */}
+          <PageToggle
+            currentIndex={currentIndex}
+            title={problem.title}
+            allProblemIds={track.problems}
+            track={track}
+          />{" "}
         </p>
 
         <div className="flex space-x-2">
@@ -67,9 +70,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
       </div>
 
       <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 border-t w-full text-center bg-opacity-60 gap-3">
-        {problem.title}
-
-        <PageToggle totalPages={totalPages} problemIndex={problemIndex} track={track} />
+        <PageToggle currentIndex={currentIndex} title={problem.title} allProblemIds={track.problems} track={track} />{" "}
       </p>
     </div>
   );
