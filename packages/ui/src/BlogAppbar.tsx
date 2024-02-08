@@ -1,14 +1,21 @@
 import { Button } from "./shad/ui/button";
 import { Problem, Track } from "@repo/store";
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
+import { PageToggle } from "./PageToggle";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p === problem.id);
   }, [track, problem]);
+
+  let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
+
+  function setTheme(arg0: string) {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50">
@@ -20,6 +27,9 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
+        <div>
+          <PageToggle allProblemIds={track.problems} track={track} />
+        </div>
 
         <div className="flex space-x-2">
           <Link
