@@ -62,7 +62,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             </Button>
           </Link>
           <ModeToggle />
-          <Link href={"#"}>
+          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]}`} target="_blank">
             <Button variant="outline" className="ml-2 bg-black text-white">
               Downlaod
               <div className="pl-2">
