@@ -2,7 +2,7 @@ import { Button } from "./shad/ui/button";
 import { Problem, Track } from "@repo/store";
 import { ReactNode, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 
@@ -62,6 +62,14 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             </Button>
           </Link>
           <ModeToggle />
+          <Link href={"#"}>
+            <Button variant="outline" className="ml-2 bg-black text-white">
+              Downlaod
+              <div className="pl-2">
+                <DownloadIcon />
+              </div>
+            </Button>
+          </Link>
         </div>
       </div>
 
