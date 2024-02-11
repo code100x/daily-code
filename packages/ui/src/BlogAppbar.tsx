@@ -18,7 +18,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }
 
   return (
-    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50">
+    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50">
       <div className="w-full flex items-center justify-between mb-2 md:mb-0">
         <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-2xl">
           <Link href={"/"}>DailyCode</Link>
