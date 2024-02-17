@@ -6,6 +6,7 @@ export function Print() {
   let opened = false;
   useEffect(() => {
     if (opened) return;
+    document.querySelectorAll("details").forEach((e) => (e.open = true));
     print();
     opened = true;
   }, []);
