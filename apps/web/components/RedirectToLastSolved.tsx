@@ -4,9 +4,11 @@ import { Loader } from "@repo/ui/components";
 import { useEffect } from "react";
 import { getFunction } from "@repo/common";
 import { useRouter } from "next/navigation";
+import { useTheme } from '../../Components/ThemeContext'; 
 
 export const RedirectToLastSolved = ({ trackId }: { trackId: string }) => {
   const router = useRouter();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const getLastSolved = getFunction("getLastSolved");
@@ -20,11 +22,15 @@ export const RedirectToLastSolved = ({ trackId }: { trackId: string }) => {
     } catch (e) {
       console.error(e);
     }
-  }, []);
+  }, [theme, router, trackId]);
 
   return (
     <div>
       <Loader />
+    </div>
+  );
+};
+
     </div>
   );
 };
