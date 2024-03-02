@@ -3,6 +3,7 @@ import { getFunction } from "@repo/common";
 import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
+import { useTheme } from "../components/ThemeContext"; 
 
 async function getTracks() {
   const getTracksFn = getFunction("getTracks");
@@ -17,9 +18,10 @@ async function getTracks() {
 
 export async function Landing() {
   const tracks = await getTracks();
+  const { theme } = useTheme(); // Use the useTheme hook to get the current theme
 
   return (
-    <div>
+    <div style={{ background: theme.background, color: theme.text }}>
       <AppbarClient />
       <div className="flex justify-center pt-4">
         <div className="text-zinc-950 dark:text-zinc-50 text-4xl p-2 max-w-screen-md font-semibold mt-2 mb-4">
@@ -40,3 +42,4 @@ export async function Landing() {
     </div>
   );
 }
+
