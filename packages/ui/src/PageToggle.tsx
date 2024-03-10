@@ -43,7 +43,7 @@ export function PageToggle(props: any) {
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="max-h-[80vh] overflow-y-auto">
         {allProblemTitles.map((problem: { id: string; title: string }, index: number) => (
           <DropdownMenuItem key={index} onClick={() => router.push(`/tracks/${props.track.id}/${problem.id}`)}>
             {index + 1} - {problem.title}
