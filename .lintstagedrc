@@ -1,3 +1,3 @@
 {
-  "**/*.{ts,tsx,json}": ["prettier --write"]
+  "**/*.{ts,tsx,json,md}": ["yarn run lint:fix && yarn run format:fix"]
 }
