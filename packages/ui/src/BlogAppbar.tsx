@@ -1,21 +1,23 @@
-import { Button } from "./shad/ui/button";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Problem, Track } from "@repo/store";
-import { ReactNode, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { useMemo } from "react";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
+import { Button } from "./shad/ui/button";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p === problem.id);
   }, [track, problem]);
 
-  let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
+  // let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
+  //not using this so I commented it to avoid eslint-warnings
 
-  function setTheme(arg0: string) {
-    throw new Error("Function not implemented.");
-  }
+  //not using this so I commented it to avoid eslint-warnings
+  // function setTheme(arg0: string) {
+  //   throw new Error("Function not implemented.");
+  // }
 
   return (
     <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50">
