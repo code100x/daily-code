@@ -1,0 +1,60 @@
+name: CommitLint, Linting and formatting
+on:
+  pull_request:
+    branches:
+      - '**'
+    
+jobs:
+
+  Continuous-Integration:
+
+    name: Performs commit check, linting, formatting on the application
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install Yarn and Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git curl
+          curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+          sudo apt update
+          sudo apt install -y yarn
+          yarn install --frozen-lockfile
+
+      - name: Print versions
+        run: |
+          git --version
+          yarn --version
+          yarn commitlint --version
+
+      - name: Install commitlint
+        run: |
+          yarn add conventional-changelog-conventionalcommits -W
+          yarn add commitlint@latest -W
+
+      - name: Validate current commit (last commit) with commitlint
+        if: github.event_name == 'push'
+        run: yarn commitlint --last --verbose
+        
+      - name: Validate PR commits with commitlint
+        if: github.event_name == 'pull_request'
+        run: yarn commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
+
+      - name: Run linting check
+        run: yarn run lint
+
+      - name: Check formatting
+        run: yarn run format
