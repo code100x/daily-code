@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./shad/ui/dropdown-menu";
 import { Button } from "./shad/ui/button";
 import { Problem } from "@repo/store";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { getFunction } from "@repo/common";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 
@@ -17,7 +17,10 @@ async function getProblem(problemId: string | null): Promise<Problem | null> {
 
 export function PageToggle(props: any) {
   const router = useRouter();
+  const params = useParams<{ trackIds: string[] }>();
+
   const [allProblemTitles, setAllProblemTitles] = useState<{ id: string; title: string }[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchProblemTitles = async () => {
@@ -33,8 +36,21 @@ export function PageToggle(props: any) {
     fetchProblemTitles();
   }, [props.allProblemIds]); // Run the effect whenever allProblemIds changes
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "/") {
+        setIsOpen((prevState) => !prevState);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
           Jump To
@@ -45,7 +61,11 @@ export function PageToggle(props: any) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {allProblemTitles.map((problem: { id: string; title: string }, index: number) => (
-          <DropdownMenuItem key={index} onClick={() => router.push(`/tracks/${props.track.id}/${problem.id}`)}>
+          <DropdownMenuItem
+            key={index}
+            onClick={() => router.push(`/tracks/${props.track.id}/${problem.id}`)}
+            className={`cursor-pointer ${params?.trackIds?.includes(problem.id) ? "bg-muted-foreground" : ""}`}
+          >
             {index + 1} - {problem.title}
           </DropdownMenuItem>
         ))}
