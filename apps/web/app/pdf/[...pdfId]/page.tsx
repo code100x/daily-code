@@ -4,6 +4,7 @@ import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
+import { Print } from "../../../components/Print";
 
 const notion = new NotionAPI();
 
@@ -28,11 +29,11 @@ async function getTrack(trackId: string): Promise<{
   return response.data;
 }
 
-export default async function TrackComponent({ params }: { params: { trackIds: string[] } }) {
+export default async function TrackComponent({ params }: { params: { pdfId: string[] } }) {
   // @ts-ignore
-  const trackId: string = params.trackIds[0];
-  const problemId = params.trackIds[1];
-  let notionRecordMap = null;
+  const trackId: string = params.pdfId[0];
+  const problemId = params.pdfId[1];
+  let notionRecordMaps: any[] = [];
   if (trackId === "43XrfL4n0LgSnTkSB4rO") {
     redirect("/tracks/oAjvkeRNZThPMxZf4aX5");
   }
@@ -47,20 +48,28 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
     return <RedirectToLastSolved trackId={trackId} />;
   }
 
-  if (problemDetails?.notionDocId) {
-    notionRecordMap = await notion.getPage(problemDetails.notionDocId);
+  if (problemDetails?.notionDocId && trackDetails.track.problems) {
+    // notionRecordMaps = await notion.getPage(problemDetails.notionDocId);
+    notionRecordMaps = await Promise.all(
+      trackDetails.track.problems.map(
+        async (problemId) => await notion.getPage((await getProblem(problemId))?.notionDocId!)
+      )
+    );
   }
 
   return (
     <div>
-      <LessonView
-        showAppBar
-        track={trackDetails.track}
-        problem={{
-          ...problemDetails,
-          notionRecordMap,
-        }}
-      />
+      <Print />
+      {trackDetails.track.problems.map((problem, i) => (
+        <LessonView
+          track={trackDetails.track}
+          problem={{
+            ...problemDetails,
+            notionRecordMap: notionRecordMaps[i],
+          }}
+          key={i}
+        />
+      ))}
     </div>
   );
 }
