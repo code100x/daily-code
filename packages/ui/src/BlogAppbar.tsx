@@ -34,11 +34,10 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         <div className="flex space-x-2">
           <Link
             prefetch={true}
-            href={
-              problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : `/tracks/${track.id}`
-            }
+            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : ``}
+            style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="ml-2 bg-black text-white">
+            <Button variant="outline" className="ml-2 bg-black text-white" disabled={problemIndex !== 0 ? false : true}>
               <div className="pr-2">
                 <ChevronLeftIcon />
               </div>
@@ -50,11 +49,16 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             prefetch={true}
             href={
               problemIndex + 1 === track.problems.length
-                ? `/tracks/${track.id}`
+                ? ``
                 : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`
             }
+            style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="bg-black text-white">
+            <Button
+              variant="outline"
+              className="bg-black text-white"
+              disabled={problemIndex + 1 !== track.problems.length ? false : true}
+            >
               Next
               <div className="pl-2">
                 <ChevronRightIcon />
