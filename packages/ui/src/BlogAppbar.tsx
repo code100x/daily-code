@@ -18,7 +18,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }
 
   return (
-    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50">
+    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50">
       <div className="w-full flex items-center justify-between mb-2 md:mb-0">
         <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-2xl">
           <Link href={"/"}>DailyCode</Link>
@@ -34,11 +34,10 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         <div className="flex space-x-2">
           <Link
             prefetch={true}
-            href={
-              problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : `/tracks/${track.id}`
-            }
+            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : ``}
+            style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="ml-2 bg-black text-white">
+            <Button variant="outline" className="ml-2 bg-black text-white" disabled={problemIndex !== 0 ? false : true}>
               <div className="pr-2">
                 <ChevronLeftIcon />
               </div>
@@ -50,11 +49,16 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             prefetch={true}
             href={
               problemIndex + 1 === track.problems.length
-                ? `/tracks/${track.id}`
+                ? ``
                 : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`
             }
+            style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="bg-black text-white">
+            <Button
+              variant="outline"
+              className="bg-black text-white"
+              disabled={problemIndex + 1 !== track.problems.length ? false : true}
+            >
               Next
               <div className="pl-2">
                 <ChevronRightIcon />

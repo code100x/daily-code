@@ -74,3 +74,38 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Scroll Bar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(93, 92, 93, 0.8);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(31, 41, 55, 0.8); 
+}
+
+/* Horizontal Scroll Bar */
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background-color: rgb(93, 92, 93, 0.8); 
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track:horizontal {
+  background-color: rgb(31, 41, 55, 0.8); 
+}
+
+/* Optional: Add hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #5d5c5d;
+  /* Optionally add box-shadow based on your design */
+  box-shadow: 0 0 5px #5d5c5d;
+}
