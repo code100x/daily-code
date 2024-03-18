@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./shad/ui/dropdown-menu";
-import { Button } from "./shad/ui/button";
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import { getFunction } from "@repo/common";
 import { Problem } from "@repo/store";
 import { useRouter } from "next/navigation";
-import { getFunction } from "@repo/common";
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import { useEffect, useState } from "react";
+import { cn } from "../lib/utils";
+import { Button } from "./shad/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./shad/ui/dropdown-menu";
 
 async function getProblem(problemId: string | null): Promise<Problem | null> {
   if (!problemId) {
@@ -43,7 +44,7 @@ export function PageToggle(props: any) {
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="start" className={cn("overflow-y-auto max-h-[80vh]")}>
         {allProblemTitles.map((problem: { id: string; title: string }, index: number) => (
           <DropdownMenuItem key={index} onClick={() => router.push(`/tracks/${props.track.id}/${problem.id}`)}>
             {index + 1} - {problem.title}
