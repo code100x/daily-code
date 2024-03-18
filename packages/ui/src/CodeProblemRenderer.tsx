@@ -6,8 +6,15 @@ import { ScrollArea } from "./shad/ui/scroll-area";
 import { CodeEditor } from "./CodeEditor";
 import { RunCodeOutput } from "./RunCodeOutput";
 import { ProblemAppbar } from "./ProblemAppbar";
+import useMountStatus from "./hooks/useMountStatus";
 
 export const CodeProblemRenderer = ({ problem, track }: { problem: Problem; track: Track }) => {
+  const mounted = useMountStatus();
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div>
       <ProblemAppbar problem={problem} track={track} />
