@@ -1,7 +1,1 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-yarn run lint:fix
-yarn run format:fix
-
-git add .
+yarn lint-staged --allow-empty

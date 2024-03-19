@@ -1,8 +1,9 @@
 import Editor from "@monaco-editor/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select";
+import { useState } from "react";
 
 export const CodeEditor = () => {
-  const language = "javascript";
+  const [language, setLanguage] = useState("javascript");
   return (
     <div className="bg-zinc-900">
       <LanguageSelector />

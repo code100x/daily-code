@@ -40,8 +40,6 @@ export const Appbar = ({ user }: { user: User | null }) => {
                     // Sign-out successful.
                   },
                   function (_error) {
-                    console.log(_error);
-
                     // An error happened.
                   }
                 );

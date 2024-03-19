@@ -1,23 +1,21 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { Button } from "./shad/ui/button";
 import { Problem, Track } from "@repo/store";
+import { ReactNode, useMemo } from "react";
 import Link from "next/link";
-import { useMemo } from "react";
+import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
-import { Button } from "./shad/ui/button";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p === problem.id);
   }, [track, problem]);
 
-  // let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
-  //not using this so I commented it to avoid eslint-warnings
+  let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
 
-  //not using this so I commented it to avoid eslint-warnings
-  // function setTheme(arg0: string) {
-  //   throw new Error("Function not implemented.");
-  // }
+  function setTheme(arg0: string) {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50">
@@ -36,11 +34,10 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         <div className="flex space-x-2">
           <Link
             prefetch={true}
-            href={
-              problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : `/tracks/${track.id}`
-            }
+            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : ``}
+            style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="ml-2 bg-black text-white">
+            <Button variant="outline" className="ml-2 bg-black text-white" disabled={problemIndex !== 0 ? false : true}>
               <div className="pr-2">
                 <ChevronLeftIcon />
               </div>
@@ -52,11 +49,16 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             prefetch={true}
             href={
               problemIndex + 1 === track.problems.length
-                ? `/tracks/${track.id}`
+                ? ``
                 : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`
             }
+            style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="bg-black text-white">
+            <Button
+              variant="outline"
+              className="bg-black text-white"
+              disabled={problemIndex + 1 !== track.problems.length ? false : true}
+            >
               Next
               <div className="pl-2">
                 <ChevronRightIcon />
@@ -64,6 +66,14 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             </Button>
           </Link>
           <ModeToggle />
+          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]}`} target="_blank">
+            <Button variant="outline" className="ml-2 bg-black text-white">
+              Download
+              <div className="pl-2">
+                <DownloadIcon />
+              </div>
+            </Button>
+          </Link>
         </div>
       </div>
 

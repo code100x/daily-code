@@ -1,8 +1,10 @@
+import { signInWithPopup } from "firebase/auth";
 import { auth } from "@repo/common";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import GithubIcon from "../assets/github.svg";
+import { GoogleAuthProvider } from "firebase/auth";
 import GoogleIcon from "../assets/google.svg";
+import GithubIcon from "../assets/github.svg";
+import { useRouter } from "next/navigation";
+import { Button } from "../shad/ui/button";
 
 const provider = new GoogleAuthProvider();
 
