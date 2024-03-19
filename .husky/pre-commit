@@ -2,6 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 yarn run lint:fix
-yarn run format:fix
+yarn run format
 
 git add .

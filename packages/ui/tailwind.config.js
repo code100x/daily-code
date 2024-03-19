@@ -1,6 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-const module = require('module');
-const require = require('require');
 module.exports = {
   darkMode: ["class"],
   content: [

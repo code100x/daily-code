@@ -14,8 +14,8 @@
     "./use-toast": "./src/shad/ui/use-toast.ts"
   },
   "scripts": {
-    "lint": "eslint --max-warnings 0 --config .eslintrc.js .",
-    "lint:fix": "eslint --max-warnings 0 --config .eslintrc.js . --fix",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint --fix .",
     "generate:component": "turbo gen react-component"
   },
   "devDependencies": {

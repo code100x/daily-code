@@ -1,14 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { getFunction } from "@repo/common";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { Button } from ".";
+import { useRouter } from "next/navigation";
 
 const getUserDetails = getFunction("getUserDetails");
 
 export const AdminButton = () => {
-  const admin = false;
+  const [admin, _setAdmin] = useState(false);
   const router = useRouter();
 
   //TODO: propagate to state
