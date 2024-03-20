@@ -1,7 +1,7 @@
 import { getFunction } from "@repo/common";
 import { AppbarClient } from "../components/AppbarClient";
 import { Categories } from "@repo/ui/components";
-import Tracks from "../../../packages/ui/src/Tracks";
+import { Tracks } from "@repo/ui/components";
 
 async function getTracks() {
   const getTracksFn = getFunction("getTracks");

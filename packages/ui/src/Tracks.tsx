@@ -5,7 +5,7 @@ import { Track, category } from "../../store/src/atoms";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 
-const Tracks = ({ tracks }: { tracks: Track[] }) => {
+export const Tracks = ({ tracks }: { tracks: Track[] }) => {
   const selectedCategory = useRecoilValue(category);
   const [filteredTracks, setFilteredTracks] = useState(tracks);
   const filtereTracks = () => {
@@ -30,5 +30,3 @@ const Tracks = ({ tracks }: { tracks: Track[] }) => {
     </ul>
   );
 };
-
-export default Tracks;
