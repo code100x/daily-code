@@ -20,4 +20,10 @@ export interface Track {
   title: string;
   problems: string[];
   description: string;
+  category: string;
 }
+
+export const category = atom({
+  key: "category",
+  default: "",
+});
