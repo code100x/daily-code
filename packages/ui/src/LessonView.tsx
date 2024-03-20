@@ -18,7 +18,7 @@ export const LessonView = ({
   }
 
   if (problem.type === "blog") {
-    return <Blog problem={problem} track={track} showAppBar={!!showAppBar}  />;
+    return <Blog problem={problem} track={track} showAppBar={!!showAppBar} isPdfRequested={isPdfRequested} />;
   }
   return <div>Not found</div>;
 };
