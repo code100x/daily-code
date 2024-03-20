@@ -17,6 +17,7 @@ export const Categories = () => {
     <div className="flex justify-evenly">
       {categories.map((category) => (
         <Button
+          key={category}
           variant="ghost"
           onClick={() => handleFilterButton(category)}
           className={selectedCategory == category ? "bg-gray-100 dark:bg-slate-700" : ""}
