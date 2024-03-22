@@ -6,7 +6,6 @@ async function getTracks() {
   const getTracksFn = getFunction("getTracks");
   try {
     const tracks: any = await getTracksFn();
-    console.log(tracks);
     return tracks.data.tracks || [];
   } catch (e) {
     return [];
@@ -15,7 +14,7 @@ async function getTracks() {
 
 export async function Landing() {
   const tracks = await getTracks();
-
+  console.log(tracks);
   return (
     <div>
       <AppbarClient />

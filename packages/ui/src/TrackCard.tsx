@@ -13,6 +13,7 @@ export function TrackCard({ track }: { track: Track }) {
           <div className="pt-4 sm:pt-0 sm:pl-4">
             <CardTitle>{track.title}</CardTitle>
             <div>{track.description}</div>
+            <div>{track.category || "H"}</div>
           </div>
         </div>
         <div className="flex justify-between">
