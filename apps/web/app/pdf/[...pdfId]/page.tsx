@@ -59,9 +59,9 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
 
   return (
     <div>
-      <Print />
       {trackDetails.track.problems.map((problem, i) => (
         <LessonView
+          isPdfRequested = {true}
           track={trackDetails.track}
           problem={{
             ...problemDetails,
@@ -70,6 +70,7 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
           key={i}
         />
       ))}
+      <Print />
     </div>
   );
 }
