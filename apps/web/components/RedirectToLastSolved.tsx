@@ -13,7 +13,7 @@ export const RedirectToLastSolved = ({ trackId }: { trackId: string }) => {
     try {
       getLastSolved({ trackId }).then((res: any) => {
         if (res.data.nextProblemId) {
-          router.push(`/tracks/${trackId}/${res.data.nextProblemId}`);
+          router.replace(`/tracks/${trackId}/${res.data.nextProblemId}`);
           // window.location = `/tracks/${trackId}/${res.data.nextProblemId}`
         }
       });
