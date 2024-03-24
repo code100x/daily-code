@@ -1,17 +1,22 @@
 "use client";
 import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function Print() {
-  // Some hack for strict mode
-  let opened = false;
+  const router = useRouter();
+
   useEffect(() => {
-    if (opened) return;
+    // Open all <details> elements
     document.querySelectorAll("details").forEach((e) => (e.open = true));
-    print();
-    opened = true;
-    redirect("/");
-  }, []);
+
+    // Wait for a short time before printing
+    setTimeout(() => {
+      print();
+
+      // close the window after printing
+      window.close();
+    }, 1000); // Wait for 1 second before printing
+  }, [router]);
 
   return null;
 }
