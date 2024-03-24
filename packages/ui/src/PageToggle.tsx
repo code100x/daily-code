@@ -1,7 +1,7 @@
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { getFunction } from "@repo/common";
 import { Problem } from "@repo/store";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./shad/ui/button";
@@ -18,6 +18,10 @@ async function getProblem(problemId: string | null): Promise<Problem | null> {
 
 export function PageToggle(props: any) {
   const router = useRouter();
+  const params: { trackIds: string[] } = useParams();
+
+  const trackIds = params.trackIds.join("/");
+
   const [allProblemTitles, setAllProblemTitles] = useState<{ id: string; title: string }[]>([]);
 
   useEffect(() => {
@@ -45,11 +49,23 @@ export function PageToggle(props: any) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cn("overflow-y-auto max-h-[80vh]")}>
-        {allProblemTitles.map((problem: { id: string; title: string }, index: number) => (
-          <DropdownMenuItem key={index} onClick={() => router.push(`/tracks/${props.track.id}/${problem.id}`)}>
-            {index + 1} - {problem.title}
-          </DropdownMenuItem>
-        ))}
+        {allProblemTitles.map((problem: { id: string; title: string }, index: number) => {
+          const isDisabled = trackIds === `${props.track.id}/${problem.id}`;
+          return (
+            <DropdownMenuItem
+              key={index}
+              disabled={isDisabled}
+              onClick={() => {
+                if (!isDisabled) {
+                  router.push(`/tracks/${props.track.id}/${problem.id}`);
+                }
+              }}
+              className={isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
+            >
+              {index + 1} - {problem.title}
+            </DropdownMenuItem>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );
