@@ -9,13 +9,21 @@ export function Print() {
     // Open all <details> elements
     document.querySelectorAll("details").forEach((e) => (e.open = true));
 
-    // Wait for a short time before printing
-    setTimeout(() => {
-      print();
-
-      // close the window after printing
+    const closeWindow = () => {
+      console.log("PDF has been printed.");
       window.close();
-    }, 1000); // Wait for 1 second before printing
+    };
+
+    // Add event listener for 'afterprint' event
+    window.addEventListener("afterprint", closeWindow);
+
+    // Print the document
+    print();
+
+    // Clean up: Remove the event listener when component unmounts
+    return () => {
+      window.removeEventListener("afterprint", closeWindow);
+    };
   }, [router]);
 
   return null;
