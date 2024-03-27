@@ -6,7 +6,8 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
   },
   "devDependencies": {
