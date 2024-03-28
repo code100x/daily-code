@@ -1,15 +1,17 @@
 import { Blog } from "./Blog";
 import { CodeProblemRenderer } from "./CodeProblemRenderer";
-import { Track, Problem } from "@repo/store";
+import { Track, Problem, AllProblems } from "@repo/store";
 
 export const LessonView = ({
   problem,
   track,
+  allProblems,
   showAppBar,
-  isPdfRequested
+  isPdfRequested,
 }: {
   problem: Problem;
   track: Track;
+  allProblems: AllProblems[];
   showAppBar?: Boolean;
   isPdfRequested?: Boolean;
 }) => {
@@ -18,7 +20,15 @@ export const LessonView = ({
   }
 
   if (problem.type === "blog") {
-    return <Blog problem={problem} track={track} showAppBar={!!showAppBar} isPdfRequested={isPdfRequested} />;
+    return (
+      <Blog
+        problem={problem}
+        track={track}
+        allProblems={allProblems}
+        showAppBar={!!showAppBar}
+        isPdfRequested={isPdfRequested}
+      />
+    );
   }
   return <div>Not found</div>;
 };

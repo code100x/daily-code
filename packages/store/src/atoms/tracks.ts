@@ -21,3 +21,8 @@ export interface Track {
   problems: string[];
   description: string;
 }
+
+export interface AllProblems {
+  id: string;
+  title: string;
+}
