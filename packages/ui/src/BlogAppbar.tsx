@@ -1,10 +1,11 @@
 import { Button } from "./shad/ui/button";
 import { Problem, Track } from "@repo/store";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
+import { useRouter } from "next/navigation";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
   const problemIndex = useMemo(() => {
@@ -17,10 +18,32 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
     throw new Error("Function not implemented.");
   }
 
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight") {
+        router.push(
+          problemIndex + 1 === track.problems.length ? `` : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`
+        );
+      } else if (event.key === "ArrowLeft") {
+        router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : ``);
+      }
+    };
+
+    // Add event listener for keydown events
+    window.addEventListener("keydown", handleKeyPress);
+
+    // Clean up event listener
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []); // empty dependency array ensures the effect runs only once
+
   return (
     <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50 pt-1">
-    <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
-      <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
+      <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
+        <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
           <Link href={"/"}>DailyCode</Link>
         </div>
 
