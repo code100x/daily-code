@@ -6,7 +6,7 @@ export const LessonView = ({
   problem,
   track,
   showAppBar,
-  isPdfRequested
+  isPdfRequested,
 }: {
   problem: Problem;
   track: Track;
@@ -18,7 +18,7 @@ export const LessonView = ({
   }
 
   if (problem.type === "blog") {
-    return <Blog problem={problem} track={track} showAppBar={!!showAppBar} isPdfRequested={isPdfRequested} />;
+    return <Blog problem={problem} track={track} showAppBar={!!showAppBar} isPdfRequested={isPdfRequested || false} />;
   }
   return <div>Not found</div>;
 };

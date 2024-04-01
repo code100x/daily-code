@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  prod-web:
+    container_name: prod-web
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
