@@ -16,6 +16,9 @@ async function getTracks() {
           },
         },
       },
+      orderBy: {
+        createdAt: "asc",
+      },
     });
     return tracks.map((track) => ({
       ...track,
