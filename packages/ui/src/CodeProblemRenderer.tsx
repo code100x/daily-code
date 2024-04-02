@@ -7,9 +7,22 @@ import { CodeEditor } from "./CodeEditor";
 import { RunCodeOutput } from "./RunCodeOutput";
 import { ProblemAppbar } from "./ProblemAppbar";
 import useMountStatus from "./hooks/useMountStatus";
+import { useEffect, useRef, useState } from "react";
 
 export const CodeProblemRenderer = ({ problem, track }: { problem: Problem; track: Track }) => {
   const mounted = useMountStatus();
+  const [output, setOutput] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const question = {
+    id: 1,
+    title: "Find the sum of two numbers",
+    description: "Write a function that takes two numbers as arguments and returns their sum.",
+    codeSnippet: "function sum(a, b) {\n return a + b;\n}",
+  };
+
+  const editorRef = useRef();
 
   if (!mounted) {
     return null;
@@ -17,11 +30,23 @@ export const CodeProblemRenderer = ({ problem, track }: { problem: Problem; trac
 
   return (
     <div>
-      <ProblemAppbar problem={problem} track={track} />
+      <ProblemAppbar
+        problem={problem}
+        track={track}
+        editorRef={editorRef}
+        setError={setIsError}
+        setLoading={setIsLoading}
+        setOutput={setOutput}
+      />
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel>
           <ScrollArea className="h-screen p-2 rounded-lg">
-            <NotionRenderer recordMap={problem.notionRecordMap} />
+            {/* <NotionRenderer recordMap={problem.notionRecordMap} /> */}
+            <div>
+              <div>{question.title}</div>
+              <div>{question.description}</div>
+              <div>{question.codeSnippet}</div>
+            </div>
           </ScrollArea>
         </ResizablePanel>
         <ResizableHandle withHandle />
@@ -29,13 +54,13 @@ export const CodeProblemRenderer = ({ problem, track }: { problem: Problem; trac
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={80}>
               <ScrollArea className="h-screen p-2 rounded-lg">
-                <CodeEditor />
+                <CodeEditor editorRef={editorRef} />
               </ScrollArea>
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={20}>
               <ScrollArea className="h-screen">
-                <RunCodeOutput />
+                <RunCodeOutput error={isError} output={output} />
               </ScrollArea>
             </ResizablePanel>
           </ResizablePanelGroup>
