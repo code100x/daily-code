@@ -1,15 +1,26 @@
-import { Track } from "@repo/store";
-import { getFunction } from "@repo/common";
 import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
+import db from "@repo/db/client";
 
 async function getTracks() {
-  const getTracksFn = getFunction("getTracks");
   try {
-    const tracks: any = await getTracksFn();
-    console.log(tracks);
-    return tracks.data.tracks || [];
+    const tracks = await db.track.findMany({
+      where: {
+        hidden: false,
+      },
+      include: {
+        problems: {
+          select: {
+            problem: true,
+          },
+        },
+      },
+    });
+    return tracks.map((track) => ({
+      ...track,
+      problems: track.problems.map((problem) => ({ ...problem.problem })),
+    }));
   } catch (e) {
     return [];
   }
@@ -17,7 +28,6 @@ async function getTracks() {
 
 export async function Landing() {
   const tracks = await getTracks();
-
   return (
     <div>
       <AppbarClient />
@@ -28,11 +38,15 @@ export async function Landing() {
       </div>
       <div>
         <ul className="p-8 md:20 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-2">
-          {tracks.map((t: Track) => (
+          {tracks.map((t) => (
             <li key={t.id}>
-              <Link className="max-w-screen-md w-full" href={`/tracks/${t.id}`}>
+              {t.problems.length > 0 ? (
+                <Link className="max-w-screen-md w-full" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
+                  <TrackCard track={t} />
+                </Link>
+              ) : (
                 <TrackCard track={t} />
-              </Link>
+              )}
             </li>
           ))}
         </ul>

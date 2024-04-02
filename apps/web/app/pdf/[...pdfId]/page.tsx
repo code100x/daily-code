@@ -1,33 +1,11 @@
-import { getFunction } from "@repo/common";
-import { Problem, Track } from "@repo/store";
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
 import { Print } from "../../../components/Print";
+import { getProblem, getTrack } from "../../tracks/[...trackIds]/page";
 
 const notion = new NotionAPI();
-
-async function getProblem(problemId: string | null): Promise<Problem | null> {
-  if (!problemId) {
-    return null;
-  }
-  const getProblem = getFunction("getProblem");
-  const response: any = await getProblem({ problemId });
-  return response.data.problem;
-}
-
-async function getTrack(trackId: string): Promise<{
-  track: Track;
-  userProgress: null | {
-    nextProblemId: string;
-    lastProblemId: string | null;
-  };
-}> {
-  const getTrack = getFunction("getTrack");
-  const response: any = await getTrack({ trackId });
-  return response.data;
-}
 
 export default async function TrackComponent({ params }: { params: { pdfId: string[] } }) {
   // @ts-ignore
@@ -39,38 +17,34 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
   }
 
   //@ts-ignore
-  const [problemDetails, trackDetails]: [Problem, { track: Track }] = await Promise.all([
-    getProblem(problemId || null),
-    getTrack(trackId),
-  ]);
+  const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
 
   if (!problemId) {
     return <RedirectToLastSolved trackId={trackId} />;
   }
 
-  if (problemDetails?.notionDocId && trackDetails.track.problems) {
+  if (problemDetails?.notionDocId && trackDetails?.problems) {
     // notionRecordMaps = await notion.getPage(problemDetails.notionDocId);
     notionRecordMaps = await Promise.all(
-      trackDetails.track.problems.map(
-        async (problemId) => await notion.getPage((await getProblem(problemId))?.notionDocId!)
-      )
+      trackDetails.problems.map(async (problem) => await notion.getPage((await getProblem(problem.id))?.notionDocId!))
     );
   }
-
-  return (
-    <div>
-      {trackDetails.track.problems.map((problem, i) => (
-        <LessonView
-          isPdfRequested = {true}
-          track={trackDetails.track}
-          problem={{
-            ...problemDetails,
-            notionRecordMap: notionRecordMaps[i],
-          }}
-          key={i}
-        />
-      ))}
-      <Print />
-    </div>
-  );
+  if (trackDetails && problemDetails) {
+    return (
+      <div>
+        {trackDetails?.problems.map((problem, i) => (
+          <LessonView
+            isPdfRequested={true}
+            track={trackDetails}
+            problem={{
+              ...problemDetails,
+              notionRecordMap: notionRecordMaps[i],
+            }}
+            key={i}
+          />
+        ))}
+        <Print />
+      </div>
+    );
+  }
 }
