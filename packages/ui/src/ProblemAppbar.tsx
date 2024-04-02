@@ -1,10 +1,10 @@
 import { TooltipContent } from "@radix-ui/react-tooltip";
 import { Button } from "./shad/ui/button";
 import { Tooltip, TooltipProvider, TooltipTrigger } from "./shad/ui/tooltip";
-import { Problem, Track } from "@repo/store";
+import { Problem, Track } from "@prisma/client";
 
-export const ProblemAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
-  const problemIndex = track.problems.findIndex((p) => p === problem.id);
+export const ProblemAppbar = ({ problem, track }: { problem: Problem; track: Track & { problems: Problem[] } }) => {
+  const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
 
   return (
     <div className="mt-2 ml-2 mr-2 flex justify-between">

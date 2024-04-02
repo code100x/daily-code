@@ -1,15 +1,15 @@
 import { Button } from "./shad/ui/button";
-import { Problem, Track } from "@repo/store";
-import { ReactNode, useEffect, useMemo } from "react";
+import { Problem, Track } from "@prisma/client";
+import { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 
-export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
+export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track & { problems: Problem[] } }) => {
   const problemIndex = useMemo(() => {
-    return track.problems.findIndex((p) => p === problem.id);
+    return track.problems.findIndex((p) => p.id === problem.id);
   }, [track, problem]);
 
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
@@ -57,7 +57,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         <div className="flex space-x-2">
           <Link
             prefetch={true}
-            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : ``}
+            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
             style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
           >
             <Button variant="outline" className="ml-2 bg-black text-white" disabled={problemIndex !== 0 ? false : true}>
@@ -73,7 +73,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             href={
               problemIndex + 1 === track.problems.length
                 ? ``
-                : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`
+                : `/tracks/${track.id}/${track.problems[problemIndex + 1]!.id}`
             }
             style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
           >
@@ -89,7 +89,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             </Button>
           </Link>
           <ModeToggle />
-          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]}`} target="_blank">
+          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
             <Button variant="outline" className="ml-2 bg-black text-white">
               Download
               <div className="pl-2">
