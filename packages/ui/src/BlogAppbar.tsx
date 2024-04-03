@@ -51,7 +51,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
         <div>
-          <PageToggle allProblemIds={track.problems} track={track} />
+          <PageToggle allProblems={track.problems} track={track} />
         </div>
 
         <div className="flex space-x-2">
