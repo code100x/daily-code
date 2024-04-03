@@ -4,7 +4,7 @@
   "private": true,
   "exports": {
     "./components": "./src/index.tsx",
-    "./button": "./src/button.tsx",
+    "./button": "./src/shad/ui/button.tsx",
     "./card": "./src/card.tsx",
     "./code": "./src/code.tsx",
     "./globals.css": "./app/globals.css",

@@ -2,7 +2,7 @@ import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
-import db from "db/client";
+import db from "@repo/db/client";
 
 const notion = new NotionAPI();
 
@@ -14,6 +14,9 @@ export async function getProblem(problemId: string | null) {
     const problem = await db.problem.findUnique({
       where: {
         id: problemId,
+      },
+      include: {
+        mcqQuestions: true,
       },
     });
     return problem;

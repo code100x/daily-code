@@ -54,11 +54,12 @@ enum ProblemType {
   Code
   MCQ
 }
+
 model MCQQuestion {
-  id          String   @id @default(uuid())
-  question    String
-  options     String[]
-  correctOption String
-  problem       Problem    @relation(fields: [problemId], references: [id])
-  problemId     String
+  id                 String   @id @default(uuid())
+  question           String
+  options            String[]
+  correctOptionIndex Int
+  problem            Problem  @relation(fields: [problemId], references: [id])
+  problemId          String
 }
