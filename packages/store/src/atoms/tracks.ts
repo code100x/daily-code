@@ -9,7 +9,7 @@ export interface Problem {
   notionDocId: string;
   notionRecordMap?: any;
   image: string;
-  type: "code" | "blog";
+  type: "Code" | "Blog" | "MCQ";
   title: string;
   id: string;
 }
