@@ -1,6 +1,7 @@
 import { Blog } from "./Blog";
 import { CodeProblemRenderer } from "./CodeProblemRenderer";
 import { Problem, Track } from "@prisma/client";
+import MCQQuestionRenderer from "./MCQQuestionRenderer";
 
 export const LessonView = ({
   problem,
@@ -13,6 +14,9 @@ export const LessonView = ({
   showAppBar?: Boolean;
   isPdfRequested?: Boolean;
 }) => {
+  if (problem.type === "MCQ") {
+    return <MCQQuestionRenderer problem={problem} track={track} showAppBar={!!showAppBar} />;
+  }
   if (problem.type === "Code") {
     return <CodeProblemRenderer track={track} problem={problem} />;
   }

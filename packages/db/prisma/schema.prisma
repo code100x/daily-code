@@ -34,6 +34,7 @@ model Problem {
   title         String
   description   String
   notionDocId   String
+  mcqQuestions  MCQQuestion[]
   type          ProblemType
   trackProblems TrackProblems[]
 }
@@ -51,4 +52,13 @@ model TrackProblems {
 enum ProblemType {
   Blog
   Code
+  MCQ
+}
+model MCQQuestion {
+  id          String   @id @default(uuid())
+  question    String
+  options     String[]
+  correctOption String
+  problem       Problem    @relation(fields: [problemId], references: [id])
+  problemId     String
 }
