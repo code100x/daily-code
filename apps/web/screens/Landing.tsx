@@ -1,7 +1,7 @@
 import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
-import db from "@repo/db/client";
+import db from "db/client";
 
 async function getTracks() {
   try {

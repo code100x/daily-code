@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "./shad/ui/button";
 import { Problem, Track } from "@prisma/client";
 import { useEffect, useMemo } from "react";
@@ -41,7 +43,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }, []); // empty dependency array ensures the effect runs only once
 
   return (
-    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50 pt-1">
+    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50">
       <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
         <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
           <Link href={"/"}>DailyCode</Link>
