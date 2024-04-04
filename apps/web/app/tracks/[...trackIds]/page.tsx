@@ -15,9 +15,6 @@ export async function getProblem(problemId: string | null) {
       where: {
         id: problemId,
       },
-      include: {
-        mcqQuestions: true,
-      },
     });
     return problem;
   } catch (err) {
