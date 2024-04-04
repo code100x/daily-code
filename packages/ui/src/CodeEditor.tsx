@@ -1,28 +1,20 @@
 import Editor from "@monaco-editor/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select";
-import { useState } from "react";
+import { MutableRefObject, useState } from "react";
 
-export const CodeEditor = ({ editorRef }: any) => {
+interface CodeEditorProps {
+  editorRef: MutableRefObject<any>;
+}
+
+export const CodeEditor = ({ editorRef }: CodeEditorProps) => {
   const [language, setLanguage] = useState("javascript");
 
-  function handleEditorChange(value: string | undefined, event: any) {
-    console.log(value, "value");
-    // here is the current value
-  }
-
   function handleEditorDidMount(editor: any, monaco: any) {
-    console.log("onMount: the editor instance:", editor);
-    console.log("onMount: the monaco instance:", monaco);
     editorRef.current = editor;
     editor.focus();
   }
 
-  function handleEditorWillMount(monaco: any) {
-    console.log("beforeMount: the monaco instance:", monaco);
-  }
-
   function handleEditorValidation(markers: any) {
-    // model markers
     markers.forEach((marker: any) => console.log("onValidate:", marker.message));
   }
 
@@ -33,9 +25,7 @@ export const CodeEditor = ({ editorRef }: any) => {
         height={`80vh`}
         defaultLanguage={language}
         defaultValue=""
-        onChange={handleEditorChange}
         onMount={handleEditorDidMount}
-        beforeMount={handleEditorWillMount}
         onValidate={handleEditorValidation}
         theme="vs-dark"
         options={{

@@ -6,14 +6,14 @@ export const LessonView = ({
   problem,
   track,
   showAppBar,
-  isPdfRequested
+  isPdfRequested,
 }: {
   problem: Problem;
   track: Track;
   showAppBar?: Boolean;
   isPdfRequested?: Boolean;
 }) => {
-  if (problem.type === "code") {
+  if (true) {
     return <CodeProblemRenderer track={track} problem={problem} />;
   }
 

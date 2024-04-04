@@ -7,7 +7,7 @@ import { CodeEditor } from "./CodeEditor";
 import { RunCodeOutput } from "./RunCodeOutput";
 import { ProblemAppbar } from "./ProblemAppbar";
 import useMountStatus from "./hooks/useMountStatus";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export const CodeProblemRenderer = ({ problem, track }: { problem: Problem; track: Track }) => {
   const mounted = useMountStatus();

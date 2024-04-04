@@ -3,22 +3,18 @@ import { Button } from "./shad/ui/button";
 import { Tooltip, TooltipProvider, TooltipTrigger } from "./shad/ui/tooltip";
 import { Problem, Track } from "@repo/store";
 import { executeCode } from "@repo/common";
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
 
-export const ProblemAppbar = ({
-  problem,
-  track,
-  editorRef,
-  setOutput,
-  setLoading,
-  setError,
-}: {
+interface ProblemAppbarProps {
   problem: Problem;
   track: Track;
-  editorRef: any;
-  setLoading: any;
-  setError: any;
-  setOutput: any;
-}) => {
+  editorRef: MutableRefObject<any>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setError: Dispatch<SetStateAction<boolean>>;
+  setOutput: Dispatch<SetStateAction<any>>;
+}
+
+export const ProblemAppbar = ({ problem, track, editorRef, setOutput, setLoading, setError }: ProblemAppbarProps) => {
   const problemIndex = track.problems.findIndex((p) => p === problem.id);
   return (
     <div className="mt-2 ml-2 mr-2 flex justify-between">
