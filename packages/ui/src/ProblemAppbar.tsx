@@ -4,6 +4,8 @@ import { Tooltip, TooltipProvider, TooltipTrigger } from "./shad/ui/tooltip";
 import { Problem, Track } from "@prisma/client";
 import { executeCode } from "@repo/common";
 import { Dispatch, MutableRefObject, SetStateAction } from "react";
+import Link from "next/link";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 interface ProblemAppbarProps {
   problem: Problem;
@@ -52,7 +54,26 @@ export const ProblemAppbar = ({ problem, track, editorRef, setOutput, setLoading
           <div className="pr-2">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="outline">Next {">"}</Button>
+                <Link
+                  prefetch={true}
+                  href={
+                    problemIndex + 1 === track.problems.length
+                      ? ``
+                      : `/tracks/${track.id}/${track.problems[problemIndex + 1]!.id}`
+                  }
+                  style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
+                >
+                  <Button
+                    variant="outline"
+                    className="bg-black text-white"
+                    disabled={problemIndex + 1 !== track.problems.length ? false : true}
+                  >
+                    Next
+                    <div className="pl-2">
+                      <ChevronRightIcon />
+                    </div>
+                  </Button>
+                </Link>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Next Lesson</p>
@@ -61,7 +82,22 @@ export const ProblemAppbar = ({ problem, track, editorRef, setOutput, setLoading
           </div>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline">{"<"} Prev </Button>
+              <Link
+                prefetch={true}
+                href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
+                style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
+              >
+                <Button
+                  variant="outline"
+                  className="ml-2 bg-black text-white"
+                  disabled={problemIndex !== 0 ? false : true}
+                >
+                  <div className="pr-2">
+                    <ChevronLeftIcon />
+                  </div>
+                  Prev
+                </Button>
+              </Link>
             </TooltipTrigger>
             <TooltipContent>
               <p>Previous Lesson</p>
