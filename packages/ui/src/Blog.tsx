@@ -1,14 +1,23 @@
 "use client";
-import { Problem, Track } from "@repo/store";
+import { Problem, Track } from "@prisma/client";
 import { BlogAppbar } from "./BlogAppbar";
 import { NotionRenderer } from "./NotionRenderer";
 import useMountStatus from "./hooks/useMountStatus";
 
-export const Blog = ({ problem, track, showAppBar, isPdfRequested }: { problem: Problem; track: Track; showAppBar: Boolean, isPdfRequested: Boolean }) => {
+export const Blog = ({
+  problem,
+  track,
+  showAppBar,
+  isPdfRequested,
+}: {
+  problem: Problem & { notionRecordMap: any };
+  track: Track & { problems: Problem[] };
+  showAppBar: Boolean;
+  isPdfRequested?: Boolean;
+}) => {
   const mounted = useMountStatus();
 
-  if(isPdfRequested == undefined || !isPdfRequested)
-  {
+  if (isPdfRequested == undefined || !isPdfRequested) {
     if (!mounted) {
       return null;
     }

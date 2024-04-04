@@ -1,10 +1,10 @@
 import { Button } from "./shad/ui/button";
 import { Card, CardHeader, CardTitle } from "./shad/ui/card";
 
-import { Track } from "@repo/store";
 import { ArrowRightIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { Track, Problem } from "@prisma/client";
 
-export function TrackCard({ track }: { track: Track }) {
+export function TrackCard({ track }: { track: Track & { problems: Problem[] } }) {
   return (
     <Card className="max-w-screen-md w-full cursor-pointer transition-all hover:border-primary/20 shadow-lg dark:shadow-black/60">
       <CardHeader>
