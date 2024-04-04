@@ -1,32 +1,37 @@
 import Editor from "@monaco-editor/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select";
-import { MutableRefObject, useState } from "react";
+import { Dispatch, MutableRefObject, ReactEventHandler, SetStateAction, SyntheticEvent, useState } from "react";
+import { CODE_SNIPPETS, LANGUAGE_VERSIONS } from "@repo/common";
 
 interface CodeEditorProps {
   editorRef: MutableRefObject<any>;
+  language: string;
+  setLanguage: Dispatch<SetStateAction<string>>;
 }
 
-export const CodeEditor = ({ editorRef }: CodeEditorProps) => {
-  const [language, setLanguage] = useState("javascript");
+export const CodeEditor = ({ editorRef, setLanguage, language }: CodeEditorProps) => {
+  const [value, setValue] = useState<string | undefined>();
+
+  const onSelect = (language: any) => {
+    setLanguage(language);
+    setValue(CODE_SNIPPETS[language]);
+  };
 
   function handleEditorDidMount(editor: any, monaco: any) {
     editorRef.current = editor;
     editor.focus();
   }
 
-  function handleEditorValidation(markers: any) {
-    markers.forEach((marker: any) => console.log("onValidate:", marker.message));
-  }
-
   return (
     <div className="bg-zinc-900">
-      <LanguageSelector />
+      <LanguageSelector language={language} onSelect={onSelect} />
       <Editor
         height={`80vh`}
         defaultLanguage={language}
-        defaultValue=""
+        defaultValue={CODE_SNIPPETS[language]}
         onMount={handleEditorDidMount}
-        onValidate={handleEditorValidation}
+        value={value}
+        onChange={(value) => setValue(value)}
         theme="vs-dark"
         options={{
           fontSize: 18,
@@ -36,17 +41,26 @@ export const CodeEditor = ({ editorRef }: CodeEditorProps) => {
   );
 };
 
-function LanguageSelector() {
+interface LanguageSelectorProps {
+  onSelect: (value: string) => void;
+  language: string;
+}
+
+function LanguageSelector({ language, onSelect }: LanguageSelectorProps) {
+  const languages = Object.entries(LANGUAGE_VERSIONS);
   return (
     <div className="p-2 flex">
-      <Select>
+      <Select onValueChange={(value) => onSelect(value)}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Language" />
+          <SelectValue placeholder={language} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="light">C++</SelectItem>
-          <SelectItem value="system">Rust</SelectItem>
-          <SelectItem value="dark">Javascript</SelectItem>
+          {languages.map(([lang, version]) => (
+            <SelectItem value={lang} key={lang}>
+              {lang} &nbsp;
+              <span className="text-sm">({version})</span>
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

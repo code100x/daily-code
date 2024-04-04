@@ -1,7 +1,7 @@
 "use client";
 import { NotionRenderer } from "./NotionRenderer";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./shad/ui/resizable";
-import { ScrollArea } from "./shad/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "./shad/ui/scroll-area";
 import { CodeEditor } from "./CodeEditor";
 import { RunCodeOutput } from "./RunCodeOutput";
 import { ProblemAppbar } from "./ProblemAppbar";
@@ -20,13 +20,7 @@ export const CodeProblemRenderer = ({
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-
-  const question = {
-    id: 1,
-    title: "Find the sum of two numbers",
-    description: "Write a function that takes two numbers as arguments and returns their sum.",
-    codeSnippet: "function sum(a, b) {\n return a + b;\n}",
-  };
+  const [language, setLanguage] = useState("javascript");
 
   const editorRef = useRef();
 
@@ -43,16 +37,13 @@ export const CodeProblemRenderer = ({
         setError={setIsError}
         setLoading={setIsLoading}
         setOutput={setOutput}
+        lanugage={language}
       />
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel>
-          <ScrollArea className="h-screen p-2 rounded-lg">
-            {/* <NotionRenderer recordMap={problem.notionRecordMap} /> */}
-            <div>
-              <div>{question.title}</div>
-              <div>{question.description}</div>
-              <div>{question.codeSnippet}</div>
-            </div>
+          <ScrollArea className="h-screen p-2 rounded-lg w-50">
+            <NotionRenderer recordMap={problem.notionRecordMap} />
+            <ScrollBar orientation="horizontal" />
           </ScrollArea>
         </ResizablePanel>
         <ResizableHandle withHandle />
@@ -60,7 +51,7 @@ export const CodeProblemRenderer = ({
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={80}>
               <ScrollArea className="h-screen p-2 rounded-lg">
-                <CodeEditor editorRef={editorRef} />
+                <CodeEditor editorRef={editorRef} setLanguage={setLanguage} language={language} />
               </ScrollArea>
             </ResizablePanel>
             <ResizableHandle withHandle />

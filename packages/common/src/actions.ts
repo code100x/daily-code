@@ -1,16 +1,17 @@
 "use server";
 
 import axios from "axios";
+import { LANGUAGE_VERSIONS } from "./constants";
 
 const API = axios.create({
   baseURL: "https://emkc.org/api/v2/piston",
 });
 
-export async function executeCode(sourceCode: string) {
+export async function executeCode(sourceCode: string, language: string) {
   try {
     const response = await API.post("/execute", {
-      language: "javascript",
-      version: "18.15.0",
+      language: language,
+      version: LANGUAGE_VERSIONS[language],
       files: [
         {
           content: sourceCode,

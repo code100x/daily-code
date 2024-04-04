@@ -14,9 +14,18 @@ interface ProblemAppbarProps {
   setLoading: Dispatch<SetStateAction<boolean>>;
   setError: Dispatch<SetStateAction<boolean>>;
   setOutput: Dispatch<SetStateAction<any>>;
+  lanugage: string;
 }
 
-export const ProblemAppbar = ({ problem, track, editorRef, setOutput, setLoading, setError }: ProblemAppbarProps) => {
+export const ProblemAppbar = ({
+  problem,
+  track,
+  editorRef,
+  setOutput,
+  setLoading,
+  setError,
+  lanugage,
+}: ProblemAppbarProps) => {
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
   return (
     <div className="mt-2 ml-2 mr-2 flex justify-between">
@@ -33,7 +42,7 @@ export const ProblemAppbar = ({ problem, track, editorRef, setOutput, setLoading
             if (!sourceCode) return;
             try {
               setLoading(true);
-              const { run: result } = await executeCode(sourceCode);
+              const { run: result } = await executeCode(sourceCode, lanugage);
               setOutput(result.output.split("\n"));
               result.stderr ? setError(true) : setError(false);
             } catch (error) {
