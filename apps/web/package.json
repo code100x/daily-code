@@ -23,7 +23,6 @@
     "next-themes": "^0.2.1",
     "notion-client": "^6.16.0",
     "react": "^18.2.0",
-    "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
     "recoil": "^0.7.7",
     "tailwind-merge": "^2.2.0",
