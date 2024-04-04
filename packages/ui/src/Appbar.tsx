@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Button } from ".";
-import { User } from "@repo/store";
-import { auth } from "@repo/common";
 import { useRouter } from "next/navigation";
 import { AdminButton } from "./AdminButton";
 import { ModeToggle } from "./ModeToggle";
+import { signIn, signOut } from "next-auth/react";
 
-export const Appbar = ({ user }: { user: User | null }) => {
-  const router = useRouter();
+import { useSession } from "next-auth/react";
+export const Appbar = () => {
+  const session = useSession();
+  const user = session.data?.user;
   const admin = false;
 
   return (
@@ -22,8 +23,8 @@ export const Appbar = ({ user }: { user: User | null }) => {
           {!user ? (
             <Button
               variant={"outline"}
-              onClick={() => {
-                router.push("/auth");
+              onClick={async () => {
+                await signIn();
               }}
             >
               Login
@@ -34,15 +35,8 @@ export const Appbar = ({ user }: { user: User | null }) => {
           {user ? (
             <Button
               variant={"outline"}
-              onClick={() => {
-                auth.signOut().then(
-                  function () {
-                    // Sign-out successful.
-                  },
-                  function (_error) {
-                    // An error happened.
-                  }
-                );
+              onClick={async () => {
+                await signOut();
               }}
             >
               Logout

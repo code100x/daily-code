@@ -1,7 +1,16 @@
-"use client";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import React from "react";
+import { authOptions } from "../../lib/auth";
+import Signin from "../../components/Signin";
 
-import { Signin } from "@repo/ui/pages";
+const SigninPage = async () => {
+  const session = await getServerSession(authOptions);
 
-export default function () {
+  if (session?.user) {
+    redirect("/");
+  }
   return <Signin />;
-}
+};
+
+export default SigninPage;

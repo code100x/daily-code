@@ -5,12 +5,15 @@ import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
 import { ToastProvider } from "@repo/ui/toast";
+import { SessionProvider } from "next-auth/react";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <RecoilRoot>
-      <ToastProvider>{children}</ToastProvider>
-    </RecoilRoot>
+    <SessionProvider>
+      <RecoilRoot>
+        <ToastProvider>{children}</ToastProvider>
+      </RecoilRoot>
+    </SessionProvider>
   );
 };
 
