@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { Button } from ".";
+import { User } from "@repo/store";
+import { auth } from "@repo/common";
 import { useRouter } from "next/navigation";
 import { AdminButton } from "./AdminButton";
 import { ModeToggle } from "./ModeToggle";
-import { signIn, signOut } from "next-auth/react";
 
-import { useSession } from "next-auth/react";
-export const Appbar = () => {
-  const session = useSession();
-  const user = session.data?.user;
+export const Appbar = ({ user }: { user: User | null }) => {
+  const router = useRouter();
   const admin = false;
 
   return (
@@ -19,12 +18,11 @@ export const Appbar = () => {
         </Link>
         <div className="flex items-center gap-2">
           {admin && <AdminButton />}
-
           {!user ? (
             <Button
               variant={"outline"}
-              onClick={async () => {
-                await signIn();
+              onClick={() => {
+                router.push("/auth");
               }}
             >
               Login
@@ -35,8 +33,15 @@ export const Appbar = () => {
           {user ? (
             <Button
               variant={"outline"}
-              onClick={async () => {
-                await signOut();
+              onClick={() => {
+                auth.signOut().then(
+                  function () {
+                    // Sign-out successful.
+                  },
+                  function (_error) {
+                    // An error happened.
+                  }
+                );
               }}
             >
               Logout
@@ -44,7 +49,6 @@ export const Appbar = () => {
           ) : (
             ""
           )}
-
           <ModeToggle />
         </div>
       </div>
