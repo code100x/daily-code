@@ -1,3 +1,5 @@
+"use client";
+
 import { RecoilRoot } from "recoil";
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
