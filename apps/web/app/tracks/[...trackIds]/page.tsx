@@ -1,31 +1,53 @@
-import { getFunction } from "@repo/common";
-import { Problem, Track } from "@repo/store";
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
+import db from "@repo/db/client";
 
 const notion = new NotionAPI();
 
-async function getProblem(problemId: string | null): Promise<Problem | null> {
+export async function getProblem(problemId: string | null) {
   if (!problemId) {
     return null;
   }
-  const getProblem = getFunction("getProblem");
-  const response: any = await getProblem({ problemId });
-  return response.data.problem;
+  try {
+    const problem = await db.problem.findUnique({
+      where: {
+        id: problemId,
+      },
+    });
+    return problem;
+  } catch (err) {
+    return null;
+  }
 }
 
-async function getTrack(trackId: string): Promise<{
-  track: Track;
-  userProgress: null | {
-    nextProblemId: string;
-    lastProblemId: string | null;
-  };
-}> {
-  const getTrack = getFunction("getTrack");
-  const response: any = await getTrack({ trackId });
-  return response.data;
+export async function getTrack(trackId: string) {
+  try {
+    const track = await db.track.findUnique({
+      where: {
+        id: trackId,
+      },
+      include: {
+        problems: {
+          select: {
+            problem: true,
+          },
+        },
+      },
+    });
+
+    if (track) {
+      return {
+        ...track,
+        problems: track.problems.map((problem) => ({ ...problem.problem })),
+      };
+    }
+
+    return null;
+  } catch (err) {
+    return null;
+  }
 }
 
 export default async function TrackComponent({ params }: { params: { trackIds: string[] } }) {
@@ -38,10 +60,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
   }
 
   //@ts-ignore
-  const [problemDetails, trackDetails]: [Problem, { track: Track }] = await Promise.all([
-    getProblem(problemId || null),
-    getTrack(trackId),
-  ]);
+  const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
 
   if (!problemId) {
     return <RedirectToLastSolved trackId={trackId} />;
@@ -51,16 +70,18 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
     notionRecordMap = await notion.getPage(problemDetails.notionDocId);
   }
 
-  return (
-    <div>
-      <LessonView
-        showAppBar
-        track={trackDetails.track}
-        problem={{
-          ...problemDetails,
-          notionRecordMap,
-        }}
-      />
-    </div>
-  );
+  if (trackDetails && problemDetails) {
+    return (
+      <div>
+        <LessonView
+          showAppBar
+          track={trackDetails}
+          problem={{
+            ...problemDetails,
+            notionRecordMap,
+          }}
+        />
+      </div>
+    );
+  }
 }

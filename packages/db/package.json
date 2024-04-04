@@ -1,10 +1,11 @@
 {
-  "name": "db",
+  "name": "@repo/db",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:seed": "prisma db seed"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -15,5 +16,8 @@
   "dependencies": {
     "@prisma/client": "5.12.0",
     "prisma": "^5.12.0"
+  },
+  "exports": {
+    "./client": "./src/index.ts"
   }
 }

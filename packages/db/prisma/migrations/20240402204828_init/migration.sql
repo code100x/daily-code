@@ -16,6 +16,8 @@ CREATE TABLE "Track" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "image" TEXT NOT NULL,
+    "hidden" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Track_pkey" PRIMARY KEY ("id")
 );

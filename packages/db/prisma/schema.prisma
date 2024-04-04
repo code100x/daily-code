@@ -14,38 +14,51 @@ datasource db {
 }
 
 model User {
-  id          String     @id @default(uuid())
-  username    String
-  password    String
+  id       String @id @default(uuid())
+  username String
+  password String
 }
 
 model Track {
-  id               String     @id @default(uuid())
-  title            String
-  description      String
-  image            String
-  problems         TrackProblems[]
+  id          String          @id @default(uuid())
+  title       String
+  description String
+  image       String
+  problems    TrackProblems[]
+  hidden      Boolean         @default(false)
+  createdAt   DateTime        @default(now())
 }
 
 model Problem {
-  id              String      @id @default(uuid())
-  title           String
-  description     String
-  notionDocId     String
-  type            ProblemType
-  trackProblems   TrackProblems[]
+  id            String          @id @default(uuid())
+  title         String
+  description   String
+  notionDocId   String
+  mcqQuestions  MCQQuestion[]
+  type          ProblemType
+  trackProblems TrackProblems[]
 }
 
 model TrackProblems {
-  track     Track     @relation(fields: [trackId], references: [id])    
-  trackId   String
-  
-  problem   Problem   @relation(fields: [problemId], references: [id])
+  track   Track  @relation(fields: [trackId], references: [id])
+  trackId String
+
+  problem   Problem @relation(fields: [problemId], references: [id])
   problemId String
+
   @@id([trackId, problemId])
 }
 
 enum ProblemType {
   Blog
   Code
+  MCQ
+}
+model MCQQuestion {
+  id          String   @id @default(uuid())
+  question    String
+  options     String[]
+  correctOption String
+  problem       Problem    @relation(fields: [problemId], references: [id])
+  problemId     String
 }

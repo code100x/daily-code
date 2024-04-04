@@ -1,15 +1,17 @@
+"use client";
+
 import { Button } from "./shad/ui/button";
-import { Problem, Track } from "@repo/store";
-import { ReactNode, useEffect, useMemo } from "react";
+import { Problem, Track } from "@prisma/client";
+import { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 
-export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track }) => {
+export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track & { problems: Problem[] } }) => {
   const problemIndex = useMemo(() => {
-    return track.problems.findIndex((p) => p === problem.id);
+    return track.problems.findIndex((p) => p.id === problem.id);
   }, [track, problem]);
 
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
@@ -41,7 +43,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }, []); // empty dependency array ensures the effect runs only once
 
   return (
-    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50 pt-1">
+    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50">
       <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
         <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
           <Link href={"/"}>DailyCode</Link>
@@ -51,13 +53,13 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
         <div>
-          <PageToggle allProblemIds={track.problems} track={track} />
+          <PageToggle allProblems={track.problems} track={track} />
         </div>
 
         <div className="flex space-x-2">
           <Link
             prefetch={true}
-            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : ``}
+            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
             style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
           >
             <Button variant="outline" className="ml-2 bg-black text-white" disabled={problemIndex !== 0 ? false : true}>
@@ -73,7 +75,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             href={
               problemIndex + 1 === track.problems.length
                 ? ``
-                : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`
+                : `/tracks/${track.id}/${track.problems[problemIndex + 1]!.id}`
             }
             style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
           >
@@ -89,7 +91,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             </Button>
           </Link>
           <ModeToggle />
-          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]}`} target="_blank">
+          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
             <Button variant="outline" className="ml-2 bg-black text-white">
               Download
               <div className="pl-2">

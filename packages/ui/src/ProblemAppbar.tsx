@@ -1,13 +1,13 @@
 import { TooltipContent } from "@radix-ui/react-tooltip";
 import { Button } from "./shad/ui/button";
 import { Tooltip, TooltipProvider, TooltipTrigger } from "./shad/ui/tooltip";
-import { Problem, Track } from "@repo/store";
+import { Problem, Track } from "@prisma/client";
 import { executeCode } from "@repo/common";
 import { Dispatch, MutableRefObject, SetStateAction } from "react";
 
 interface ProblemAppbarProps {
   problem: Problem;
-  track: Track;
+  track: Track & { problems: Problem[] };
   editorRef: MutableRefObject<any>;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setError: Dispatch<SetStateAction<boolean>>;
@@ -15,7 +15,7 @@ interface ProblemAppbarProps {
 }
 
 export const ProblemAppbar = ({ problem, track, editorRef, setOutput, setLoading, setError }: ProblemAppbarProps) => {
-  const problemIndex = track.problems.findIndex((p) => p === problem.id);
+  const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
   return (
     <div className="mt-2 ml-2 mr-2 flex justify-between">
       <div className="flex-1 flex justify">

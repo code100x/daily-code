@@ -1,6 +1,5 @@
 "use client";
 import { NotionRenderer } from "./NotionRenderer";
-import { Problem, Track } from "@repo/store";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./shad/ui/resizable";
 import { ScrollArea } from "./shad/ui/scroll-area";
 import { CodeEditor } from "./CodeEditor";
@@ -8,8 +7,15 @@ import { RunCodeOutput } from "./RunCodeOutput";
 import { ProblemAppbar } from "./ProblemAppbar";
 import useMountStatus from "./hooks/useMountStatus";
 import { useRef, useState } from "react";
+import { Problem, Track } from "@prisma/client";
 
-export const CodeProblemRenderer = ({ problem, track }: { problem: Problem; track: Track }) => {
+export const CodeProblemRenderer = ({
+  problem,
+  track,
+}: {
+  problem: Problem & { notionRecordMap: any };
+  track: Track & { problems: Problem[] };
+}) => {
   const mounted = useMountStatus();
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
