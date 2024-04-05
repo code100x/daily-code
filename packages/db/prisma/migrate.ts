@@ -35,15 +35,15 @@ async function getTracks() {
 async function getProblem(problemId: string) {
   const getProblem = getFunction("getProblem");
   const response: any = await getProblem({ problemId });
-  const { description, title, type, notionDocId } = response.data.problem;
-  return { description, title, type: type.charAt(0).toUpperCase() + type.slice(1), notionDocId };
+  const { description, title, type, notionDocId, id } = response.data.problem;
+  return { description, title, type: type.charAt(0).toUpperCase() + type.slice(1), notionDocId, id };
 }
 
 const main = async () => {
   const allTracks: any = await getTracks();
 
   for (const track of allTracks) {
-    const { title, description, image } = track;
+    const { title, description, image, id } = track;
     const problemForTracks = await Promise.all(
       track.problems.map(async (problem: any) => {
         return await getProblem(problem);
@@ -62,6 +62,7 @@ const main = async () => {
 
     await db.track.create({
       data: {
+        id,
         title,
         description,
         image,
