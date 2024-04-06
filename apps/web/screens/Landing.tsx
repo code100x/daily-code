@@ -34,6 +34,7 @@ const getTracks = cache(async () => {
 
 export async function Landing() {
   const tracks = await getTracks();
+
   return (
     <div>
       <AppbarClient />
