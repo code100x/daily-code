@@ -2,53 +2,9 @@ import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
-import db from "@repo/db/client";
+import { getProblem, getTrack } from "../../../components/utils";
 
 const notion = new NotionAPI();
-
-export async function getProblem(problemId: string | null) {
-  if (!problemId) {
-    return null;
-  }
-  try {
-    const problem = await db.problem.findUnique({
-      where: {
-        id: problemId,
-      },
-    });
-    return problem;
-  } catch (err) {
-    return null;
-  }
-}
-
-export async function getTrack(trackId: string) {
-  try {
-    const track = await db.track.findUnique({
-      where: {
-        id: trackId,
-      },
-      include: {
-        problems: {
-          select: {
-            problem: true,
-          },
-        },
-      },
-    });
-
-    if (track) {
-      return {
-        ...track,
-        problems: track.problems.map((problem) => ({ ...problem.problem })),
-      };
-    }
-
-    return null;
-  } catch (err) {
-    return null;
-  }
-}
 
 export default async function TrackComponent({ params }: { params: { trackIds: string[] } }) {
   // @ts-ignore
