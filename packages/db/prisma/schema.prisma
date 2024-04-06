@@ -14,9 +14,17 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  username String
-  password String
+  id          String       @id @default(uuid())
+  username    String
+  password    String
+  submissions Submission[]
+}
+
+model Admin {
+  id     Int     @id @default(autoincrement())
+  name   String
+  email  String  @unique
+  tracks Track[]
 }
 
 model Track {
@@ -27,6 +35,8 @@ model Track {
   problems    TrackProblems[]
   hidden      Boolean         @default(false)
   createdAt   DateTime        @default(now())
+  adminId     Int
+  admin       Admin           @relation(fields: [adminId], references: [id])
 }
 
 model Problem {
@@ -37,6 +47,39 @@ model Problem {
   mcqQuestions  MCQQuestion[]
   type          ProblemType
   trackProblems TrackProblems[]
+  testCases     TestCase[]
+  submissions   Submission[]
+}
+
+model TestCase {
+  id             String  @id @default(uuid())
+  input          String
+  expectedOutput String
+  problemId      String
+  problem        Problem @relation(fields: [problemId], references: [id])
+}
+
+model Submission {
+  id        String             @id @default(uuid())
+  code      String
+  language  Language
+  problemId String
+  problem   Problem            @relation(fields: [problemId], references: [id])
+  userId    String
+  user      User               @relation(fields: [userId], references: [id])
+  results   SubmissionResult[]
+}
+
+enum Language {
+  CPP
+  JAVASCRIPT
+}
+
+model SubmissionResult {
+  id           String     @id @default(uuid())
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id])
+  passed       Boolean
 }
 
 model TrackProblems {
@@ -55,10 +98,10 @@ enum ProblemType {
   MCQ
 }
 model MCQQuestion {
-  id          String   @id @default(uuid())
-  question    String
-  options     String[]
+  id            String   @id @default(uuid())
+  question      String
+  options       String[]
   correctOption String
-  problem       Problem    @relation(fields: [problemId], references: [id])
+  problem       Problem  @relation(fields: [problemId], references: [id])
   problemId     String
 }
