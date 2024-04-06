@@ -6,7 +6,7 @@ import db from "@repo/db/client";
 
 const notion = new NotionAPI();
 
-export async function getProblem(problemId: string | null) {
+async function getProblem(problemId: string | null) {
   if (!problemId) {
     return null;
   }
@@ -22,7 +22,7 @@ export async function getProblem(problemId: string | null) {
   }
 }
 
-export async function getTrack(trackId: string) {
+async function getTrack(trackId: string) {
   try {
     const track = await db.track.findUnique({
       where: {

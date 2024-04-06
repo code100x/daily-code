@@ -2,8 +2,11 @@ import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
 import db from "@repo/db/client";
+import { cache } from "react";
 
-async function getTracks() {
+const getTracks = cache(async () => {
+  console.log("getting tracks..");
+
   try {
     const tracks = await db.track.findMany({
       where: {
@@ -27,7 +30,7 @@ async function getTracks() {
   } catch (e) {
     return [];
   }
-}
+});
 
 export async function Landing() {
   const tracks = await getTracks();
