@@ -43,3 +43,29 @@ export async function getTrack(trackId: string) {
     return null;
   }
 }
+
+export async function getAllTracks() {
+  try {
+    const tracks = await db.track.findMany({
+      where: {
+        hidden: false,
+      },
+      include: {
+        problems: {
+          select: {
+            problem: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+    return tracks.map((track) => ({
+      ...track,
+      problems: track.problems.map((problem) => ({ ...problem.problem })),
+    }));
+  } catch (e) {
+    return [];
+  }
+}

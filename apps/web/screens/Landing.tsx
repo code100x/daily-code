@@ -1,36 +1,11 @@
 import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
-import db from "@repo/db/client";
-
-async function getTracks() {
-  try {
-    const tracks = await db.track.findMany({
-      where: {
-        hidden: false,
-      },
-      include: {
-        problems: {
-          select: {
-            problem: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "asc",
-      },
-    });
-    return tracks.map((track) => ({
-      ...track,
-      problems: track.problems.map((problem) => ({ ...problem.problem })),
-    }));
-  } catch (e) {
-    return [];
-  }
-}
+import { getAllTracks } from "../components/utils";
 
 export async function Landing() {
-  const tracks = await getTracks();
+  const tracks = await getAllTracks();
+
   return (
     <div>
       <AppbarClient />

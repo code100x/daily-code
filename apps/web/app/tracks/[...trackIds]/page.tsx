@@ -2,9 +2,30 @@ import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
-import { getProblem, getTrack } from "../../../components/utils";
+import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
 
 const notion = new NotionAPI();
+
+export async function generateStaticParams() {
+  try {
+    const tracks = await getAllTracks();
+
+    const allPages = tracks.map((t) =>
+      t.problems.map((p) => {
+        if (p.type === "Blog") {
+          return {
+            trackIds: [t.id, p.id],
+          };
+        }
+      })
+    );
+
+    return allPages.flat();
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
+}
 
 export default async function TrackComponent({ params }: { params: { trackIds: string[] } }) {
   // @ts-ignore
