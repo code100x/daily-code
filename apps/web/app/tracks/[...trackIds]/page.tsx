@@ -3,13 +3,14 @@ import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
 import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
+import { cache } from "react";
 
 const notion = new NotionAPI();
+export const dynamic = "auto";
 
 export async function generateStaticParams() {
   try {
-    const tracks = await getAllTracks();
-
+    const tracks = await cache(getAllTracks)();
     const allPages = tracks.map((t) =>
       t.problems.map((p) => {
         if (p.type === "Blog") {

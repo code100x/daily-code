@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   }
   try {
     if (path) {
-      revalidatePath(path, "layout");
+      revalidatePath(path);
       return NextResponse.json({ revalidated: true, now: Date.now() });
     }
   } catch (e) {
