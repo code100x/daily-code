@@ -10,8 +10,8 @@ export async function GET(req: NextRequest) {
   }
   try {
     if (path) {
-      revalidatePath(path);
-      return NextResponse.json({ revalidated: true });
+      revalidatePath(path, "layout");
+      return NextResponse.json({ revalidated: true, now: Date.now() });
     }
   } catch (e) {
     return NextResponse.json({ message: "Error revalidating" }, { status: 500 });
