@@ -45,60 +45,71 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   return (
     <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50">
       <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
-        <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
+        <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0 w-full md:w-auto justify-between flex ">
           <Link href={"/"}>DailyCode</Link>
+          <div className="md:hidden">
+            <ModeToggle />
+          </div>
         </div>
 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
-        <div>
-          <PageToggle allProblems={track.problems} track={track} />
-        </div>
+        <div className="flex ">
+          <div>
+            <PageToggle allProblems={track.problems} track={track} />
+          </div>
 
-        <div className="flex space-x-2">
-          <Link
-            prefetch={true}
-            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
-            style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
-          >
-            <Button variant="outline" className="ml-2 bg-black text-white" disabled={problemIndex !== 0 ? false : true}>
-              <div className="pr-2">
-                <ChevronLeftIcon />
-              </div>
-              Prev
-            </Button>
-          </Link>
-
-          <Link
-            prefetch={true}
-            href={
-              problemIndex + 1 === track.problems.length
-                ? ``
-                : `/tracks/${track.id}/${track.problems[problemIndex + 1]!.id}`
-            }
-            style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
-          >
-            <Button
-              variant="outline"
-              className="bg-black text-white"
-              disabled={problemIndex + 1 !== track.problems.length ? false : true}
+          <div className="flex md:space-x-2">
+            <Link
+              prefetch={true}
+              href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
+              style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
             >
-              Next
-              <div className="pl-2">
-                <ChevronRightIcon />
-              </div>
-            </Button>
-          </Link>
-          <ModeToggle />
-          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white">
-              Download
-              <div className="pl-2">
-                <DownloadIcon />
-              </div>
-            </Button>
-          </Link>
+              <Button
+                variant="outline"
+                className="ml-2 bg-black text-white"
+                disabled={problemIndex !== 0 ? false : true}
+              >
+                <div className="pr-2">
+                  <ChevronLeftIcon />
+                </div>
+                Prev
+              </Button>
+            </Link>
+
+            <Link
+              prefetch={true}
+              href={
+                problemIndex + 1 === track.problems.length
+                  ? ``
+                  : `/tracks/${track.id}/${track.problems[problemIndex + 1]!.id}`
+              }
+              style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
+            >
+              <Button
+                variant="outline"
+                className="bg-black text-white"
+                disabled={problemIndex + 1 !== track.problems.length ? false : true}
+              >
+                Next
+                <div className="pl-2">
+                  <ChevronRightIcon />
+                </div>
+              </Button>
+            </Link>
+            <div className="hidden md:block">
+              <ModeToggle />
+            </div>
+            <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
+              <Button variant="outline" className="ml-2 bg-black text-white">
+                <p className="hidden sm:block"> Download</p>
+                <div className="sm:pl-2">
+                  <DownloadIcon />
+                </div>
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 
