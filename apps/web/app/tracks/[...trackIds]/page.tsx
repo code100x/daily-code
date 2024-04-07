@@ -6,7 +6,47 @@ import db from "@repo/db/client";
 
 const notion = new NotionAPI();
 
+export async function generateStaticParams() {
+  try {
+    const tracks = await db.track.findMany({
+      where: {
+        hidden: false,
+      },
+      include: {
+        problems: {
+          include: {
+            problem: {
+              select: {
+                type: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+
+    const params = tracks.map((track) =>
+      track.problems.map((problem) => {
+        if (problem.problem.type === "Blog") {
+          return {
+            trackIds: [track.id, problem.problemId],
+          };
+        }
+      })
+    );
+
+    return params.flat();
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
+}
+
 async function getProblem(problemId: string | null) {
+  console.log("getting prob: ", problemId);
   if (!problemId) {
     return null;
   }
@@ -85,3 +125,5 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
     );
   }
 }
+
+export const revalidate = 3600;

@@ -1,6 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalDependencies": ["**/.env.*local", ".env", ".env.local", "tsconfig.json"],
+  "globalEnv": ["REVAL_PASSWORD"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
