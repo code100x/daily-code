@@ -55,6 +55,11 @@ export async function getAllTracks() {
           select: {
             problem: true,
           },
+          orderBy: [
+            {
+              sortingOrder: "desc",
+            },
+          ],
         },
       },
       orderBy: {

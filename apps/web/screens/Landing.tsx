@@ -19,7 +19,7 @@ export async function Landing() {
           {tracks.map((t) => (
             <li key={t.id}>
               {t.problems.length > 0 ? (
-                <Link className="max-w-screen-md w-full" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
+                <Link prefetch={true} className="max-w-screen-md w-full" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
                   <TrackCard track={t} />
                 </Link>
               ) : (
