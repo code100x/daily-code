@@ -51,6 +51,7 @@ const main = async () => {
     );
     const reversedProblems: any = problemForTracks.reverse();
 
+    let ctr = 1;
     reversedProblems.forEach((problem: any) => {
       if (!problem.title) {
         problem.title = problem.description;
@@ -58,6 +59,7 @@ const main = async () => {
       if (!problem.description) {
         problem.description = problem.title;
       }
+      problem.sortingOrder = ctr++;
     });
 
     await db.track.create({
