@@ -69,7 +69,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
         </div>
         <div className="h-[400px] overflow-y-scroll">
           {searchTracks.map((track) => (
-            <TrackList track={track} />
+            <TrackList key={track.id} track={track} />
           ))}
         </div>
       </DialogContent>
