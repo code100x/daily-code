@@ -6,7 +6,7 @@ import { AppbarClient } from "../../components/AppbarClient";
 export default function () {
   return (
     <>
-      <AppbarClient />
+      <AppbarClient tracks={[]} />
       <Admin />
     </>
   );

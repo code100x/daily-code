@@ -5,8 +5,10 @@ import { auth } from "@repo/common";
 import { useRouter } from "next/navigation";
 import { AdminButton } from "./AdminButton";
 import { ModeToggle } from "./ModeToggle";
+import { SearchDialog } from "./SearchDialog";
+import { Track, Problem } from "@prisma/client";
 
-export const Appbar = ({ user }: { user: User | null }) => {
+export const Appbar = ({ user, tracks }: { user: User | null; tracks: (Track & { problems: Problem[] })[] }) => {
   const router = useRouter();
   const admin = false;
 
@@ -17,6 +19,7 @@ export const Appbar = ({ user }: { user: User | null }) => {
           <div className="dark:text-zinc-100 text-zinc-950 text-2xl font-semibold">DailyCode</div>
         </Link>
         <div className="flex items-center gap-2">
+          <SearchDialog tracks={tracks} />
           {admin && <AdminButton />}
 
           {!user ? (
