@@ -1,10 +1,17 @@
 import { Button } from "./shad/ui/button";
-import { Card, CardHeader, CardTitle } from "./shad/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
 
 import { ArrowRightIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Track, Problem } from "@prisma/client";
 
-export function TrackCard({ track }: { track: Track & { problems: Problem[] } }) {
+interface TrackCardProps extends Track {
+  problems: Problem[];
+  category: {
+    category: string;
+  }[];
+}
+
+export function TrackCard({ track }: { track: TrackCardProps }) {
   return (
     <Card className="max-w-screen-md w-full cursor-pointer transition-all hover:border-primary/20 shadow-lg dark:shadow-black/60">
       <CardHeader>
@@ -13,6 +20,11 @@ export function TrackCard({ track }: { track: Track & { problems: Problem[] } })
           <div className="pt-4 sm:pt-0 sm:pl-4">
             <CardTitle>{track.title}</CardTitle>
             <div>{track.description}</div>
+            <CardDescription>
+              {track.category.map((item) => {
+                return <div>{item.category}</div>;
+              })}
+            </CardDescription>
           </div>
         </div>
         <div className="flex justify-between">
