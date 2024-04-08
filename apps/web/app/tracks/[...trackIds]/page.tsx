@@ -2,54 +2,29 @@ import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
-import db from "@repo/db/client";
+import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
+import { cache } from "react";
 
 const notion = new NotionAPI();
+export const dynamic = "auto";
 
-export async function getProblem(problemId: string | null) {
-  if (!problemId) {
-    return null;
-  }
+export async function generateStaticParams() {
   try {
-    const problem = await db.problem.findUnique({
-      where: {
-        id: problemId,
-      },
-      include: {
-        mcqQuestions: true,
-      },
-    });
-    return problem;
-  } catch (err) {
-    return null;
-  }
-}
+    const tracks = await cache(getAllTracks)();
+    const allPages = tracks.map((t) =>
+      t.problems.map((p) => {
+        if (p.type === "Blog") {
+          return {
+            trackIds: [t.id, p.id],
+          };
+        }
+      })
+    );
 
-export async function getTrack(trackId: string) {
-  try {
-    const track = await db.track.findUnique({
-      where: {
-        id: trackId,
-      },
-      include: {
-        problems: {
-          select: {
-            problem: true,
-          },
-        },
-      },
-    });
-
-    if (track) {
-      return {
-        ...track,
-        problems: track.problems.map((problem) => ({ ...problem.problem })),
-      };
-    }
-
-    return null;
-  } catch (err) {
-    return null;
+    return allPages.flat();
+  } catch (e) {
+    console.log(e);
+    return [];
   }
 }
 
