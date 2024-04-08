@@ -1,6 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["My_SECRET_TOKEN"],
+  "globalDependencies": ["**/.env.*local", ".env", ".env.local", "tsconfig.json"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
