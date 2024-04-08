@@ -1,6 +1,6 @@
 import { Problem } from "@prisma/client";
 import MCQQuestion from "./MCQQuestion";
-import db from "db/client";
+import db from "@repo/db/client";
 
 async function MCQQuestionCard({ problem }: { problem: Problem }) {
   const questions = await db.mCQQuestion.findMany({
