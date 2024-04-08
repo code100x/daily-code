@@ -43,24 +43,24 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   }, []); // empty dependency array ensures the effect runs only once
 
   return (
-    <div className="flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50">
+    <div className="flex flex-col items-center justify-between p-4 pt-0 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 md:sticky top-0 z-40">
       <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
-        <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0 w-full md:w-auto justify-between flex ">
+        <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0 w-full md:w-auto justify-between p-4 dark:bg-zinc-950 bg-zinc-50 flex fixed z-50 ">
           <Link href={"/"}>DailyCode</Link>
           <div className="md:hidden">
             <ModeToggle />
           </div>
         </div>
 
-        <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
+        <p className="flex-1 justify-center items-center font-medium ml-2 mt-1 hidden md:flex">
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
-        <div className="flex ">
+        <div className="flex mt-20 md:mt-4">
           <div>
             <PageToggle allProblems={track.problems} track={track} />
           </div>
 
-          <div className="flex md:space-x-2">
+          <div className="flex md:space-x-2 ">
             <Link
               prefetch={true}
               href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
