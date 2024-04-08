@@ -61,6 +61,11 @@ export async function getAllTracks() {
             },
           ],
         },
+        category: {
+          select: {
+            category: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "asc",
@@ -70,6 +75,20 @@ export async function getAllTracks() {
       ...track,
       problems: track.problems.map((problem) => ({ ...problem.problem })),
     }));
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function getAllCategories() {
+  try {
+    const categories = await db.categories.findMany({
+      select: {
+        category: true,
+      },
+      distinct: ["category"],
+    });
+    return categories;
   } catch (e) {
     return [];
   }
