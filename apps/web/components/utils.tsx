@@ -96,6 +96,11 @@ export async function getAllTracks() {
             },
           ],
         },
+        category: {
+          select: {
+            category: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "asc",
@@ -109,7 +114,6 @@ export async function getAllTracks() {
     return [];
   }
 }
-
 export async function createTrack(data: any) {
   try {
     const track = await db.track.create({
@@ -132,5 +136,20 @@ export async function updateTrack(trackId: string, data: any) {
     return track;
   } catch (e) {
     return null;
+  }
+}
+
+export async function getAllCategories() {
+  try {
+    const categories = await db.categories.findMany({
+      select: {
+        category: true,
+      },
+      distinct: ["category"],
+    });
+    return categories;
+  } catch (e) {
+    return [];
+
   }
 }
