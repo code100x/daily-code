@@ -4,3 +4,4 @@ export * from "./TrackCard";
 export * from "./Loader";
 export * from "./NotionRenderer";
 export * from "./LessonView";
+export * from "./shad/ui/dailog";
