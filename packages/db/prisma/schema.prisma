@@ -89,6 +89,8 @@ model TrackProblems {
   problem   Problem @relation(fields: [problemId], references: [id])
   problemId String
 
+  sortingOrder  Int
+
   @@id([trackId, problemId])
 }
 

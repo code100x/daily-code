@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import db from "../src";
+import { ProblemType } from "@prisma/client";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyAjjsbl9eSDWSmfrWpFPap2uGuwONZ2N4g",
@@ -22,7 +23,15 @@ export const getFunction = (name: string) => {
   return fn;
 };
 
-async function getTracks() {
+async function getTracks(): Promise<
+  {
+    title: string;
+    description: string;
+    image: string;
+    id: string;
+    problems: string[];
+  }[]
+> {
   const getTracksFn = getFunction("getTracks");
   try {
     const tracks: any = await getTracksFn();
@@ -32,24 +41,30 @@ async function getTracks() {
   }
 }
 
-async function getProblem(problemId: string) {
+async function getProblem(problemId: string): Promise<{
+  description: string;
+  title: string;
+  type: ProblemType;
+  notionDocId: string;
+  id: string;
+}> {
   const getProblem = getFunction("getProblem");
   const response: any = await getProblem({ problemId });
-  const { description, title, type, notionDocId } = response.data.problem;
-  return { description, title, type: type.charAt(0).toUpperCase() + type.slice(1), notionDocId };
+  const { description, title, type, notionDocId, id } = response.data.problem;
+  return { description, title, type: type.charAt(0).toUpperCase() + type.slice(1), notionDocId, id };
 }
 
 const main = async () => {
-  const allTracks: any = await getTracks();
+  const allTracks = await getTracks();
 
   for (const track of allTracks) {
-    const { title, description, image } = track;
+    const { title, description, image, id } = track;
     const problemForTracks = await Promise.all(
       track.problems.map(async (problem: any) => {
         return await getProblem(problem);
       })
     );
-    const reversedProblems: any = problemForTracks.reverse();
+    const reversedProblems = problemForTracks.reverse();
 
     reversedProblems.forEach((problem: any) => {
       if (!problem.title) {
@@ -60,14 +75,17 @@ const main = async () => {
       }
     });
 
+    let ctr = 1;
+
     await db.track.create({
       data: {
+        id,
         title,
         description,
         image,
         problems: {
-          create: reversedProblems.map((problem: any) => {
-            return { problem: { create: problem } };
+          create: reversedProblems.map((problem) => {
+            return { problem: { create: problem }, sortingOrder: ctr++ };
           }),
         },
       },

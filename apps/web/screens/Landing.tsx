@@ -1,39 +1,14 @@
 import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
-import db from "@repo/db/client";
-
-async function getTracks() {
-  try {
-    const tracks = await db.track.findMany({
-      where: {
-        hidden: false,
-      },
-      include: {
-        problems: {
-          select: {
-            problem: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "asc",
-      },
-    });
-    return tracks.map((track) => ({
-      ...track,
-      problems: track.problems.map((problem) => ({ ...problem.problem })),
-    }));
-  } catch (e) {
-    return [];
-  }
-}
+import { getAllTracks } from "../components/utils";
 
 export async function Landing() {
-  const tracks = await getTracks();
+  const tracks = await getAllTracks();
+
   return (
     <div>
-      <AppbarClient />
+      <AppbarClient tracks={tracks} />
       <div className="flex justify-center pt-4">
         <div className="text-zinc-950 dark:text-zinc-50 text-4xl p-2 max-w-screen-md font-semibold mt-2 mb-4">
           Learning Paths
@@ -44,7 +19,7 @@ export async function Landing() {
           {tracks.map((t) => (
             <li key={t.id}>
               {t.problems.length > 0 ? (
-                <Link className="max-w-screen-md w-full" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
+                <Link prefetch={true} className="max-w-screen-md w-full" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
                   <TrackCard track={t} />
                 </Link>
               ) : (
