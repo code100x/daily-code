@@ -1,31 +1,31 @@
-import { getFunction } from "@repo/common";
-import { Problem, Track } from "@repo/store";
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
+import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
+import { cache } from "react";
 
 const notion = new NotionAPI();
+export const dynamic = "auto";
 
-async function getProblem(problemId: string | null): Promise<Problem | null> {
-  if (!problemId) {
-    return null;
+export async function generateStaticParams() {
+  try {
+    const tracks = await cache(getAllTracks)();
+    const allPages = tracks.map((t) =>
+      t.problems.map((p) => {
+        if (p.type === "Blog") {
+          return {
+            trackIds: [t.id, p.id],
+          };
+        }
+      })
+    );
+
+    return allPages.flat();
+  } catch (e) {
+    console.log(e);
+    return [];
   }
-  const getProblem = getFunction("getProblem");
-  const response: any = await getProblem({ problemId });
-  return response.data.problem;
-}
-
-async function getTrack(trackId: string): Promise<{
-  track: Track;
-  userProgress: null | {
-    nextProblemId: string;
-    lastProblemId: string | null;
-  };
-}> {
-  const getTrack = getFunction("getTrack");
-  const response: any = await getTrack({ trackId });
-  return response.data;
 }
 
 export default async function TrackComponent({ params }: { params: { trackIds: string[] } }) {
@@ -38,10 +38,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
   }
 
   //@ts-ignore
-  const [problemDetails, trackDetails]: [Problem, { track: Track }] = await Promise.all([
-    getProblem(problemId || null),
-    getTrack(trackId),
-  ]);
+  const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
 
   if (!problemId) {
     return <RedirectToLastSolved trackId={trackId} />;
@@ -51,16 +48,18 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
     notionRecordMap = await notion.getPage(problemDetails.notionDocId);
   }
 
-  return (
-    <div>
-      <LessonView
-        showAppBar
-        track={trackDetails.track}
-        problem={{
-          ...problemDetails,
-          notionRecordMap,
-        }}
-      />
-    </div>
-  );
+  if (trackDetails && problemDetails) {
+    return (
+      <div>
+        <LessonView
+          showAppBar
+          track={trackDetails}
+          problem={{
+            ...problemDetails,
+            notionRecordMap,
+          }}
+        />
+      </div>
+    );
+  }
 }

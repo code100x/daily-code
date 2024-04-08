@@ -1,6 +1,5 @@
 "use client";
 import { useEffect } from "react";
-import { redirect } from "next/navigation";
 
 export function Print() {
   // Some hack for strict mode
@@ -8,9 +7,11 @@ export function Print() {
   useEffect(() => {
     if (opened) return;
     document.querySelectorAll("details").forEach((e) => (e.open = true));
-    print();
-    opened = true;
-    redirect("/");
+    setTimeout(() => {
+      print();
+      opened = true;
+      window.close();
+    }, 2000);
   }, []);
 
   return null;

@@ -1,3 +1,13 @@
+# quick start dailycode
+
+install yarn in your system.
+
+install dependencies
+yarn install
+
+start development
+yarn run dev
+
 # Turborepo starter
 
 This is an official starter Turborepo.
