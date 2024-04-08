@@ -1,5 +1,3 @@
-"use client";
-
 import { Admin } from "@repo/ui/pages";
 import { AppbarClient } from "../../components/AppbarClient";
 

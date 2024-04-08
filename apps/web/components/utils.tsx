@@ -1,3 +1,4 @@
+"use server";
 import db from "@repo/db/client";
 
 export async function getProblem(problemId: string | null) {
@@ -12,6 +13,40 @@ export async function getProblem(problemId: string | null) {
     });
     return problem;
   } catch (err) {
+    return null;
+  }
+}
+
+export async function getAllProblems() {
+  try {
+    const problems = await db.problem.findMany();
+    return problems;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function updateProblem(problemId: string, data: any) {
+  try {
+    const problem = await db.problem.update({
+      where: {
+        id: problemId,
+      },
+      data,
+    });
+    return problem;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function createProblem(data: any) {
+  try {
+    const problem = await db.problem.create({
+      data,
+    });
+    return problem;
+  } catch (e) {
     return null;
   }
 }
@@ -72,5 +107,30 @@ export async function getAllTracks() {
     }));
   } catch (e) {
     return [];
+  }
+}
+
+export async function createTrack(data: any) {
+  try {
+    const track = await db.track.create({
+      data,
+    });
+    return track;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function updateTrack(trackId: string, data: any) {
+  try {
+    const track = await db.track.update({
+      where: {
+        id: trackId,
+      },
+      data,
+    });
+    return track;
+  } catch (e) {
+    return null;
   }
 }
