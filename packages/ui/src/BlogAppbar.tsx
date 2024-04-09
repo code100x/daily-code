@@ -26,10 +26,12 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") {
         router.push(
-          problemIndex + 1 === track.problems.length ? `` : `/tracks/${track.id}/${track.problems[problemIndex + 1]}`
+         problemIndex + 1 === track.problems.length
+            ? ``
+            : `/tracks/${track.id}/${track.problems[problemIndex + 1]?.id}`
         );
       } else if (event.key === "ArrowLeft") {
-        router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]}` : ``);
+         router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]?.id}` : ``);
       }
     };
 

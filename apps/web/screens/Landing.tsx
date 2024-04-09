@@ -1,10 +1,12 @@
 import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
-import { getAllTracks } from "../components/utils";
+import { getAllCategories, getAllTracks } from "../components/utils";
+import { Categories, Tracks } from "@repo/ui/components";
 
 export async function Landing() {
   const tracks = await getAllTracks();
+  const categories = await getAllCategories();
 
   return (
     <div>
@@ -15,19 +17,8 @@ export async function Landing() {
         </div>
       </div>
       <div>
-        <ul className="p-8 md:20 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-2">
-          {tracks.map((t) => (
-            <li key={t.id}>
-              {t.problems.length > 0 ? (
-                <Link prefetch={true} className="max-w-screen-md w-full" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
-                  <TrackCard track={t} />
-                </Link>
-              ) : (
-                <TrackCard track={t} />
-              )}
-            </li>
-          ))}
-        </ul>
+        <Categories categories={categories} />
+        <Tracks tracks={tracks} />
       </div>
     </div>
   );
