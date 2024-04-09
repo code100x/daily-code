@@ -8,6 +8,7 @@ async function main() {
       image: "https://ideogram.ai/api/images/direct/8WZ67gBuQ8upuCvVHTWU4g.jpg",
       problems: {
         create: {
+          sortingOrder: 1, // Include the sortingOrder field here
           problem: {
             create: {
               title: "Problem 1",
