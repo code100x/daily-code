@@ -8,14 +8,21 @@ import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
+import ExcaliDraw from "./ ../../assets/excaliDrawBlack.svg";
+import ExcaliDrawWhite from "./ ../../assets/excaliDrawWhite.svg";
+import { useTheme } from "next-themes";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track & { problems: Problem[] } }) => {
+  const { theme } = useTheme();
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p.id === problem.id);
   }, [track, problem]);
 
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
 
+  const redirectToExcaliDraw = () => {
+    router.push("https://excalidraw.com/");
+  };
   function setTheme(arg0: string) {
     throw new Error("Function not implemented.");
   }
@@ -50,14 +57,23 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
           <Link href={"/"}>DailyCode</Link>
         </div>
-
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
+        <div className="flex space-x-2">
+          <div className="flex space-x-2">
+            <Button className="flex space-x-2" variant={"outline"} onClick={redirectToExcaliDraw}>
+              {theme === "light" ? (
+                <img src={ExcaliDraw.src} alt="ExcaliDraw" />
+              ) : (
+                <img src={ExcaliDrawWhite.src} alt="ExcaliDraw" />
+              )}
+            </Button>
+          </div>
+        </div>
         <div>
           <PageToggle allProblems={track.problems} track={track} />
         </div>
-
         <div className="flex space-x-2">
           <Link
             prefetch={true}
@@ -103,7 +119,6 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
           </Link>
         </div>
       </div>
-
       <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 border-t w-full text-center bg-opacity-60">
         {problem.title} ({problemIndex + 1} / {track.problems.length})
       </p>
