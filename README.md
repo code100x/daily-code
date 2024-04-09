@@ -37,6 +37,6 @@ Before you begin, make sure you have the following installed on your system:
    ```bash
     yarn run db:seed
 ## Additional Notes
-- Make sure to check the project's documentation frequently for any updates or changes to the setup process.
+- Note: If you receive an error while seeding, you can copy migrate.ts code to seed.ts temporarily.
 - The provided sample script for seeding the database may change according to the schema updates. Always refer to the latest documentation or project updates for accurate information.
 
