@@ -22,6 +22,15 @@ export const Appbar = ({ user, tracks }: { user: User | null; tracks: (Track & {
           <SearchDialog tracks={tracks} />
           {admin && <AdminButton />}
 
+          <Button
+            variant={"outline"}
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            Home
+          </Button>
+
           {!user ? (
             <Button
               variant={"outline"}
