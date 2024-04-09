@@ -51,6 +51,22 @@ export async function createProblem(data: any) {
   }
 }
 
+export async function createTrackProblems(data: any) {
+  try {
+    const trackProblems = await db.trackProblems.create({
+      data: {
+        trackId: data.trackId,
+        problemId: data.problemId,
+        sortingOrder: data.sortingOrder,
+      },
+    });
+    return trackProblems;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
 export async function getTrack(trackId: string) {
   try {
     const track = await db.track.findUnique({
@@ -88,6 +104,7 @@ export async function getAllTracks() {
       include: {
         problems: {
           select: {
+            problemId: true,
             problem: true,
           },
           orderBy: [
@@ -150,6 +167,5 @@ export async function getAllCategories() {
     return categories;
   } catch (e) {
     return [];
-
   }
 }

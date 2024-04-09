@@ -16,6 +16,7 @@ interface Problem {
 
 const AddProblemCard = () => {
   const [newProblems, setNewProblems] = useState<Problem[]>([]);
+  const [problemId, setProblemId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [notionDocId, setNotionDocId] = useState("");
@@ -39,6 +40,14 @@ const AddProblemCard = () => {
             <SelectItem value="MCQ">MCQ</SelectItem>
           </SelectContent>
         </Select>
+        <Input
+          type="text"
+          placeholder="Problem Id"
+          className="my-2"
+          onChange={(event) => {
+            setProblemId(event.target.value);
+          }}
+        />
         <Input
           type="text"
           placeholder="Problem title"
@@ -67,7 +76,7 @@ const AddProblemCard = () => {
           disabled={!title || !description || !type || !notionDocId}
           className="w-full mt-4"
           onClick={() => {
-            createProblem({ title, description, type, notionDocId });
+            createProblem({ problemId, title, description, type, notionDocId });
             newProblems.push({ title, description, type, notionDocId });
             toast({
               title: "Added problem",

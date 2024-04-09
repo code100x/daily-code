@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 
 const ProblemCard = ({ problem }: { problem: Problem }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [id, setId] = useState(problem.id);
   const [title, setTitle] = useState(problem.title);
   const [description, setDescription] = useState(problem.description);
   const [type, setType] = useState(problem.type);
@@ -33,7 +34,10 @@ const ProblemCard = ({ problem }: { problem: Problem }) => {
         <div>
           <CardHeader>
             <div className="flex justify-between">
-              <CardTitle>{title}</CardTitle>
+              <div>
+                <CardTitle>{id}</CardTitle>
+                <CardTitle>{title}</CardTitle>
+              </div>
               <Button variant={"outline"} className="" onClick={() => handleEdit(problem.id)}>
                 Edit
               </Button>
@@ -48,9 +52,14 @@ const ProblemCard = ({ problem }: { problem: Problem }) => {
         <div>
           <CardHeader>
             <div className="flex justify-between">
-              <CardTitle>
-                <Input onChange={(e) => setTitle(e.target.value)} value={title} />
-              </CardTitle>
+              <div>
+                <CardTitle>
+                  <Input onChange={(e) => setId(e.target.value)} value={id} />
+                </CardTitle>
+                <CardTitle>
+                  <Input onChange={(e) => setTitle(e.target.value)} value={title} />
+                </CardTitle>
+              </div>
               <div className="space-x-3">
                 <Button variant={"outline"} className="" onClick={() => handleDiscardButton()}>
                   Discard

@@ -1,7 +1,7 @@
 import { Admin } from "@repo/ui/pages";
 import { AppbarClient } from "../../components/AppbarClient";
 
-export default function () {
+export default function AdminPage() {
   return (
     <>
       <AppbarClient tracks={[]} />
