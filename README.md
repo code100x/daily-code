@@ -1,6 +1,6 @@
-# quick start dailycode
+# Quick Setup Locally
 
-> Install Dependencies
+> Install the Dependencies
 ```
 cd daily-code
 yarn install
@@ -10,7 +10,7 @@ yarn install
 cd /packages/db
 cp .env.example .env
 ```
-Update the .env file with the database url
+>Update the .env file with the database url
 
 > Migrate and the Database
 ```
