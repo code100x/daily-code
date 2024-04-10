@@ -24,7 +24,7 @@ Before you begin, make sure you have the following installed on your system:
     yarn run dev
 5. Setup DB_URL in Env file
     ```bash
-    cd /packages/db/prisma/.env
+    cd /packages/db/.env
 8. Database Migration
 - Navigate to the Prisma directory:
    ```bash
