@@ -3,15 +3,19 @@
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Button } from "./shad/ui/button";
 import { Dialog, DialogClose, DialogContent } from "./shad/ui/dailog";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "./shad/ui/input";
 import { Track, Problem } from "@prisma/client";
 import { TrackList } from "./TrackList";
+import { useRouter } from "next/navigation";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
+  const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
+  const [selectedTrack, setSelectedTrack] = useState(0);
+  const searchFilterListRef = useRef(null);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -29,6 +33,61 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   }, []);
 
   useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.code === "ArrowDown") {
+        event.preventDefault();
+
+        const list = searchFilterListRef.current;
+        if (list && selectedTrack + 1 < searchTracks.length) {
+          const currentItem = list.children[selectedTrack + 1];
+          if ((list[selectedTrack + 1] && !currentItem.offsetHeight) || currentItem.offsetTop > list.offsetHeight) {
+            currentItem.scrollIntoView({ behavior: "smooth", block: "end" });
+          }
+        }
+
+        setSelectedTrack((prev) => {
+          if (prev < searchTracks.length - 1) {
+            return prev + 1;
+          }
+          return prev;
+        });
+      }
+      if (event.code === "ArrowUp") {
+        event.preventDefault();
+
+        const list = searchFilterListRef.current;
+        if (list && selectedTrack - 1 > -1) {
+          const currentItem = list.children[selectedTrack - 1];
+          if ((list[selectedTrack - 1] && !currentItem.offsetHeight) || currentItem.offsetTop < list.offsetHeight) {
+            currentItem.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
+
+        setSelectedTrack((prev) => {
+          if (prev > 0) {
+            return prev - 1;
+          }
+          return prev;
+        });
+      }
+      if (event.code === "Enter") {
+        event.preventDefault();
+        router.push(`/tracks/${searchTracks[selectedTrack].id}/${searchTracks[selectedTrack].problems[0]?.id}`);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [searchTracks, selectedTrack]);
+
+  const autoScroll = (e) => {
+    console.log(e.target.offsetHeight);
+  };
+
+  useEffect(() => {
     const foundTracks = tracks.filter((track) => {
       return (
         track.title.toLowerCase().includes(input.toLowerCase()) ||
@@ -36,6 +95,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
       );
     });
     setSearchTracks(foundTracks);
+    setSelectedTrack(0);
   }, [input]);
 
   function handleClose(open: boolean) {
@@ -67,9 +127,9 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
-        <div className="h-[400px] overflow-y-scroll">
-          {searchTracks.map((track) => (
-            <TrackList key={track.id} track={track} />
+        <div className="h-[400px] overflow-y-scroll" onKeyDown={autoScroll} ref={searchFilterListRef}>
+          {searchTracks.map((track, index) => (
+            <TrackList key={track.id} track={track} selected={selectedTrack === index} />
           ))}
         </div>
       </DialogContent>

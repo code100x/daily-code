@@ -16,6 +16,7 @@ async function main() {
               type: "Blog",
             },
           },
+          sortingOrder: 0,
         },
       },
     },

@@ -3,10 +3,12 @@
 import { Problem, Track } from "@prisma/client";
 import Link from "next/link";
 
-export function TrackList({ track }: { track: Track & { problems: Problem[] } }) {
+export function TrackList({ track, selected }: { track: Track & { problems: Problem[] }; selected: Boolean }) {
   return (
     <Link href={`/tracks/${track.id}/${track.problems[0]?.id}`}>
-      <div className="flex gap-2 px-4 py-2 border-b hover:bg-slate-100 dark:hover:bg-slate-800">
+      <div
+        className={`flex gap-2 px-4 py-2 border-b hover:bg-slate-100 dark:hover:bg-slate-800 ${selected && "bg-slate-100 dark:bg-slate-800"}`}
+      >
         <img src={track.image} className="max-w-full w-12 object-cover aspect-square rounded" />
         <div className="w-[90%]">
           <div className="text-lg">{track.title}</div>
