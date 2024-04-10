@@ -39,4 +39,3 @@ Before you begin, make sure you have the following installed on your system:
 ## Additional Notes
 - Note: If you receive an error while seeding, you can copy migrate.ts code to seed.ts temporarily.
 - The provided sample script for seeding the database may change according to the schema updates. Always refer to the latest documentation or project updates for accurate information.
-
