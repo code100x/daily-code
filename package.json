@@ -6,7 +6,7 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -32,6 +32,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "framer-motion": "^11.0.25",
     "react": "^18.2.0",
     "react-notion-x": "^6.16.0"
   }
