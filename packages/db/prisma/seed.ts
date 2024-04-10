@@ -1,27 +1,17 @@
 import db from "../src";
+import seedsData from "./seedsData";
 
 async function main() {
-  const track = await db.track.create({
-    data: {
-      title: "Track 1",
-      description: "Track 1 description",
-      image: "https://ideogram.ai/api/images/direct/8WZ67gBuQ8upuCvVHTWU4g.jpg",
-      problems: {
-        create: {
-          sortingOrder: 4,
-          problem: {
-            create: {
-              title: "Problem 1",
-              description: "Problem 1 description",
-              notionDocId: "Step-11-Initialize-balances-on-signup-b2a919bd555a47579d848144e8190553",
-              type: "Blog",
-            },
-          },
-          sortingOrder: 0,
-        },
-      },
-    },
+  const hashID: any[] = [];
+  const promises: Promise<any>[] = [];
+  seedsData.forEach((seed) => {
+    hashID.push(seed.data.id);
+    if (!hashID.includes(seed.data.id)) {
+      const promise = db.track.create(seed);
+      promises.push(promise);
+    }
   });
+  await Promise.all(promises);
 }
 
 main()
