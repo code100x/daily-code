@@ -83,10 +83,6 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
     };
   }, [searchTracks, selectedTrack]);
 
-  const autoScroll = (e) => {
-    console.log(e.target.offsetHeight);
-  };
-
   useEffect(() => {
     const foundTracks = tracks.filter((track) => {
       return (
@@ -127,7 +123,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
-        <div className="h-[400px] overflow-y-scroll" onKeyDown={autoScroll} ref={searchFilterListRef}>
+        <div className="h-[400px] overflow-y-scroll" ref={searchFilterListRef}>
           {searchTracks.map((track, index) => (
             <TrackList key={track.id} track={track} selected={selectedTrack === index} />
           ))}
