@@ -1,6 +1,4 @@
-// components/CodeRunner/CodeRunner.tsx
 "use client";
-
 import React, { useState } from "react";
 import { runInNewContext } from "vm";
 
@@ -18,31 +16,80 @@ const CodeRunner: React.FC = () => {
     setLanguage(event.target.value);
   };
 
-  const runCode = () => {
+  const runCode = async () => {
     try {
-      const result = runInNewContext(code, {
-        console: {
-          log: (data: any) => {
-            setOutput(String(data));
+      if (language === "javascript") {
+        const result = runInNewContext(code, {
+          console: {
+            log: (data: any) => {
+              setOutput(String(data));
+            },
           },
+        });
+        if (result !== undefined) {
+          setOutput(String(result));
+        }
+        setError("");
+      } else if (language === "cpp") {
+        const cppOutput = await executeCode(code, "cpp");
+        setOutput(cppOutput);
+        setError("");
+      } else {
+        setOutput("");
+        setError("Invalid language selected");
+      }
+    } catch (err) {
+      console.error(err);
+      setOutput("");
+      if (language === "javascript" && !isValidJavaScript(code)) {
+        setError("The code you entered is not valid for the selected language.");
+      } else {
+        setError(err instanceof Error ? err.message : "An error occurred");
+      }
+    }
+  };
+
+  const executeCode = async (code: string, lang: string): Promise<string> => {
+    try {
+      const response = await fetch("https://godbolt.org/api/compiler/gcc", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          source: code,
+          options: {
+            userArguments: lang === "cpp" ? ["-std=c++17"] : [],
+          },
+        }),
       });
 
-      if (result !== undefined) {
-        setOutput(String(result));
+      const data = await response.json();
+      if (response.ok) {
+        return data.asm || "No output";
+      } else {
+        return data.error || "An error occurred while executing code";
       }
-      setError("");
+    } catch (error) {
+      console.error(`Error executing ${lang} code:`, error);
+      return `An error occurred while executing ${lang} code`;
+    }
+  };
+
+  const isValidJavaScript = (code: string): boolean => {
+    try {
+      runInNewContext(code, {});
+      return true;
     } catch (err) {
-      setOutput("");
-      setError(err instanceof Error ? err.message : "An error occurred");
+      return false;
     }
   };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-xl font-bold mb-4">Code Runner</h2>
+      <h2 className="text-xl text-black font-bold mb-4">Code Runner</h2>
       <div className="mb-4">
-        <label htmlFor="code" className="block font-medium mb-2">
+        <label htmlFor="code" className="block text-black font-medium mb-2">
           Code
         </label>
         <textarea
