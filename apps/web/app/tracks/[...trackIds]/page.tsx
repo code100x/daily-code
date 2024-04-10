@@ -4,6 +4,7 @@ import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
 import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
 import { cache } from "react";
+import CodeRunner from "../../../components/CodeRunner";
 
 const notion = new NotionAPI();
 export const dynamic = "auto";
@@ -59,6 +60,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
             notionRecordMap,
           }}
         />
+        <CodeRunner />
       </div>
     );
   }

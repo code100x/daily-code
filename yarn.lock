@@ -1047,10 +1047,10 @@
   resolved "https://registry.npmjs.org/@pkgr/core/-/core-0.1.1.tgz"
   integrity sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==
 
-"@prisma/client@5.12.0":
-  version "5.12.0"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.12.0.tgz#4d1fb68074307bf9445d06ad387139301aa4bcc4"
-  integrity sha512-bk/+KPpRm0+IzqFCtAxrj+/TNiHzulspnO+OkysaYY/atc/eX0Gx8V3tTLxbHKVX0LKD4Hi8KKCcSbU1U72n7Q==
+"@prisma/client@5.12.1":
+  version "5.12.1"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.12.1.tgz#c26a674fea76754b3a9e8b90a11e617f90212f76"
+  integrity sha512-6/JnizEdlSBxDIdiLbrBdMW5NqDxOmhXAJaNXiPpgzAPr/nLZResT6MMpbOHLo5yAbQ1Vv5UU8PTPRzb0WIxdA==
 
 "@prisma/debug@5.12.0":
   version "5.12.0"
