@@ -76,7 +76,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
             </Button>
             <Button
               variant="outline"
-              className="ml-2 bg-black text-white md:hidden block"
+              className=" bg-black text-white md:hidden block"
               disabled={problemIndex !== 0 ? false : true}
             >
               <div>
@@ -122,7 +122,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
                 <DownloadIcon />
               </div>
             </Button>
-            <Button variant="outline" className="ml-2 bg-black text-white md:hidden block">
+            <Button variant="outline" className=" bg-black text-white md:hidden block">
               <div>
                 <DownloadIcon />
               </div>
