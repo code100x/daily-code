@@ -64,9 +64,17 @@ model Track {
   title       String
   description String
   image       String
+  category    Categories[]
   problems    TrackProblems[]
   hidden      Boolean         @default(false)
   createdAt   DateTime        @default(now())
+}
+
+model Categories {
+  id          String  @id @default(uuid())
+  category    String
+  tracks      Track  @relation(fields: [trackId], references: [id])
+  trackId     String 
 }
 
 model Problem {
