@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { Button } from ".";
-import { User } from "@repo/store";
-import { auth } from "@repo/common";
-import { useRouter } from "next/navigation";
 import { AdminButton } from "./AdminButton";
 import { ModeToggle } from "./ModeToggle";
+import { signIn, signOut } from "next-auth/react";
+
+import { useSession } from "next-auth/react";
+
 import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
 
-export const Appbar = ({ user, tracks }: { user: User | null; tracks: (Track & { problems: Problem[] })[] }) => {
-  const router = useRouter();
+export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
+  const session = useSession();
+  const user = session.data?.user;
   const admin = false;
 
   return (
@@ -25,8 +27,8 @@ export const Appbar = ({ user, tracks }: { user: User | null; tracks: (Track & {
           {!user ? (
             <Button
               variant={"outline"}
-              onClick={() => {
-                router.push("/auth");
+              onClick={async () => {
+                await signIn();
               }}
             >
               Login
@@ -37,15 +39,8 @@ export const Appbar = ({ user, tracks }: { user: User | null; tracks: (Track & {
           {user ? (
             <Button
               variant={"outline"}
-              onClick={() => {
-                auth.signOut().then(
-                  function () {
-                    // Sign-out successful.
-                  },
-                  function (_error) {
-                    // An error happened.
-                  }
-                );
+              onClick={async () => {
+                await signOut();
               }}
             >
               Logout
