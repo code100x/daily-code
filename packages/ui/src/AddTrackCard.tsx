@@ -15,6 +15,7 @@ interface Track {
 
 const AddTrackCard = () => {
   const [newTracks, setNewProblems] = useState<Track[]>([]);
+  const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -24,6 +25,14 @@ const AddTrackCard = () => {
   return (
     <div>
       <Card className="cols-span-4 p-4 m-2 w-full">
+        <Input
+          type="text"
+          placeholder="Track Id"
+          className="my-2"
+          onChange={(event) => {
+            setId(event.target.value);
+          }}
+        />
         <Input
           type="text"
           placeholder="Track title"
@@ -55,7 +64,7 @@ const AddTrackCard = () => {
           disabled={!title || !description || !image}
           className="w-full mt-4"
           onClick={() => {
-            createTrack({ title, description, image, hidden });
+            createTrack({ id, title, description, image, hidden });
             newTracks.push({ title, description, image, hidden });
             toast({
               title: "Added a Track",
