@@ -45,6 +45,7 @@
     "@uiw/react-textarea-code-editor": "^3.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "lucide-react": "^0.367.0",
     "next": "^14.0.4",
     "next-themes": "^0.2.1",
     "react-notion-x": "^6.16.0",

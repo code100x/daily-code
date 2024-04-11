@@ -7,6 +7,7 @@ import { RunCodeOutput } from "./RunCodeOutput";
 import { ProblemAppbar } from "./ProblemAppbar";
 import useMountStatus from "./hooks/useMountStatus";
 import { Problem, Track } from "@prisma/client";
+import { BlogAppbar } from "./BlogAppbar";
 
 export const CodeProblemRenderer = ({
   problem,
@@ -23,24 +24,24 @@ export const CodeProblemRenderer = ({
 
   return (
     <div>
-      <ProblemAppbar problem={problem} track={track} />
+      <BlogAppbar problem={problem} track={track} />
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel>
-          <ScrollArea className="h-screen p-2 rounded-lg">
+        <ResizablePanel defaultSize={50}>
+          <div className="h-[calc(100vh-72px)] overflow-y-scroll">
             <NotionRenderer recordMap={problem.notionRecordMap} />
-          </ScrollArea>
+          </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel>
           <ResizablePanelGroup direction="vertical">
-            <ResizablePanel defaultSize={80}>
-              <ScrollArea className="h-screen p-2 rounded-lg">
+            <ResizablePanel defaultSize={60} className="">
+              <ScrollArea className="h-full p-2 rounded-lg">
                 <CodeEditor />
               </ScrollArea>
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={20}>
-              <ScrollArea className="h-screen">
+            <ResizablePanel defaultSize={40} className="">
+              <ScrollArea className="h-full overflow-y-auto">
                 <RunCodeOutput />
               </ScrollArea>
             </ResizablePanel>

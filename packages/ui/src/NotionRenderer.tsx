@@ -8,11 +8,15 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
   const { resolvedTheme } = useTheme();
 
   return (
-    <div>
+    <div className="w-full">
       <style>
         {`
           .notion-header {
             display: none !important;
+          }
+
+          .notion-page: {
+            padding: 0px !important;
           }
         `}
       </style>

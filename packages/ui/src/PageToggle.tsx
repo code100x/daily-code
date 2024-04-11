@@ -21,7 +21,12 @@ export function PageToggle({ allProblems, track }: { allProblems: Problem[]; tra
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cn("overflow-y-auto max-h-[80vh]")}>
         {allProblems.map((problem: { id: string; title: string }, index: number) => (
-          <Link prefetch={true} className="max-w-screen-md w-full" href={`/tracks/${track.id}/${problem.id}`}>
+          <Link
+            prefetch={true}
+            className="max-w-screen-md w-full"
+            href={`/tracks/${track.id}/${problem.id}`}
+            key={problem.id}
+          >
             <DropdownMenuItem key={index}>
               {index + 1} - {problem.title}
             </DropdownMenuItem>
