@@ -7,26 +7,36 @@ import { useEffect, useState } from "react";
 import { Input } from "./shad/ui/input";
 import { Track, Problem } from "@prisma/client";
 import { TrackList } from "./TrackList";
+import Link from "next/link";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.code === "KeyK" && event.ctrlKey) {
         event.preventDefault();
         setDialogOpen(true);
+      } else if (event.code === "ArrowDown") {
+        event.preventDefault();
+        setSelectedIndex((prevIndex) => (prevIndex + 1) % searchTracks.length);
+      } else if (event.code === "ArrowUp") {
+        event.preventDefault();
+        setSelectedIndex((prevIndex) => (prevIndex - 1 + searchTracks.length) % searchTracks.length);
+      } else if (event.code === "Enter" && selectedIndex !== -1) {
+        event.preventDefault();
+        document.getElementById(`track-link-${selectedIndex}`)?.click();
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
-
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, []);
+  }, [searchTracks, selectedIndex]);
 
   useEffect(() => {
     const foundTracks = tracks.filter((track) => {
@@ -36,6 +46,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
       );
     });
     setSearchTracks(foundTracks);
+    setSelectedIndex(-1);
   }, [input]);
 
   function handleClose(open: boolean) {
@@ -71,8 +82,15 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
           </DialogClose>
         </div>
         <div className="h-[400px] overflow-y-scroll">
-          {searchTracks.map((track) => (
-            <TrackList key={track.id} track={track} />
+          {searchTracks.map((track, index) => (
+            <div key={track.id} className={`p-2 ${index === selectedIndex ? "bg-slate-700" : ""}`}>
+              <Link href={`/tracks/${track.id}`} passHref>
+                <p id={`track-link-${index}`} tabIndex={-1} style={{ display: "none" }}>
+                  Navigate
+                </p>
+              </Link>
+              <TrackList track={track} />
+            </div>
           ))}
         </div>
       </DialogContent>
