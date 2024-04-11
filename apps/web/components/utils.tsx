@@ -93,3 +93,7 @@ export async function getAllCategories() {
     return [];
   }
 }
+
+export async function getSecond(tracks: any) {
+  return tracks.sort(({ createdAt: a }: any, { createdAt: b }: any) => a - b);
+}
