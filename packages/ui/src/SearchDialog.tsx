@@ -7,26 +7,36 @@ import { useEffect, useState } from "react";
 import { Input } from "./shad/ui/input";
 import { Track, Problem } from "@prisma/client";
 import { TrackList } from "./TrackList";
+import Link from "next/link";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.code === "KeyK" && event.ctrlKey) {
         event.preventDefault();
         setDialogOpen(true);
+      } else if (event.code === "ArrowDown") {
+        event.preventDefault();
+        setSelectedIndex((prevIndex) => (prevIndex + 1) % searchTracks.length);
+      } else if (event.code === "ArrowUp") {
+        event.preventDefault();
+        setSelectedIndex((prevIndex) => (prevIndex - 1 + searchTracks.length) % searchTracks.length);
+      } else if (event.code === "Enter" && selectedIndex !== -1) {
+        event.preventDefault();
+        document.getElementById(`track-link-${selectedIndex}`)?.click();
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
-
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, []);
+  }, [searchTracks, selectedIndex]);
 
   useEffect(() => {
     const foundTracks = tracks.filter((track) => {
@@ -36,6 +46,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
       );
     });
     setSearchTracks(foundTracks);
+    setSelectedIndex(-1);
   }, [input]);
 
   function handleClose(open: boolean) {
@@ -46,10 +57,13 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
       <Button variant="outline" className="pr-2" onClick={() => setDialogOpen(true)}>
-        <div className="flex gap-2 items-center">
+        <div className="md:flex gap-2 items-center hidden">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
           Search...
           <kbd className="bg-white/15 p-1.5 rounded-sm text-xs leading-3">Ctrl K</kbd>
+        </div>
+        <div className="block md:hidden">
+          <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
         </div>
       </Button>
       <DialogContent className="p-0 gap-0 max-w-2xl ">
@@ -68,8 +82,15 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
           </DialogClose>
         </div>
         <div className="h-[400px] overflow-y-scroll">
-          {searchTracks.map((track) => (
-            <TrackList key={track.id} track={track} />
+          {searchTracks.map((track, index) => (
+            <div key={track.id} className={`p-2 ${index === selectedIndex ? "bg-slate-700" : ""}`}>
+              <Link href={`/tracks/${track.id}`} passHref>
+                <p id={`track-link-${index}`} tabIndex={-1} style={{ display: "none" }}>
+                  Navigate
+                </p>
+              </Link>
+              <TrackList track={track} />
+            </div>
           ))}
         </div>
       </DialogContent>
