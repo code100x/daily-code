@@ -46,10 +46,13 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
       <Button variant="outline" className="pr-2" onClick={() => setDialogOpen(true)}>
-        <div className="flex gap-2 items-center">
+        <div className="md:flex gap-2 items-center hidden">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
           Search...
           <kbd className="bg-white/15 p-1.5 rounded-sm text-xs leading-3">Ctrl K</kbd>
+        </div>
+        <div className="block md:hidden">
+          <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
         </div>
       </Button>
       <DialogContent className="p-0 gap-0 max-w-2xl ">
