@@ -22,9 +22,17 @@ model Track {
   title       String
   description String
   image       String
+  category    Categories[]
   problems    TrackProblems[]
   hidden      Boolean         @default(false)
   createdAt   DateTime        @default(now())
+}
+
+model Categories {
+  id          String  @id @default(uuid())
+  category    String
+  tracks      Track  @relation(fields: [trackId], references: [id])
+  trackId     String 
 }
 
 model Problem {
@@ -55,10 +63,10 @@ enum ProblemType {
 }
 
 model MCQQuestion {
-  id                 String   @id @default(uuid())
-  question           String
-  options            String[]
-  correctOptionIndex Int
-  problem            Problem  @relation(fields: [problemId], references: [id])
-  problemId          String
+  id            String   @id @default(uuid())
+  question      String
+  options       String[]
+  correctOption String
+  problem       Problem  @relation(fields: [problemId], references: [id])
+  problemId     String
 }

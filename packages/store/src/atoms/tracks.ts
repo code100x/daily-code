@@ -13,9 +13,6 @@ export interface Problem {
   title: string;
   id: string;
 }
-export interface MCQSelectedOptions {
-  [key: string]: number;
-}
 
 export interface Track {
   id: string;
