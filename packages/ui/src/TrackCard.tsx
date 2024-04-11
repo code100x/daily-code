@@ -11,9 +11,12 @@ interface TrackCardProps extends Track {
   }[];
 }
 
-export function TrackCard({ track }: { track: TrackCardProps }) {
+export function TrackCard({ track, index }: { track: TrackCardProps; index: number }) {
   return (
     <Card className="max-w-screen-md w-full cursor-pointer transition-all hover:border-primary/20 shadow-lg dark:shadow-black/60">
+      <div className=" bg-red-300s flex justify-end ">
+        <div className="border rounded-md  bg-white text-black text-2xl font-semibold px-4 m-2">{index}</div>
+      </div>
       <CardHeader>
         <div className="flex flex-col sm:flex-row">
           <img src={track.image} className="min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"></img>
