@@ -29,18 +29,20 @@ const EditTrackCard = ({ Track }: { Track: Track }) => {
   return (
     <Card key={Track.id}>
       {!isEditing && (
-        <div>
-          <CardHeader>
-            <div className="flex justify-between">
-              <CardTitle>{title}</CardTitle>
-              <Button variant={"outline"} className="" onClick={() => handleEdit(Track.id)}>
-                Edit
-              </Button>
-            </div>
-            <CardDescription>{description}</CardDescription>
-            <CardDescription>{image}</CardDescription>
-          </CardHeader>
-          <CardContent>{`hidden: ${hidden}`}</CardContent>
+        <div className="grid grid-cols-6">
+          <img src={image} className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl" />
+          <div className="col-span-5">
+            <CardHeader>
+              <div className="flex justify-between">
+                <CardTitle>{title}</CardTitle>
+                <Button variant={"outline"} className="" onClick={() => handleEdit(Track.id)}>
+                  Edit
+                </Button>
+              </div>
+              <CardDescription>{description}</CardDescription>
+            </CardHeader>
+            <CardContent>{`hidden: ${hidden}`}</CardContent>
+          </div>
         </div>
       )}
       {isEditing && (

@@ -31,9 +31,15 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }: any) {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: token.sub,
+        },
+      });
       if (token) {
         session.accessToken = token.accessToken;
         session.user.id = token.sub;
+        session.user.admin = user?.admin;
       }
       return session;
     },
