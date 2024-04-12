@@ -28,11 +28,11 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
   }, [selectedCategory]);
   return (
     <div>
-      <ul className="p-8 md:20 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-2 w-full">
+      <ul className="p-8 md:20 grid grid-cols-1 gap-x-6 gap-y-8 place-items-center lg:grid-cols-2 w-full">
         {filteredTracks.map((t) => (
-          <li key={t.id} className="flex justify-center">
+          <li key={t.id} className="max-w-screen-md w-full">
             {t.problems.length > 0 ? (
-              <Link className="max-w-screen-md w-full block" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
+              <Link className="w-full" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
                 <TrackCard track={t} />
               </Link>
             ) : (
