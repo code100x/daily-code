@@ -12,6 +12,8 @@ async function main() {
     hashID.push(seed.data.id);
   });
 
+  await Promise.all(promises);
+
   const res = await db.categories.create({
     data: {
       id: "web-development",
@@ -166,8 +168,6 @@ async function main() {
       },
     ],
   });
-
-  await Promise.all(promises);
 }
 
 main()
