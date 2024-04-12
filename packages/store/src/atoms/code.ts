@@ -41,12 +41,34 @@ export const codeRunLoadingState = atom({
   key: "codeRunLoadingState",
   default: false,
 });
+export const codeSubmitLoadingState = atom({
+  key: "codeSubmitLoadingState",
+  default: false,
+});
 
-export const testRunResultsState = atom<{
-  runtime: any;
-  submissionFailed: any;
-  results: any[];
-} | null>({
+export const testRunResultsState = atom<any[]>({
   key: "testRunResultsState",
+  default: [],
+});
+export const testSubmitResultState = atom<any>({
+  key: "testSubmitResultState",
+  default: null,
+});
+
+export const activeTabState = atom({
+  key: "activeTabState",
+  default: "description",
+});
+
+export const fetchSubmissionsLoadingState = atom({
+  key: "fetchSubmissionsLoadingState",
+  default: false,
+});
+export const activeSubmissionIdState = atom<any>({
+  key: "activeSubmissionIdState",
+  default: null,
+});
+export const submissionResultState = atom<any>({
+  key: "submissionResultState",
   default: null,
 });

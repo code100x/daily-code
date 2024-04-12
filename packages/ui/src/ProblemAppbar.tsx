@@ -1,73 +1,48 @@
 import { useRouter } from "next/navigation";
-import { codeRunLoadingState, codeValueState, testCasesState, testRunResultsState } from "../../store/src/atoms";
+import {
+  activeSubmissionIdState,
+  activeTabState,
+  codeRunLoadingState,
+  codeSubmitLoadingState,
+  codeValueState,
+  fetchSubmissionsLoadingState,
+  testCasesState,
+  testRunResultsState,
+  testSubmitResultState,
+} from "@repo/store";
 import { Button } from "./shad/ui/button";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 
 const FUNC_NAME = "twoSum";
 
 const getInputString = (args: string[]) => {
   return `\n
-console.log("Output", ${FUNC_NAME}(${args.join(",")}))
+console.log(${FUNC_NAME}(${args.join(",")}))
 `;
 };
 
 export const ProblemAppbar = () => {
   const router = useRouter();
   const codeValue = useRecoilValue(codeValueState);
-  const setCodeRunLoading = useSetRecoilState(codeRunLoadingState);
+  const [codeRunLoading, setCodeRunLoading] = useRecoilState(codeRunLoadingState);
+  const [codeSubmitLoading, setCodeSubmitLoading] = useRecoilState(codeSubmitLoadingState);
   const testCases = useRecoilValue(testCasesState);
   const setTestRunResults = useSetRecoilState(testRunResultsState);
+  const setTestSubmitResult = useSetRecoilState(testSubmitResultState);
+  const setActiveTab = useSetRecoilState(activeTabState);
 
-  function compareStdouts(submissions: any[]) {
-    console.log("submissions", submissions);
+  const setActiveSubmissionId = useSetRecoilState(activeSubmissionIdState);
+  const setFetchSubmissionsLoading = useSetRecoilState(fetchSubmissionsLoadingState);
 
-    let submissionFailed = false;
-
-    const results: any = [];
-    let runtime = 0;
-    submissions.forEach((submission: any, i) => {
-      if (testCases[i]) {
-        const stdoutArr = submission.stdout.split("Output");
-
-        const [stdout, output] = stdoutArr;
-        console.log("SDAvfswfers", eval(output));
-        console.log("SDArs", eval(testCases[i]?.output!));
-
-        const isAccepted = JSON.stringify(eval(output)) === JSON.stringify(eval(testCases[i]?.output!));
-
-        console.log("Zdcsafse", isAccepted);
-
-        runtime += parseFloat(submission.time) * 1000;
-        if (!isAccepted) {
-          submissionFailed = true;
-        }
-        results.push({
-          stdout,
-          output: output.trim(),
-          expectedOutput: testCases[i]?.output,
-          input: testCases[i].input,
-          stderr: submission.stderr,
-          token: submission.token,
-          isAccepted,
-        });
-      }
-    });
-
-    return {
-      runtime,
-      submissionFailed,
-      results,
-    };
-  }
-
-  const handleSubmit = async () => {
+  const handleCodeRun = async () => {
     setCodeRunLoading(true);
-    setTestRunResults(null);
+    setTestRunResults([]);
     const API_URL = `http://localhost:2358/submissions/batch`;
     const submissions = testCases.map((testCase) => {
       return {
         source_code: codeValue + getInputString(testCase.input),
         language_id: 63,
+        expected_output: testCase.output,
       };
     });
     console.log("sub", submissions);
@@ -88,24 +63,73 @@ export const ProblemAppbar = () => {
       const subRes = await fetch(`http://localhost:2358/submissions/batch?tokens=${tokenString}`);
 
       const subData = await subRes.json();
-
-      const result: any = compareStdouts(subData.submissions);
-      setTestRunResults(result);
+      setTestRunResults(subData.submissions);
       setCodeRunLoading(false);
-      router.push("/tracks/1/2/3");
     }, 3000);
+  };
+  const handleCodeSubmit = async () => {
+    try {
+      setCodeSubmitLoading(true);
+      setTestSubmitResult(null);
+      const API_URL = `/api/code/submission`;
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          problemStatementId: "1",
+          sourceCode: btoa(codeValue),
+          languageId: 63,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+      console.log("data, data", data);
+      setActiveSubmissionId(data.submissionId);
+    } catch (err: any) {
+      alert("Error " + err.message);
+    } finally {
+      setCodeSubmitLoading(false);
+      setActiveTab("submissions");
+      setFetchSubmissionsLoading(true);
+    }
   };
 
   return (
-    <div className="mt-2 ml-2 mr-2 flex justify-between">
-      <div className="flex justify-center content-center flex-1">
-        <Button variant={"secondary"} size={"sm"} className="mr-2" onClick={handleSubmit}>
-          Run Code
-        </Button>
-        <Button variant={"secondary"} size={"sm"} className="ml-2 text-green-500">
+    <div className="mr-4 w-40">
+      {codeSubmitLoading ? (
+        <Button
+          variant={"secondary"}
+          size={"sm"}
+          className="text-green-500"
+          disabled={codeRunLoading || codeSubmitLoading}
+          onClick={handleCodeSubmit}
+        >
           Submit Code
         </Button>
-      </div>
+      ) : (
+        <div className="flex justify-center content-center flex-1 gap-2 mr-4">
+          <Button
+            variant={"secondary"}
+            size={"sm"}
+            onClick={handleCodeRun}
+            disabled={codeRunLoading || codeSubmitLoading}
+          >
+            Run Code
+          </Button>
+          <Button
+            variant={"secondary"}
+            size={"sm"}
+            className="text-green-500"
+            disabled={codeRunLoading || codeSubmitLoading}
+            onClick={handleCodeSubmit}
+          >
+            Submit Code
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

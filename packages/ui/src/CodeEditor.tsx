@@ -30,7 +30,7 @@ export const CodeEditor = () => {
   };
 
   return (
-    <div className="bg-zinc-900">
+    <div className="bg-zinc-900 h-full">
       <LanguageSelector />
       <Editor
         height={"80vh"}
@@ -39,11 +39,11 @@ export const CodeEditor = () => {
         onMount={() => {}}
         options={{
           fontSize: 14,
+          scrollBeyondLastLine: false,
         }}
         language={language}
         onChange={handleChange}
         defaultLanguage="javascript"
-        className="overflow-scroll"
       />
     </div>
   );

@@ -16,6 +16,8 @@ export const RunCodeOutput = () => {
   const testRunResults = useRecoilValue(testRunResultsState);
   const codeRunLoading = useRecoilValue(codeRunLoadingState);
 
+  console.log("testRun Result", testRunResults);
+
   useEffect(() => {
     if (codeRunLoading) {
       if (activeTab === "test-result") {
@@ -71,66 +73,64 @@ export const RunCodeOutput = () => {
         </Tabs>
       </TabsContent>
       <TabsContent value="test-result" className="">
-        {testRunResults && (
+        {testRunResults.length > 0 && (
           <div className="p-4">
-            <div className="flex items-center gap-6">
+            {/* <div className="flex items-center gap-6">
               {testRunResults.submissionFailed ? (
                 <h3 className="text-xl text-red-800 font-medium">Wrong Answer</h3>
               ) : (
                 <h3 className="text-xl text-[#0E902A] font-medium">Accepted</h3>
               )}
               <span className="text-sm text-gray-300">Runtime: {testRunResults.runtime}ms</span>
-            </div>
-            {testRunResults.results.length > 0 && (
-              <Tabs defaultValue={testRunResults.results[0]?.token} className="w-full py-4">
-                <TabsList className="bg-transparent gap-4 flex-wrap justify-start">
-                  {testRunResults.results.map(({ token, isAccepted }, index) => (
+            </div> */}
+
+            <Tabs defaultValue={testRunResults[0].token} className="w-full">
+              <TabsList className="bg-transparent gap-4 flex-wrap justify-start">
+                {testRunResults.map(({ token, status }, index) => {
+                  return (
                     <TabsTrigger
                       value={token}
                       key={token}
                       className="bg-transparent text-[#ddd] hover:text-white group-hover:bg-gray-500 data-[state=active]:bg-gray-600 px-5"
                     >
                       <span
-                        className={`mr-2 rounded-full h-2 w-2 ${isAccepted ? "bg-[#0E902A]" : "bg-red-800"}`}
+                        className={`mr-2 rounded-full h-2 w-2 ${status.id <= 3 ? "bg-[#0E902A]" : "bg-red-800"}`}
                       ></span>{" "}
                       Case {index + 1}
                     </TabsTrigger>
-                  ))}
-                </TabsList>
-                {testRunResults.results.map(({ token, input, output, expectedOutput }, index) => (
-                  <TabsContent value={token} key={token}>
-                    <div className="px-2 py-4 flex flex-col gap-6">
-                      <div className="flex flex-col gap-3">
-                        <span className="text-gray-300">Input</span>
-                        {input.map((inputParam: any, index: any) => {
-                          return (
-                            <div
-                              className="flex flex-col gap-1 bg-gray-600 text-white px-3 py-2 rounded-lg"
-                              key={index}
-                            >
-                              <span className="text-gray-300 text-xs">{PARAM_NAMES[index]} = </span>
-                              <span className="text-sm font-medium">{inputParam}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        <span className="text-gray-300">Output</span>
-                        <div className="flex flex-col gap-1 bg-gray-600 text-white px-3 py-2 rounded-lg">
-                          <span className="text-sm font-medium">{output}</span>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        <span className="text-gray-300">Expected</span>
-                        <div className="flex flex-col gap-1 bg-gray-600 text-white px-3 py-2 rounded-lg">
-                          <span className="text-sm font-medium">{expectedOutput}</span>
-                        </div>
+                  );
+                })}
+              </TabsList>
+              {testRunResults.map(({ token, stdout }, index) => (
+                <TabsContent value={token} key={token}>
+                  <div className="px-2 py-4 flex flex-col gap-6">
+                    <div className="flex flex-col gap-3">
+                      <span className="text-gray-300">Input</span>
+                      {testCases[index]?.input.map((inputParam: any, index: any) => {
+                        return (
+                          <div className="flex flex-col gap-1 bg-gray-600 text-white px-3 py-2 rounded-lg" key={index}>
+                            <span className="text-gray-300 text-xs">{PARAM_NAMES[index]} = </span>
+                            <span className="text-sm font-medium">{inputParam}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <span className="text-gray-300">Output</span>
+                      <div className="flex flex-col gap-1 bg-gray-600 text-white px-3 py-2 rounded-lg">
+                        <span className="text-sm font-medium">{stdout}</span>
                       </div>
                     </div>
-                  </TabsContent>
-                ))}
-              </Tabs>
-            )}
+                    <div className="flex flex-col gap-3">
+                      <span className="text-gray-300">Expected</span>
+                      <div className="flex flex-col gap-1 bg-gray-600 text-white px-3 py-2 rounded-lg">
+                        <span className="text-sm font-medium">{testCases[index]?.output}</span>
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+              ))}
+            </Tabs>
           </div>
         )}
       </TabsContent>
