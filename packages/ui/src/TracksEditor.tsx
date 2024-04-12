@@ -82,6 +82,7 @@ export const TracksEditor = () => {
             await addTrackWithNotion(notionLink, description, imageLink);
             toast({
               title: "Added to Tracks",
+              className: "bg-primary text-white dark:text-black",
               description: "Notion Document Successfully added to the Tracks",
             });
             setStatus("Added to the Database Successfully!");

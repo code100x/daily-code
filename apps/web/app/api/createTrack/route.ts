@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { randomUUID } from "crypto";
 import { NotionAPI } from "notion-client";
 import db from "../../../../../packages/db/src";
-import { Problem, Track } from "../../../../../packages/store/src/atoms";
+import { Problem } from "../../../../../packages/store/src/atoms";
 
 export async function POST(req: NextRequest) {
   const notionLink = req.nextUrl.searchParams.get("link");
