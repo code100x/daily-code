@@ -69,7 +69,7 @@ const EditTrackCard = ({ Track }: { Track: Track }) => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Input onChange={(e) => setHidden(!hidden)} value={`${hidden}`} />
+            <Button onClick={(e) => setHidden(!hidden)}>{`${hidden}`}</Button>
           </CardContent>
         </div>
       )}

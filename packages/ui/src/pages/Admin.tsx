@@ -3,6 +3,7 @@ import { TracksEditor } from "../TracksEditor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shad/ui/tabs";
 import { getAllProblems, getAllTracks } from "../../../../apps/web/components/utils";
 import { LinkProblems } from "../LinkProblems";
+import AutoAddTracks from "../CompleteAddTracks";
 
 export const Admin = async () => {
   const problems = await getAllProblems();
@@ -10,14 +11,18 @@ export const Admin = async () => {
   return (
     <div className="pt-2">
       <div className="flex justify-center">
-        <Tabs defaultValue="problems" className="w-full">
+        <Tabs defaultValue="auto" className="w-full">
           <div className="flex justify-center my-2">
             <TabsList>
+              <TabsTrigger value="auto">Complete Track</TabsTrigger>
               <TabsTrigger value="problems">Problems</TabsTrigger>
               <TabsTrigger value="tracks">Tracks</TabsTrigger>
               <TabsTrigger value="link">Link</TabsTrigger>
             </TabsList>
           </div>
+          <TabsContent value="auto">
+            <AutoAddTracks />
+          </TabsContent>
           <TabsContent value="problems">
             <ProblemEditor problems={problems} />
           </TabsContent>

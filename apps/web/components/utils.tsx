@@ -138,7 +138,8 @@ export async function createTrack(data: any) {
     });
     return track;
   } catch (e) {
-    return null;
+    console.log(e);
+    return new Error("Failed to create track");
   }
 }
 
