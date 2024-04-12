@@ -1,4 +1,3 @@
-import { Problem, Track } from "@prisma/client";
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import db from "@repo/db/client";
@@ -28,7 +27,8 @@ export async function POST(req: Request) {
 
     await browser.close();
 
-    const validHrefs = hrefs.filter((href) => href.href);
+    const Hrefs = hrefs.filter((href) => href.href);
+    const validHrefs = Hrefs.reverse();
     let count = 0;
     const track = await db.track.create({
       data: {
