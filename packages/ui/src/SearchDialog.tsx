@@ -39,15 +39,19 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   }, [searchTracks, selectedIndex]);
 
   useEffect(() => {
-    const foundTracks = tracks.filter((track) => {
-      return (
-        track.title.toLowerCase().includes(input.toLowerCase()) ||
-        track.description.toLowerCase().includes(input.toLowerCase())
-      );
-    });
-    setSearchTracks(foundTracks);
-    setSelectedIndex(-1);
-  }, [input]);
+    const timeoutId = setTimeout(() => {
+      const foundTracks = tracks.filter((track) => {
+        return (
+          track.title.toLowerCase().includes(input.toLowerCase()) ||
+          track.description.toLowerCase().includes(input.toLowerCase())
+        );
+      });
+      setSearchTracks(foundTracks);
+      setSelectedIndex(-1);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [input, tracks]);
 
   function handleClose(open: boolean) {
     if (!open) setDialogOpen(false);
