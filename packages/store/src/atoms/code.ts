@@ -1,40 +1,18 @@
-import { atom } from "recoil";
-
-const DEFAULT_CODE = `const twoSum = (array, goal) => {
-    let indexes = [];
-
-    for(let i = 0; i < array.length; i++){
-       for(let j = i + 1; j < array.length; j++){
-          if (array[i] + array[j] === goal) {
-        indexes.push(i);
-        indexes.push(j);
-          }
-       }
-    }
-    return indexes;
-}
-`;
-
-const TEST_CASES = [
-  { id: 1, input: ["[2, 7, 11, 15]", "9"], output: "[ 0, 1 ]" }, // Original test case
-  { id: 2, input: ["[3, 2, 4]", "6"], output: "[ 1, 2 ]" }, // Test case where the two numbers are adjacent
-  { id: 3, input: ["[-1, -2, -3, -4, -5]", "-8"], output: "[ 2, 4 ]" }, // Test case with negative numbers
-  // Add more test cases as needed
-];
+import { atom, atomFamily, selector } from "recoil";
 
 export const languageState = atom({
   key: "languageState",
   default: "javascript",
 });
 
-export const codeValueState = atom({
+export const codeValueState = atom<any>({
   key: "codeValueState",
-  default: DEFAULT_CODE,
+  default: null,
 });
 
-export const testCasesState = atom({
+export const testCasesState = atom<any[]>({
   key: "testCasesState",
-  default: TEST_CASES,
+  default: [],
 });
 
 export const codeRunLoadingState = atom({
@@ -71,4 +49,14 @@ export const activeSubmissionIdState = atom<any>({
 export const submissionResultState = atom<any>({
   key: "submissionResultState",
   default: null,
+});
+
+// Selector to get submission result based on active submission ID
+export const activeSubmissionResultSelector = selector({
+  key: "activeSubmissionResultSelector",
+  get: ({ get }) => {
+    const activeSubmissionId = get(activeSubmissionIdState);
+    const submissionResult = get(submissionResultState);
+    return activeSubmissionId && submissionResult ? submissionResult[activeSubmissionId] : null;
+  },
 });

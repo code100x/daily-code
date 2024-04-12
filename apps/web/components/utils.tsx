@@ -10,7 +10,12 @@ export async function getProblem(problemId: string | null) {
         id: problemId,
       },
       include: {
-        problemStatement: true,
+        problemStatement: {
+          include: {
+            testCases: true,
+            languagesSupported: true,
+          },
+        },
       },
     });
     return problem;

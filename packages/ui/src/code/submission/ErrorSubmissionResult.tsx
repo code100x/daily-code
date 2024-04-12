@@ -1,19 +1,10 @@
-import { Editor } from "@monaco-editor/react";
+import { useRecoilValue } from "recoil";
+import { activeSubmissionResultSelector } from "@repo/store";
+import SubmissionCreatedAt from "./SubmissionCreatedAt";
 
-const ErrorSubmissionResult = ({ submissionResult }: { submissionResult: any }) => {
-  const {
-    statusDesc,
-    createdAt,
-    runtime,
-    memoryUsage,
-    language,
-    code,
-    testCasesPassed,
-    problemStatement,
-    stdout,
-    lastTestCase,
-    errorMessage,
-  } = submissionResult;
+const ErrorSubmissionResult = () => {
+  const submissionDetails = useRecoilValue(activeSubmissionResultSelector);
+  const { statusDesc, createdAt, testCasesPassed, problemStatement, lastTestCase, errorMessage } = submissionDetails;
 
   return (
     <div className="p-4 text-[#CCC]">
@@ -23,16 +14,7 @@ const ErrorSubmissionResult = ({ submissionResult }: { submissionResult: any }) 
         | &nbsp; &nbsp;
         {testCasesPassed}/{problemStatement.testCases.length} testcases passed
       </span>
-      <div className="text-xs mt-2">
-        submitted at{" "}
-        {new Intl.DateTimeFormat("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }).format(new Date(createdAt))}
-      </div>
+      <SubmissionCreatedAt createdAt={createdAt} />
       <div className="my-8 bg-[#372B2B] rounded-lg w-full p-4 text-[#F8604C] h-[300px] overflow-auto">
         <pre className="text-wrap">{errorMessage}</pre>
       </div>
@@ -47,23 +29,6 @@ const ErrorSubmissionResult = ({ submissionResult }: { submissionResult: any }) 
               </div>
             );
           })}
-        </div>
-      </div>
-      <div className="my-8">
-        <h3>Code | {language.label}</h3>
-        <div className="rounded-md overflow-hidden bg-[#1E1E1E] py-4 my-4 h-[300px]">
-          <Editor
-            height={"100%"}
-            value={atob(code)}
-            theme="vs-dark"
-            options={{
-              fontSize: 14,
-              lineNumbers: "off",
-              readOnly: true,
-              scrollBeyondLastLine: false,
-            }}
-            language={language.value}
-          />
         </div>
       </div>
     </div>

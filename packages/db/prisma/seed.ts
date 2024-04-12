@@ -17,7 +17,7 @@ async function main() {
       {
         id: 63,
         label: "Javascript",
-        value: "js",
+        value: "javascript",
       },
       {
         id: 54,

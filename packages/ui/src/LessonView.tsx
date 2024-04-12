@@ -1,6 +1,6 @@
 import { Blog } from "./Blog";
-import { CodeProblemRenderer } from "./CodeProblemRenderer";
-import { Problem, Track, ProblemStatement, CodeLanguage } from "@prisma/client";
+import { CodeProblemRenderer } from "./code/CodeProblemRenderer";
+import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
 import MCQQuestionRenderer from "./MCQQuestionRenderer";
 import db from "@repo/db/client";
 const getSubmissions = async (problemStatementId: string) => {
@@ -24,7 +24,14 @@ export const LessonView = async ({
   showAppBar,
   isPdfRequested,
 }: {
-  problem: Problem & { notionRecordMap: any } & { problemStatement: ProblemStatement | null };
+  problem: Problem & { notionRecordMap: any } & {
+    problemStatement:
+      | (ProblemStatement & {
+          languagesSupported: CodeLanguage[];
+          testCases: TestCase[];
+        })
+      | null;
+  };
   track: Track & { problems: Problem[] };
   showAppBar?: Boolean;
   isPdfRequested?: Boolean;

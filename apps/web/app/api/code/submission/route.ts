@@ -11,7 +11,7 @@ let successfulSubmissions: any[] = [];
 
 async function fetchSubmissions(tokenString: string, resolve: (value: any[] | PromiseLike<any[]>) => void) {
   // Fetch submissions with the tokenString
-  const subRes = await fetch(`http://localhost:2358/submissions/batch?tokens=${tokenString}`);
+  const subRes = await fetch(`${process.env.NEXT_PUBLIC_JUDGE0_API_URL}/submissions/batch?tokens=${tokenString}`);
 
   // Parse the response
   const newData = await subRes.json();
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     };
   });
 
-  const API_URL = `http://localhost:2358/submissions/batch`;
+  const API_URL = `${process.env.NEXT_PUBLIC_JUDGE0_API_URL}/submissions/batch`;
   const res = await fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
@@ -92,8 +92,6 @@ export async function POST(req: NextRequest) {
   let testCasesPassed = 0;
   let lastTestCase: any = null;
   processedSubmission.forEach((submission, index) => {
-    console.log("submission", submission.status);
-
     runtime += parseFloat(submission.time) * 1000;
     memoryUsage += submission.memory;
     if (submission.status.id > 3) {

@@ -1,16 +1,29 @@
 "use client";
 
 import { Button } from "./shad/ui/button";
-import { Problem, Track } from "@prisma/client";
+import { Problem, Track, CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
 import { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
-import { ProblemAppbar } from "./ProblemAppbar";
+import { ProblemAppbar } from "./code/ProblemAppbar";
 
-export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track & { problems: Problem[] } }) => {
+export const BlogAppbar = ({
+  problem,
+  track,
+}: {
+  problem: Problem & { notionRecordMap: any } & {
+    problemStatement:
+      | (ProblemStatement & {
+          languagesSupported: CodeLanguage[];
+          testCases: TestCase[];
+        })
+      | null;
+  };
+  track: Track & { problems: Problem[] };
+}) => {
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p.id === problem.id);
   }, [track, problem]);
@@ -55,7 +68,9 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
-        {problem.type === "Code" && <ProblemAppbar />}
+        {problem.type === "Code" && problem.problemStatement && (
+          <ProblemAppbar problemStatement={problem.problemStatement} />
+        )}
         <div>
           <PageToggle allProblems={track.problems} track={track} />
         </div>

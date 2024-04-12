@@ -1,19 +1,10 @@
 "use client";
 
 import { Submission, CodeLanguage } from "@prisma/client";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./shad/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../shad/ui/table";
 import { Clock4, Cpu } from "lucide-react";
-import { activeSubmissionIdState, fetchSubmissionsLoadingState } from "../../store/src/atoms";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { activeSubmissionIdState, fetchSubmissionsLoadingState } from "@repo/store";
+import { useSetRecoilState } from "recoil";
 
 function getTimeFromDateTime(dateTime: Date) {
   const now = new Date();

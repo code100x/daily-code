@@ -1,22 +1,23 @@
 "use client";
 import { LoaderCircle, SquareCheck, Terminal } from "lucide-react";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./shad/ui/tabs";
-import { Input } from "./shad/ui/input";
-import { codeRunLoadingState, testCasesState, testRunResultsState } from "../../store/src/atoms";
+import { ProblemStatement, TestCase } from "@prisma/client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shad/ui/tabs";
+import { Input } from "../shad/ui/input";
+import { codeRunLoadingState, testRunResultsState } from "@repo/store";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 
-export const RunCodeOutput = () => {
-  const PARAM_NAMES = ["nums", "target"];
-
+export const RunCodeOutput = ({
+  problemStatement: { testCases, argumentNames },
+}: {
+  problemStatement: ProblemStatement & {
+    testCases: TestCase[];
+  };
+}) => {
   const [activeTab, setActiveTab] = useState("test-case");
 
-  const testCases = useRecoilValue(testCasesState);
   const testRunResults = useRecoilValue(testRunResultsState);
   const codeRunLoading = useRecoilValue(codeRunLoadingState);
-
-  console.log("testRun Result", testRunResults);
 
   useEffect(() => {
     if (codeRunLoading) {
@@ -56,13 +57,13 @@ export const RunCodeOutput = () => {
               </TabsTrigger>
             ))}
           </TabsList>
-          {testCases.map(({ id, input }, index) => (
+          {testCases.map(({ id, inputs }, index) => (
             <TabsContent value={id.toString()} key={id}>
               <div className="px-2 py-4 flex flex-col gap-6">
-                {input.map((inputParam, index) => {
+                {inputs.map((inputParam, index) => {
                   return (
                     <div className="flex flex-col gap-2" key={index}>
-                      <span className="text-gray-400 text-sm">{PARAM_NAMES[index]} = </span>
+                      <span className="text-gray-400 text-sm">{argumentNames[index]} = </span>
                       <Input className="focus:bg-gray-700 bg-gray-600 text-white" defaultValue={inputParam} />
                     </div>
                   );
@@ -75,15 +76,6 @@ export const RunCodeOutput = () => {
       <TabsContent value="test-result" className="">
         {testRunResults.length > 0 && (
           <div className="p-4">
-            {/* <div className="flex items-center gap-6">
-              {testRunResults.submissionFailed ? (
-                <h3 className="text-xl text-red-800 font-medium">Wrong Answer</h3>
-              ) : (
-                <h3 className="text-xl text-[#0E902A] font-medium">Accepted</h3>
-              )}
-              <span className="text-sm text-gray-300">Runtime: {testRunResults.runtime}ms</span>
-            </div> */}
-
             <Tabs defaultValue={testRunResults[0].token} className="w-full">
               <TabsList className="bg-transparent gap-4 flex-wrap justify-start">
                 {testRunResults.map(({ token, status }, index) => {
@@ -106,10 +98,10 @@ export const RunCodeOutput = () => {
                   <div className="px-2 py-4 flex flex-col gap-6">
                     <div className="flex flex-col gap-3">
                       <span className="text-gray-300">Input</span>
-                      {testCases[index]?.input.map((inputParam: any, index: any) => {
+                      {testCases[index]?.inputs.map((inputParam: any, index: any) => {
                         return (
                           <div className="flex flex-col gap-1 bg-gray-600 text-white px-3 py-2 rounded-lg" key={index}>
-                            <span className="text-gray-300 text-xs">{PARAM_NAMES[index]} = </span>
+                            <span className="text-gray-300 text-xs">{argumentNames[index]} = </span>
                             <span className="text-sm font-medium">{inputParam}</span>
                           </div>
                         );
@@ -124,7 +116,7 @@ export const RunCodeOutput = () => {
                     <div className="flex flex-col gap-3">
                       <span className="text-gray-300">Expected</span>
                       <div className="flex flex-col gap-1 bg-gray-600 text-white px-3 py-2 rounded-lg">
-                        <span className="text-sm font-medium">{testCases[index]?.output}</span>
+                        <span className="text-sm font-medium">{testCases[index]?.expectedOutput}</span>
                       </div>
                     </div>
                   </div>
