@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     await browser.close();
 
     const validHrefs = hrefs.filter((href) => href.href);
-
+    let count = 0;
     const track = await db.track.create({
       data: {
         title: newtrack.title,
@@ -37,8 +37,8 @@ export async function POST(req: Request) {
         image: newtrack.imageUrl,
         createdAt: new Date(),
         problems: {
-          create: validHrefs.map((href, index) => ({
-            sortingOrder: index + 1,
+          create: validHrefs.map((href) => ({
+            sortingOrder: count++,
             problem: {
               create: {
                 title: href?.text,
