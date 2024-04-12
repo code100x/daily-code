@@ -4,8 +4,7 @@ import { Button } from ".";
 import { Card } from "./shad/ui/card";
 import { AddTrack } from "../../../apps/web/types";
 import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-hot-toast";
 
 export const TracksEditor = () => {
   const [title, setTitle] = useState("");

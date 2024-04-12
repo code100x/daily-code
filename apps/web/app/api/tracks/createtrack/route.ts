@@ -22,13 +22,12 @@ export async function POST(req: Request) {
       anchors.map((anchor) => ({
         href: anchor.getAttribute("href"),
         text: anchor.textContent,
+        order: anchor.getBoundingClientRect().top,
       }))
     );
 
     await browser.close();
-
-    const Hrefs = hrefs.filter((href) => href.href);
-    const validHrefs = Hrefs.reverse();
+    const validHrefs = hrefs.reverse();
     let count = 0;
     const track = await db.track.create({
       data: {
