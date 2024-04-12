@@ -6,8 +6,11 @@ import { Track, Problem } from "@prisma/client";
 
 interface TrackCardProps extends Track {
   problems: Problem[];
-  category: {
-    category: string;
+  categories: {
+    category: {
+      id: string;
+      category: string;
+    };
   }[];
 }
 
@@ -21,8 +24,8 @@ export function TrackCard({ track }: { track: TrackCardProps }) {
             <CardTitle>{track.title}</CardTitle>
             <div>{track.description}</div>
             <CardDescription>
-              {track.category.map((item) => {
-                return <div>{item.category}</div>;
+              {track.categories.map((item) => {
+                return <div>{item.category.category}</div>;
               })}
             </CardDescription>
           </div>

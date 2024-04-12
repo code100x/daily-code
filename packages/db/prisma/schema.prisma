@@ -60,21 +60,28 @@ model VerificationToken {
 }
 
 model Track {
-  id          String          @id @default(uuid())
+  id          String         @id @default(uuid())
   title       String
   description String
   image       String
-  category    Categories[]
+  categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
-  hidden      Boolean         @default(false)
-  createdAt   DateTime        @default(now())
+  hidden      Boolean        @default(false)
+  createdAt   DateTime       @default(now())
 }
 
 model Categories {
-  id          String  @id @default(uuid())
+  id          String         @id @default(uuid())
   category    String
-  tracks      Track  @relation(fields: [trackId], references: [id])
-  trackId     String 
+  tracks      TrackCategory[]
+}
+
+model TrackCategory {
+  trackId     String
+  track       Track    @relation(fields: [trackId], references: [id])
+  categoryId  String
+  category    Categories @relation(fields: [categoryId], references: [id])
+  @@id([trackId, categoryId]) // Composite primary key
 }
 
 model Problem {
