@@ -55,9 +55,9 @@ model User {
 model Bookmark {
   id      String @id @default(uuid())
   user    String
-  userID  User @relation(fields: [user],references: [id])
+  userID  User @relation(fields: [user],references: [id], onDelete: Cascade)
   track   String
-  trackID Track @relation(fields: [track],references: [id])
+  trackID Track @relation(fields: [track],references: [id] , onDelete: Cascade)
   createdAt DateTime          @default(now())
 }
 
