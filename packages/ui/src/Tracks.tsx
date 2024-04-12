@@ -35,9 +35,9 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
         {filteredTracks.map((t) => (
           <li key={t.id} className="flex justify-center">
             {t.problems.length > 0 ? (
-              <Link className="max-w-screen-md w-full block" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
+              <div className="max-w-screen-md w-full block">
                 <TrackCard track={t} />
-              </Link>
+              </div>
             ) : (
               <TrackCard track={t} />
             )}

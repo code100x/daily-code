@@ -1,8 +1,14 @@
+"use client";
 import { Button } from "./shad/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
 
-import { ArrowRightIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, BookmarkFilledIcon, BookmarkIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Track, Problem } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useToast } from "./shad/ui/use-toast";
+import axios from "axios";
+import Link from "next/link";
 
 interface TrackCardProps extends Track {
   problems: Problem[];
@@ -15,6 +21,75 @@ interface TrackCardProps extends Track {
 }
 
 export function TrackCard({ track }: { track: TrackCardProps }) {
+  const [BookMarkStatus, setBookMarkStatus] = useState<Boolean | null>(null);
+
+  const { toast } = useToast();
+  const { data, status } = useSession();
+  // @ts-ignore
+  const userid = data && data?.user?.id;
+
+  const toggleBookmarkHandler = async () => {
+    if (status === "unauthenticated") {
+      toast({
+        title: "",
+        className: "bg-primary text-white dark:text-black",
+        description: "Log in to bookmark this ",
+        variant: "destructive",
+      });
+      return;
+    }
+    setBookMarkStatus((prev) => !prev);
+    try {
+      const { data } = await axios.post("/api/bookmark", {
+        userid,
+        trackid: track.id,
+      });
+      data && data.data == "created"
+        ? toast({
+            description: "Bookmark Added Successfully",
+            className: "bg-primary text-white dark:text-black",
+            variant: "default",
+          })
+        : toast({
+            className: "bg-primary text-white dark:text-black",
+            description: "Bookmark Removed Successfully",
+            variant: "default",
+          });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getBookMarkStatus = async () => {
+    console.log(status);
+    if (status === "unauthenticated" || data === null) {
+      setBookMarkStatus(false);
+      return;
+    }
+    try {
+      if (status === "authenticated") {
+        {
+          const { data } = await axios.post("/api/getBookmarkStatus", {
+            userid: userid,
+            trackid: track.id,
+          });
+
+          if (data.success === true) {
+            setBookMarkStatus(true);
+          }
+          if (data.success === false) {
+            setBookMarkStatus(false);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBookMarkStatus();
+  }, [status]);
+
   return (
     <Card className="max-w-screen-md w-full cursor-pointer transition-all hover:border-primary/20 shadow-lg dark:shadow-black/60">
       <CardHeader>
@@ -32,11 +107,28 @@ export function TrackCard({ track }: { track: TrackCardProps }) {
         </div>
         <div className="flex justify-between">
           <h3 className="flex flex-col justify-center">{track.problems.length} Lessons</h3>
-          <Button size={"lg"} className="flex items-center justify-center group">
-            Explore
-            <ChevronRightIcon className="pl-1 h-4 w-4 group-hover:translate-x-1 group-hover:hidden mt-[0.15rem] transition-all duration-150" />
-            <ArrowRightIcon className="pl-1 h-4 w-4 hidden group-hover:block mt-[0.15rem] transition-all duration-150" />
-          </Button>
+          {/* <BookmarkIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} />  */}
+
+          <div className="flex items-center">
+            {BookMarkStatus && (
+              <BookmarkFilledIcon
+                className="m-3 cursor-pointer "
+                width={23}
+                height={23}
+                onClick={toggleBookmarkHandler}
+              />
+            )}
+            {BookMarkStatus === false && (
+              <BookmarkIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} />
+            )}
+            <Link href={`/tracks/${track.id}/${track.problems[0]?.id}`}>
+              <Button size={"lg"} className="flex items-center justify-center group">
+                Explore
+                <ChevronRightIcon className="pl-1 h-4 w-4 group-hover:translate-x-1 group-hover:hidden mt-[0.15rem] transition-all duration-150" />
+                <ArrowRightIcon className="pl-1 h-4 w-4 hidden group-hover:block mt-[0.15rem] transition-all duration-150" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </CardHeader>
     </Card>
