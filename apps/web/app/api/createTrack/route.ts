@@ -5,19 +5,19 @@ import db from "../../../../../packages/db/src";
 import { Problem } from "../../../../../packages/store/src/atoms";
 
 export async function POST(req: NextRequest) {
-  const token = req.nextUrl.searchParams.get("secret");
   const notionLink = req.nextUrl.searchParams.get("link");
   const description = req.nextUrl.searchParams.get("description") || "";
   const image = req.nextUrl.searchParams.get("image") || "";
-  if (token || !notionLink) {
-    //Add the token logic here
-    return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+  const type = req.nextUrl.searchParams.get("type");
+  if (!notionLink || !description || !image) {
+    return NextResponse.json({ message: "Invalid inputs to create a Track" }, { status: 401 });
   }
   try {
-    const notionData = await feedNotionToDB(notionLink, description, image);
+    const notionData = await feedNotionToDB(notionLink, description, image, type);
     const dbRes = await db.track.create({ data: { ...notionData } });
     return NextResponse.json({ message: "Notion upload to DB Succesfully!", dbRes }, { status: 200 });
   } catch (e) {
+    console.log(e);
     return NextResponse.json({ message: "Internal Server error!" }, { status: 501 });
   }
 }
@@ -36,7 +36,7 @@ const extractInfoFromNotionLink = (link: string) => {
   }
 };
 
-const feedNotionToDB = async (notionlink: string, description: string, image: string) => {
+const feedNotionToDB = async (notionlink: string, description: string, image: string, type: string) => {
   const notion = new NotionAPI();
   var { title, uuid } = extractInfoFromNotionLink(notionlink);
   const pages = await notion.getPage(uuid);
@@ -49,7 +49,7 @@ const feedNotionToDB = async (notionlink: string, description: string, image: st
         create: {
           description: data.recordMap.block[key]?.value.properties.title[0][0],
           title: data.recordMap.block[key]?.value.properties.title[0][0],
-          type: "Blog",
+          type,
           notionDocId: key.replaceAll("-", ""),
           id: data.recordMap.block[key]?.value.id || "",
         },
@@ -60,7 +60,7 @@ const feedNotionToDB = async (notionlink: string, description: string, image: st
     problems.push(returnObj);
   }
   return {
-    id: randomUUID().replaceAll("-", ""),
+    id: title.replaceAll(" ", "-"),
     title,
     description,
     image,
