@@ -32,7 +32,9 @@
     "packages/*"
   ],
   "dependencies": {
+    "@icons-pack/react-simple-icons": "^9.4.1",
     "react": "^18.2.0",
-    "react-notion-x": "^6.16.0"
+    "react-notion-x": "^6.16.0",
+    "react-simple-icons": "^1.0.0-beta.5"
   }
 }
