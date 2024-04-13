@@ -2,20 +2,52 @@
 import { useRecoilState } from "recoil";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select";
 import { category } from "@repo/store";
+import { Button } from "./shad/ui/button";
 
-export const Categories = ({ categories }: { categories: { category: string }[] }) => {
+interface Category {
+  category: string;
+}
+
+interface CategoryProps {
+  categories: Category[];
+  selectedCategory: string;
+  handleCategoryChange: (category: string) => void;
+}
+
+export const Categories = ({ categories }: { categories: Category[] }) => {
   const [selectedCategory, setSelectedCategory] = useRecoilState(category);
 
-  function handleCategoryChange(category: string) {
-    if (category == selectedCategory) {
+  const handleCategoryChange = (category: string) => {
+    if (category === selectedCategory) {
       setSelectedCategory("");
     } else {
       setSelectedCategory(category);
     }
-  }
+  };
 
   return (
-    <div className="flex justify-evenly mx-auto">
+    <div>
+      <div className=" xl:hidden block ">
+        <SelectCategory
+          categories={categories}
+          selectedCategory={selectedCategory}
+          handleCategoryChange={handleCategoryChange}
+        />
+      </div>
+      <div className="xl:block hidden">
+        <ButtonCategory
+          categories={categories}
+          selectedCategory={selectedCategory}
+          handleCategoryChange={handleCategoryChange}
+        />
+      </div>
+    </div>
+  );
+};
+
+const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
+  return (
+    <div className="flex justify-center">
       <Select
         onValueChange={(e) => {
           handleCategoryChange(e);
@@ -32,6 +64,23 @@ export const Categories = ({ categories }: { categories: { category: string }[] 
           ))}
         </SelectContent>
       </Select>
+    </div>
+  );
+};
+
+const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
+  return (
+    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
+      {categories.map((category) => (
+        <Button
+          key={category.category}
+          variant="ghost"
+          onClick={() => handleCategoryChange(category.category)}
+          className={selectedCategory == category.category ? "bg-gray-100 dark:bg-slate-700" : ""}
+        >
+          {category.category}
+        </Button>
+      ))}
     </div>
   );
 };
