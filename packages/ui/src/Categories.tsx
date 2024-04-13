@@ -1,29 +1,36 @@
 "use client";
-import { Button } from "./shad/ui/button";
+
 import { useRecoilState } from "recoil";
 import { category } from "@repo/store";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./shad/ui/tabs";
 
 export const Categories = ({ categories }: { categories: { category: string }[] }) => {
   function handleFilterButton(category: string) {
-    if (category == selectedCategory) {
+    if (category == "all") {
       setSelectedCategory("");
     } else {
       setSelectedCategory(category);
     }
   }
-  const [selectedCategory, setSelectedCategory] = useRecoilState(category);
+  const [_, setSelectedCategory] = useRecoilState(category);
   return (
-    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
-      {categories.map((category) => (
-        <Button
-          key={category.category}
-          variant="ghost"
-          onClick={() => handleFilterButton(category.category)}
-          className={selectedCategory == category.category ? "bg-gray-100 dark:bg-slate-700" : ""}
-        >
-          {category.category}
-        </Button>
-      ))}
+    <div className="px-4 max-sm:px-2 flex justify-center items-center ">
+      <Tabs
+        defaultValue="all"
+        className="max-w-full  overflow-x-auto  "
+        onValueChange={(selectedValue) => handleFilterButton(selectedValue)}
+      >
+        <TabsList className="py-6 max-sm:py-2">
+          <TabsTrigger value="all" className="text-lg max-sm:text-sm">
+            All
+          </TabsTrigger>
+          {categories.map((category) => (
+            <TabsTrigger value={category.category} className="text-lg max-sm:text-sm">
+              {category.category}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
     </div>
   );
 };
