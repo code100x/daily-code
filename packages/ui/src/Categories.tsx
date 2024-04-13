@@ -13,7 +13,7 @@ export const Categories = ({ categories }: { categories: { category: string }[] 
   }
   const [selectedCategory, setSelectedCategory] = useRecoilState(category);
   return (
-    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
+    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3  overflow-auto scroll-smooth no-scrollbar">
       {categories.map((category) => (
         <Button
           key={category.category}

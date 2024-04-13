@@ -109,3 +109,15 @@
   /* Optionally add box-shadow based on your design */
   box-shadow: 0 0 5px #5d5c5d;
 }
+
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
