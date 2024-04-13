@@ -91,16 +91,18 @@
 
 /* Horizontal Scroll Bar */
 ::-webkit-scrollbar:horizontal {
-  height: 8px;
+  height: 2px;
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-  background-color: rgb(93, 92, 93, 0.8); 
+  background-color: rgba(136, 133, 136, 0.8); 
   border-radius: 4px;
+  
 }
 
 ::-webkit-scrollbar-track:horizontal {
-  background-color: rgb(31, 41, 55, 0.8); 
+  background-color: rgba(167, 168, 169, 0.8); 
 }
 
 /* Optional: Add hover effect */
