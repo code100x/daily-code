@@ -2,6 +2,7 @@
 import { Button } from "./shad/ui/button";
 import { useRecoilState } from "recoil";
 import { category } from "@repo/store";
+import { cn } from "../lib/utils";
 
 export const Categories = ({ categories }: { categories: { category: string }[] }) => {
   function handleFilterButton(category: string) {
@@ -19,7 +20,9 @@ export const Categories = ({ categories }: { categories: { category: string }[] 
           key={category.category}
           variant="ghost"
           onClick={() => handleFilterButton(category.category)}
-          className={selectedCategory == category.category ? "bg-gray-100 dark:bg-slate-700" : ""}
+          className={cn("mx-1", {
+            "bg-gray-100 dark:bg-slate-700": selectedCategory == category.category,
+          })}
         >
           {category.category}
         </Button>
