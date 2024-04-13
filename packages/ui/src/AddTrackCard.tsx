@@ -75,15 +75,22 @@ const AddTrackCard = () => {
           Add
         </Button>
       </Card>
-      <div>
+      <div className="space-y-4">
         {newTracks.map((Track, i) => (
           <Card key={i}>
-            <CardHeader>
-              <CardTitle>{Track.title}</CardTitle>
-              <CardDescription>{Track.description}</CardDescription>
-              <CardDescription>{Track.image}</CardDescription>
-            </CardHeader>
-            <CardContent>{`Hidden: ${Track.hidden}`}</CardContent>
+            <div className="grid grid-cols-6">
+              <img
+                src={Track.image}
+                className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"
+              />
+              <div className="col-span-5">
+                <CardHeader>
+                  <CardTitle>{Track.title}</CardTitle>
+                  <CardDescription>{Track.description}</CardDescription>
+                </CardHeader>
+                <CardContent>{`hidden: ${Track.hidden}`}</CardContent>
+              </div>
+            </div>
           </Card>
         ))}
       </div>

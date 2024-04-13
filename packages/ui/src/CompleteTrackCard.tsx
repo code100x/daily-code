@@ -78,7 +78,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
         if (response.ok) {
           const data = await response.json();
           data.forEach((problem, i) => {
-            problem.id = `${TrackData.trackTitle}-${i + 1}`;
+            problem.id = `${TrackData.trackTitle.replace(" ", "")}-${i + 1}`;
           });
           setProblemData(data);
         } else {

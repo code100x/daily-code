@@ -16,7 +16,7 @@ const ProblemCard = ({ problem }: { problem: Problem }) => {
   const [notionDocId, setNotionDocId] = useState(problem.notionDocId);
   function handleEdit(id: string) {
     if (isEditing) {
-      updateProblem(id, { title, description, type, notionDocId });
+      updateProblem(problem.id, { id, title, description, type, notionDocId });
       return setIsEditing(false);
     }
     setIsEditing(true);
@@ -64,7 +64,7 @@ const ProblemCard = ({ problem }: { problem: Problem }) => {
                 <Button variant={"outline"} className="" onClick={() => handleDiscardButton()}>
                   Discard
                 </Button>
-                <Button variant={"outline"} className="" onClick={() => handleEdit(problem.id)}>
+                <Button variant={"outline"} className="" onClick={() => handleEdit(id)}>
                   Save
                 </Button>
               </div>

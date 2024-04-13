@@ -42,15 +42,22 @@ export const LinkProblems = ({ tracks }: { tracks: LinkProblemsProps[] }) => {
           <div className="space-y-4">
             {filteredTracks.map((track) => (
               <Card key={track.id}>
-                <CardHeader>
-                  <div className="flex justify-between">
-                    <CardTitle>{track.title}</CardTitle>
-                    <LinkCard track={track} />
+                <div className="grid grid-cols-6">
+                  <img
+                    src={track.image}
+                    className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"
+                  />
+                  <div className="col-span-5">
+                    <CardHeader>
+                      <div className="flex justify-between">
+                        <CardTitle>{track.title}</CardTitle>
+                        <LinkCard track={track} />
+                      </div>
+                      <CardDescription>{track.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>{`hidden: ${track.hidden}`}</CardContent>
                   </div>
-                  <CardDescription>{track.description}</CardDescription>
-                  <CardDescription>{track.image}</CardDescription>
-                </CardHeader>
-                <CardContent>{`hidden: ${track.hidden}`}</CardContent>
+                </div>
               </Card>
             ))}
           </div>

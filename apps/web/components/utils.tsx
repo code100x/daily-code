@@ -19,7 +19,11 @@ export async function getProblem(problemId: string | null) {
 
 export async function getAllProblems() {
   try {
-    const problems = await db.problem.findMany();
+    const problems = await db.problem.findMany({
+      orderBy: {
+        id: "desc",
+      },
+    });
     return problems;
   } catch (e) {
     return [];
@@ -36,6 +40,7 @@ export async function updateProblem(problemId: string, data: any) {
     });
     return problem;
   } catch (e) {
+    console.log(e);
     return null;
   }
 }
