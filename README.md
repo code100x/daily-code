@@ -10,7 +10,7 @@ yarn install
 > Copy the env example
 
 ```
-cd /packages/db
+cd  packages/db
 cp .env.example .env
 ```
 
