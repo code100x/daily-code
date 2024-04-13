@@ -7,7 +7,7 @@ yarn install
 ```
 > Copy the env example
 ```
-cd /packages/db
+cd packages/db
 cp .env.example .env
 ```
 >Update the .env file with the database url
@@ -17,6 +17,15 @@ cp .env.example .env
 npx prisma migrate dev
 npx prisma db seed
 ```
+> For windows users
+```
+cd packages/db
+yarn add prisma typescript ts-node @types/node --save-dev
+npx prisma generate
+npx prisma migrate dev
+npx prisma db seed
+```
+
 > Run locally
 ```
 cd ../..
