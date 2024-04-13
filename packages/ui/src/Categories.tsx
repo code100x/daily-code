@@ -16,19 +16,7 @@ export const Categories = ({ categories }: { categories: { category: string }[] 
   const [selectedCategory, setSelectedCategory] = useRecoilState(category);
   return (
     <div className="flex justify-center items-center">
-      <div className="hidden lg:flex justify-evenly mx-auto border-2 rounded-full  py-1 w-2/3">
-        {categories.map((category) => (
-          <Button
-            key={category.category}
-            variant="ghost"
-            onClick={() => handleFilterButton(category.category)}
-            className={selectedCategory == category.category ? "bg-gray-100 dark:bg-slate-700" : ""}
-          >
-            {category.category}
-          </Button>
-        ))}
-      </div>
-      <div className="flex lg:hidden border-2 dark:border-slate-700 text-bg-slate-700 rounded-full py-1 px-3">
+      <div className="flex  border-2 dark:border-slate-700 text-bg-slate-700 rounded-full py-1 px-3">
         <DropdownMenu>
           <DropdownMenuTrigger>Select Category</DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -39,7 +27,7 @@ export const Categories = ({ categories }: { categories: { category: string }[] 
                   className={
                     selectedCategory == category.category
                       ? "bg-gray-100 flex justify-center dark:bg-slate-700 w-full  font-bold font-2xl"
-                      : "font-semibold  py-2"
+                      : "font-semibold  py-2 w-full flex justify-center"
                   }
                 >
                   {category.category}
