@@ -22,7 +22,7 @@ const ProblemStatementPanel = ({
   submissions,
 }: {
   notionRecordMap: any;
-  submissions: (Submission & { language: CodeLanguage })[];
+  submissions: (Submission & { language: CodeLanguage })[] | null;
 }) => {
   const [fetchSubmissionsLoading, setFetchSubmissionsLoading] = useRecoilState(fetchSubmissionsLoadingState);
 

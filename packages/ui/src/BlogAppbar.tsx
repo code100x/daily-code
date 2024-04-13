@@ -8,7 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
-import { ProblemAppbar } from "./code/ProblemAppbar";
+import { Codebar } from "./code/Codebar";
 
 export const BlogAppbar = ({
   problem,
@@ -68,9 +68,7 @@ export const BlogAppbar = ({
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
-        {problem.type === "Code" && problem.problemStatement && (
-          <ProblemAppbar problemStatement={problem.problemStatement} />
-        )}
+        {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
         <div>
           <PageToggle allProblems={track.problems} track={track} />
         </div>

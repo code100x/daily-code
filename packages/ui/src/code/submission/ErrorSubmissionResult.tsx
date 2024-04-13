@@ -1,6 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { activeSubmissionResultSelector } from "@repo/store";
 import SubmissionCreatedAt from "./SubmissionCreatedAt";
+import { error } from "console";
 
 const ErrorSubmissionResult = () => {
   const submissionDetails = useRecoilValue(activeSubmissionResultSelector);
@@ -15,9 +16,11 @@ const ErrorSubmissionResult = () => {
         {testCasesPassed}/{problemStatement.testCases.length} testcases passed
       </span>
       <SubmissionCreatedAt createdAt={createdAt} />
-      <div className="my-8 bg-[#372B2B] rounded-lg w-full p-4 text-[#F8604C] h-[300px] overflow-auto">
-        <pre className="text-wrap">{errorMessage}</pre>
-      </div>
+      {errorMessage && (
+        <div className="my-8 bg-[#372B2B] rounded-lg w-full p-4 text-[#F8604C] h-[300px] overflow-auto">
+          <pre className="text-wrap">{errorMessage}</pre>
+        </div>
+      )}
       <div className="my-8 flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <span className="text-gray-300">Last Executed Input</span>

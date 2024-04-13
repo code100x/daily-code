@@ -35,63 +35,66 @@ function getTimeFromDateTime(dateTime: Date) {
   }
 }
 
-const SubmissionList = ({ submissions }: { submissions: (Submission & { language: CodeLanguage })[] }) => {
+const SubmissionList = ({ submissions }: { submissions: (Submission & { language: CodeLanguage })[] | null }) => {
   const setActiveSubmissionId = useSetRecoilState(activeSubmissionIdState);
   const setFetchSubmissionsLoading = useSetRecoilState(fetchSubmissionsLoadingState);
-
-  return (
-    <div className="p-4 text-[#CCC]">
-      {submissions.length > 0 ? (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-1/3">Status</TableHead>
-              <TableHead>Language</TableHead>
-              <TableHead>Runtime</TableHead>
-              <TableHead>Memory</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {submissions.map(({ id, statusDesc, statusId, memoryUsage, runtime, language, createdAt }) => {
-              return (
-                <TableRow
-                  key={id}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setActiveSubmissionId(id);
-                    setFetchSubmissionsLoading(true);
-                  }}
-                >
-                  <TableCell className="font-medium">
-                    <div className={`font-bold ${statusId > 3 ? "text-red-800" : "text-[#0E902A]"}`}>{statusDesc}</div>
-                    <div className="text-xs mt-1">{getTimeFromDateTime(createdAt)}</div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-xs rounded-full px-2 py-1 max-w-min bg-gray-600">{language.label}</div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Clock4 size={16} />
-                      <span>{runtime} ms</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {" "}
-                    <div className="flex items-center gap-1">
-                      <Cpu size={16} />
-                      <span>{Math.floor(memoryUsage / 1024)} MB</span>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      ) : (
-        <>No Submission Yet!</>
-      )}
-    </div>
-  );
+  if (submissions) {
+    return (
+      <div className="p-4 text-[#CCC]">
+        {submissions.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-1/3">Status</TableHead>
+                <TableHead>Language</TableHead>
+                <TableHead>Runtime</TableHead>
+                <TableHead>Memory</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {submissions.map(({ id, statusDesc, statusId, memoryUsage, runtime, language, createdAt }) => {
+                return (
+                  <TableRow
+                    key={id}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setActiveSubmissionId(id);
+                      setFetchSubmissionsLoading(true);
+                    }}
+                  >
+                    <TableCell className="font-medium">
+                      <div className={`font-bold ${statusId > 3 ? "text-red-800" : "text-[#0E902A]"}`}>
+                        {statusDesc}
+                      </div>
+                      <div className="text-xs mt-1">{getTimeFromDateTime(createdAt)}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-xs rounded-full px-2 py-1 max-w-min bg-gray-600">{language.label}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <Clock4 size={16} />
+                        <span>{runtime} ms</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      <div className="flex items-center gap-1">
+                        <Cpu size={16} />
+                        <span>{Math.floor(memoryUsage / 1024)} MB</span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        ) : (
+          <>No Submission Yet!</>
+        )}
+      </div>
+    );
+  }
 };
 
 export default SubmissionList;

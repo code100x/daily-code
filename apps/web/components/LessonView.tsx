@@ -1,12 +1,23 @@
-import { Blog } from "./Blog";
-import { CodeProblemRenderer } from "./code/CodeProblemRenderer";
+import { Blog } from "../../../packages/ui/src/Blog";
+import { CodeProblemRenderer } from "../../../packages/ui/src/code/CodeProblemRenderer";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import MCQQuestionRenderer from "./MCQQuestionRenderer";
+import MCQQuestionRenderer from "../../../packages/ui/src/MCQQuestionRenderer";
 import db from "@repo/db/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../lib/auth";
+
 const getSubmissions = async (problemStatementId: string) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    return null;
+  }
+
+  const userId = session.user.id;
   const submissions = await db.submission.findMany({
     where: {
       problemStatementId,
+      userId,
     },
     include: {
       language: true,
