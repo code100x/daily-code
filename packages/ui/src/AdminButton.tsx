@@ -15,7 +15,6 @@ export const AdminButton = () => {
   async function fetchUserDetailsClient() {
     try {
       const userDetails = await getUserDetails();
-      alert(JSON.stringify(userDetails));
     } catch (e) {
       return [];
     }
