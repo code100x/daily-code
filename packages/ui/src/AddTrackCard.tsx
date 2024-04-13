@@ -5,22 +5,26 @@ import { Input } from "./shad/ui/input";
 import { Button } from "./shad/ui/button";
 import { useToast } from "./shad/ui/use-toast";
 import { createTrack } from "../../../apps/web/components/utils";
+import { Categories } from "@prisma/client";
+import { Track } from "@prisma/client";
 
-interface Track {
-  title: string;
-  description: string;
-  image: string;
-  hidden: boolean;
-}
-
-const AddTrackCard = () => {
+const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
   const [newTracks, setNewProblems] = useState<Track[]>([]);
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [hidden, setHidden] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const { toast } = useToast();
+
+  function handleFilterButton(category: string) {
+    if (category == selectedCategory) {
+      setSelectedCategory("");
+    } else {
+      setSelectedCategory(category);
+    }
+  }
 
   return (
     <div>
@@ -57,6 +61,18 @@ const AddTrackCard = () => {
             setImage(event.target.value);
           }}
         />
+        <div className="flex lg:flex-row justify-evenly mx-auto py-1">
+          {categories.map((category, i) => (
+            <Button
+              key={i}
+              variant="ghost"
+              onClick={() => handleFilterButton(category.id)}
+              className={selectedCategory == category.id ? "bg-gray-100 dark:bg-slate-700" : ""}
+            >
+              {category.category}
+            </Button>
+          ))}
+        </div>
         <Button variant={"ghost"} onClick={() => setHidden(!hidden)}>
           {hidden ? "Hidden" : "Visible"}
         </Button>
@@ -64,8 +80,8 @@ const AddTrackCard = () => {
           disabled={!title || !description || !image}
           className="w-full mt-4"
           onClick={() => {
-            createTrack({ id, title, description, image, hidden });
-            newTracks.push({ title, description, image, hidden });
+            createTrack({ id, title, description, image, hidden, selectedCategory });
+            newTracks.push({ title, description, image, hidden, selectedCategory });
             toast({
               title: "Added a Track",
               description: "a new Track added",
@@ -87,6 +103,7 @@ const AddTrackCard = () => {
                 <CardHeader>
                   <CardTitle>{Track.title}</CardTitle>
                   <CardDescription>{Track.description}</CardDescription>
+                  <CardDescription>{Track.selectedCategory}</CardDescription>
                 </CardHeader>
                 <CardContent>{`hidden: ${Track.hidden}`}</CardContent>
               </div>

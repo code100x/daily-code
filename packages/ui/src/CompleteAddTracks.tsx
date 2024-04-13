@@ -1,25 +1,37 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "./shad/ui/input";
-import { Button } from "./shad/ui/button";
+import { Categories } from "@prisma/client";
 import CompleteTrackCard from "./CompleteTrackCard";
+import { Button } from "./shad/ui/button";
 
 interface CompleteTrack {
   trackId: string;
   trackTitle: string;
   trackDescription: string;
   trackImage: string;
+  selectedCategory: string;
 }
 
-const CompleteAddTracks = () => {
+const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
   const [notionId, setNotionId] = useState("");
   const [trackId, setTrackId] = useState("");
   const [trackTitle, setTrackTitle] = useState("");
   const [trackDescription, setTrackDescription] = useState("");
   const [trackImage, setTrackImage] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [trackData, setTrackData] = useState<CompleteTrack>({} as CompleteTrack);
+
+  function handleFilterButton(category: string) {
+    if (category == selectedCategory) {
+      setSelectedCategory("");
+    } else {
+      setSelectedCategory(category);
+    }
+  }
+
   useEffect(() => {
-    setTrackData({ trackId, trackDescription, trackTitle, trackImage });
+    setTrackData({ trackId, trackDescription, trackTitle, trackImage, selectedCategory });
   }, [trackId, trackDescription, trackTitle, trackImage]);
   return (
     <div className="flex flex-col justify-center">
@@ -48,6 +60,18 @@ const CompleteAddTracks = () => {
         <div className="flex justify-center">
           <div className="mr-3">{"NotionId: "}</div>
           <Input className="w-1/3 mr-3" onChange={(e) => setNotionId(e.target.value)} placeholder="NotionId" />
+        </div>
+        <div className="flex lg:flex-row justify-evenly mx-auto py-1">
+          {categories.map((category, i) => (
+            <Button
+              key={i}
+              variant="ghost"
+              onClick={() => handleFilterButton(category.id)}
+              className={selectedCategory == category.id ? "bg-gray-100 dark:bg-slate-700" : ""}
+            >
+              {category.category}
+            </Button>
+          ))}
         </div>
         <div className="flex justify-center">
           <CompleteTrackCard notionId={notionId} TrackData={trackData} />

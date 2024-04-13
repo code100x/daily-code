@@ -140,7 +140,19 @@ export async function getAllTracks() {
 export async function createTrack(data: any) {
   try {
     const track = await db.track.create({
-      data,
+      data: {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        hidden: data.hidden,
+      },
+    });
+    await db.trackCategory.create({
+      data: {
+        trackId: data.id,
+        categoryId: data.selectedCategory,
+      },
     });
     return track;
   } catch (e) {
@@ -167,6 +179,7 @@ export async function getAllCategories() {
   try {
     const categories = await db.categories.findMany({
       select: {
+        id: true,
         category: true,
       },
       distinct: ["category"],

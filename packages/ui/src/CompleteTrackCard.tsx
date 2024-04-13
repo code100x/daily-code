@@ -23,6 +23,7 @@ interface CompleteTrackCard {
   trackTitle: string;
   trackDescription: string;
   trackImage: string;
+  selectedCategory: string;
 }
 
 const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackData: CompleteTrackCard }) => {
@@ -36,6 +37,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       problems: {
         create: dbData.reverse(),
       },
+      selectedCategory: TrackData.selectedCategory,
     });
   }
 
@@ -115,6 +117,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
                 <div className="col-span-5 flex items-center space-x-3">
                   <SheetTitle>{TrackData.trackTitle}</SheetTitle>
                   <SheetDescription>{TrackData.trackDescription}</SheetDescription>
+                  <SheetDescription>{TrackData.selectedCategory}</SheetDescription>
                 </div>
               </div>
             </SheetHeader>
