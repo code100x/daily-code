@@ -18,6 +18,7 @@ export const Categories = ({ categories }: { categories: { category: string }[] 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
   };
+
   return (
     <div className="relative">
       <div className="justify-evenly mx-auto border-2 rounded-full py-1 overflow-hidden w-2/3 hidden sm:hidden md:grid md:grid-cols-2 lg:flex">
