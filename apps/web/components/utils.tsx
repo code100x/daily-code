@@ -69,7 +69,7 @@ export async function getAllTracks() {
             },
           ],
         },
-        category: {
+        categories: {
           select: {
             category: true,
           },
@@ -84,6 +84,7 @@ export async function getAllTracks() {
       problems: track.problems.map((problem) => ({ ...problem.problem })),
     }));
   } catch (e) {
+    console.error(e);
     return [];
   }
 }
