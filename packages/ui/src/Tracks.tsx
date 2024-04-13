@@ -8,8 +8,11 @@ import { useEffect, useState } from "react";
 
 interface Tracks extends Track {
   problems: Problem[];
-  category: {
-    category: string;
+  categories: {
+    category: {
+      id: string;
+      category: string;
+    };
   }[];
 }
 
@@ -19,7 +22,7 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
   const filtereTracks = () => {
     let filteredTracks = tracks;
     if (selectedCategory.length > 0) {
-      filteredTracks = filteredTracks.filter((t) => t.category.some((c) => c.category === selectedCategory));
+      filteredTracks = filteredTracks.filter((t) => t.categories.some((c) => c.category.category === selectedCategory));
     }
     setFilteredTracks(filteredTracks);
   };
