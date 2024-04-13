@@ -7,7 +7,7 @@ yarn install
 ```
 > Copy the env example
 ```
-cd /packages/db
+cd packages/db
 cp .env.example .env
 ```
 >Update the .env file with the database url
