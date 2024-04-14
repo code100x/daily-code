@@ -1,3 +1,4 @@
+"use server";
 import db from "@repo/db/client";
 
 export async function getProblem(problemId: string | null) {
@@ -20,6 +21,61 @@ export async function getProblem(problemId: string | null) {
     });
     return problem;
   } catch (err) {
+    return null;
+  }
+}
+
+export async function getAllProblems() {
+  try {
+    const problems = await db.problem.findMany({
+      orderBy: {
+        id: "desc",
+      },
+    });
+    return problems;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function updateProblem(problemId: string, data: any) {
+  try {
+    const problem = await db.problem.update({
+      where: {
+        id: problemId,
+      },
+      data,
+    });
+    return problem;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function createProblem(data: any) {
+  try {
+    const problem = await db.problem.create({
+      data,
+    });
+    return problem;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function createTrackProblems(data: any) {
+  try {
+    const trackProblems = await db.trackProblems.create({
+      data: {
+        trackId: data.trackId,
+        problemId: data.problemId,
+        sortingOrder: data.sortingOrder,
+      },
+    });
+    return trackProblems;
+  } catch (e) {
+    console.error(e);
     return null;
   }
 }
@@ -61,6 +117,7 @@ export async function getAllTracks() {
       include: {
         problems: {
           select: {
+            problemId: true,
             problem: true,
           },
           orderBy: [
@@ -88,11 +145,49 @@ export async function getAllTracks() {
     return [];
   }
 }
+export async function createTrack(data: any) {
+  try {
+    const track = await db.track.create({
+      data: {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        hidden: data.hidden,
+      },
+    });
+    await db.trackCategory.create({
+      data: {
+        trackId: data.id,
+        categoryId: data.selectedCategory,
+      },
+    });
+    return track;
+  } catch (e) {
+    console.log(e);
+    return new Error("Failed to create track");
+  }
+}
+
+export async function updateTrack(trackId: string, data: any) {
+  try {
+    const track = await db.track.update({
+      where: {
+        id: trackId,
+      },
+      data,
+    });
+    return track;
+  } catch (e) {
+    return null;
+  }
+}
 
 export async function getAllCategories() {
   try {
     const categories = await db.categories.findMany({
       select: {
+        id: true,
         category: true,
       },
       distinct: ["category"],

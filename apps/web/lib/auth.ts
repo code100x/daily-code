@@ -1,14 +1,12 @@
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import db from "@repo/db/client";
 import type { Adapter } from "next-auth/adapters";
 import { SessionStrategy } from "next-auth";
 
-const prisma = new PrismaClient();
-
 export const authOptions = {
-  adapter: PrismaAdapter(prisma) as Adapter,
+  adapter: PrismaAdapter(db) as Adapter,
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID || "",
@@ -31,9 +29,15 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }: any) {
+      const user = await db.user.findUnique({
+        where: {
+          id: token.sub,
+        },
+      });
       if (token) {
         session.accessToken = token.accessToken;
         session.user.id = token.sub;
+        session.user.admin = user?.admin;
       }
       return session;
     },
