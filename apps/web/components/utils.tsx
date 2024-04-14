@@ -189,3 +189,49 @@ export async function getAllCategories() {
     return [];
   }
 }
+
+export async function getUsersHistory(email: string) {
+  try {
+    const history = await db.history.findMany({
+      where: {
+        userEmail: email,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      include: {
+        track: {
+          select: {
+            title: true,
+            description: true,
+            image: true,
+          },
+        },
+      },
+    });
+    return history;
+  } catch (e) {
+    console.log("the fetchHistory function failed backend", e);
+    return [];
+  }
+}
+
+export async function updateUserHistory(email: string, trackId: string, problemId: string) {
+  try {
+    const history = await db.history.upsert({
+      where: { id: email + trackId },
+      update: { problemId: problemId, updatedAt: new Date(), userEmail: email },
+      create: {
+        id: email + trackId,
+        userEmail: email,
+        trackId: trackId,
+        problemId: problemId,
+        updatedAt: new Date(),
+      },
+    });
+    return history;
+  } catch (e) {
+    console.error("Error in updateUserHistory:", e);
+    return [];
+  }
+}

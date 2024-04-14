@@ -50,6 +50,7 @@ model User {
   admin         Boolean   @default(false)
   accounts      Account[]
   sessions      Session[]
+  history       History[]
 }
 
 model VerificationToken {
@@ -67,6 +68,7 @@ model Track {
   image       String
   categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
+  history     History[]
   hidden      Boolean        @default(false)
   createdAt   DateTime       @default(now())
 }
@@ -93,6 +95,7 @@ model Problem {
   mcqQuestions  MCQQuestion[]
   type          ProblemType
   trackProblems TrackProblems[]
+  history       History[]
 }
 
 model TrackProblems {
@@ -120,4 +123,15 @@ model MCQQuestion {
   correctOption String
   problem       Problem  @relation(fields: [problemId], references: [id])
   problemId     String
+}
+
+model History {
+  id          String   @unique
+  email       User     @relation(fields: [userEmail], references: [email])
+  track       Track    @relation(fields: [trackId], references: [id])
+  problem     Problem  @relation(fields: [problemId], references: [id])
+  userEmail   String
+  trackId     String
+  problemId   String
+  updatedAt   DateTime @updatedAt
 }
