@@ -35,7 +35,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       description: TrackData.trackDescription,
       image: TrackData.trackImage,
       hidden: false,
-      problems: problems.reverse(),
+      problems: problems,
       selectedCategory: TrackData.selectedCategory,
     });
     setIsSubmitting(true);
