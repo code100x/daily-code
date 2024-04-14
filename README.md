@@ -23,6 +23,13 @@ npx prisma migrate dev
 npx prisma db seed
 ```
 
+> If previous commands fail, try these; Otherwise, skip.
+
+```
+yarn prisma migrate dev
+yarn prisma db seed
+```
+
 > Run locally
 
 ```
