@@ -11,7 +11,8 @@
     "./utils": "./lib/utils.ts",
     "./pages": "./src/pages/index.ts",
     "./toast": "./src/shad/ui/toast.tsx",
-    "./use-toast": "./src/shad/ui/use-toast.ts"
+    "./use-toast": "./src/shad/ui/use-toast.ts",
+    "./toaster": "./src/shad/ui/toaster.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
