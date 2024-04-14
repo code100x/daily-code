@@ -133,5 +133,5 @@ model History {
   userEmail   String
   trackId     String
   problemId   String
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now())
 }

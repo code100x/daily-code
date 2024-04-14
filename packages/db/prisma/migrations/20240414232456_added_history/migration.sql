@@ -4,8 +4,7 @@ CREATE TABLE "History" (
     "userEmail" TEXT NOT NULL,
     "trackId" TEXT NOT NULL,
     "problemId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateIndex
