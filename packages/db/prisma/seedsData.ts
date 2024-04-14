@@ -260,6 +260,7 @@ const seedsData: any[] = [
       id: "Auth",
       title: "Authentication",
       description: "How to implement authentication in your website.",
+      link: "https://app.100xdevs.com/courses/3/242/243",
       image: "https://ideogram.ai/api/images/direct/C_U7Xo9YQiib6JjbreU2VQ.png",
       problems: {
         create: [
@@ -368,6 +369,7 @@ const seedsData: any[] = [
       id: "CI-CD",
       title: "CI/CD",
       description: "In this track we will learn how to implement a CI/CD pipeline in a project.",
+      link: "https://app.100xdevs.com/courses/3/248/251",
       image: "https://ideogram.ai/api/images/direct/qFSLlUDkRYWiXfKI568IAQ.png",
       problems: {
         create: [
@@ -476,6 +478,7 @@ const seedsData: any[] = [
       id: "Next-Auth",
       title: "Next Auth",
       description: "Next Auth",
+      link: "https://app.100xdevs.com/courses/3/242/244",
       image: "https://ideogram.ai/api/images/direct/DOyT3lzCRYW0PhiM_hCZcQ.png",
       problems: {
         create: [
@@ -597,6 +600,7 @@ const seedsData: any[] = [
       title: "PayTM Part-2",
       description:
         "In this track, we’ll be gong through how to do transfers, transactions and locking in databases using prisma and raw queries",
+      link: "https://app.100xdevs.com/courses/3/245/247",
       image: "https://ideogram.ai/api/images/direct/wIt-n7k4TKabrbX_c_ndlw.jpg",
       problems: {
         create: [
@@ -670,6 +674,7 @@ const seedsData: any[] = [
       title: "Paytm Project",
       description:
         "In this track, we'll be going through the basics of making a wallet app that lets users onramp money via a fake bank account. We'll understand how banking APIs work for a wallet like app",
+      link: "https://app.100xdevs.com/courses/3/245/246",
       image: "https://ideogram.ai/api/images/direct/qWIQ73KUSROpB_HU9oXceA.png",
       problems: {
         create: [
@@ -922,6 +927,7 @@ const seedsData: any[] = [
       id: "Redis",
       title: "Redis (Pub subs and Messaging queues)",
       description: "Redis (Pub subs and Messaging queues)",
+      link: "https://app.100xdevs.com/courses/3/267/271",
       image: "https://ideogram.ai/api/images/direct/K0Dt_L3yQoeglSJ3jr4Eug.png",
       problems: {
         create: [
@@ -1043,6 +1049,7 @@ const seedsData: any[] = [
       title: "SQL databases",
       description:
         "In this track, we'll be learning about SQL databases, and how they're different from NoSQL databases. Learn about advance concepts like Joins, pg library in Node and indexing.",
+      link: "https://app.100xdevs.com/courses/3/198/204",
       image: "https://ideogram.ai/api/images/direct/UZh0ApDiRy2R19p8nl7WAg.jpg",
       problems: {
         create: [
@@ -1187,6 +1194,7 @@ const seedsData: any[] = [
       id: "ZSQI8YNE0iL6sT1hJpts",
       title: "Code along - Vercel ",
       description: "Code along - Vercel ",
+      link: "https://www.youtube.com/watch?v=c8_tafixiAs",
       image: "https://assets.vercel.com/image/upload/front/favicon/vercel/180x180.png",
       problems: {
         create: [
@@ -1248,6 +1256,7 @@ const seedsData: any[] = [
       title: "Blogging website",
       description:
         "In this track, we'll be going through how to make a medium like blogging app. We'll be understanding how to do this in a serverless fashion, using cloudflare workers, prisma as the ORM, typescript as the language",
+      link: "https://app.100xdevs.com/courses/3/213/214",
       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz2JNi7i-tVvk8yJfVwcle9Un3t0MMRYhLUlV7r5bOYw&s",
       problems: {
         create: [
@@ -1441,6 +1450,7 @@ const seedsData: any[] = [
       title: "Docker End to End",
       description:
         "This track is about docker end to end. We'll learn about common docker commands, docker archtecture, port mappings etc",
+      link: "https://app.100xdevs.com/courses/3/234/235",
       image: "https://ideogram.ai/api/images/direct/P-uQaLJmSp-KOuPYpEpFNA.png",
       problems: {
         create: [
@@ -1717,6 +1727,7 @@ const seedsData: any[] = [
       id: "docker-easy",
       title: "Actionable Docker",
       description: "In this module, we'll be going through how you can use docker to start packages locally.",
+      link: "https://app.100xdevs.com/courses/3/198/203",
       image:
         "https://images.ctfassets.net/o7xu9whrs0u9/4sYuVlC3grWV9xqiALyYr2/a52875856c016db3eb86c1d8adced886/Docker.logo2_.png",
       problems: {
@@ -1802,6 +1813,7 @@ const seedsData: any[] = [
       id: "dsa",
       title: "Intro Class - DSA",
       description: "In this track we will learn about Strings and Arrays.",
+      link: "https://app.100xdevs.com/courses/7/272/275",
       image: "https://ideogram.ai/api/images/direct/eF2Q6kwpS4Wgu0eU8JGHfg.png",
       problems: {
         create: [
@@ -1898,6 +1910,7 @@ const seedsData: any[] = [
       id: "dsa2",
       title: "Intro Class 2- DSA",
       description: "Intro Class 2- DSA",
+      link: "https://app.100xdevs.com/courses/7/273/276",
       image: "https://ideogram.ai/api/images/direct/WATNa7q5Q62czCUHBpPRVQ.jpg",
       problems: {
         create: [
@@ -2043,6 +2056,7 @@ const seedsData: any[] = [
       title: "Serverless Backends",
       description:
         "In this module, we will be going over serverless Backends. How can you deploy serverless backends (for free! without any cc). How can you work with cloudflare workers, what is connection pooling and why is it needed in case of serverless backends.",
+      link: "https://app.100xdevs.com/courses/3/195/196",
       image: "https://ideogram.ai/api/images/direct/ao08ccLSS6uyk5AtM2DWXQ.jpg",
       problems: {
         create: [
@@ -2200,6 +2214,7 @@ const seedsData: any[] = [
       title: "AWS Deploying (EC2)",
       description:
         "In this track, you'll learn about how you can deploy your applications to an EC2 instance on AWS. You'll also learn about reverse proxies, nginx and certificate management",
+      link: "https://app.100xdevs.com/courses/3/195/197",
       image: "https://ideogram.ai/api/images/direct/n_I1yUqySnOJr5JzQkIsMA.jpg",
       problems: {
         create: [
@@ -2309,6 +2324,7 @@ const seedsData: any[] = [
       title: "Prisma",
       description:
         "In this track, you'll learn about how to use prisma as your primary ORM in your Node.js app. We'll also learn about how to do relationships in Prisma,",
+      link: "https://app.100xdevs.com/courses/3/198/205",
       image: "https://ideogram.ai/api/images/direct/eOzDag8DS-C_d2yBfEiJHg.jpg",
       problems: {
         create: [
@@ -2466,6 +2482,7 @@ const seedsData: any[] = [
       title: "Turborepo and Monorepos",
       description:
         "In this track, we'll be going over how you can utilise turborepo to effectively create and build monorepos for bigger applications",
+      link: "https://app.100xdevs.com/courses/3/239/240",
       image: "https://user-images.githubusercontent.com/4060187/196936104-5797972c-ab10-4834-bd61-0d1e5f442c9c.png",
       problems: {
         create: [
@@ -2694,6 +2711,7 @@ const seedsData: any[] = [
       id: "mw",
       title: "Middlwares in next",
       description: "In this track we will  learn how to implement middlewares in next js",
+      link: "https://app.100xdevs.com/courses/3/267/268",
       image: "https://ideogram.ai/api/images/direct/AVvbTNZ7SVOCpY85Xbqscw.png",
       problems: {
         create: [
@@ -2767,6 +2785,7 @@ const seedsData: any[] = [
       title: "NextJS (Client side)",
       description:
         "In this track, we introduce Next.js and go through the basics of creating an application in Next. We learn about client side routing, server side rendering and server and client components",
+      link: "https://app.100xdevs.com/courses/3/228/230",
       image: "https://cdn.dribbble.com/userupload/9602981/file/original-e6f9ef9e2c570d0d612b1775155a4d63.png",
       problems: {
         create: [
@@ -2948,6 +2967,7 @@ const seedsData: any[] = [
       title: "NextJS (Server side)",
       description:
         "In this module, we'll understand about API routes, adding DBs to your backend app, and create the foundation for writing a backend app in NextJS",
+      link: "https://app.100xdevs.com/courses/3/228/231",
       image: "https://cdn.dribbble.com/userupload/9602981/file/original-e6f9ef9e2c570d0d612b1775155a4d63.png",
       problems: {
         create: [
@@ -3105,6 +3125,7 @@ const seedsData: any[] = [
       title: "PayTM project",
       description:
         "Build a PayTM wallet like app using mongodb, react and Express. Learn about transactions in databases which are essential for an app ",
+      link: "https://app.100xdevs.com/courses/3/169/172",
       image: "https://ideogram.ai/api/images/direct/cGIQ_0nWRvGvHn_0r5bsDw.jpg",
       problems: {
         create: [
@@ -3370,6 +3391,7 @@ const seedsData: any[] = [
       title: "CSR vs SSR vs SSG",
       description:
         "In this track we will learn about the difference between Cliet side rendering, Server side rendering and Static site generation.",
+      link: "https://app.100xdevs.com/courses/3/267/269",
       image: "https://ideogram.ai/api/images/direct/MvmuycuRTdipIS2mqqw1GQ.png",
       problems: {
         create: [
@@ -3418,6 +3440,7 @@ const seedsData: any[] = [
       id: "senior",
       title: "5 tools for senior engineers (Code without your mouse)",
       description: "In this track we will learn how to code without using a mouse",
+      link: "https://www.youtube.com/watch?v=yW0A6Je3bXI",
       image: "https://ideogram.ai/api/images/direct/BSMF4SpAR_-nJ78-a3CkFg.png",
       problems: {
         create: [
@@ -3527,6 +3550,7 @@ const seedsData: any[] = [
       title: "More Typescript APIs",
       description:
         "In this track, we'll go through some more advanced Typescript APIs. These include things like Pick, Exclue, Record which can get overwhelming the first time you look at them",
+      link: "https://app.100xdevs.com/courses/3/198/200",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/2048px-Typescript_logo_2020.svg.png",
       problems: {
@@ -3625,6 +3649,7 @@ const seedsData: any[] = [
       title: "Frontend Deployments on AWS",
       description:
         "In this track, you'll learn about how to create a frontend deployment on AWS. More specifically, you'll learn how you can deploy a React application over to AWS using S3 and cloudfront",
+      link: "https://app.100xdevs.com/courses/3/198/199",
       image: "https://logohistory.net/wp-content/uploads/2023/06/AWS-Emblem.png",
       problems: {
         create: [
