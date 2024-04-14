@@ -35,9 +35,7 @@ export function History() {
           const history = await getUsersHistory(email);
           console.log("history :", history);
           setHistory(history as HistoryItem[]);
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (e) {}
       }
     }
 
@@ -53,10 +51,7 @@ export function History() {
             await updateUserHistory(email, trackId, problemId);
             await fetchHistory();
           }
-        } catch (e) {
-          console.log("the updateuserhistory function failed");
-          console.log(e);
-        }
+        } catch (e) {}
       }
     }
     fetchHistory();

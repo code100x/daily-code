@@ -211,7 +211,6 @@ export async function getUsersHistory(email: string) {
     });
     return history;
   } catch (e) {
-    console.log("the fetchHistory function failed backend", e);
     return [];
   }
 }
@@ -231,7 +230,6 @@ export async function updateUserHistory(email: string, trackId: string, problemI
     });
     return history;
   } catch (e) {
-    console.error("Error in updateUserHistory:", e);
     return [];
   }
 }
