@@ -49,7 +49,18 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  bookmark      Bookmark[]
 }
+
+model Bookmark {
+  id      String @id @default(uuid())
+  user    String
+  userID  User @relation(fields: [user],references: [id], onDelete: Cascade)
+  track   String
+  trackID Track @relation(fields: [track],references: [id] , onDelete: Cascade)
+  createdAt DateTime          @default(now())
+}
+
 
 model VerificationToken {
   identifier String
@@ -66,8 +77,10 @@ model Track {
   image       String
   categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
-  hidden      Boolean        @default(false)
-  createdAt   DateTime       @default(now())
+  hidden      Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  track       Bookmark[]
+
 }
 
 model Categories {

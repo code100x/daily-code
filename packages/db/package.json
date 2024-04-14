@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "5.12.0",
-    "prisma": "^5.12.0"
+    "prisma": "^5.12.1"
   },
   "exports": {
     "./client": "./src/index.ts"

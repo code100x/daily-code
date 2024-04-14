@@ -37,7 +37,6 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
     redirect("/tracks/oAjvkeRNZThPMxZf4aX5");
   }
 
-  //@ts-ignore
   const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
 
   if (!problemId) {

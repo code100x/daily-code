@@ -2,14 +2,21 @@
 
 import { Button } from "./shad/ui/button";
 import { Problem, Track } from "@prisma/client";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
+import {
+  BookmarkFilledIcon,
+  BookmarkIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DownloadIcon,
+} from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track & { problems: Problem[] } }) => {
+  const [BookMarkStatus, setBookMarkStatus] = useState<Boolean | null>(null);
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p.id === problem.id);
   }, [track, problem]);
@@ -26,15 +33,14 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") {
         router.push(
-         problemIndex + 1 === track.problems.length
+          problemIndex + 1 === track.problems.length
             ? ``
             : `/tracks/${track.id}/${track.problems[problemIndex + 1]?.id}`
         );
       } else if (event.key === "ArrowLeft") {
-         router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]?.id}` : ``);
+        router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]?.id}` : ``);
       }
     };
-
     // Add event listener for keydown events
     window.addEventListener("keydown", handleKeyPress);
 
