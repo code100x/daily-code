@@ -2,17 +2,16 @@ import Link from "next/link";
 import { Button } from ".";
 import { AdminButton } from "./AdminButton";
 import { ModeToggle } from "./ModeToggle";
-import { signIn, signOut } from "next-auth/react";
-
-import { useSession } from "next-auth/react";
-
+import { authOptions } from "../../../apps/web/lib/auth";
+import { getServerSession } from "next-auth";
 import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
+import LoginButton from "./LoginButton";
 
-export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
-  const session = useSession();
-  const user = session.data?.user;
-  const admin = false;
+export const Appbar = async ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+  const admin = session?.user?.admin;
 
   return (
     <div className="bg-zinc-50 dark:bg-zinc-950 p-3 flex justify-center border-b shadow-md sticky top-0 z-50">
@@ -23,31 +22,7 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
         <div className="flex items-center gap-2">
           <SearchDialog tracks={tracks} />
           {admin && <AdminButton />}
-
-          {!user ? (
-            <Button
-              variant={"outline"}
-              onClick={async () => {
-                await signIn();
-              }}
-            >
-              Login
-            </Button>
-          ) : (
-            ""
-          )}
-          {user ? (
-            <Button
-              variant={"outline"}
-              onClick={async () => {
-                await signOut();
-              }}
-            >
-              Logout
-            </Button>
-          ) : (
-            ""
-          )}
+          <LoginButton user={user} />
 
           <ModeToggle />
         </div>

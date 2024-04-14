@@ -1,5 +1,3 @@
-"use client";
-
 import { Appbar } from "@repo/ui/components";
 import { Track, Problem } from "@prisma/client";
 
