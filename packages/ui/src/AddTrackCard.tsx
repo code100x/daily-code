@@ -79,9 +79,9 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
         <Button
           disabled={!title || !description || !image}
           className="w-full mt-4"
-          onClick={() => {
-            createTrack({ id, title, description, image, hidden, selectedCategory });
-            newTracks.push({ title, description, image, hidden, selectedCategory });
+          onClick={async () => {
+            await createTrack({ problems: [], id, title, description, image, hidden, selectedCategory });
+            setNewProblems((prev) => [...prev, { id, title, description, image, hidden, createdAt: new Date() }]);
             toast({
               title: "Added a Track",
               description: "a new Track added",

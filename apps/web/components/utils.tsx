@@ -1,5 +1,5 @@
 "use server";
-import db from "@repo/db/client";
+import db, { Prisma } from "@repo/db/client";
 
 export async function getProblem(problemId: string | null) {
   if (!problemId) {
@@ -153,8 +153,20 @@ export async function getAllTracks() {
     return [];
   }
 }
-export async function createTrack(data: any) {
+export async function createTrack(data: {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  selectedCategory?: string;
+  problems: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
+  hidden: boolean;
+}) {
   try {
+    await db.problem.createMany({
+      data: data.problems.map((x) => x.problem),
+    });
+
     const track = await db.track.create({
       data: {
         id: data.id,
@@ -162,14 +174,25 @@ export async function createTrack(data: any) {
         description: data.description,
         image: data.image,
         hidden: data.hidden,
+        problems: {
+          createMany: {
+            data: data.problems.map((problem) => ({
+              problemId: problem.problem.id,
+              sortingOrder: problem.sortingOrder,
+            })),
+          },
+        },
       },
     });
-    await db.trackCategory.create({
-      data: {
-        trackId: data.id,
-        categoryId: data.selectedCategory,
-      },
-    });
+
+    if (data.selectedCategory) {
+      await db.trackCategory.create({
+        data: {
+          trackId: data.id,
+          categoryId: data.selectedCategory,
+        },
+      });
+    }
     return track;
   } catch (e) {
     console.log(e);
