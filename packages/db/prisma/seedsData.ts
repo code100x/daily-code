@@ -5,6 +5,7 @@ const seedsData: any[] = [
       title: "Typescript",
       description:
         "Learn about strongly typed languages, Typescript and how you can integrate it into your existing javascript codebase.",
+      link: "https://app.100xdevs.com/courses/3/178/180",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/2048px-Typescript_logo_2020.svg.png",
       problems: {
@@ -150,6 +151,7 @@ const seedsData: any[] = [
       id: "ABEC",
       title: "Advance BE communication",
       description: "Advance BE communication",
+      link: "https://app.100xdevs.com/courses/3/267/270",
       image: "https://ideogram.ai/api/images/direct/Vcvn3dlBTWaSLp4kSDppAQ.jpg",
       problems: {
         create: [

@@ -1,10 +1,9 @@
 "use client";
-
 import { Button } from "./shad/ui/button";
 import { Problem, Track } from "@prisma/client";
 import { useEffect, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon, PlayIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
@@ -26,12 +25,12 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") {
         router.push(
-         problemIndex + 1 === track.problems.length
+          problemIndex + 1 === track.problems.length
             ? ``
             : `/tracks/${track.id}/${track.problems[problemIndex + 1]?.id}`
         );
       } else if (event.key === "ArrowLeft") {
-         router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]?.id}` : ``);
+        router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]?.id}` : ``);
       }
     };
 
@@ -59,6 +58,20 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         </div>
 
         <div className="flex space-x-2">
+          <Link
+            prefetch={true}
+            target="_blank"
+            href={`${track.link}`}
+            style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
+          >
+            <Button variant="outline" className="ml-2 bg-black text-white">
+              Watch
+              <div className="pl-2">
+                <PlayIcon />
+              </div>
+            </Button>
+          </Link>
+
           <Link
             prefetch={true}
             href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}

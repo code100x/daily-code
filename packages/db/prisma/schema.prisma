@@ -63,6 +63,7 @@ model Track {
   id          String         @id @default(uuid())
   title       String
   description String
+  link        String?
   image       String
   categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
