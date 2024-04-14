@@ -8,6 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
+import UserAccountDropDown from "./UserAccountDropDown";
 
 export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track & { problems: Problem[] } }) => {
   const problemIndex = useMemo(() => {
@@ -26,12 +27,12 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") {
         router.push(
-         problemIndex + 1 === track.problems.length
+          problemIndex + 1 === track.problems.length
             ? ``
             : `/tracks/${track.id}/${track.problems[problemIndex + 1]?.id}`
         );
       } else if (event.key === "ArrowLeft") {
-         router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]?.id}` : ``);
+        router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]?.id}` : ``);
       }
     };
 
@@ -101,6 +102,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
               </div>
             </Button>
           </Link>
+          <UserAccountDropDown />
         </div>
       </div>
 
