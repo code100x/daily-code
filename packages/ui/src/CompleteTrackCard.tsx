@@ -1,14 +1,6 @@
+import { Prisma, ProblemType } from "@prisma/client";
 import { useEffect, useState } from "react";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./shad/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./shad/ui/sheet";
 import EditProblem from "./EditProblem";
 import { Button } from "./shad/ui/button";
 import { createTrack } from "../../../apps/web/components/utils";
@@ -26,46 +18,32 @@ interface CompleteTrackCard {
   selectedCategory: string;
 }
 
+export interface Problem {
+  sortingOrder: number;
+  id: string;
+  notionDocId: string;
+  title: string;
+  description: string;
+  type: string;
+}
 const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackData: CompleteTrackCard }) => {
-  function handleAddTrack() {
+  async function handleAddTrack() {
     setIsSubmitting(true);
-    createTrack({
+    await createTrack({
       id: TrackData.trackId,
       title: TrackData.trackTitle,
       description: TrackData.trackDescription,
       image: TrackData.trackImage,
-      problems: {
-        create: dbData.reverse(),
-      },
+      hidden: false,
+      problems: problems.reverse(),
       selectedCategory: TrackData.selectedCategory,
     });
+    setIsSubmitting(true);
   }
 
-  const [problemData, setProblemData] = useState<CompleteProblemCard[]>([]);
   const [addButton, setAddButton] = useState(false);
-  const [dbData, setDbData] = useState([]);
+  const [problems, setProblems] = useState<{ problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    const dbData = [];
-
-    for (let i = 0; i < problemData.length; i++) {
-      let problem = {
-        sortingOrder: problemData.length - i,
-        problem: {
-          create: {
-            id: problemData[i]?.id,
-            notionDocId: problemData[i]?.notionDocId,
-            title: problemData[i]?.title,
-            description: problemData[i]?.title,
-            type: "Blog",
-          },
-        },
-      };
-      dbData.push(problem);
-    }
-    setDbData(dbData);
-  }, [problemData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,11 +56,22 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
           body: JSON.stringify({ notionId }),
         });
         if (response.ok) {
-          const data = await response.json();
-          data.forEach((problem, i) => {
-            problem.id = `${TrackData.trackTitle.replace(" ", "")}-${i + 1}`;
-          });
-          setProblemData(data);
+          const data: { notionDocId: string; title: string }[] = await response.json();
+
+          const dbData: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[] = [];
+
+          for (let i = 0; i < data.length; i++) {
+            let problem = {
+              id: `${TrackData.trackTitle.replace(" ", "")}-${i + 1}`,
+              notionDocId: data[i]?.notionDocId!,
+              title: data[i]?.title!,
+              description: data[i]?.title!,
+              type: ProblemType.Blog,
+            };
+            dbData.push({ problem, sortingOrder: data.length - i });
+          }
+
+          setProblems(dbData);
         } else {
           throw new Error("Failed to fetch data");
         }
@@ -123,7 +112,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
             </SheetHeader>
           </div>
           <div className="text-5xl text-center mb-4"> Problem Details </div>
-          {problemData?.map((problem, i) => <EditProblem key={i} problem={problem} />)}
+          {problems?.map(({ problem }, i) => <EditProblem key={i} problem={problem} />)}
           <Button className="flex mx-auto w-1/2" onClick={handleAddTrack} disabled={isSubmitting}>
             Add Track
           </Button>

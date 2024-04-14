@@ -2,16 +2,7 @@
 import { Button } from "./shad/ui/button";
 import { TrackProblems, Track } from "@prisma/client";
 import { Input } from "./shad/ui/input";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./shad/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "./shad/ui/sheet";
 import ProblemCard from "./ProblemCard";
 import { useState } from "react";
 import { createTrackProblems } from "../../../apps/web/components/utils";
@@ -55,6 +46,8 @@ const LinkCard = ({ track }: { track: LinkCardProps }) => {
             className="ml-3"
             onClick={() => {
               handleAddProblem();
+              //TODO: Fix type here
+              // @ts-ignore
               setNewProblems([...newProblems, { problemId, sortingOrder }]);
             }}
           >
@@ -73,6 +66,7 @@ const LinkCard = ({ track }: { track: LinkCardProps }) => {
         <div className="text-2xl text-center mb-4">Existing Problems</div>
         <div className="space-y-4">
           {problems.map((problem, i) => (
+            // @ts-ignore
             <ProblemCard key={i} problem={problem} />
           ))}
         </div>

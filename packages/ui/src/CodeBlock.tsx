@@ -4,7 +4,7 @@ import javascript from "highlight.js/lib/languages/javascript";
 import styles from "../app/CodeBlock.module.css";
 import "highlight.js/styles/github-dark.css";
 
-export default function CodeBlock({ block }) {
+export default function CodeBlock({ block }: { block: any }) {
   const code: string = block.properties.title[0].toString();
   hljs.registerLanguage("javascript", javascript);
   console.log(block);
