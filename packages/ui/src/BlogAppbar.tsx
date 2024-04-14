@@ -26,6 +26,23 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   const [visible, setVisible] = useState(true);
   const [scrollingDown, setScrollingDown] = useState(false);
 
+  const debounce = (func: any, delay: any) => {
+    let timeoutId: any;
+    return (...args: any) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const debouncedHandleScroll = debounce(() => {
+    const currentScrollPos = window.scrollY;
+    setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 50);
+    setScrollingDown(prevScrollPos < currentScrollPos);
+    setPrevScrollPos(currentScrollPos);
+  }, 90); // Adjust the delay (in milliseconds) as needed
+
   const handleScroll = () => {
     const currentScrollPos = window.scrollY;
     setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 50);
@@ -34,11 +51,11 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", debouncedHandleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", debouncedHandleScroll);
     };
-  }, [prevScrollPos]);
+  }, [prevScrollPos, debouncedHandleScroll]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
