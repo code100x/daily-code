@@ -18,7 +18,7 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
   const [selectedCategory, setSelectedCategory] = useRecoilState(category);
 
   const handleCategoryChange = (category: string) => {
-    if (category === selectedCategory) {
+    if (category === selectedCategory || category === "All") {
       setSelectedCategory("");
     } else {
       setSelectedCategory(category);
@@ -27,14 +27,14 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
 
   return (
     <div>
-      <div className=" xl:hidden block ">
+      <div className=" block sm:hidden">
         <SelectCategory
           categories={categories}
           selectedCategory={selectedCategory}
           handleCategoryChange={handleCategoryChange}
         />
       </div>
-      <div className="xl:block hidden">
+      <div className="sm:block hidden">
         <ButtonCategory
           categories={categories}
           selectedCategory={selectedCategory}
@@ -57,6 +57,9 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
           <SelectValue placeholder={selectedCategory || "All Categories"}></SelectValue>
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value={"All"} key={"All"}>
+            {"All Categories"}
+          </SelectItem>
           {categories.map((category) => (
             <SelectItem value={category.category} key={category.category}>
               {category.category}
@@ -70,7 +73,7 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
 
 const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
   return (
-    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
+    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3 overflow-auto scroll-smooth no-scrollbar">
       {categories.map((category) => (
         <Button
           key={category.category}
