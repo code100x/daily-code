@@ -10,8 +10,6 @@ const getDefaultCode = (language: string, funcName: string, paramNames: string[]
   switch (language) {
     case "javascript":
       return `const ${funcName} = (${paramNames.join(",")}) => {}`;
-    case "cpp":
-      return ``;
     default:
       return ``;
   }

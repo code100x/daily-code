@@ -47,7 +47,7 @@ model User {
   email         String?      @unique
   emailVerified DateTime?
   image         String?
-  admin         Boolean   @default(false)
+  admin         Boolean      @default(false)
   accounts      Account[]
   sessions      Session[]
   submissions   Submission[]
@@ -114,9 +114,8 @@ model TestCase {
   expectedOutput     String
   problemStatement   ProblemStatement @relation(fields: [problemStatementId], references: [id])
   problemStatementId String
-
-  inputs     String[]
-  Submission Submission[]
+  inputs             String[]
+  Submission         Submission[]
 }
 
 model CodeLanguage {

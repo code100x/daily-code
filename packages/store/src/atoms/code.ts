@@ -1,5 +1,5 @@
-import { atom, atomFamily, selector } from "recoil";
-
+import { atom, selector } from "recoil";
+import { TestCase } from "@prisma/client";
 export const languageState = atom({
   key: "languageState",
   default: "javascript",
@@ -59,4 +59,9 @@ export const activeSubmissionResultSelector = selector({
     const submissionResult = get(submissionResultState);
     return activeSubmissionId && submissionResult ? submissionResult[activeSubmissionId] : null;
   },
+});
+
+export const adminTestCasesState = atom<Omit<TestCase, "id" | "problemStatementId">[]>({
+  key: "adminTestCasesState",
+  default: [],
 });

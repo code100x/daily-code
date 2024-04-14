@@ -1,5 +1,6 @@
 "use server";
 import db from "@repo/db/client";
+import { ProblemStatement, TestCase, CodeLanguage } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
   if (!problemId) {
@@ -31,6 +32,9 @@ export async function getAllProblems() {
       orderBy: {
         id: "desc",
       },
+      include: {
+        problemStatement: true,
+      },
     });
     return problems;
   } catch (e) {
@@ -60,6 +64,34 @@ export async function createProblem(data: any) {
     });
     return problem;
   } catch (e) {
+    return null;
+  }
+}
+
+export async function createProblemStatement({
+  problemStatement,
+  languages,
+  testCases,
+}: {
+  problemStatement: Omit<ProblemStatement, "id">;
+  languages: CodeLanguage[];
+  testCases: Omit<TestCase, "id" | "problemStatementId">[];
+}) {
+  try {
+    const createdProblemStatement = await db.problemStatement.create({
+      data: {
+        ...problemStatement,
+        languagesSupported: {
+          connect: languages.map(({ id }) => ({ id })),
+        },
+        testCases: {
+          createMany: {
+            data: testCases,
+          },
+        },
+      },
+    });
+  } catch (e: any) {
     return null;
   }
 }
