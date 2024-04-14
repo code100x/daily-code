@@ -56,7 +56,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
 
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
-      <Button variant="outline" className="pr-2" onClick={() => setDialogOpen(true)}>
+      <Button variant="outline" className="px-2" onClick={() => setDialogOpen(true)}>
         <div className="md:flex gap-2 items-center hidden">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
           Search...

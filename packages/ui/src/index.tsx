@@ -7,3 +7,4 @@ export * from "./LessonView";
 export * from "./shad/ui/dailog";
 export * from "./Categories";
 export * from "./Tracks";
+export * from "./History";

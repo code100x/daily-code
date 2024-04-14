@@ -49,6 +49,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
   }
 
   if (trackDetails && problemDetails) {
+    const allTracks = await cache(getAllTracks)();
     return (
       <div>
         <LessonView
@@ -58,6 +59,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
             ...problemDetails,
             notionRecordMap,
           }}
+          allTracks={allTracks}
         />
       </div>
     );
