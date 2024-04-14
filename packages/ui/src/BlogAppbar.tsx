@@ -58,12 +58,7 @@ export const BlogAppbar = ({ problem, track }: { problem: Problem; track: Track 
         </div>
 
         <div className="flex space-x-2">
-          <Link
-            prefetch={true}
-            target="_blank"
-            href={`${track.link}`}
-            style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
-          >
+          <Link target="_blank" href={`${track.link}`}>
             <Button variant="outline" className="ml-2 bg-black text-white">
               Watch
               <div className="pl-2">
