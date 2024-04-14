@@ -1,9 +1,13 @@
-import { Problem } from "@prisma/client";
+import { Problem, ProblemStatement } from "@prisma/client";
 import { ScrollArea } from "./shad/ui/scroll-area";
 import ProblemCard from "./ProblemCard";
 import AddProblemCard from "./AddProblemCard";
 
-export const ProblemEditor = ({ problems }: { problems: Problem[] }) => {
+export const ProblemEditor = ({
+  problems,
+}: {
+  problems: (Problem & { problemStatement: ProblemStatement | null })[];
+}) => {
   return (
     <div className="grid grid-cols-2">
       <ScrollArea className="h-screen m-2">
