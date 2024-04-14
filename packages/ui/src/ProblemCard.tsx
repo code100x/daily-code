@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { Button } from "./shad/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
-import { Problem } from "@prisma/client";
+import { Problem, ProblemStatement } from "@prisma/client";
 import { Input } from "./shad/ui/input";
 import { updateProblem } from "../../../apps/web/components/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select";
+import { useRouter } from "next/navigation";
 
-const ProblemCard = ({ problem }: { problem: Problem }) => {
+const ProblemCard = ({ problem }: { problem: Problem & { problemStatement: ProblemStatement | null } }) => {
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(problem.id);
   const [title, setTitle] = useState(problem.title);
@@ -33,14 +35,21 @@ const ProblemCard = ({ problem }: { problem: Problem }) => {
       {!isEditing && (
         <div>
           <CardHeader>
-            <div className="flex justify-between">
+            <div className="flex justify-between items-start">
               <div>
                 <CardTitle>{id}</CardTitle>
                 <CardTitle>{title}</CardTitle>
               </div>
-              <Button variant={"outline"} className="" onClick={() => handleEdit(problem.id)}>
-                Edit
-              </Button>
+              <div className="flex gap-4 items-center">
+                {problem.type === "Code" && !problem.problemStatement && (
+                  <Button onClick={() => router.push(`/admin/code/${problem.id}`)} variant={"outline"}>
+                    Add Problem Statement
+                  </Button>
+                )}
+                <Button variant={"outline"} className="" onClick={() => handleEdit(problem.id)}>
+                  Edit
+                </Button>
+              </div>
             </div>
             <CardDescription>{description}</CardDescription>
             <CardDescription>{type}</CardDescription>
