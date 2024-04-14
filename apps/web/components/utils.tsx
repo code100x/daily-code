@@ -1,5 +1,6 @@
 "use server";
-import db, { Prisma } from "@repo/db/client";
+import db from "@repo/db/client";
+import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
   if (!problemId) {
@@ -177,8 +178,8 @@ export async function createTrack(data: {
         problems: {
           createMany: {
             data: data.problems.map((problem) => ({
-              problemId: problem.problem.id,
-              sortingOrder: problem.sortingOrder,
+              problemId: problem.problem.id!,
+              sortingOrder: problem.sortingOrder!,
             })),
           },
         },

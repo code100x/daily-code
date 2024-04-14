@@ -103,7 +103,6 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
                 <CardHeader>
                   <CardTitle>{Track.title}</CardTitle>
                   <CardDescription>{Track.description}</CardDescription>
-                  <CardDescription>{Track.selectedCategory}</CardDescription>
                 </CardHeader>
                 <CardContent>{`hidden: ${Track.hidden}`}</CardContent>
               </div>
