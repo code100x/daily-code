@@ -17,6 +17,22 @@ export async function getProblem(problemId: string | null) {
   }
 }
 
+export async function getFirstProblemForTrack(trackId: string) {
+  try {
+    const track = await db.track.findUnique({
+      where: {
+        id: trackId,
+      },
+      select: {
+        problems: true,
+      },
+    });
+    return track?.problems[0]?.problemId || null;
+  } catch (err) {
+    return null;
+  }
+}
+
 export async function getAllProblems() {
   try {
     const problems = await db.problem.findMany({
