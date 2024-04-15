@@ -101,9 +101,7 @@ export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
         </p>
 
         <div className="flex space-x-2">
-          {problem.type === "Code" && problem.problemStatement && (
-            <Codebar problemStatement={problem.problemStatement} />
-          )}
+          {<Codebar problemStatement={problem.problemStatement ?? ("" as any)} />}
           <PageToggle allProblems={track.problems} track={track} />
           <Link
             prefetch={true}
@@ -127,7 +125,7 @@ export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
             }
             style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="" disabled={problemIndex + 1 !== track.problems.length ? false : true}>
+            <Button variant="outline" disabled={problemIndex + 1 !== track.problems.length ? false : true}>
               Next
               <div className="pl-2">
                 <ChevronRightIcon />
@@ -136,7 +134,7 @@ export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
           </Link>
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className=" ">
+            <Button variant="outline">
               Download
               <div className="pl-2">
                 <DownloadIcon />
