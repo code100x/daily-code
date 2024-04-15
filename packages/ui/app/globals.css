@@ -92,11 +92,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
   background-color: #7d7d7d;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-track {
