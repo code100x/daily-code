@@ -65,8 +65,7 @@ const CodeSubmitButton = ({
 
   return (
     <Button
-      variant={"secondary"}
-      size={"sm"}
+      variant="outline"
       className="text-green-500"
       disabled={codeRunLoading || codeSubmitLoading}
       onClick={handleCodeSubmit}

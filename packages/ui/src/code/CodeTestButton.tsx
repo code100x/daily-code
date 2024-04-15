@@ -59,7 +59,7 @@ const CodeTestButton = ({
   };
 
   return (
-    <Button variant={"secondary"} size={"sm"} onClick={handleCodeRun} disabled={codeRunLoading || codeSubmitLoading}>
+    <Button variant="outline" onClick={handleCodeRun} disabled={codeRunLoading || codeSubmitLoading}>
       Run Code
     </Button>
   );

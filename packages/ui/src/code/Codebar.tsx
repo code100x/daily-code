@@ -16,18 +16,18 @@ export const Codebar = ({
 }) => {
   const codeSubmitLoading = useRecoilValue(codeSubmitLoadingState);
   return (
-    <div className="mr-4 w-40">
+    <>
       {codeSubmitLoading ? (
-        <Button variant={"secondary"} size={"sm"} className="text-green-500 px-10 animate-pulse">
+        <Button variant="outline" className="text-green-500 px-10 animate-pulse">
           <LoaderCircle className="animate-spin mr-3 text-[#CCC]" size={16} />
           Pending
         </Button>
       ) : (
-        <div className="flex justify-center content-center flex-1 gap-2 mr-4">
+        <>
           <CodeTestButton problemStatement={problemStatement} />
           <CodeSubmitButton problemStatement={problemStatement} />
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 };

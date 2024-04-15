@@ -2,7 +2,7 @@
 
 import { Button } from "./shad/ui/button";
 import { Problem, Track, CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
@@ -10,12 +10,9 @@ import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 import { Codebar } from "./code/Codebar";
 
-export const BlogAppbar = ({
-  problem,
-  track,
-}: {
+type BlogAppbarProps = {
   problem: Problem & { notionRecordMap: any } & {
-    problemStatement?:
+    problemStatement:
       | (ProblemStatement & {
           languagesSupported: CodeLanguage[];
           testCases: TestCase[];
@@ -23,16 +20,28 @@ export const BlogAppbar = ({
       | null;
   };
   track: Track & { problems: Problem[] };
-}) => {
+};
+
+/**
+ * Debounce function to limit the number of times a function is called
+ * @param func any function
+ * @param timeout in milliseconds
+ * @returns debouncedFn
+ */
+const debounce = (func: Function, timeout = 300) => {
+  let timer: NodeJS.Timeout;
+  return (...args: any) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, timeout);
+  };
+};
+
+export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p.id === problem.id);
   }, [track, problem]);
-
-  let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
-
-  function setTheme(arg0: string) {
-    throw new Error("Function not implemented.");
-  }
 
   const router = useRouter();
 
@@ -40,36 +49,22 @@ export const BlogAppbar = ({
   const [visible, setVisible] = useState(true);
   const [scrollingDown, setScrollingDown] = useState(false);
 
-  const debounce = (func: any, delay: any) => {
-    let timeoutId: any;
-    return (...args: any) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        func(...args);
-      }, delay);
-    };
-  };
-
-  const debouncedHandleScroll = debounce(() => {
-    const currentScrollPos = window.scrollY;
-    setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 50);
-    setScrollingDown(prevScrollPos < currentScrollPos);
-    setPrevScrollPos(currentScrollPos);
-  }, 90); // Adjust the delay (in milliseconds) as needed
-
-  const handleScroll = () => {
-    const currentScrollPos = window.scrollY;
-    setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 50);
-    setScrollingDown(prevScrollPos < currentScrollPos);
-    setPrevScrollPos(currentScrollPos);
-  };
+  const debouncedHandleScroll = useCallback(
+    debounce(() => {
+      const currentScrollPos = window.scrollY;
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 50);
+      setScrollingDown(prevScrollPos < currentScrollPos);
+      setPrevScrollPos(currentScrollPos);
+    }, 90),
+    []
+  );
 
   useEffect(() => {
     window.addEventListener("scroll", debouncedHandleScroll);
     return () => {
       window.removeEventListener("scroll", debouncedHandleScroll);
     };
-  }, [prevScrollPos, debouncedHandleScroll]);
+  }, [debouncedHandleScroll]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -83,15 +78,11 @@ export const BlogAppbar = ({
         router.push(problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]?.id}` : ``);
       }
     };
-
-    // Add event listener for keydown events
     window.addEventListener("keydown", handleKeyPress);
-
-    // Clean up event listener
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, []); // empty dependency array ensures the effect runs only once
+  }, []);
 
   return (
     <div
@@ -101,25 +92,25 @@ export const BlogAppbar = ({
       style={{ transform: !visible && !scrollingDown ? "translateY(0)" : "" }}
     >
       <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
-        <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
-          <Link href={"/"}>DailyCode</Link>
-        </div>
+        <Link href={"/"} className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
+          DailyCode
+        </Link>
 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
-        {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
-        <div className="mb-2">
-          <PageToggle allProblems={track.problems} track={track} />
-        </div>
 
-        <div className="flex space-x-2 mb-2">
+        <div className="flex space-x-2">
+          {problem.type === "Code" && problem.problemStatement && (
+            <Codebar problemStatement={problem.problemStatement} />
+          )}
+          <PageToggle allProblems={track.problems} track={track} />
           <Link
             prefetch={true}
             href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
             style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="ml-2 bg-black text-white" disabled={problemIndex !== 0 ? false : true}>
+            <Button variant="outline" disabled={problemIndex !== 0 ? false : true}>
               <div className="pr-2">
                 <ChevronLeftIcon />
               </div>
@@ -136,11 +127,7 @@ export const BlogAppbar = ({
             }
             style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
           >
-            <Button
-              variant="outline"
-              className="bg-black text-white"
-              disabled={problemIndex + 1 !== track.problems.length ? false : true}
-            >
+            <Button variant="outline" className="" disabled={problemIndex + 1 !== track.problems.length ? false : true}>
               Next
               <div className="pl-2">
                 <ChevronRightIcon />
@@ -149,7 +136,7 @@ export const BlogAppbar = ({
           </Link>
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white">
+            <Button variant="outline" className=" ">
               Download
               <div className="pl-2">
                 <DownloadIcon />
@@ -159,7 +146,7 @@ export const BlogAppbar = ({
         </div>
       </div>
 
-      <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 border-t w-full text-center bg-opacity-60">
+      <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 w-full text-center bg-opacity-60">
         {problem.title} ({problemIndex + 1} / {track.problems.length})
       </p>
     </div>
