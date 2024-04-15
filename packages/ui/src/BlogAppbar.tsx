@@ -3,7 +3,6 @@
 import { Button } from "./shad/ui/button";
 import { Problem, Track, CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
 import { useEffect, useMemo, useState } from "react";
-import { Problem, Track } from "@prisma/client";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
@@ -16,7 +15,7 @@ export const BlogAppbar = ({
   track,
 }: {
   problem: Problem & { notionRecordMap: any } & {
-    problemStatement:
+    problemStatement?:
       | (ProblemStatement & {
           languagesSupported: CodeLanguage[];
           testCases: TestCase[];
