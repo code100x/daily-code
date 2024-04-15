@@ -6,7 +6,7 @@ CREATE TABLE "MCQQuestion" (
     "id" TEXT NOT NULL,
     "question" TEXT NOT NULL,
     "options" TEXT[],
-    "correctOptionIndex" INTEGER NOT NULL,
+    "correctOption" TEXT NOT NULL,
     "problemId" TEXT NOT NULL,
 
     CONSTRAINT "MCQQuestion_pkey" PRIMARY KEY ("id")

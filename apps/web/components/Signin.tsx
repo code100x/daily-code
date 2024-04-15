@@ -1,8 +1,23 @@
 "use client";
 import GoogleIcon from "../app/assets/google.svg";
 import GithubIcon from "../app/assets/github.svg";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 const Signin = () => {
+  const session = useSession();
+  const router = useRouter();
+
+  const redirected = useRef(false);
+  useEffect(() => {
+    if (redirected.current === false && session.data?.user) {
+      const redirectUrl = localStorage.getItem("loginRedirectUrl");
+      localStorage.removeItem("loginRedirectUrl");
+      router.replace(redirectUrl || "/");
+      redirected.current = true;
+    }
+  }, [redirected, session, router]);
+
   return (
     <div className="flex bg-black">
       <div className="w-full md:w-2/5 bg-black flex justify-center items-center h-screen max-sm:hidden max-md:hidden">

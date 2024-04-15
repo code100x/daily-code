@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Button } from ".";
-import { useRouter } from "next/navigation";
-import { AdminButton } from "./AdminButton";
 import { ModeToggle } from "./ModeToggle";
 import { signIn, signOut } from "next-auth/react";
 
 import { useSession } from "next-auth/react";
-export const Appbar = () => {
+
+import { SearchDialog } from "./SearchDialog";
+import { Track, Problem } from "@prisma/client";
+
+export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
   const session = useSession();
   const user = session.data?.user;
   const admin = false;
@@ -18,7 +20,7 @@ export const Appbar = () => {
           <div className="dark:text-zinc-100 text-zinc-950 text-2xl font-semibold">DailyCode</div>
         </Link>
         <div className="flex items-center gap-2">
-          {admin && <AdminButton />}
+          <SearchDialog tracks={tracks} />
 
           {!user ? (
             <Button

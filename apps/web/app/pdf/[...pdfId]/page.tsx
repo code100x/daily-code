@@ -1,9 +1,9 @@
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
-import { LessonView } from "@repo/ui/components";
 import { redirect } from "next/navigation";
 import { Print } from "../../../components/Print";
-import { getProblem, getTrack } from "../../tracks/[...trackIds]/page";
+import { getProblem, getTrack } from "../../../components/utils";
+import { LessonView } from "../../../components/LessonView";
 
 const notion = new NotionAPI();
 
