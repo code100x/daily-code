@@ -10,7 +10,6 @@ export function Print() {
     setTimeout(() => {
       print();
       opened = true;
-      window.close();
     }, 2000);
   }, []);
 
