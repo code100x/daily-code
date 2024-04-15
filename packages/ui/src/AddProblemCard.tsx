@@ -1,13 +1,15 @@
 "use client";
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./shad/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select";
 import { Input } from "./shad/ui/input";
 import { Button } from "./shad/ui/button";
 import { useToast } from "./shad/ui/use-toast";
 import { createProblem } from "../../../apps/web/components/utils";
+import { useRouter } from "next/navigation";
 
 interface Problem {
+  id: string;
   title: string;
   description: string;
   type: string;
@@ -16,12 +18,29 @@ interface Problem {
 
 const AddProblemCard = () => {
   const [newProblems, setNewProblems] = useState<Problem[]>([]);
-  const [problemId, setProblemId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [notionDocId, setNotionDocId] = useState("");
   const [type, setType] = useState("Blog");
   const { toast } = useToast();
+  const router = useRouter();
+
+  const handleCreateProblem = async () => {
+    const problem = await createProblem({ title, description, type, notionDocId });
+    if (problem) {
+      newProblems.push(problem);
+      toast({
+        title: "Added problem",
+        description: "Problem added",
+      });
+      return;
+    }
+
+    toast({
+      title: "Couldn't add problem",
+      description: "Please try again later",
+    });
+  };
 
   return (
     <div>
@@ -40,14 +59,7 @@ const AddProblemCard = () => {
             <SelectItem value="MCQ">MCQ</SelectItem>
           </SelectContent>
         </Select>
-        <Input
-          type="text"
-          placeholder="Problem Id"
-          className="my-2"
-          onChange={(event) => {
-            setProblemId(event.target.value);
-          }}
-        />
+
         <Input
           type="text"
           placeholder="Problem title"
@@ -75,14 +87,7 @@ const AddProblemCard = () => {
         <Button
           disabled={!title || !description || !type || !notionDocId}
           className="w-full mt-4"
-          onClick={() => {
-            createProblem({ problemId, title, description, type, notionDocId });
-            newProblems.push({ title, description, type, notionDocId });
-            toast({
-              title: "Added problem",
-              description: "Problem added",
-            });
-          }}
+          onClick={handleCreateProblem}
         >
           Add
         </Button>
@@ -96,6 +101,17 @@ const AddProblemCard = () => {
               <CardDescription>{problem.type}</CardDescription>
             </CardHeader>
             <CardContent>{problem.notionDocId}</CardContent>
+            {problem.type === "Code" && (
+              <CardFooter>
+                <Button
+                  onClick={() => {
+                    router.push(`/admin/code/${problem.id}`);
+                  }}
+                >
+                  Add Problem Statement
+                </Button>
+              </CardFooter>
+            )}
           </Card>
         ))}
       </div>

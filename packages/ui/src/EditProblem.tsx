@@ -1,18 +1,13 @@
 "use client";
+import { Prisma } from "@prisma/client";
 import { useState } from "react";
 import { Button } from "./shad/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
 import { Input } from "./shad/ui/input";
 
-interface EditProblemProps {
-  id: string;
-  title: string;
-  notionDocId: string;
-}
-
-const EditProblem = ({ problem }: { problem: EditProblemProps }) => {
+const EditProblem = ({ problem }: { problem: Prisma.ProblemCreateManyInput }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [id, setId] = useState<string | null>(problem.id);
+  const [id, setId] = useState<string | undefined>(problem.id);
   const [title, setTitle] = useState(problem.title);
   const [notionDocId, setNotionDocId] = useState(problem.notionDocId);
   function handleEdit() {
