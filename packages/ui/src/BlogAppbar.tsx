@@ -101,7 +101,9 @@ export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
         </p>
 
         <div className="flex space-x-2">
-          {<Codebar problemStatement={problem.problemStatement ?? ("" as any)} />}
+          {problem.type === "Code" && problem.problemStatement && (
+            <Codebar problemStatement={problem.problemStatement} />
+          )}
           <PageToggle allProblems={track.problems} track={track} />
           <Link
             prefetch={true}

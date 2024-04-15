@@ -5,6 +5,7 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
 import { codeValueState, languageState } from "../../../store/src/atoms";
 import { useEffect } from "react";
+import { useTheme } from "next-themes";
 
 const getDefaultCode = (language: string, funcName: string, paramNames: string[]) => {
   switch (language) {
@@ -23,6 +24,7 @@ export const CodeEditor = ({
     testCases: TestCase[];
   };
 }) => {
+  const { theme } = useTheme();
   const language = useRecoilValue(languageState);
   const [codeValue, setCodeValue] = useRecoilState(codeValueState);
 
@@ -42,12 +44,12 @@ export const CodeEditor = ({
   }, [languagesSupported, mainFuncName, argumentNames]);
   if (codeValue) {
     return (
-      <div className="bg-zinc-900 h-full">
+      <div className="h-full">
         <LanguageSelector languages={languagesSupported} />
         <Editor
           height={"80vh"}
           value={codeValue[language]}
-          theme="vs-dark"
+          theme={theme === "light" ? "vs-light" : "vs-dark"}
           onMount={() => {}}
           options={{
             fontSize: 14,
