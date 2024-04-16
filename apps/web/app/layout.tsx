@@ -2,7 +2,6 @@ import "@repo/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@repo/ui/utils";
-import { Auth } from "../components/Auth";
 import { Providers, ThemeProvider } from "../components/Providers";
 
 // core styles shared by all of react-notion-x (required)
