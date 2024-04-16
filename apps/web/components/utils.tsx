@@ -108,6 +108,7 @@ export async function createProblemStatement({
         },
       },
     });
+    return createdProblemStatement;
   } catch (e: any) {
     return null;
   }
@@ -267,5 +268,120 @@ export async function getAllCategories() {
     return categories;
   } catch (e) {
     return [];
+  }
+}
+
+export async function getAllProblemStatements() {
+  try {
+    const problemStatements = await db.problemStatement.findMany({
+      select: {
+        id: true,
+        testCases: true,
+        problem: true,
+        problemId: true,
+        languagesSupported: true,
+        mainFuncName: true,
+        argumentNames: true,
+      },
+    });
+    return problemStatements;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function getProblemStatement(statementId: string) {
+  try {
+    const problemStatements = await db.problemStatement.findMany({
+      where: {
+        id: statementId,
+      },
+      select: {
+        id: true,
+        testCases: true,
+        problem: true,
+        problemId: true,
+        languagesSupported: true,
+        mainFuncName: true,
+        argumentNames: true,
+      },
+    });
+    return problemStatements;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function updateProblemStatement(problemStatementId: string, data: any) {
+  try {
+    const problemStatement = await db.problemStatement.update({
+      where: {
+        id: problemStatementId,
+      },
+      data,
+    });
+    return problemStatement;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function getAllTestCase(id: string) {
+  try {
+    const testCase = await db.testCase.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        expectedOutput: true,
+        problemStatement: true,
+        problemStatementId: true,
+        inputs: true,
+      },
+    });
+    return testCase;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function createTestCase(problemStatementId: string, inputs: string[], expectedOutput: string) {
+  try {
+    const testCase = await db.testCase.create({
+      data: {
+        inputs,
+        problemStatementId,
+        expectedOutput,
+      },
+    });
+    return testCase;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function updateTestCase(
+  testCaseId: string,
+  expectedOutput: string,
+  problemStatementId: string,
+  inputs: string[]
+) {
+  try {
+    const updatedTestCase = await db.testCase.update({
+      where: {
+        id: testCaseId,
+      },
+      data: {
+        expectedOutput,
+        problemStatementId,
+        inputs,
+      },
+    });
+    return updatedTestCase;
+  } catch (e) {
+    return null;
   }
 }
