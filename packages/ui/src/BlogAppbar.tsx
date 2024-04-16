@@ -106,7 +106,7 @@ export const BlogAppbar = ({
         </div>
 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
-          {problem.title} ({problemIndex + 1} / {track.problems.length})
+          {track.title} ({problemIndex + 1} / {track.problems.length})
         </p>
         {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
         <div className="flex space-x-2 mb-2">
@@ -186,7 +186,7 @@ export const BlogAppbar = ({
       </div>
 
       <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 border-t w-full text-center bg-opacity-60">
-        {problem.title} ({problemIndex + 1} / {track.problems.length})
+        {track.title} ({problemIndex + 1} / {track.problems.length})
       </p>
     </div>
   );
