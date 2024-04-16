@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 
 import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
+import { ContentSearch } from "./ContentSearch";
 
 export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
   const session = useSession();
@@ -21,6 +22,7 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
         </Link>
         <div className="flex items-center gap-2">
           <SearchDialog tracks={tracks} />
+          <ContentSearch tracks={tracks} />
 
           {!user ? (
             <Button
