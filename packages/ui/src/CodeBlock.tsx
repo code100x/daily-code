@@ -5,7 +5,10 @@ import styles from "../app/CodeBlock.module.css";
 import "highlight.js/styles/github-dark.css";
 
 export default function CodeBlock({ block }: { block: any }) {
-  const code: string = block.properties.title[0].toString();
+  var code: string = "";
+  if (block.properties?.title) {
+    code = block.properties.title[0].toString();
+  }
   hljs.registerLanguage("javascript", javascript);
   console.log(block);
   const copied_display_id = `copied_display_${block.id}`;
