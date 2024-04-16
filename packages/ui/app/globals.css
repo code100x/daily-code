@@ -83,11 +83,8 @@
   }
 }
 
-/* Scroll Bar */
 ::-webkit-scrollbar {
-  /* Width for Scroll bar in Vertical direction */
   width: 8px;
-  /* Height for Scroll bar in Horizontal direction */
   height: 8px;
 }
 
@@ -100,9 +97,7 @@
   background-color: rgb(31, 41, 55, 0.8);
 }
 
-/* Optional: Add hover effect */
 ::-webkit-scrollbar-thumb:hover {
   background-color: #928f8f;
-  /* Optionally add box-shadow based on your design */
   box-shadow: 0 0 5px #928f8f;
 }
