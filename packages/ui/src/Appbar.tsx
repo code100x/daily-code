@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 
 import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
   const session = useSession();
@@ -23,7 +24,6 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
         <div className="flex items-center gap-2">
           <SearchDialog tracks={tracks} />
           {admin && <AdminButton />}
-
           {!user ? (
             <Button
               variant={"outline"}
@@ -48,8 +48,12 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
           ) : (
             ""
           )}
-
-          <ModeToggle />
+          <ModeToggle />{" "}
+          <Button variant="outline" size="icon">
+            <Link href="https://github.com/code100x/daily-code" target="__blank">
+              <GitHubLogoIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
