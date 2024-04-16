@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { NotionAPI } from "notion-client";
+import algoliasearch from "algoliasearch";
+
+export interface algoliaobjSchema {
+  objectID: string;
+  title: string;
+}
 
 import { getTrack } from "../../../components/utils";
 export async function GET(req: NextRequest) {
@@ -9,7 +15,7 @@ export async function GET(req: NextRequest) {
     if (track) {
       await Promise.all(
         track.problems.map(async (problem) => {
-          await getAllBlocks(problem.notionDocId);
+          await getAllBlocks(problem.notionDocId, id);
         })
       );
     }
@@ -19,19 +25,31 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Something went wrong" }, { status: 404 });
   }
 }
-
-const getAllBlocks = async (id: string) => {
+async function createIndex(obj: algoliaobjSchema, problemId: string, trackID: string) {
+  const client = algoliasearch(process.env.ALGOLIA_APP_ID || "", process.env.ALGOLIA_ADMIN_API_KEY || "");
+  const indexName = problemId + " " + trackID;
+  const index = client.initIndex(indexName);
   try {
-    const notion = new NotionAPI();
-    const page = await notion.getPage(id);
-    const blockIds = Object.keys(page.block);
-    const block = await notion.getBlocks(blockIds);
-    await saveToDb(block);
+    await index.saveObject(obj);
   } catch (error) {
     return null;
   }
-};
-async function saveToDb(block: any) {
+}
+async function getAllBlocks(problemId: string, trackID: string) {
+  try {
+    const notion = new NotionAPI();
+    const page = await notion.getPage(problemId);
+    const blockIds = Object.keys(page.block);
+    const block = await notion.getBlocks(blockIds);
+    const algoliaobj = await Getdetails(block);
+    if (algoliaobj) {
+      await createIndex(algoliaobj, problemId, trackID);
+    }
+  } catch (error) {
+    return null;
+  }
+}
+async function Getdetails(block: any) {
   try {
     for (let key in block.recordMap.block) {
       if (block.recordMap.block.hasOwnProperty(key)) {
@@ -39,8 +57,14 @@ async function saveToDb(block: any) {
         const value = obj?.value;
         const flattenedArray = flattenArray(value?.properties?.title);
         const wholeline = flattenedArray.join(",");
-        console.log(value?.id);
-        console.log(wholeline);
+        if (value) {
+          return {
+            objectID: value.id,
+            title: wholeline,
+          };
+        } else {
+          continue;
+        }
       }
     }
   } catch (e) {
