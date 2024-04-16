@@ -12,7 +12,6 @@ import { ContentSearch } from "./ContentSearch";
 export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
   const session = useSession();
   const user = session.data?.user;
-  const admin = false;
 
   return (
     <div className="bg-zinc-50 dark:bg-zinc-950 p-3 flex justify-center border-b shadow-md sticky top-0 z-50">
@@ -21,8 +20,8 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
           <div className="dark:text-zinc-100 text-zinc-950 text-2xl font-semibold">DailyCode</div>
         </Link>
         <div className="flex items-center gap-2">
-          <SearchDialog tracks={tracks} />
-          <ContentSearch tracks={tracks} />
+          {/* <SearchDialog tracks={tracks} /> */}
+          <ContentSearch />
 
           {!user ? (
             <Button

@@ -18,11 +18,34 @@ interface data {
   image: string;
 }
 
-export function ContentSearch({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
+export function ContentSearch() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState<data[]>([] as data[]);
   const [searchButton, setSearchButton] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.code === "KeyK" && event.ctrlKey) {
+        event.preventDefault();
+        setDialogOpen(true);
+      } else if (event.code === "ArrowDown") {
+        event.preventDefault();
+        setSelectedIndex((prevIndex) => (prevIndex + 1) % searchTracks.length);
+      } else if (event.code === "ArrowUp") {
+        event.preventDefault();
+        setSelectedIndex((prevIndex) => (prevIndex - 1 + searchTracks.length) % searchTracks.length);
+      } else if (event.code === "Enter") {
+        setSearchButton(!searchButton);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [searchTracks, selectedIndex]);
 
   useEffect(() => {
     const fetchData = async () => {

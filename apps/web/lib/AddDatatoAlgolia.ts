@@ -1,15 +1,15 @@
 import { NotionAPI } from "notion-client";
 import { getTrack } from "../components/utils";
 import algoliasearch from "algoliasearch";
+import db from "@repo/db/client";
 
 export async function AddDatatoAlgolia({ trackId }: { trackId: string }) {
-  const client = algoliasearch("7HC945FD4D", "c2e3c2e58d6978ed455db828e773da06");
+  const client = algoliasearch(process.env.AlGOLIA_APP_ID!, process.env.AlGOLIA_Admin_API!);
   try {
     const index = client.initIndex("DailyCode");
 
     const track = await getTrack(trackId);
     const notion = new NotionAPI();
-    //@ts-ignore
     const data = await Promise.all(
       track?.problems.map(async (problem: any) => {
         const notionDocId = problem.notionDocId;
@@ -23,10 +23,18 @@ export async function AddDatatoAlgolia({ trackId }: { trackId: string }) {
         problem["trackTitle"] = track.title;
         problem["image"] = track.image;
         return problem;
-      })
+      }) || []
     );
-    // @ts-ignore
     index.saveObjects(data, { autoGenerateObjectIDIfNotExist: true });
+
+    await db.track.update({
+      where: {
+        id: trackId,
+      },
+      data: {
+        inSearch: true,
+      },
+    });
 
     return data;
   } catch (e) {

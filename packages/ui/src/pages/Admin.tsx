@@ -4,11 +4,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shad/ui/tabs";
 import { getAllCategories, getAllProblems, getAllTracks } from "../../../../apps/web/components/utils";
 import { LinkProblems } from "../LinkProblems";
 import CompleteAddTracks from "../CompleteAddTracks";
+import AdminSearch from "../AdminSearch";
+import db from "@repo/db/client";
 
 export const Admin = async () => {
   const problems = await getAllProblems();
   const tracks = await getAllTracks();
   const categories = await getAllCategories();
+  const TracksinSearch = await db.track.findMany({
+    where: {
+      inSearch: true,
+    },
+  });
+  const TracksNotinSearch = await db.track.findMany({
+    where: {
+      inSearch: false,
+    },
+  });
   return (
     <div className="pt-2">
       <div className="flex justify-center">
@@ -19,6 +31,7 @@ export const Admin = async () => {
               <TabsTrigger value="problems">Problems</TabsTrigger>
               <TabsTrigger value="tracks">Tracks</TabsTrigger>
               <TabsTrigger value="link">Link</TabsTrigger>
+              <TabsTrigger value="search">Search</TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="auto">
@@ -32,6 +45,9 @@ export const Admin = async () => {
           </TabsContent>
           <TabsContent value="link">
             <LinkProblems tracks={tracks} />
+          </TabsContent>
+          <TabsContent value="search">
+            <AdminSearch TracksNotinSearch={TracksNotinSearch} TracksinSearch={TracksinSearch} />
           </TabsContent>
         </Tabs>
       </div>
