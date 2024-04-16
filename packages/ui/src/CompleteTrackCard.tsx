@@ -62,7 +62,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
 
           for (let i = 0; i < data.length; i++) {
             let problem = {
-              id: `${TrackData.trackTitle.replace(" ", "")}-${i + 1}`,
+              id: `${TrackData.trackTitle.replace(/[^a-z0-9\-]/gi, "")}-${i + 1}`,
               notionDocId: data[i]?.notionDocId!,
               title: data[i]?.title!,
               description: data[i]?.title!,
