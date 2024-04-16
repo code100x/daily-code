@@ -48,7 +48,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/AddTracks`, {
+        const response = await fetch(`/api/AddTracks`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
