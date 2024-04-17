@@ -44,6 +44,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
   const [addButton, setAddButton] = useState(false);
   const [problems, setProblems] = useState<{ problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [createindex, setcreateindex] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,6 +73,20 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
           }
 
           setProblems(dbData);
+          try {
+            setcreateindex(true);
+            const res = await fetch(`api/searchcontent?id=${TrackData.trackId}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            if (res.ok) {
+              setcreateindex(false);
+            }
+          } catch (error) {
+            throw new Error("Failed to index data");
+          }
         } else {
           throw new Error("Failed to fetch data");
         }
@@ -117,6 +132,8 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
             Add Track
           </Button>
           {isSubmitting && <div>Added Track to database</div>}
+          {createindex && <div>Creating index</div>}
+          {!createindex && <div>Created Index</div>}
         </SheetContent>
       </Sheet>
     </div>
