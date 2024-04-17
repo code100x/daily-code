@@ -402,15 +402,15 @@ export async function updateTestCase(
 
 export async function getAllLanguagesSupported() {
   try {
-    const testCase = await db.codeLanguage.findMany({
+    const languagesSupported: CodeLanguage[] = await db.codeLanguage.findMany({
       select: {
         id: true,
         label: true,
         value: true,
       },
     });
-    return testCase;
+    return languagesSupported;
   } catch (e) {
-    return null;
+    return [];
   }
 }

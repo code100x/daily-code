@@ -1,11 +1,13 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { getAllProblemStatements } from "web/components/utils";
+import { ProblemStatement } from "prisma/prisma-client";
 
 export default function useProblemStatement() {
-  const [problemStatements, setProblemStatements] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [problemStatements, setProblemStatements]: [ProblemStatement[], Dispatch<SetStateAction<ProblemStatement[]>>] =
+    useState<ProblemStatement[]>([]);
+  const [isLoading, setIsLoading]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(true);
+  const [error, setError]: [string | null, Dispatch<SetStateAction<string | null>>] = useState<string | null>(null);
 
   const fetchProblemStatement = useCallback(async () => {
     setIsLoading(true);

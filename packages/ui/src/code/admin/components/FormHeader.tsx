@@ -1,10 +1,12 @@
 import { Input } from "../../../shad/ui/input";
 import { useRecoilState } from "recoil";
-import { problemId, problemStatementId } from "@repo/store";
+import { problemStatementId } from "@repo/store";
 import { Label } from "../../../shad/ui/label";
+import { Dispatch, SetStateAction } from "react";
 
 export default function FormHeader() {
-  const [LproblemStatementId, setProblemStatementId] = useRecoilState(problemStatementId);
+  const [LproblemStatementId, setProblemStatementId]: [string, Dispatch<SetStateAction<string>>] =
+    useRecoilState(problemStatementId);
 
   return (
     <div>

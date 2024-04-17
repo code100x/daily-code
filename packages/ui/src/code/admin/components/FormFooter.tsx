@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button, DialogClose } from "../../..";
-import { createProblemStatement, getAllLanguagesSupported, updateProblemStatement } from "web/components/utils";
+import { createProblemStatement, updateProblemStatement } from "web/components/utils";
 import {
   argumentNames,
   globalLanguagesSupported,
@@ -13,6 +13,7 @@ import {
 } from "@repo/store";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { refetch } from "../ProblemStatements";
+import { Problem, ProblemStatement, CodeLanguage } from "prisma/prisma-client";
 
 export default function FormFooter({
   setIsDialogOpen,
@@ -21,15 +22,15 @@ export default function FormFooter({
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
   isNew: boolean;
 }) {
-  const LargumentNames = useRecoilValue(argumentNames);
-  const Lproblem = useRecoilValue(problem);
-  const LmainFuncName = useRecoilValue(mainFuncName);
-  const LproblemStatementId = useRecoilValue(problemStatementId);
-  const LproblemId = useRecoilValue(problemId);
-  const setproblemStatement = useSetRecoilState(problemStatementsAtom);
-  const LglobalLanguagesSupported = useRecoilValue(globalLanguagesSupported);
-  const [isSaving, setIsSaving] = useState(false);
-  const LlanguagesSupported = useRecoilValue(languagesSupported);
+  const LargumentNames: string[] = useRecoilValue(argumentNames);
+  const Lproblem: Problem = useRecoilValue(problem);
+  const LmainFuncName: string = useRecoilValue(mainFuncName);
+  const LproblemStatementId: string = useRecoilValue(problemStatementId);
+  const LproblemId: string = useRecoilValue(problemId);
+  const setproblemStatements: Dispatch<SetStateAction<ProblemStatement[]>> = useSetRecoilState(problemStatementsAtom);
+  const LglobalLanguagesSupported: CodeLanguage[] = useRecoilValue(globalLanguagesSupported);
+  const [isSaving, setIsSaving]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
+  const LlanguagesSupported: CodeLanguage[] = useRecoilValue(languagesSupported);
 
   function handleDiscard() {
     setIsDialogOpen(false);
@@ -38,7 +39,7 @@ export default function FormFooter({
   const handleSave = async () => {
     setIsSaving(true);
     const { id, ...LproblemElse } = Lproblem;
-    const problemStatement = await updateProblemStatement(LproblemStatementId, {
+    await updateProblemStatement(LproblemStatementId, {
       argumentNames: LargumentNames,
       mainFuncName: LmainFuncName,
       problem: {
@@ -51,13 +52,13 @@ export default function FormFooter({
     });
     setIsSaving(false);
     setIsDialogOpen(false);
-    const newPs = await refetch();
-    setproblemStatement(newPs);
+    const newPs: ProblemStatement[] = await refetch();
+    setproblemStatements(newPs);
   };
 
   const createNewPS = async () => {
     setIsSaving(true);
-    const problemStatement = await createProblemStatement({
+    await createProblemStatement({
       problemStatement: {
         argumentNames: LargumentNames,
         mainFuncName: LmainFuncName,
@@ -68,8 +69,8 @@ export default function FormFooter({
     });
     setIsSaving(false);
     setIsDialogOpen(false);
-    const newPs = await refetch();
-    setproblemStatement(newPs);
+    const newPs: ProblemStatement[] = await refetch();
+    setproblemStatements(newPs);
   };
 
   return (

@@ -5,15 +5,17 @@ import { problemStatementsAtom, testCases } from "@repo/store";
 import { Trash2Icon } from "lucide-react";
 import { deleteTestCase } from "web/components/utils";
 import { refetch } from "../ProblemStatements";
+import { Dispatch, SetStateAction } from "react";
+import { TestCase } from "prisma/prisma-client";
 
 export default function TestCasesList() {
-  const [LtestCases, setTestCases] = useRecoilState(testCases);
+  const [LtestCases, setTestCases]: [TestCase[], Dispatch<SetStateAction<TestCase[]>>] = useRecoilState(testCases);
   const setproblemStatements = useSetRecoilState(problemStatementsAtom);
 
-  function updateInputsInTestCase(id, value) {
+  function updateInputsInTestCase(id: string, value: string[]) {
     setTestCases((prev) => {
       return prev.map((prev) => {
-        if (prev.id == id) {
+        if (prev.id === id) {
           return { ...prev, inputs: value };
         } else {
           return prev;
@@ -22,7 +24,7 @@ export default function TestCasesList() {
     });
   }
 
-  function updateExpectedOutputInTestCase(id, value) {
+  function updateExpectedOutputInTestCase(id: string, value: string) {
     setTestCases((prev) => {
       return prev.map((prev) => {
         if (prev.id == id) {

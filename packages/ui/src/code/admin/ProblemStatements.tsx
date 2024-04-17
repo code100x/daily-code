@@ -3,16 +3,18 @@ import { ScrollArea } from "../../shad/ui/scroll-area";
 import ProblemStatementCard from "./components/ProblemStatementCard";
 import { problemStatementsAtom } from "@repo/store";
 import { useRecoilState } from "recoil";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { getAllProblemStatements } from "web/components/utils";
+import { ProblemStatement } from "prisma/prisma-client";
 
 export const refetch = async () => {
-  const problemStatements = await getAllProblemStatements();
+  const problemStatements: ProblemStatement[] = await getAllProblemStatements();
   return problemStatements;
 };
 
 export const ProblemStatements = () => {
-  const [problemStatements, setProblemStatements] = useRecoilState(problemStatementsAtom);
+  const [problemStatements, setProblemStatements]: [ProblemStatement[], Dispatch<SetStateAction<ProblemStatement[]>>] =
+    useRecoilState(problemStatementsAtom);
   useEffect(() => {
     const getAndSetLang = async () => {
       const newProblemStatements = await refetch();

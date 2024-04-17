@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import {
   testCases,
@@ -10,6 +10,7 @@ import {
   argumentNames,
   problemStatementId,
   globalLanguagesSupported,
+  Problem,
 } from "@repo/store";
 import { ProblemStatement } from "@prisma/client";
 import { Button } from "../../shad/ui/button";
@@ -24,6 +25,7 @@ import ArgumentNamesInput from "./components/ArgumentNamesInput";
 import FormFooter from "./components/FormFooter";
 import { Label } from "../../shad/ui/label";
 import { getAllLanguagesSupported } from "web/components/utils";
+import { CodeLanguage, TestCase } from "prisma/prisma-client";
 
 export default function ProblemStatementForm({
   problemStatement,
@@ -32,15 +34,16 @@ export default function ProblemStatementForm({
   problemStatement: ProblemStatement;
   isNew: boolean;
 }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const setTestCases = useSetRecoilState(testCases);
-  const setProblem = useSetRecoilState(problem);
-  const setProblemId = useSetRecoilState(problemId);
-  const setLanguagesSupported = useSetRecoilState(languagesSupported);
-  const setMainFuncName = useSetRecoilState(mainFuncName);
-  const setArgumentNames = useSetRecoilState(argumentNames);
-  const setProblemStatementId = useSetRecoilState(problemStatementId);
-  const setGlobalLanguagesSupported = useSetRecoilState(globalLanguagesSupported);
+  const [isDialogOpen, setIsDialogOpen]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
+  const setTestCases: Dispatch<SetStateAction<TestCase>> = useSetRecoilState(testCases);
+  const setProblem: Dispatch<SetStateAction<Problem>> = useSetRecoilState(problem);
+  const setProblemId: Dispatch<SetStateAction<string>> = useSetRecoilState(problemId);
+  const setLanguagesSupported: Dispatch<SetStateAction<CodeLanguage[]>> = useSetRecoilState(languagesSupported);
+  const setMainFuncName: Dispatch<SetStateAction<string>> = useSetRecoilState(mainFuncName);
+  const setArgumentNames: Dispatch<SetStateAction<string[]>> = useSetRecoilState(argumentNames);
+  const setProblemStatementId: Dispatch<SetStateAction<string>> = useSetRecoilState(problemStatementId);
+  const setGlobalLanguagesSupported: Dispatch<SetStateAction<CodeLanguage[]>> =
+    useSetRecoilState(globalLanguagesSupported);
 
   useEffect(() => {
     if (isDialogOpen) {
@@ -52,8 +55,9 @@ export default function ProblemStatementForm({
       setArgumentNames(problemStatement.argumentNames);
       setProblemStatementId(problemStatement.id);
     }
+
     const getAndSetLang = async () => {
-      const languages = await getAllLanguagesSupported();
+      const languages: CodeLanguage[] = await getAllLanguagesSupported();
       setGlobalLanguagesSupported(languages);
     };
     getAndSetLang();

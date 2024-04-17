@@ -11,10 +11,13 @@ import {
 import { Button } from "../../..";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { globalLanguagesSupported, languagesSupported } from "@repo/store";
+import { Dispatch, SetStateAction } from "react";
+import { CodeLanguage } from "prisma/prisma-client";
 
 export default function LanguageDropDownInput() {
-  const [LlanguagesSupported, setLanguagesSupported] = useRecoilState(languagesSupported);
-  const LglobalLanguagesSupported = useRecoilValue(globalLanguagesSupported);
+  const [LlanguagesSupported, setLanguagesSupported]: [string[], Dispatch<SetStateAction<string[]>>] =
+    useRecoilState(languagesSupported);
+  const LglobalLanguagesSupported: CodeLanguage[] = useRecoilValue(globalLanguagesSupported);
   return (
     <div>
       <Label>
@@ -31,13 +34,13 @@ export default function LanguageDropDownInput() {
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>Languages</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {LglobalLanguagesSupported.map((lang) => (
+          {LglobalLanguagesSupported.map((lang: CodeLanguage) => (
             <DropdownMenuCheckboxItem
-              key={lang.value + "option"}
+              key={lang.value.toString() + "option"}
               checked={LlanguagesSupported.includes(lang.value)}
               onCheckedChange={() => {
                 if (LlanguagesSupported.includes(lang.value)) {
-                  const newArr = LlanguagesSupported.filter((language) => language !== lang.value);
+                  const newArr: string[] = LlanguagesSupported.filter((language) => language !== lang.value);
                   setLanguagesSupported(newArr);
                 } else {
                   setLanguagesSupported((prev) => [...prev, lang.value]);

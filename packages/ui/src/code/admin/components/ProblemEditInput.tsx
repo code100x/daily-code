@@ -3,9 +3,10 @@ import { Input } from "../../../shad/ui/input";
 import { Label } from "../../../shad/ui/label";
 import { Problem } from "@prisma/client";
 import { useRecoilState } from "recoil";
+import { Dispatch, SetStateAction } from "react";
 
 export default function ProblemEditInput() {
-  const [Lproblem, setProblem] = useRecoilState(problem);
+  const [Lproblem, setProblem]: [Problem, Dispatch<SetStateAction<Problem>>] = useRecoilState(problem);
   return (
     <div>
       <Label className="text-xl">Problem:</Label>
