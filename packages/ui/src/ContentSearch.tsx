@@ -4,10 +4,9 @@ import { Button } from "./shad/ui/button";
 import { Dialog, DialogClose, DialogContent } from "./shad/ui/dailog";
 import { useEffect, useState } from "react";
 import { Input } from "./shad/ui/input";
-import { Track, Problem } from "@prisma/client";
-import { TrackList } from "./TrackList";
 import Link from "next/link";
 import { Card, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
+import { getSearch } from "web/components/utils";
 
 interface data {
   id: string;
@@ -48,17 +47,10 @@ export function ContentSearch() {
   }, [searchTracks, selectedIndex]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data: data[] = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ input }),
-      }).then((response) => response.json());
-      console.log(data);
+    async function fetchData() {
+      const data: any = await getSearch(input);
       setSearchTracks(data);
-    };
+    }
     fetchData();
   }, [searchButton]);
 
