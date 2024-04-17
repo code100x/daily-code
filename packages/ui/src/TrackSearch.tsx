@@ -8,32 +8,13 @@ import { InstantSearch, SearchBox, Hits } from "react-instantsearch";
 import Link from "next/link";
 import { Card, CardDescription, CardHeader } from "./shad/ui/card";
 
-function HitsComponent({ hit, trackid }: { hit: any; trackid: string }) {
-  return (
-    <Link href={`/tracks/${trackid}/${hit.problemId}`} passHref>
-      <div className="flex">
-        <Card className="p-2 w-full mx-2">
-          <div className="flex my-2">
-            <img src={hit.ImgLink} className="flex mx-2 w-1/6 rounded-xl" />
-            <div>
-              <CardHeader>
-                <CardDescription>{hit.title}</CardDescription>
-              </CardHeader>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </Link>
-  );
-}
-
 function TrackSearch({ trackid }: { trackid: string }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [searchButton, setSearchButton] = useState(false);
   const [client, setClient] = useState<any>("");
 
   useEffect(() => {
-    const Client = algoliasearch("VRLCKYEFSI", "20a234ddb95b0ad35cfcdba3fb187978");
+    const Client = algoliasearch("enter app_id", "enter serach_api_key");
     setClient(Client);
   }, []);
 
@@ -77,6 +58,25 @@ function TrackSearch({ trackid }: { trackid: string }) {
         </InstantSearch>
       )}
     </>
+  );
+}
+
+function HitsComponent({ hit, trackid }: { hit: any; trackid: string }) {
+  return (
+    <Link href={`/tracks/${trackid}/${hit.problemId}`} passHref>
+      <div className="flex">
+        <Card className="p-2 w-full mx-2">
+          <div className="flex my-2">
+            <img src={hit.ImgLink} className="flex mx-2 w-1/6 rounded-xl" />
+            <div>
+              <CardHeader>
+                <CardDescription>{hit.title}</CardDescription>
+              </CardHeader>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </Link>
   );
 }
 

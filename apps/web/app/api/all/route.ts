@@ -4,7 +4,6 @@ import { getAllTracks } from "../../../components/utils";
 export async function POST(req: NextRequest) {
   try {
     const url = req.url.replace(/\/api\/all/, "");
-    console.log(url);
     const tracks = await getAllTracks();
     if (tracks) {
       const fetchPromises = tracks.map(async (track) => {

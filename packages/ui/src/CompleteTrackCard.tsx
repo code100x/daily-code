@@ -39,6 +39,20 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       selectedCategory: TrackData.selectedCategory,
     });
     setIsSubmitting(true);
+    try {
+      setcreateindex(true);
+      const res = await fetch(`api/searchcontent?id=${TrackData.trackId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        setcreateindex(false);
+      }
+    } catch (error) {
+      throw new Error("Failed to index data");
+    }
   }
 
   const [addButton, setAddButton] = useState(false);
@@ -73,20 +87,6 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
           }
 
           setProblems(dbData);
-          try {
-            setcreateindex(true);
-            const res = await fetch(`api/searchcontent?id=${TrackData.trackId}`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-            if (res.ok) {
-              setcreateindex(false);
-            }
-          } catch (error) {
-            throw new Error("Failed to index data");
-          }
         } else {
           throw new Error("Failed to fetch data");
         }
@@ -133,7 +133,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
           </Button>
           {isSubmitting && <div>Added Track to database</div>}
           {createindex && <div>Creating index</div>}
-          {!createindex && <div>Created Index</div>}
+          {isSubmitting && !createindex && <div>Index created</div>}
         </SheetContent>
       </Sheet>
     </div>
