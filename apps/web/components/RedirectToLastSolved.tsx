@@ -10,12 +10,9 @@ export const RedirectToLastSolved = ({ trackId }: { trackId: string }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const problemId = getFirstProblemForTrack(trackId);
-    try {
+    getFirstProblemForTrack(trackId).then((problemId) => {
       router.replace(`/tracks/${trackId}/${problemId}`);
-    } catch (e) {
-      console.error(e);
-    }
+    });
   }, [trackId]);
 
   return (
