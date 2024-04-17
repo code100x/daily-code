@@ -1,95 +1,72 @@
 import { NextRequest, NextResponse } from "next/server";
 import { NotionAPI } from "notion-client";
 import algoliasearch from "algoliasearch";
-
+import { getTrack } from "../../../components/utils";
 export interface algoliaobjSchema {
   objectID: string;
   title: string;
+  problemId: string;
+  ImgLink: string;
 }
 
-import { getTrack } from "../../../components/utils";
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const id: string = req.nextUrl.searchParams.get("id") || "";
     const track = await getTrack(id);
     if (track) {
+      // Use Promise.all to await all promises
       await Promise.all(
         track.problems.map(async (problem) => {
-          await getAllBlocks(problem.notionDocId, id);
+          try {
+            await getAllBlocks(problem.id, problem.notionDocId, id, track.image);
+          } catch (error) {
+            return NextResponse.json({ error: "Invalid" }, { status: 404 });
+          }
         })
       );
     }
-
-    return NextResponse.json({ data: "Done" }, { status: 404 });
+    return NextResponse.json({ data: "Done" }, { status: 200 });
   } catch (e) {
     return NextResponse.json({ error: "Something went wrong" }, { status: 404 });
   }
 }
-async function createIndex(obj: algoliaobjSchema, problemId: string, trackID: string) {
+
+async function createIndex(obj: algoliaobjSchema[], trackID: string) {
   const client = algoliasearch(process.env.ALGOLIA_APP_ID || "", process.env.ALGOLIA_ADMIN_API_KEY || "");
-  const indexName = problemId + " " + trackID;
-  const index = client.initIndex(indexName);
+  const index = client.initIndex(trackID);
   try {
-    await index.saveObject(obj);
+    const res = await index.saveObjects(obj);
+    return res;
   } catch (error) {
     return null;
   }
 }
-async function getAllBlocks(problemId: string, trackID: string) {
+function Getdetails(page: any, problemId: string, ImgLink: string) {
+  const titles = Object.values(page.block)
+    .map((block) => ({
+      title: block?.value?.properties?.title[0][0],
+      id: block?.value?.id,
+    }))
+    .filter((block) => block.title);
+
+  const objs: algoliaobjSchema[] = titles.map((item) => {
+    return {
+      objectID: item.id,
+      title: item.title,
+      problemId: problemId,
+      ImgLink: ImgLink,
+    };
+  });
+  return objs;
+}
+async function getAllBlocks(problemId: string, notionid: string, trackID: string, ImgLink: string) {
   try {
     const notion = new NotionAPI();
-    const page = await notion.getPage(problemId);
-    const blockIds = Object.keys(page.block);
-    const block = await notion.getBlocks(blockIds);
-    const algoliaobj = await Getdetails(block);
-    if (algoliaobj) {
-      await createIndex(algoliaobj, problemId, trackID);
-    }
+    const page = await notion.getPage(notionid);
+    const algoliaobjs = Getdetails(page, problemId, ImgLink);
+    const res = await createIndex(algoliaobjs, trackID);
+    return res;
   } catch (error) {
     return null;
   }
-}
-async function Getdetails(block: any) {
-  try {
-    for (let key in block.recordMap.block) {
-      if (block.recordMap.block.hasOwnProperty(key)) {
-        const obj = block.recordMap.block[key];
-        const value = obj?.value;
-        const flattenedArray = flattenArray(value?.properties?.title);
-        const wholeline = flattenedArray.join(",");
-        if (value) {
-          return {
-            objectID: value.id,
-            title: wholeline,
-          };
-        } else {
-          continue;
-        }
-      }
-    }
-  } catch (e) {
-    return null;
-  }
-}
-function getMaxDepth(arr: any) {
-  if (!Array.isArray(arr)) {
-    return 0;
-  }
-
-  let maxDepth = 0;
-  for (const element of arr) {
-    if (Array.isArray(element)) {
-      const depth = getMaxDepth(element);
-      if (depth > maxDepth) {
-        maxDepth = depth;
-      }
-    }
-  }
-
-  return maxDepth + 1;
-}
-
-function flattenArray(arr: any) {
-  const maxDepth = getMaxDepth(arr);
-  return arr.flat(maxDepth);
 }
