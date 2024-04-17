@@ -70,7 +70,7 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
 
 const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
   return (
-    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
+    <div className="flex justify-evenly mx-auto border rounded-full p-4 w-[900px]">
       {categories.map((category) => (
         <Button
           key={category.category}
