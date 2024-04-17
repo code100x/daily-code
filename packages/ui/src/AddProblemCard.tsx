@@ -23,10 +23,12 @@ const AddProblemCard = () => {
   const [notionDocId, setNotionDocId] = useState("");
   const [type, setType] = useState("Blog");
   const { toast } = useToast();
-  const [problemStatement, setProblemStatement] = useState(null);
 
   const handleCreateProblem = async () => {
     const problem = await createProblem({ title, description, type, notionDocId });
+    if (problem?.type === "Code") {
+      handleCreatePsStatement(problem.id);
+    }
     if (problem) {
       newProblems.push(problem);
       toast({
@@ -52,7 +54,6 @@ const AddProblemCard = () => {
       languages: [],
       testCases: [],
     });
-    setProblemStatement(newPS);
   };
 
   return (
@@ -114,17 +115,6 @@ const AddProblemCard = () => {
               <CardDescription>{problem.type}</CardDescription>
             </CardHeader>
             <CardContent>{problem.notionDocId}</CardContent>
-            {problem.type === "Code" && (
-              <CardFooter>
-                {!problemStatement ? (
-                  <Button variant={"outline"} onClick={() => handleCreatePsStatement(problem.id)}>
-                    Create Problem Statement
-                  </Button>
-                ) : (
-                  ""
-                )}
-              </CardFooter>
-            )}
           </Card>
         ))}
       </div>

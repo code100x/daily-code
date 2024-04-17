@@ -41,7 +41,6 @@ export function AddCaseDialog() {
     if (inputs.length === LargumentNames.length) {
       try {
         const testcase = await createTestCase(LproblemStatementId, inputs, expectedOutput);
-        console.log(LproblemStatementId, inputs, expectedOutput);
         setIsDialogOpen(false);
         setInputs([""]);
         setExpectedOutput("");
@@ -71,7 +70,6 @@ export function AddCaseDialog() {
       if (newPS) {
         setProblemStatementId(newPS.id);
       }
-      console.log(newPS);
       return newPS;
     };
     createFunction();

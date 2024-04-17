@@ -49,7 +49,6 @@ export default function FormFooter({
       },
       languagesSupported: { set: LglobalLanguagesSupported.filter((lang) => LlanguagesSupported.includes(lang.value)) },
     });
-    console.log(problemStatement);
     setIsSaving(false);
     setIsDialogOpen(false);
     const newPs = await refetch();
