@@ -9,6 +9,7 @@ import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 import { Codebar } from "./code/Codebar";
+import TrackSearch from "./TrackSearch";
 
 export const BlogAppbar = ({
   problem,
@@ -104,15 +105,16 @@ export const BlogAppbar = ({
         <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
           <Link href={"/"}>DailyCode</Link>
         </div>
-
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {problem.title} ({problemIndex + 1} / {track.problems.length})
         </p>
+        <div className="mr-2 mb-2">
+          <TrackSearch trackid={track.id} />
+        </div>
         {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
         <div className="mb-2">
           <PageToggle allProblems={track.problems} track={track} />
         </div>
-
         <div className="flex space-x-2 mb-2">
           <Link
             prefetch={true}
