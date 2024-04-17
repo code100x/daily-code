@@ -49,7 +49,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/AddTracks`, {
+        const response = await fetch(`/api/AddTracks`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
 
           for (let i = 0; i < data.length; i++) {
             let problem = {
-              id: `${TrackData.trackTitle.replace(" ", "")}-${i + 1}`,
+              id: `${TrackData.trackTitle.replace(/[^a-zA-Z0-9]/g, "-")}-${i + 1}`,
               notionDocId: data[i]?.notionDocId!,
               title: data[i]?.title!,
               description: data[i]?.title!,
