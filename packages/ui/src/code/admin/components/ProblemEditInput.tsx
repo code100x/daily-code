@@ -1,47 +1,44 @@
-import { Dispatch, SetStateAction } from "react";
-import { Input } from "./shad/ui/input";
-import { Label } from "./shad/ui/label";
+import { problem } from "@repo/store";
+import { Input } from "../../../shad/ui/input";
+import { Label } from "../../../shad/ui/label";
 import { Problem } from "@prisma/client";
-export default function ProblemEditInput({
-  setProblem,
-  problem,
-}: {
-  problem: Problem;
-  setProblem: Dispatch<SetStateAction<Problem>>;
-}) {
+import { useRecoilState } from "recoil";
+
+export default function ProblemEditInput() {
+  const [Lproblem, setProblem] = useRecoilState(problem);
   return (
-    <>
+    <div>
       <Label className="text-xl">Problem:</Label>
       <Label className="grid grid-cols-4">
         <Label>Title:</Label>
         <Input
           key={"title"}
-          value={problem.title}
+          value={Lproblem.title}
           className="col-span-3"
           onChange={(e) => setProblem((prev: Problem) => ({ ...prev, title: e.target.value }))}
         />
         <Label>Description:</Label>
         <Input
           key={"description"}
-          value={problem.description}
+          value={Lproblem.description}
           className="col-span-3"
           onChange={(e) => setProblem((prev: Problem) => ({ ...prev, description: e.target.value }))}
         />
         <Label>Notion Doc ID:</Label>
         <Input
           key={"notionDocId"}
-          value={problem.notionDocId}
+          value={Lproblem.notionDocId}
           className="col-span-3"
           onChange={(e) => setProblem((prev: Problem) => ({ ...prev, notionDocId: e.target.value }))}
         />
         <Label>Type:</Label>
         <Input
           key={"problemtype"}
-          value={problem.type}
+          value={Lproblem.type}
           className="col-span-3"
           onChange={(e) => setProblem((prev: Problem) => ({ ...prev, type: e.target.value }))}
         />
       </Label>
-    </>
+    </div>
   );
 }

@@ -1,10 +1,10 @@
 "use client";
 import { ProblemStatement, CodeLanguage } from "@prisma/client";
-import { Card, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
-import MultipleOptionChip from "./MultipleOptionChip";
-import ProblemStatementCardForm from "./ProblemStatementCardForm";
+import { Card, CardDescription, CardHeader, CardTitle } from "../../../shad/ui/card";
+import MultipleOptionChip from "../../../MultipleOptionChip";
+import ProblemStatementForm from "../ProblemStatementForm";
 
-export default function EditProblemStatementCard({ problemStatement }: { problemStatement: ProblemStatement }) {
+export default function ProblemStatementCard({ problemStatement }: { problemStatement: ProblemStatement }) {
   return (
     <>
       <Card key={problemStatement.id}>
@@ -13,7 +13,7 @@ export default function EditProblemStatementCard({ problemStatement }: { problem
             <CardHeader>
               <div className="flex justify-between">
                 <CardTitle>{problemStatement.problemId}</CardTitle>
-                <ProblemStatementCardForm problemStatement={problemStatement} />
+                <ProblemStatementForm problemStatement={problemStatement} isNew={false} />
               </div>
               <CardDescription>MainFunction: {problemStatement.mainFuncName}()</CardDescription>
               <CardDescription>

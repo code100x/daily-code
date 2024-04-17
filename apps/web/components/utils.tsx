@@ -69,7 +69,6 @@ export async function updateProblem(problemId: string, data: any) {
     });
     return problem;
   } catch (e) {
-    console.log(e);
     return null;
   }
 }
@@ -237,7 +236,6 @@ export async function createTrack(data: {
     }
     return track;
   } catch (e) {
-    console.log(e);
     return new Error("Failed to create track");
   }
 }
@@ -318,11 +316,10 @@ export async function updateProblemStatement(problemStatementId: string, data: a
       where: {
         id: problemStatementId,
       },
-      data,
+      data: data,
     });
     return problemStatement;
   } catch (e) {
-    console.log(e);
     return null;
   }
 }
@@ -349,16 +346,33 @@ export async function getAllTestCase(id: string) {
 
 export async function createTestCase(problemStatementId: string, inputs: string[], expectedOutput: string) {
   try {
-    const testCase = await db.testCase.create({
+    const problemStatement = await db.problemStatement.update({
+      where: {
+        id: problemStatementId,
+      },
       data: {
-        inputs,
-        problemStatementId,
-        expectedOutput,
+        testCases: {
+          create: {
+            expectedOutput,
+            inputs,
+          },
+        },
       },
     });
-    return testCase;
+    return problemStatement;
   } catch (e) {
-    console.log(e);
+    return null;
+  }
+}
+
+export async function deleteTestCase(testCaseId: string) {
+  try {
+    const updatedTestCase = await db.testCase.delete({
+      where: {
+        id: testCaseId,
+      },
+    });
+  } catch (e) {
     return null;
   }
 }
@@ -381,6 +395,21 @@ export async function updateTestCase(
       },
     });
     return updatedTestCase;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function getAllLanguagesSupported() {
+  try {
+    const testCase = await db.codeLanguage.findMany({
+      select: {
+        id: true,
+        label: true,
+        value: true,
+      },
+    });
+    return testCase;
   } catch (e) {
     return null;
   }
