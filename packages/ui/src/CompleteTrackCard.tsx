@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./shad/ui/sheet";
 import EditProblem from "./EditProblem";
 import { Button } from "./shad/ui/button";
-import { createTrack } from "../../../apps/web/components/utils";
+import { AddDatatoAlgolia, createTrack } from "../../../apps/web/components/utils";
 
 interface CompleteProblemCard {
   id: string;
@@ -38,6 +38,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       problems: problems,
       selectedCategory: TrackData.selectedCategory,
     });
+    await AddDatatoAlgolia({ trackId: TrackData.trackId });
     setIsSubmitting(true);
   }
 
