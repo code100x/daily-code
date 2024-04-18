@@ -26,6 +26,7 @@ import FormFooter from "./components/FormFooter";
 import { Label } from "../../shad/ui/label";
 import { getAllLanguagesSupported } from "web/components/utils";
 import { CodeLanguage, TestCase } from "prisma/prisma-client";
+import JsonImportButton from "./components/JsonImportButton";
 
 export default function ProblemStatementForm({
   problemStatement,
@@ -87,6 +88,7 @@ export default function ProblemStatementForm({
           <Label>Test Cases:</Label>
           <TestCasesList />
           <AddCaseDialog />
+          <JsonImportButton />
         </div>
       </DialogContent>
     </Dialog>
