@@ -10,7 +10,9 @@ export function Print() {
     setTimeout(() => {
       print();
       opened = true;
-      window.close();
+      window.addEventListener("afterprint", (e: Event) => {
+        window.close();
+      });
     }, 2000);
   }, []);
 
