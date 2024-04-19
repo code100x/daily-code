@@ -60,6 +60,13 @@ fi
 echo "DATABASE_URL=\"$DATABASE_URL\"" > .env
 if [ "$db_mode" == 'D' ]; then
   docker compose up -d
+  if [ $? -eq 0 ]; then
+      echo "=================Container is up================="
+      sleep 15
+  else
+      echo "Please make sure that docker is running"
+      exit 1
+  fi
 fi
 
 migrate_seed_db
