@@ -1,9 +1,9 @@
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
-import { LessonView } from "@repo/ui/components";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
 import { cache } from "react";
+import { LessonView } from "../../../components/LessonView";
 
 const notion = new NotionAPI();
 export const dynamic = "auto";
@@ -40,7 +40,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
   //@ts-ignore
   const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
 
-  if (!problemId) {
+  if (trackDetails && !problemId) {
     return <RedirectToLastSolved trackId={trackId} />;
   }
 
@@ -61,5 +61,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
         />
       </div>
     );
+  } else {
+    notFound();
   }
 }

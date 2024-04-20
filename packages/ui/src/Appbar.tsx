@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Button } from ".";
-import { AdminButton } from "./AdminButton";
 import { ModeToggle } from "./ModeToggle";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
@@ -21,7 +20,6 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
         </Link>
         <div className="flex items-center gap-2">
           <SearchDialog tracks={tracks} />
-          {admin && <AdminButton />}
 
           {!user ? (
             <Button

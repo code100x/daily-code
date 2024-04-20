@@ -1,3 +1,4 @@
+"use client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,53 +10,44 @@ import {
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { LogOut, UserRound } from "lucide-react";
+import { useRouter } from "next/navigation";
+import UserImage from "./UserImage";
 
 const dropDownData = [
   {
     name: "Profile",
     icon: <UserRound size={15} />,
-    // href: "/profile"
+    href: "/profile",
   },
 ];
 
 export default function UserAccountDropDown() {
   const session = useSession();
   const user = session.data?.user;
+  const router = useRouter();
   return (
     <>
       {user && (
         <DropdownMenu>
-          <DropdownMenuTrigger className="w-[2rem] flex items-center hover:bg-[#030712] p-[0.2rem]  justify-center h-[2rem]">
+          <DropdownMenuTrigger className="w-[2rem] flex items-center p-[0.2rem]  justify-center h-[2rem]">
             {!user.image ? (
               <div className="p-1 border-2 rounded-md border-[#1a1a1a]">
                 <UserRound />
               </div>
             ) : (
-              <img
-                className="w-full h-full rounded-full cursor-pointer"
-                src={user?.image || ""}
-                width={100}
-                height={100}
-                alt="user_profile_image"
-              />
+              <UserImage image={user.image} />
             )}
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent className=" max-w-[20rem] shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-xl">
+          <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg">
             <DropdownMenuLabel className="flex gap-4 items-center">
-              <div className="!w-[2rem] flex items-center hover:bg-[#030712] p-[0.2rem]  justify-center !h-[2rem]">
+              <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
                 {!user.image ? (
-                  <div className="p-1 border-2 rounded-md border-[#1a1a1a]">
+                  <div className="p-1 border-2 rounded-full border-[#1a1a1a]">
                     <UserRound />
                   </div>
                 ) : (
-                  <img
-                    className="w-full h-full rounded-full cursor-pointer"
-                    src={user?.image || ""}
-                    width={100}
-                    height={100}
-                    alt="user_profile_image"
-                  />
+                  <UserImage image={user.image} />
                 )}
               </div>
 
@@ -69,7 +61,7 @@ export default function UserAccountDropDown() {
             {dropDownData.map((item, index) => {
               return (
                 <>
-                  <DropdownMenuItem className="flex gap-2" key={index}>
+                  <DropdownMenuItem className="flex gap-2" onClick={() => router.push("/profile")} key={index}>
                     <span>{item.icon}</span>
                     <span>{item.name}</span>
                   </DropdownMenuItem>
@@ -81,6 +73,7 @@ export default function UserAccountDropDown() {
               <DropdownMenuItem
                 onClick={async () => {
                   await signOut();
+                  router.push("/");
                 }}
                 className=" flex gap-2 focus:bg-[#f34e4e]"
               >

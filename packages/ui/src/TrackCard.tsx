@@ -25,7 +25,7 @@ export function TrackCard({ track }: { track: TrackCardProps }) {
             <div>{track.description}</div>
             <CardDescription>
               {track.categories.map((item) => {
-                return <div>{item.category.category}</div>;
+                return <div key={item.category.id}>{item.category.category}</div>;
               })}
             </CardDescription>
           </div>
