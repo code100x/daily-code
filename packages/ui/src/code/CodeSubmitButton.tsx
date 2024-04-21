@@ -13,7 +13,7 @@ import { Button } from "../shad/ui/button";
 import { CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
 
 const CodeSubmitButton = ({
-  problemStatement: { languagesSupported, testCases, mainFuncName },
+  problemStatement: { id, languagesSupported, testCases, mainFuncName },
 }: {
   problemStatement: ProblemStatement & {
     languagesSupported: CodeLanguage[];
@@ -41,7 +41,7 @@ const CodeSubmitButton = ({
         const res = await fetch("/api/code/submission", {
           method: "POST",
           body: JSON.stringify({
-            problemStatementId: "1",
+            problemStatementId: id,
             sourceCode: btoa(codeValue[language]),
             languageId: languageId,
           }),

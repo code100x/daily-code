@@ -8,6 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
+import UserAccountDropDown from "./UserAccountDropDown";
 import { Codebar } from "./code/Codebar";
 
 type BlogAppbarProps = {
@@ -97,7 +98,7 @@ export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
         </Link>
 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
-          {problem.title} ({problemIndex + 1} / {track.problems.length})
+          {track.title} ({problemIndex + 1} / {track.problems.length})
         </p>
 
         <div className="flex space-x-2">
@@ -116,6 +117,15 @@ export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
               </div>
               Prev
             </Button>
+            <Button
+              variant="outline"
+              className=" bg-black text-white md:hidden block"
+              disabled={problemIndex !== 0 ? false : true}
+            >
+              <div>
+                <ChevronLeftIcon />
+              </div>
+            </Button>
           </Link>
 
           <Link
@@ -133,6 +143,15 @@ export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
                 <ChevronRightIcon />
               </div>
             </Button>
+            <Button
+              variant="outline"
+              className="bg-black text-white md:hidden block"
+              disabled={problemIndex + 1 !== track.problems.length ? false : true}
+            >
+              <div>
+                <ChevronRightIcon />
+              </div>
+            </Button>
           </Link>
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
@@ -142,7 +161,13 @@ export const BlogAppbar = ({ problem, track }: BlogAppbarProps) => {
                 <DownloadIcon />
               </div>
             </Button>
+            <Button variant="outline" className=" bg-black text-white md:hidden block">
+              <div>
+                <DownloadIcon />
+              </div>
+            </Button>
           </Link>
+          <UserAccountDropDown />
         </div>
       </div>
 
