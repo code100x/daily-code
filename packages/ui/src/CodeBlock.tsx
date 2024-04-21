@@ -13,6 +13,8 @@ export default function CodeBlock({ block }: { block: any }) {
     hljs.highlightAll();
   }, []);
 
+  const copiedDisplayElement = document.getElementById(copied_display_id);
+
   return (
     <div>
       <pre className={styles.code_block}>
@@ -22,12 +24,12 @@ export default function CodeBlock({ block }: { block: any }) {
             className={styles.copy_button}
             onClick={() => {
               navigator.clipboard.writeText(code).then(() => {
-                // @ts-ignore
-                document.getElementById(copied_display_id).style.display = "block";
-                setTimeout(() => {
-                  // @ts-ignore
-                  document.getElementById(copied_display_id).style.display = "none";
-                }, 1000);
+                if (copiedDisplayElement) {
+                  copiedDisplayElement.style.display = "block";
+                  setTimeout(() => {
+                    copiedDisplayElement.style.display = "none";
+                  }, 1000);
+                }
               });
             }}
           >
