@@ -8,15 +8,12 @@ import { LessonView } from "../../../components/LessonView";
 const notion = new NotionAPI();
 
 export default async function TrackComponent({ params }: { params: { pdfId: string[] } }) {
-  // @ts-ignore
-  const trackId: string = params.pdfId[0];
+  const trackId: string = params.pdfId[0] || "";
   const problemId = params.pdfId[1];
   let notionRecordMaps: any[] = [];
   if (trackId === "43XrfL4n0LgSnTkSB4rO") {
     redirect("/tracks/oAjvkeRNZThPMxZf4aX5");
   }
-
-  //@ts-ignore
   const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
 
   if (!problemId) {

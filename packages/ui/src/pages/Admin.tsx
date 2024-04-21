@@ -32,6 +32,7 @@ export const Admin = async () => {
               <TabsTrigger value="tracks">Tracks</TabsTrigger>
               <TabsTrigger value="link">Link</TabsTrigger>
               <TabsTrigger value="search">Search</TabsTrigger>
+              <TabsTrigger value="MCQ">MCQ</TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="auto">
@@ -48,6 +49,8 @@ export const Admin = async () => {
           </TabsContent>
           <TabsContent value="search">
             <AdminSearch TracksNotinSearch={TracksNotinSearch} TracksinSearch={TracksinSearch} />
+          <TabsContent value="MCQ">
+            <AdminMCQ />
           </TabsContent>
         </Tabs>
       </div>
