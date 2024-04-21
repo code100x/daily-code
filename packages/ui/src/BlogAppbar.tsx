@@ -8,6 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
+import UserAccountDropDown from "./UserAccountDropDown";
 import { Codebar } from "./code/Codebar";
 
 export const BlogAppbar = ({
@@ -182,6 +183,7 @@ export const BlogAppbar = ({
               </div>
             </Button>
           </Link>
+          <UserAccountDropDown />
         </div>
       </div>
 
