@@ -76,7 +76,9 @@ const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: 
           key={category.category}
           variant="ghost"
           onClick={() => handleCategoryChange(category.category)}
-          className={selectedCategory == category.category ? "bg-gray-300 dark:bg-slate-700" : ""}
+          className={
+            selectedCategory == category.category ? "bg-gray-300 dark:bg-slate-700 rounded-full" : "rounded-full"
+          }
         >
           {category.category}
         </Button>
