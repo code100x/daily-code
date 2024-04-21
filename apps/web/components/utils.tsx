@@ -269,3 +269,21 @@ export async function getAllCategories() {
     return [];
   }
 }
+
+export async function getAllBookmarkedTrack(userid: string) {
+  try {
+    const bookmarks = await db.bookmark.findMany({
+      where: {
+        user: userid,
+      },
+      select: {
+        track: true,
+      },
+    });
+
+    return bookmarks;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}

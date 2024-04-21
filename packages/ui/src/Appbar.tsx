@@ -21,7 +21,11 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
         </Link>
         <div className="flex items-center gap-2">
           <SearchDialog tracks={tracks} />
-
+          {user && (
+            <Link href={"/bookmarks"}>
+              <Button variant={"outline"}>Bookmarks</Button>
+            </Link>
+          )}
           {!user ? (
             <Button
               variant={"outline"}

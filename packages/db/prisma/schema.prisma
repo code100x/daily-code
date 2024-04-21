@@ -41,6 +41,15 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Bookmark {
+  id      String @id @default(uuid())
+  user    String
+  userID  User @relation(fields: [user],references: [id], onDelete: Cascade)
+  track   String
+  trackID Track @relation(fields: [track],references: [id] , onDelete: Cascade)
+  createdAt DateTime          @default(now())
+}
+
 model User {
   id            String       @id @default(cuid())
   name          String?
@@ -50,6 +59,7 @@ model User {
   admin         Boolean      @default(false)
   accounts      Account[]
   sessions      Session[]
+  userID        Bookmark[]
   submissions   Submission[]
 }
 
@@ -68,6 +78,7 @@ model Track {
   image       String
   categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
+  trackID     Bookmark[]
   hidden      Boolean         @default(false)
   createdAt   DateTime        @default(now())
 }
