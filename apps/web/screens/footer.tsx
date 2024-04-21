@@ -24,6 +24,9 @@ const Footer = () => {
             <Link href={"/privacy-policy"} className="hover:text-blue-500 text-neutral-200">
               Privacy Policy
             </Link>
+            <Link href={"https://github.com/code100x/daily-code"} className="hover:text-blue-500 text-neutral-200">
+              Github
+            </Link>
           </div>
         </div>
 
