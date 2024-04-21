@@ -17,7 +17,7 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Dailycode",
+  title: "DailyCode",
   description: "Code daily",
 };
 
