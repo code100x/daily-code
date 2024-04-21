@@ -57,7 +57,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
       <Button variant="outline" className="pr-2" onClick={() => setDialogOpen(true)}>
-        <div className="md:flex gap-2 items-center hidden">
+        <div className="items-center hidden gap-2 md:flex">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
           Search...
           <kbd className="bg-white/15 p-1.5 rounded-sm text-xs leading-3">Ctrl K</kbd>
@@ -66,22 +66,27 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
         </div>
       </Button>
-      <DialogContent className="p-0 gap-0 max-w-2xl ">
+      <DialogContent className="max-w-2xl gap-0 p-0 ">
         <div className="flex items-center px-4 py-2 border-b">
           <MagnifyingGlassIcon className="h-[1.5rem] w-[1.5rem]" />
           <Input
             type="text"
             placeholder="Type title"
-            className="border-none focus-visible:outline-none focus-visible:ring-0 text-base shadow-none"
+            className="text-base border-none shadow-none focus-visible:outline-none focus-visible:ring-0"
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
           <DialogClose>
-            <Cross2Icon className="h-4 w-4" />
+            <Cross2Icon className="w-4 h-4" />
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
         <div className="h-[400px] overflow-y-scroll">
+          {searchTracks.length === 0 && (
+            <div className="m-4">
+              <p className="text-center text-slate-700 dark:text-slate-300">No tracks found</p>
+            </div>
+          )}
           {searchTracks.map((track, index) => (
             <div key={track.id} className={`p-2 ${index === selectedIndex ? "bg-slate-700" : ""}`}>
               <Link href={`/tracks/${track.id}`} passHref>
