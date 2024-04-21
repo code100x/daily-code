@@ -46,7 +46,7 @@ const LinkCard = ({ track }: { track: LinkCardProps }) => {
             className="ml-3"
             onClick={() => {
               handleAddProblem();
-              setNewProblems([...newProblems, { problemId, sortingOrder, trackId: track.id }]);
+              setNewProblems([...newProblems, { trackId: track.id, problemId, sortingOrder }]);
             }}
           >
             Add
