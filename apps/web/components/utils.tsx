@@ -437,6 +437,9 @@ export async function updateTestCase(
       },
     });
     return updatedTestCase;
+  } catch (e) {
+    return [];
+  }
 }
 
 export async function getAllLanguagesSupported() {
