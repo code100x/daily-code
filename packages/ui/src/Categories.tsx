@@ -74,6 +74,15 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
 const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
   return (
     <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
+      {selectedCategory && (
+        <Button
+          variant="ghost"
+          onClick={() => handleCategoryChange("All Categories")}
+          className={selectedCategory == "" ? "bg-gray-100 dark:bg-slate-700" : ""}
+        >
+          All Categories
+        </Button>
+      )}
       {categories.map((category) => (
         <Button
           key={category.category}
