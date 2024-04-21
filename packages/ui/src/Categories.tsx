@@ -18,7 +18,7 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
   const [selectedCategory, setSelectedCategory] = useRecoilState(category);
 
   const handleCategoryChange = (category: string) => {
-    if (category === selectedCategory) {
+    if (category === selectedCategory || category === "All Categories") {
       setSelectedCategory("");
     } else {
       setSelectedCategory(category);
@@ -54,7 +54,9 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
         }}
       >
         <SelectTrigger className="w-[250px]">
-          <SelectValue placeholder={selectedCategory || "All Categories"}></SelectValue>
+          <SelectValue placeholder={selectedCategory || "All Categories"}>
+            {selectedCategory || "All Categories"}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {categories.map((category) => (
@@ -62,6 +64,7 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
               {category.category}
             </SelectItem>
           ))}
+          {selectedCategory && <SelectItem value="All Categories">All Categories</SelectItem>}
         </SelectContent>
       </Select>
     </div>
