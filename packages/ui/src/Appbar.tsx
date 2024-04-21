@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Button } from ".";
-import { AdminButton } from "./AdminButton";
 import { ModeToggle } from "./ModeToggle";
 import { signIn, signOut } from "next-auth/react";
 
@@ -8,6 +7,7 @@ import { useSession } from "next-auth/react";
 
 import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
+import UserAccountDropDown from "./UserAccountDropDown";
 
 export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
   const session = useSession();
@@ -22,7 +22,6 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
         </Link>
         <div className="flex items-center gap-2">
           <SearchDialog tracks={tracks} />
-          {admin && <AdminButton />}
 
           {!user ? (
             <Button
@@ -36,20 +35,9 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
           ) : (
             ""
           )}
-          {user ? (
-            <Button
-              variant={"outline"}
-              onClick={async () => {
-                await signOut();
-              }}
-            >
-              Logout
-            </Button>
-          ) : (
-            ""
-          )}
 
           <ModeToggle />
+          <UserAccountDropDown />
         </div>
       </div>
     </div>

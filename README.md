@@ -1,23 +1,21 @@
 # Quick Setup Locally
 
 > Install the Dependencies
+
 ```
 cd daily-code
 yarn install
 ```
-> Copy the env example
-```
-cd /packages/db
-cp .env.example .env
-```
->Update the .env file with the database url
 
-> Migrate and the Database
+> Setup DB (Windows users must have git-bash installed to run the script)
+
 ```
-npx prisma migrate dev
-npx prisma db seed
+cd packages/db
+./setupDB.sh
 ```
+
 > Run locally
+
 ```
 cd ../..
 yarn run dev

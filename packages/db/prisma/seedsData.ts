@@ -14,7 +14,7 @@ const seedsData: any[] = [
               create: {
                 description: "Exporting and importing modules",
                 title: "Exporting and importing modules",
-                type: "Blog",
+                type: "Code",
                 notionDocId: "c96fc6e4456e488bac863fa78f6bfa3c",
                 id: "ts-11",
               },
