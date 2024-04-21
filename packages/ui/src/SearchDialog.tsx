@@ -3,7 +3,7 @@
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Button } from "./shad/ui/button";
 import { Dialog, DialogClose, DialogContent } from "./shad/ui/dailog";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "./shad/ui/input";
 import { Track, Problem } from "@prisma/client";
 import { TrackList } from "./TrackList";
@@ -11,6 +11,8 @@ import Link from "next/link";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const 
+  = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -22,13 +24,23 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
         setDialogOpen(true);
       } else if (event.code === "ArrowDown") {
         event.preventDefault();
-        setSelectedIndex((prevIndex) => (prevIndex + 1) % searchTracks.length);
+        setSelectedIndex((prevIndex) => Math.min(prevIndex + 1, searchTracks.length - 1));
       } else if (event.code === "ArrowUp") {
         event.preventDefault();
-        setSelectedIndex((prevIndex) => (prevIndex - 1 + searchTracks.length) % searchTracks.length);
+        setSelectedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
       } else if (event.code === "Enter" && selectedIndex !== -1) {
         event.preventDefault();
         document.getElementById(`track-link-${selectedIndex}`)?.click();
+      }
+      if (event.code === "ArrowDown" || event.code === "ArrowUp") {
+        event.preventDefault();
+        const container = scrollableContainerRef.current;
+        if (container) {
+          if (selectedIndex > 3) {
+            const scrollAmount = event.code === "ArrowDown" ? 85 : -80;
+            container.scrollBy({ top: scrollAmount, behavior: "smooth" });
+          }
+        }
       }
     };
 
@@ -81,14 +93,9 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
-        <div className="h-[400px] overflow-y-scroll">
-          {searchTracks.length === 0 && (
-            <div className="m-4">
-              <p className="text-center text-slate-700 dark:text-slate-300">No tracks found</p>
-            </div>
-          )}
+        <div className="h-[400px] overflow-y-scroll" ref={scrollableContainerRef}>
           {searchTracks.map((track, index) => (
-            <div key={track.id} className={`p-2 ${index === selectedIndex ? "bg-slate-700" : ""}`}>
+            <div key={track.id} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
               <Link href={`/tracks/${track.id}`} passHref>
                 <p id={`track-link-${index}`} tabIndex={-1} style={{ display: "none" }}>
                   Navigate
