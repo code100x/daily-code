@@ -1,18 +1,32 @@
 "use client";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 
 export function Print() {
-  // Some hack for strict mode
-  let opened = false;
+  const router = useRouter();
+
   useEffect(() => {
-    if (opened) return;
+    // Open all <details> elements
     document.querySelectorAll("details").forEach((e) => (e.open = true));
-    setTimeout(() => {
-      print();
-      opened = true;
+
+
+    const closeWindow = () => {
+      console.log("PDF has been printed.");
       window.close();
-    }, 2000);
-  }, []);
+    };
+
+    // Add event listener for 'afterprint' event
+    window.addEventListener("afterprint", closeWindow);
+
+    // Print the document
+    print();
+
+    // Clean up: Remove the event listener when component unmounts
+    return () => {
+      window.removeEventListener("afterprint", closeWindow);
+    };
+  }, [router]);
 
   return null;
 }

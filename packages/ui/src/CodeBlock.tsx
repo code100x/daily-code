@@ -13,21 +13,23 @@ export default function CodeBlock({ block }: { block: any }) {
     hljs.highlightAll();
   }, []);
 
+  const copiedDisplayElement = document.getElementById(copied_display_id);
+
   return (
-    <div>
-      <pre className={styles.code_block}>
+    <div className="max-w-full overflow-auto">
+      <pre className={`${styles.code_block} px-4 sm:px-6 md:px-8 relative`}>
         <code className="language-javascript">{code}</code>
-        <div className={styles.copy_block}>
+        <div className={`${styles.copy_block} absolute top-0 right-0`}>
           <button
             className={styles.copy_button}
             onClick={() => {
               navigator.clipboard.writeText(code).then(() => {
-                // @ts-ignore
-                document.getElementById(copied_display_id).style.display = "block";
-                setTimeout(() => {
-                  // @ts-ignore
-                  document.getElementById(copied_display_id).style.display = "none";
-                }, 1000);
+                if (copiedDisplayElement) {
+                  copiedDisplayElement.style.display = "block";
+                  setTimeout(() => {
+                    copiedDisplayElement.style.display = "none";
+                  }, 1000);
+                }
               });
             }}
           >

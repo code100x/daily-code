@@ -297,6 +297,20 @@ export async function createMCQ(data: any) {
   }
 }
 
+export async function deleteMCQ(id: string) {
+  console.log(id);
+  try {
+    const mcq = await db.mCQQuestion.delete({
+      where: {
+        id: id,
+      },
+    });
+    return mcq;
+  } catch (e) {
+    return null;
+  }
+}
+
 export async function getAllProblemStatements() {
   try {
     const problemStatements = await db.problemStatement.findMany({
@@ -423,9 +437,6 @@ export async function updateTestCase(
       },
     });
     return updatedTestCase;
-  } catch (e) {
-    return null;
-  }
 }
 
 export async function getAllLanguagesSupported() {

@@ -6,7 +6,7 @@ import { LinkProblems } from "../LinkProblems";
 import CompleteAddTracks from "../CompleteAddTracks";
 import AdminMCQ from "../AdminMCQ";
 import { ProblemStatements } from "../code/admin/ProblemStatements";
-
+  
 export const Admin = async () => {
   const problems = await getAllProblems();
   const tracks = await getAllTracks();
@@ -36,6 +36,9 @@ export const Admin = async () => {
           </TabsContent>
           <TabsContent value="link">
             <LinkProblems tracks={tracks} />
+          </TabsContent>
+          <TabsContent value="MCQ">
+            <AdminMCQ />
           </TabsContent>
           <TabsContent value="problem-statement">
             <ProblemStatements />
