@@ -1,18 +1,17 @@
 "use client";
 
+import { Problem, Track } from "@prisma/client";
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { TrackList } from "./TrackList";
 import { Button } from "./shad/ui/button";
 import { Dialog, DialogClose, DialogContent } from "./shad/ui/dailog";
-import { useEffect, useRef, useState } from "react";
 import { Input } from "./shad/ui/input";
-import { Track, Problem } from "@prisma/client";
-import { TrackList } from "./TrackList";
-import Link from "next/link";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const 
-  = useRef<HTMLDivElement>(null);
+  const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
