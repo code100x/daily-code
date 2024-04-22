@@ -269,7 +269,6 @@ export async function getAllCategories() {
     return [];
   }
 }
-
 export async function getUsersHistory(email: string) {
   try {
     const history = await db.history.findMany({
@@ -290,6 +289,22 @@ export async function getUsersHistory(email: string) {
       },
     });
     return history;
+     } catch (e) {
+    return [];
+  }
+}
+    
+export async function getAllMCQs() {
+  try {
+    const mcqs = await db.problem.findMany({
+      where: {
+        type: "MCQ",
+      },
+      include: {
+        mcqQuestions: true,
+      },
+    });
+    return mcqs;
   } catch (e) {
     return [];
   }
@@ -311,5 +326,33 @@ export async function updateUserHistory(email: string, trackId: string, problemI
     return history;
   } catch (e) {
     return [];
+      }
+}
+
+
+export async function createMCQ(data: any) {
+  try {
+    const mcq = await db.mCQQuestion.create({
+      data,
+    });
+    return mcq;
+  } catch (e) {
+    console.log(e);
+    return null;
   }
 }
+
+export async function deleteMCQ(id: string) {
+  console.log(id);
+  try {
+    const mcq = await db.mCQQuestion.delete({
+      where: {
+        id: id,
+      },
+    });
+    return mcq;
+  } catch (e) {
+    return null;
+  }
+}
+
