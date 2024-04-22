@@ -17,3 +17,14 @@ if git diff --cached --name-only | grep -qE "^(package-lock\.json|pnpm-lock\.yam
     echo "Error: Only 'yarn.lock' is allowed as a lock file. Please remove any other lock files from your commit."
     exit 1
 fi
+
+yarn run format:check || EXIT_CODE=$?
+echo "FORMAT exit code: $EXIT_CODE"
+
+yarn run lint || EXIT_CODE=$?
+echo "LINT exit code: $EXIT_CODE"
+
+if [ ! -z "$EXIT_CODE" ]; then
+  echo "Exiting with exit code: $EXIT_CODE"
+  exit $EXIT_CODE
+fi
