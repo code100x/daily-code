@@ -3,6 +3,8 @@ import { useRecoilState } from "recoil";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select";
 import { category } from "@repo/store";
 import { Button } from "./shad/ui/button";
+import { useRouter, useSearchParams } from "next/navigation";
+import useCategorySearchParams from "./hooks/useCategorySearchParams";
 
 interface Category {
   category: string;
@@ -15,13 +17,14 @@ interface CategoryProps {
 }
 
 export const Categories = ({ categories }: { categories: Category[] }) => {
-  const [selectedCategory, setSelectedCategory] = useRecoilState(category);
+  const router = useRouter();
+  const selectedCategory = useCategorySearchParams() ?? "";
 
   const handleCategoryChange = (category: string) => {
     if (category === selectedCategory) {
-      setSelectedCategory("");
+      router.push("/");
     } else {
-      setSelectedCategory(category);
+      router.push(`/?category=${category}`);
     }
   };
 
@@ -49,20 +52,21 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
   return (
     <div className="flex justify-center">
       <Select
+        value={selectedCategory}
         onValueChange={(e) => {
           handleCategoryChange(e);
         }}
       >
         <SelectTrigger className="w-[250px]">
-          <SelectValue placeholder={selectedCategory || "All Categories"}></SelectValue>
+          <SelectValue placeholder={"All Categories"}></SelectValue>
         </SelectTrigger>
         <SelectContent
-        ref={(ref)=>{
-          if(!ref) return;
-          ref.ontouchstart = (e)=>{
-            e.preventDefault();
-          }
-        }}
+          ref={(ref) => {
+            if (!ref) return;
+            ref.ontouchstart = (e) => {
+              e.preventDefault();
+            };
+          }}
         >
           {categories.map((category) => (
             <SelectItem value={category.category} key={category.category}>
