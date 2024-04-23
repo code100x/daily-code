@@ -1,8 +1,16 @@
 "use client";
 import { useRecoilState } from "recoil";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./shad/ui/select";
-import { category } from "@repo/store";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./shad/ui/dropdown-menu";
+import { categories as stateCategories } from "@repo/store";
 import { Button } from "./shad/ui/button";
+import { useEffect, useState } from "react";
 
 interface Category {
   category: string;
@@ -10,18 +18,23 @@ interface Category {
 
 interface CategoryProps {
   categories: Category[];
-  selectedCategory: string;
+  selectedCategories: string[];
   handleCategoryChange: (category: string) => void;
 }
 
+interface CategoryStates {
+  [key: string]: boolean;
+}
+
 export const Categories = ({ categories }: { categories: Category[] }) => {
-  const [selectedCategory, setSelectedCategory] = useRecoilState(category);
+  const [selectedCategories, setSelectedCategories] = useRecoilState<string[]>(stateCategories);
 
   const handleCategoryChange = (category: string) => {
-    if (category === selectedCategory) {
-      setSelectedCategory("");
+    const index = selectedCategories.indexOf(category);
+    if (index === -1) {
+      setSelectedCategories([...selectedCategories, category]);
     } else {
-      setSelectedCategory(category);
+      setSelectedCategories(selectedCategories.filter((cat) => cat !== category));
     }
   };
 
@@ -30,14 +43,14 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
       <div className=" xl:hidden block ">
         <SelectCategory
           categories={categories}
-          selectedCategory={selectedCategory}
+          selectedCategories={selectedCategories}
           handleCategoryChange={handleCategoryChange}
         />
       </div>
       <div className="xl:block hidden">
         <ButtonCategory
           categories={categories}
-          selectedCategory={selectedCategory}
+          selectedCategories={selectedCategories}
           handleCategoryChange={handleCategoryChange}
         />
       </div>
@@ -45,37 +58,50 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
   );
 };
 
-const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
+const SelectCategory = ({ categories, selectedCategories, handleCategoryChange }: CategoryProps) => {
+  const [categoryStates, setCategoryStates] = useState<CategoryStates>({});
+
+  useEffect(() => {
+    const initialCategoryStates = categories.reduce((acc: CategoryStates, category) => {
+      acc[category.category] = selectedCategories.includes(category.category);
+      return acc;
+    }, {});
+    setCategoryStates(initialCategoryStates);
+  }, [categories, selectedCategories]);
+
+  const handleCheckboxChange = (category: string, checked: boolean) => {
+    setCategoryStates((prevState) => ({
+      ...prevState,
+      [category]: checked,
+    }));
+    handleCategoryChange(category);
+  };
+
   return (
     <div className="flex justify-center">
-      <Select
-        onValueChange={(e) => {
-          handleCategoryChange(e);
-        }}
-      >
-        <SelectTrigger className="w-[250px]">
-          <SelectValue placeholder={selectedCategory || "All Categories"}></SelectValue>
-        </SelectTrigger>
-        <SelectContent
-        ref={(ref)=>{
-          if(!ref) return;
-          ref.ontouchstart = (e)=>{
-            e.preventDefault();
-          }
-        }}
-        >
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">Filters</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>Categories</DropdownMenuLabel>
+          <DropdownMenuSeparator />
           {categories.map((category) => (
-            <SelectItem value={category.category} key={category.category}>
+            <DropdownMenuCheckboxItem
+              key={category.category}
+              checked={categoryStates[category.category] || false}
+              onCheckedChange={(checked) => handleCheckboxChange(category.category, checked)}
+            >
               {category.category}
-            </SelectItem>
+            </DropdownMenuCheckboxItem>
           ))}
-        </SelectContent>
-      </Select>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
 
-const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
+const ButtonCategory = ({ categories, selectedCategories, handleCategoryChange }: CategoryProps) => {
   return (
     <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
       {categories.map((category) => (
@@ -84,7 +110,9 @@ const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: 
           variant="ghost"
           onClick={() => handleCategoryChange(category.category)}
           className={
-            selectedCategory == category.category ? "bg-gray-300 dark:bg-slate-700 rounded-full" : "rounded-full"
+            selectedCategories.includes(category.category)
+              ? "bg-gray-300 dark:bg-slate-700 rounded-full"
+              : "rounded-full"
           }
         >
           {category.category}

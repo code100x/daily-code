@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { TrackCard } from "@repo/ui/components";
-import { category } from "@repo/store";
+import { categories as stateCategories } from "@repo/store";
 import { Track, Problem } from "@prisma/client";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
@@ -17,18 +17,21 @@ interface Tracks extends Track {
 }
 
 export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
-  const selectedCategory = useRecoilValue(category);
-  const [filteredTracks, setFilteredTracks] = useState(tracks);
-  const filtereTracks = () => {
+  const selectedCategory = useRecoilValue(stateCategories);
+  const [filteredTracks, setFilteredTracks] = useState<Tracks[]>(tracks);
+
+  useEffect(() => {
+    filterTracks();
+  }, [selectedCategory]);
+
+  const filterTracks = () => {
     let filteredTracks = tracks;
     if (selectedCategory.length > 0) {
-      filteredTracks = filteredTracks.filter((t) => t.categories.some((c) => c.category.category === selectedCategory));
+      filteredTracks = tracks.filter((t) => t.categories.some((c) => selectedCategory.includes(c.category.category)));
     }
     setFilteredTracks(filteredTracks);
   };
-  useEffect(() => {
-    filtereTracks();
-  }, [selectedCategory]);
+
   return (
     <div>
       <ul className="p-8 md:20 grid grid-cols-1 gap-x-6 gap-y-8 place-items-center lg:grid-cols-2 w-full">
