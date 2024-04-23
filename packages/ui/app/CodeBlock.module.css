@@ -4,16 +4,23 @@
     font-size: 15px;
     word-wrap: break-word;
     white-space: pre-wrap;
-    background: #161b22;
     overflow: auto;
     line-height: 1.6;
-    border: 1px solid #333;
-    border-left: 3px solid #e81029;
-    color: #564;
     min-width: 500px;
     max-width: 800px;
     display: flex;
     justify-content: space-between;
+}
+
+.code_block_dark {
+    background: #1E1E1E;
+  color: #DCDCDC;
+}
+
+.code_block_light {
+    color: #24292e;
+    background: #ffffff;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 .copy_block {
@@ -25,16 +32,35 @@
 .copy_button {
     position: relative;
     cursor: pointer;
-    color: #fff;
-    background: gray;
     border-radius: 0.5em;
     padding: 2px 7px;
     margin: 10px;
 }
 
-.copied_text {
+.copy_button_dark {
+    color: #fff;
+    background: gray;
+}
+
+.copy_button_light {
     background: #fff;
+    color : gray;
+    border: 1px solid gray;
+
+}
+
+.copied_text {
     padding: 5px;
-    color: #161b22;
     display: none;
 }
+
+.copied_text_light {
+    color : #fff;
+    background: #161b22;
+}
+
+.copied_text_dark {
+    color: #161b22;
+    background: #fff;
+}
+
