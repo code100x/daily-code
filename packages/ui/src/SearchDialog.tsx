@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const 
+  const scrollableContainerRef
   = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
