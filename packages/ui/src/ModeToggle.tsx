@@ -15,16 +15,16 @@ export function ModeToggle() {
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <Link href={"https://github.com/code100x/daily-code"}>
-        {theme === "dark" ? (
+        {theme === "light" ? (
           <svg
-            fill="#ffffff"
+            fill="#000000"
             width="64px"
             height="64px"
             viewBox="-3.2 -3.2 38.40 38.40"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)"
-            stroke="#ffffff"
+            stroke="#000000"
             stroke-width="0.00032"
           >
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -43,14 +43,14 @@ export function ModeToggle() {
           </svg>
         ) : (
           <svg
-            fill="#000000"
+            fill="#ffffff"
             width="64px"
             height="64px"
             viewBox="-3.2 -3.2 38.40 38.40"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)"
-            stroke="#000000"
+            stroke="#ffffff"
             stroke-width="0.00032"
           >
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
