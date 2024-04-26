@@ -1,4 +1,5 @@
 "use client";
+
 import { Problem, Track } from "@prisma/client";
 import { BlogAppbar } from "./BlogAppbar";
 import { NotionRenderer } from "./NotionRenderer";
@@ -17,7 +18,7 @@ export const Blog = ({
 }) => {
   const mounted = useMountStatus();
 
-  if (isPdfRequested == undefined || !isPdfRequested) {
+  if (isPdfRequested === undefined || !isPdfRequested) {
     if (!mounted) {
       return null;
     }
