@@ -18,7 +18,8 @@
     "./select": "./src/shad/ui/select.tsx",
     "./input": "./src/shad/ui/input.tsx",
     "./label": "./src/shad/ui/label.tsx",
-    "./checkbox": "./src/shad/ui/checkbox.tsx"
+    "./checkbox": "./src/shad/ui/checkbox.tsx",
+    "./RepositorySelector": "./src/RepositorySelector.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
