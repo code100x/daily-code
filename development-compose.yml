@@ -5,7 +5,7 @@ services:
     container_name: web
     build: .
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/daily-code?schema=public
+      - DATABASE_URL=${DATABASE_URL}
     restart: always
     ports:
       - 3000:3000
