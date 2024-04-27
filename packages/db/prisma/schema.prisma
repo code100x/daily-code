@@ -13,10 +13,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  refresh_token_expires_in Int?
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model User {
-  id       String @id @default(uuid())
-  username String
-  password String
+  id            String       @id @default(cuid())
+  name          String?
+  email         String?      @unique
+  emailVerified DateTime?
+  image         String?
+  admin         Boolean      @default(false)
+  accounts      Account[]
+  sessions      Session[]
+  submissions   Submission[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Track {
@@ -24,19 +66,85 @@ model Track {
   title       String
   description String
   image       String
+  categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
   hidden      Boolean         @default(false)
   createdAt   DateTime        @default(now())
 }
 
+model Categories {
+  id       String          @id @default(uuid())
+  category String
+  tracks   TrackCategory[]
+}
+
+model TrackCategory {
+  trackId    String
+  track      Track      @relation(fields: [trackId], references: [id])
+  categoryId String
+  category   Categories @relation(fields: [categoryId], references: [id])
+
+  @@id([trackId, categoryId]) // Composite primary key
+}
+
 model Problem {
-  id            String          @id @default(uuid())
-  title         String
-  description   String
-  notionDocId   String
-  mcqQuestions  MCQQuestion[]
-  type          ProblemType
-  trackProblems TrackProblems[]
+  id               String            @id @default(uuid())
+  title            String
+  description      String
+  notionDocId      String
+  mcqQuestions     MCQQuestion[]
+  type             ProblemType
+  trackProblems    TrackProblems[]
+  problemStatement ProblemStatement?
+}
+
+model ProblemStatement {
+  id                 String         @id @default(uuid())
+  testCases          TestCase[]
+  problem            Problem        @relation(fields: [problemId], references: [id])
+  problemId          String         @unique
+  languagesSupported CodeLanguage[] //implicit m-n relationship
+  submissions        Submission[]
+  mainFuncName       String // the function name which will return the output
+  argumentNames      String[]
+}
+
+model TestCase {
+  id                 String           @id @default(uuid())
+  expectedOutput     String
+  problemStatement   ProblemStatement @relation(fields: [problemStatementId], references: [id])
+  problemStatementId String
+  inputs             String[]
+  Submission         Submission[]
+}
+
+model CodeLanguage {
+  id                Int                @id // judge0 language id
+  value             String // monaco language string
+  label             String
+  problemStatements ProblemStatement[] //implicit m-n relationship
+  submissions       Submission[]
+}
+
+model Submission {
+  id                 String           @id @default(uuid())
+  code               String
+  language           CodeLanguage     @relation(fields: [codeLanguageId], references: [id])
+  codeLanguageId     Int
+  statusId           Int
+  statusDesc         String
+  runtime            Int //in ms
+  memoryUsage        Int //in bytes
+  errorMessage       String?
+  testCasesPassed    Int
+  problemStatement   ProblemStatement @relation(fields: [problemStatementId], references: [id])
+  problemStatementId String
+  user               User?            @relation(fields: [userId], references: [id])
+  userId             String?
+  createdAt          DateTime         @default(now())
+  lastTestCase       TestCase?        @relation(fields: [lastTestCaseId], references: [id])
+  lastTestCaseId     String?
+  stdout             String?
 }
 
 model TrackProblems {
@@ -46,7 +154,7 @@ model TrackProblems {
   problem   Problem @relation(fields: [problemId], references: [id])
   problemId String
 
-  sortingOrder  Int
+  sortingOrder Int
 
   @@id([trackId, problemId])
 }
@@ -56,11 +164,12 @@ enum ProblemType {
   Code
   MCQ
 }
+
 model MCQQuestion {
-  id          String   @id @default(uuid())
-  question    String
-  options     String[]
+  id            String   @id @default(uuid())
+  question      String
+  options       String[]
   correctOption String
-  problem       Problem    @relation(fields: [problemId], references: [id])
+  problem       Problem  @relation(fields: [problemId], references: [id])
   problemId     String
 }

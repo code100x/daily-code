@@ -1,7 +1,7 @@
-"use client";
+import Signin from "../../components/Signin";
 
-import { Signin } from "@repo/ui/pages";
-
-export default function () {
+const SigninPage = async () => {
   return <Signin />;
-}
+};
+
+export default SigninPage;

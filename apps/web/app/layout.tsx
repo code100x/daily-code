@@ -2,8 +2,8 @@ import "@repo/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@repo/ui/utils";
-import { Auth } from "../components/Auth";
 import { Providers, ThemeProvider } from "../components/Providers";
+import NextTopLoader from "nextjs-toploader";
 
 // core styles shared by all of react-notion-x (required)
 import "react-notion-x/src/styles.css";
@@ -18,7 +18,7 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Dailycode",
+  title: "DailyCode",
   description: "Code daily",
 };
 
@@ -27,10 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
     <html lang="en" suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Providers>
-            <Auth />
-            {children}
-          </Providers>
+          <NextTopLoader color="#2E78C7" height={2} />
+          <Providers>{children}</Providers>
         </ThemeProvider>
       </body>
     </html>
