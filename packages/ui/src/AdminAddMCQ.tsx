@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "./shad/ui/sheet";
 import { Button } from "./shad/ui/button";
 import { Input } from "./shad/ui/input";

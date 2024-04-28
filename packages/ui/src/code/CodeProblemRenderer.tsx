@@ -43,13 +43,13 @@ export const CodeProblemRenderer = ({
             <ResizableHandle withHandle />
             <ResizablePanel>
               <ResizablePanelGroup direction="vertical">
-                <ResizablePanel defaultSize={60} className="">
+                <ResizablePanel defaultSize={60}>
                   <ScrollArea className="h-full p-2 rounded-lg">
                     <CodeEditor problemStatement={problem.problemStatement} />
                   </ScrollArea>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={40} className="">
+                <ResizablePanel defaultSize={40}>
                   <ScrollArea className="h-full overflow-y-auto">
                     <RunCodeOutput problemStatement={problem.problemStatement} />
                   </ScrollArea>

@@ -311,3 +311,16 @@ export async function deleteMCQ(id: string) {
     return null;
   }
 }
+
+export async function getAllMCQsForProblem(problemId: string) {
+  try {
+    const mcqs = await db.mCQQuestion.findMany({
+      where: {
+        problemId,
+      },
+    });
+    return mcqs;
+  } catch (e) {
+    return [];
+  }
+}

@@ -1,7 +1,7 @@
 import { Blog } from "../../../packages/ui/src/Blog";
 import { CodeProblemRenderer } from "../../../packages/ui/src/code/CodeProblemRenderer";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import MCQQuestionRenderer from "../../../packages/ui/src/MCQQuestionRenderer";
+import MCQQuestionRenderer from "../../../packages/ui/src/mcq/MCQQuestionRenderer";
 import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
