@@ -29,7 +29,7 @@ interface Problem {
   notionDocId: string;
 }
 
-export default function JsonImportButton() {
+export default function CsvImportButton() {
   const { toast } = useToast();
   const [LtestCases, setTestCases] = useRecoilState<TestCase[]>(testCases);
   const LargumentNames = useRecoilValue<string[]>(argumentNames);
@@ -41,11 +41,13 @@ export default function JsonImportButton() {
   const LglobalLanguagesSupported = useRecoilValue<CodeLanguage[]>(globalLanguagesSupported);
   const setproblemStatements = useSetRecoilState<ProblemStatement[]>(problemStatementsAtom);
   const sampleInput = ["arg1", "arg2", "arg3", "arg4", "arg5", "arg6", "arg7", "arg8", "arg9", "arg10"];
-  const sampleJSON = [
-    { input: sampleInput.slice(0, LargumentNames.length), output: "[0,1]" },
-    { input: sampleInput.slice(0, LargumentNames.length), output: "[0,1]" },
-  ];
-  const [inputJSON, setInputJSON] = useState<{ input: string[]; output: string }[]>([{ input: [""], output: "" }]);
+  const sampleCSV =
+    sampleInput.slice(0, LargumentNames.length).join(",") +
+    ",[0,1]" +
+    "," +
+    sampleInput.slice(0, LargumentNames.length).join(",") +
+    ",[0,1]";
+  const [inputCSV, setInputCSV] = useState<string>("");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   async function handleCaseAdd(inputs: string[], expectedOutput: string) {
@@ -56,23 +58,28 @@ export default function JsonImportButton() {
       } catch (e) {}
     } else {
       toast({
-        title: "Invalid JSON",
+        title: "Invalid CSV",
         description: "Arguments and inputs size cannot be different and file should be a valid JSON",
         variant: "destructive",
       });
     }
   }
 
-  const importJSON = async () => {
+  const importCSV = async () => {
+    console.log(inputCSV);
     const promiseArr: Promise<void>[] = [];
-    inputJSON
-      ? inputJSON.forEach((iJSON: { input: string[]; output: string }) => {
-          if (iJSON.input[0] === "" && iJSON.input.length === 1 && iJSON.output === "") {
-          } else {
-            promiseArr.push(handleCaseAdd(iJSON.input, iJSON.output));
-          }
-        })
-      : null;
+    const inputArr = inputCSV.split("\n");
+    const testCasesFromCSV: TestCase[] = [];
+    inputArr.forEach((input, index) => {
+      testCasesFromCSV.push({
+        inputs: input.split(",").slice(0, LargumentNames.length),
+        expectedOutput: input.split(",")[LargumentNames.length],
+      });
+    });
+    testCasesFromCSV.forEach((testCase) => {
+      promiseArr.push(handleCaseAdd(testCase.inputs, testCase.expectedOutput));
+    });
+
     Promise.all(promiseArr).then((data) => {
       refetch().then((data: ProblemStatement[]) => {
         setproblemStatements(data);
@@ -133,32 +140,32 @@ export default function JsonImportButton() {
             }
           }}
         >
-          Import JSON
+          Import CSV
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        {inputJSON && (
+        {inputCSV && (
           <DialogHeader>
             <DialogTitle>Sample TestCase.json</DialogTitle>
-            <pre>{JSON.stringify(sampleJSON, null, 2)}</pre>
+            <pre>{sampleCSV}</pre>
           </DialogHeader>
         )}
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="json-input" className="text-left">
-              JSON
+              CSV
             </Label>
             <Textarea
               id="json-input"
               className="col-span-4"
               onChange={(e) => {
-                setInputJSON(JSON.parse(e.target.value));
+                setInputCSV(e.target.value);
               }}
             />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={importJSON}>
+          <Button type="submit" onClick={importCSV}>
             Import
           </Button>
         </DialogFooter>

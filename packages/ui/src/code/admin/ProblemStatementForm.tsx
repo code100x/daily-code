@@ -26,6 +26,7 @@ import { Label } from "../../shad/ui/label";
 import { getAllLanguagesSupported } from "web/components/utils";
 import { CodeLanguage, TestCase, ProblemType } from "@prisma/client";
 import JsonImportButton from "./components/JsonImportButton";
+import CsvImportButton from "./components/CsvImportButton copy";
 
 interface Problem {
   id: string;
@@ -104,6 +105,7 @@ export default function ProblemStatementForm({
           <TestCasesList />
           <AddCaseDialog />
           <JsonImportButton />
+          <CsvImportButton />
         </div>
       </DialogContent>
     </Dialog>
