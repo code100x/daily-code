@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { getAllProblemStatements } from "web/components/utils";
 import { ProblemStatement } from "prisma/prisma-client";
+import NewProblemStatement from "./components/NewProblemStatement";
 
 export const refetch = async () => {
   const problemStatements: ProblemStatement[] = await getAllProblemStatements();
@@ -22,8 +23,10 @@ export const ProblemStatements = () => {
     };
     getAndSetLang();
   }, []);
+  
   return (
     <div className="grid grid-cols-1 place-items-center">
+      <NewProblemStatement />
       <ScrollArea className="m-2 w-2/3">
         <div className="space-y-4">
           {problemStatements.map((problemStatement, i) => {

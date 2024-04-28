@@ -1,12 +1,13 @@
-import { problem } from "@repo/store";
 import { Input } from "../../../shad/ui/input";
 import { Label } from "../../../shad/ui/label";
 import { Problem } from "@prisma/client";
-import { useRecoilState } from "recoil";
-import { Dispatch, SetStateAction } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../shad/ui/select";
+import { problem } from "@repo/store";
+import { useSetRecoilState } from "recoil";
 
-export default function ProblemEditInput() {
-  const [Lproblem, setProblem]: [Problem, Dispatch<SetStateAction<Problem>>] = useRecoilState(problem);
+export default function ProblemEditInput({ Lproblem }: { Lproblem: Problem }) {
+  const setProblem = useSetRecoilState<Problem>(problem);
+
   return (
     <div>
       <Label className="text-xl">Problem:</Label>
@@ -33,12 +34,16 @@ export default function ProblemEditInput() {
           onChange={(e) => setProblem((prev: Problem) => ({ ...prev, notionDocId: e.target.value }))}
         />
         <Label>Type:</Label>
-        <Input
-          key={"problemtype"}
-          value={Lproblem.type}
-          className="col-span-3"
-          onChange={(e) => setProblem((prev: Problem) => ({ ...prev, type: e.target.value }))}
-        />
+        <Select disabled>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Code" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Code">Code</SelectItem>
+            <SelectItem value="Blog">Blog</SelectItem>
+            <SelectItem value="MCQ">MCQ</SelectItem>
+          </SelectContent>
+        </Select>
       </Label>
     </div>
   );

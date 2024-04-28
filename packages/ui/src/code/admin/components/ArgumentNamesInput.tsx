@@ -2,11 +2,9 @@ import { useRecoilState } from "recoil";
 import { argumentNames } from "@repo/store";
 import { Label } from "../../../shad/ui/label";
 import { Input } from "../../../shad/ui/input";
-import { Dispatch, SetStateAction } from "react";
 
 export default function ArgumentNamesInput() {
-  const [LargumentNames, setArgumentNames]: [string[], Dispatch<SetStateAction<string[]>>] =
-    useRecoilState(argumentNames);
+  const [LargumentNames, setArgumentNames] = useRecoilState<string[]>(argumentNames);
 
   return (
     <div>

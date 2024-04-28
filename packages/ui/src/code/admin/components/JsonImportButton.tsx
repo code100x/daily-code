@@ -3,90 +3,134 @@ import {
   globalLanguagesSupported,
   languagesSupported,
   mainFuncName,
+  problem,
   problemId,
   problemStatementId,
   problemStatementsAtom,
+  testCases,
 } from "@repo/store";
 import { Button } from "../../../shad/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../shad/ui/dailog";
 import { Label } from "../../../shad/ui/label";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { Textarea } from "../../../shad/ui/textarea";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ProblemStatement, CodeLanguage, TestCase } from "prisma/prisma-client";
-import { createProblemStatement, createTestCase } from "web/components/utils";
+import { Dispatch, SetStateAction, useState } from "react";
+import { ProblemStatement, CodeLanguage } from "prisma/prisma-client";
+import { createProblem, createProblemStatement, createTestCase } from "web/components/utils";
 import { refetch } from "../ProblemStatements";
 import { useToast } from "../../../shad/ui/use-toast";
+import { TestCase, ProblemType } from "@prisma/client";
+
+interface Problem {
+  id: string;
+  title: string;
+  description: string;
+  type: ProblemType;
+  notionDocId: string;
+}
 
 export default function JsonImportButton() {
-  const LproblemStatementId: string = useRecoilValue(problemStatementId);
-  const LargumentNames: string[] = useRecoilValue(argumentNames);
-  const LmainFuncName: string = useRecoilValue(mainFuncName);
-  const LproblemId: string = useRecoilValue(problemId);
-  const LlanguagesSupported: CodeLanguage[] = useRecoilValue(languagesSupported);
-  const setProblemStatementId: Dispatch<SetStateAction<string>> = useSetRecoilState(problemStatementId);
-  const setProblemStatement: Dispatch<SetStateAction<ProblemStatement[]>> = useSetRecoilState(problemStatementsAtom);
-  const LglobalLanguagesSupported = useRecoilValue(globalLanguagesSupported);
+  const { toast } = useToast();
+  const [LtestCases, setTestCases] = useRecoilState<TestCase[]>(testCases);
+  const LargumentNames = useRecoilValue<string[]>(argumentNames);
+  const LmainFuncName = useRecoilValue<string>(mainFuncName);
+  const setProblemId = useSetRecoilState<string>(problemId);
+  const Lproblem = useRecoilValue<Problem>(problem);
+  const LlanguagesSupported = useRecoilValue<CodeLanguage[]>(languagesSupported);
+  const [LproblemStatementId, setProblemStatementId] = useRecoilState<string>(problemStatementId);
+  const LglobalLanguagesSupported = useRecoilValue<CodeLanguage[]>(globalLanguagesSupported);
+  const setproblemStatements = useSetRecoilState<ProblemStatement[]>(problemStatementsAtom);
   const sampleInput = ["arg1", "arg2", "arg3", "arg4", "arg5", "arg6", "arg7", "arg8", "arg9", "arg10"];
   const sampleJSON = [
     { input: sampleInput.slice(0, LargumentNames.length), output: "[0,1]" },
     { input: sampleInput.slice(0, LargumentNames.length), output: "[0,1]" },
   ];
-  const [inputJSON, setInputJSON] = useState(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const toast = useToast();
+  const [inputJSON, setInputJSON] = useState<{ input: string[]; output: string }[]>([{ input: [""], output: "" }]);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
   async function handleCaseAdd(inputs: string[], expectedOutput: string) {
     if (inputs.length === LargumentNames.length) {
       try {
-        await createTestCase(LproblemStatementId, inputs, expectedOutput);
+        const createdTestCase: TestCase | null = await createTestCase(inputs, expectedOutput, LproblemStatementId);
+        createdTestCase ? setTestCases((prev: TestCase[]) => [...prev, createdTestCase]) : null;
       } catch (e) {}
     } else {
-      toast.toast({
+      toast({
         title: "Invalid JSON",
         description: "Arguments and inputs size cannot be different and file should be a valid JSON",
         variant: "destructive",
       });
     }
   }
+
   const importJSON = async () => {
     const promiseArr: Promise<void>[] = [];
-    inputJSON.forEach((iJSON: { input: string[]; output: string }) => {
-      promiseArr.push(handleCaseAdd(iJSON.input, iJSON.output));
-    });
+    inputJSON
+      ? inputJSON.forEach((iJSON: { input: string[]; output: string }) => {
+          if (iJSON.input[0] === "" && iJSON.input.length === 1 && iJSON.output === "") {
+          } else {
+            promiseArr.push(handleCaseAdd(iJSON.input, iJSON.output));
+          }
+        })
+      : null;
     Promise.all(promiseArr).then((data) => {
       refetch().then((data: ProblemStatement[]) => {
-        setProblemStatement(data);
+        setproblemStatements(data);
         setIsDialogOpen(false);
       });
     });
   };
 
-  useEffect(() => {
-    const createFunction = async () => {
-      const newPS: ProblemStatement | null = await createProblemStatement({
-        problemStatement: {
-          argumentNames: LargumentNames,
-          mainFuncName: LmainFuncName,
-          problemId: LproblemId,
-        },
-        languages: LglobalLanguagesSupported.filter((lang: CodeLanguage) => LlanguagesSupported.includes(lang.value)),
-        testCases: [],
+  const handleCreateProblem = async () => {
+    const createdProblem: Problem | null = await createProblem({
+      title: Lproblem.title,
+      description: Lproblem.description,
+      type: "Code",
+      notionDocId: Lproblem.notionDocId,
+    });
+    !createdProblem ? toast({ title: "Oops! Cannot create problem", description: "Unexpected error occured" }) : null;
+    if (createdProblem?.type === "Code") {
+      handleCreatePsStatement(createdProblem.id);
+    }
+    if (createdProblem) {
+      toast({
+        title: "Added problem",
+        description: "Problem added",
       });
-      if (newPS) {
-        setProblemStatementId(newPS.id);
-      }
-      return newPS;
-    };
-    createFunction();
-  }, []);
+      return;
+    }
+
+    toast({
+      title: "Couldn't add problem",
+      description: "Please try again later",
+    });
+  };
+
+  const handleCreatePsStatement = async (id: string) => {
+    const newPS: ProblemStatement | null = await createProblemStatement({
+      problemStatement: {
+        argumentNames: LargumentNames,
+        mainFuncName: LmainFuncName,
+        problemId: id,
+      },
+      languages: LglobalLanguagesSupported.filter((lang) => LlanguagesSupported.map(({ id }) => id).includes(lang.id)),
+      testCases: LtestCases,
+    });
+    if (newPS !== null && newPS !== undefined) {
+      setProblemStatementId(newPS.id);
+      setProblemId(newPS.problemId);
+    }
+  };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Import JSON</Button>
+        <Button variant="outline" onClick={handleCreateProblem}>
+          Import JSON
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        {!inputJSON && (
+        {inputJSON && (
           <DialogHeader>
             <DialogTitle>Sample TestCase.json</DialogTitle>
             <pre>{JSON.stringify(sampleJSON, null, 2)}</pre>

@@ -1,41 +1,49 @@
 import { atom, selector } from "recoil";
+import { TestCase, CodeLanguage, ProblemType } from "@prisma/client";
+interface Problem {
+  id: string;
+  title: string;
+  description: string;
+  type: ProblemType;
+  notionDocId: string;
+}
 
-export const problemStatementId = atom<any>({
+export const problemStatementId = atom<string>({
   key: "problemStatementId",
-  default: null,
+  default: "",
 });
 
-export const testCases = atom<any>({
+export const testCases = atom<Array<TestCase>>({
   key: "testCases",
-  default: null,
+  default: [],
 });
 
-export const problem = atom<any>({
+export const problem = atom<Problem>({
   key: "problem",
-  default: null,
+  default: { id: "", title: "test", description: "", notionDocId: "", type: "Code" },
 });
 
-export const problemId = atom<any>({
+export const problemId = atom<string>({
   key: "problemId",
-  default: null,
+  default: "",
 });
 
-export const languagesSupported = atom<any[]>({
+export const languagesSupported = atom<CodeLanguage[]>({
   key: "languagesSupported",
   default: [],
 });
 
-export const mainFuncName = atom<any>({
+export const mainFuncName = atom<string>({
   key: "mainFuncName",
-  default: null,
+  default: "",
 });
 
-export const argumentNames = atom<any[]>({
+export const argumentNames = atom<string[]>({
   key: "argumentNames",
   default: [],
 });
 
-export const globalLanguagesSupported = atom<any[]>({
+export const globalLanguagesSupported = atom<CodeLanguage[]>({
   key: "globalLanguagesSupported",
   default: [],
 });

@@ -5,12 +5,11 @@ import { problemStatementsAtom, testCases } from "@repo/store";
 import { Trash2Icon } from "lucide-react";
 import { deleteTestCase } from "web/components/utils";
 import { refetch } from "../ProblemStatements";
-import { Dispatch, SetStateAction } from "react";
-import { TestCase } from "prisma/prisma-client";
+import { TestCase, ProblemStatement } from "@prisma/client";
 
 export default function TestCasesList() {
-  const [LtestCases, setTestCases]: [TestCase[], Dispatch<SetStateAction<TestCase[]>>] = useRecoilState(testCases);
-  const setproblemStatements = useSetRecoilState(problemStatementsAtom);
+  const [LtestCases, setTestCases] = useRecoilState<TestCase[]>(testCases);
+  const setproblemStatements = useSetRecoilState<ProblemStatement[]>(problemStatementsAtom);
 
   function updateInputsInTestCase(id: string, value: string[]) {
     setTestCases((prev) => {
@@ -36,7 +35,7 @@ export default function TestCasesList() {
     });
   }
 
-  async function handleDelete(id) {
+  async function handleDelete(id: string) {
     deleteTestCase(id).then(async (data) => {
       const newPs = await refetch();
       setproblemStatements(newPs);
@@ -47,7 +46,7 @@ export default function TestCasesList() {
     <div className="grid grid-cols-2 place-content-center">
       <Label>Inputs</Label>
       <Label>Expected Outputs</Label>
-      {LtestCases.map((testCase, index) => {
+      {LtestCases.map((testCase) => {
         return (
           <div className="col-span-2 flex align-middle justify-evenly" key={testCase.id}>
             <Input

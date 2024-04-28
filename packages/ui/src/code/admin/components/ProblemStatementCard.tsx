@@ -1,10 +1,21 @@
 "use client";
-import { ProblemStatement, CodeLanguage } from "@prisma/client";
+import { ProblemStatement, CodeLanguage, ProblemType } from "@prisma/client";
 import { Card, CardDescription, CardHeader, CardTitle } from "../../../shad/ui/card";
 import MultipleOptionChip from "../../../MultipleOptionChip";
 import ProblemStatementForm from "../ProblemStatementForm";
+interface Problem {
+  id: string;
+  title: string;
+  description: string;
+  type: ProblemType;
+  notionDocId: string;
+}
 
-export default function ProblemStatementCard({ problemStatement }: { problemStatement: ProblemStatement }) {
+export default function ProblemStatementCard({
+  problemStatement,
+}: {
+  problemStatement: ProblemStatement & { languagesSupported: CodeLanguage[] } & { problem: Problem };
+}) {
   return (
     <>
       <Card key={problemStatement.id}>

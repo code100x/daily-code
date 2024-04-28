@@ -1,6 +1,6 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState, SetterOrUpdater } from "recoil";
 import {
   testCases,
   problem,
@@ -10,7 +10,6 @@ import {
   argumentNames,
   problemStatementId,
   globalLanguagesSupported,
-  Problem,
 } from "@repo/store";
 import { ProblemStatement } from "@prisma/client";
 import { Button } from "../../shad/ui/button";
@@ -25,19 +24,36 @@ import ArgumentNamesInput from "./components/ArgumentNamesInput";
 import FormFooter from "./components/FormFooter";
 import { Label } from "../../shad/ui/label";
 import { getAllLanguagesSupported } from "web/components/utils";
-import { CodeLanguage, TestCase } from "prisma/prisma-client";
+import { CodeLanguage, TestCase, ProblemType } from "@prisma/client";
 import JsonImportButton from "./components/JsonImportButton";
+
+interface Problem {
+  id: string;
+  title: string;
+  description: string;
+  type: ProblemType;
+  notionDocId: string;
+}
+
+type LocalPS =
+  | ProblemStatement
+  | {
+      languagesSupported?: CodeLanguage[];
+      argumentNames?: string[];
+      testCases?: TestCase[];
+      problem?: Problem;
+    };
 
 export default function ProblemStatementForm({
   problemStatement,
   isNew,
 }: {
-  problemStatement: ProblemStatement;
+  problemStatement: LocalPS;
   isNew: boolean;
 }) {
   const [isDialogOpen, setIsDialogOpen]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
-  const setTestCases: Dispatch<SetStateAction<TestCase>> = useSetRecoilState(testCases);
-  const setProblem: Dispatch<SetStateAction<Problem>> = useSetRecoilState(problem);
+  const setTestCases: Dispatch<SetStateAction<TestCase[]>> = useSetRecoilState(testCases);
+  const [Lproblem, setProblem] = useRecoilState(problem);
   const setProblemId: Dispatch<SetStateAction<string>> = useSetRecoilState(problemId);
   const setLanguagesSupported: Dispatch<SetStateAction<CodeLanguage[]>> = useSetRecoilState(languagesSupported);
   const setMainFuncName: Dispatch<SetStateAction<string>> = useSetRecoilState(mainFuncName);
@@ -48,15 +64,14 @@ export default function ProblemStatementForm({
 
   useEffect(() => {
     if (isDialogOpen) {
-      setTestCases(problemStatement.testCases);
-      setProblem(problemStatement.problem);
+      problemStatement.testCases ? setTestCases(problemStatement.testCases) : null;
+      problemStatement.problem ? setProblem(problemStatement.problem) : null;
+      problemStatement.languagesSupported ? setLanguagesSupported(problemStatement.languagesSupported) : null;
       setProblemId(problemStatement.problemId);
-      setLanguagesSupported(problemStatement.languagesSupported.map((language) => language.value));
       setMainFuncName(problemStatement.mainFuncName);
       setArgumentNames(problemStatement.argumentNames);
       setProblemStatementId(problemStatement.id);
     }
-
     const getAndSetLang = async () => {
       const languages: CodeLanguage[] = await getAllLanguagesSupported();
       setGlobalLanguagesSupported(languages);
@@ -79,7 +94,7 @@ export default function ProblemStatementForm({
           <MainFunctionInput />
           <LanguageDropDownInput />
           <ArgumentNamesInput />
-          <ProblemEditInput />
+          <ProblemEditInput Lproblem={Lproblem} />
           <DialogFooter>
             <FormFooter setIsDialogOpen={setIsDialogOpen} isNew={isNew} />
           </DialogFooter>

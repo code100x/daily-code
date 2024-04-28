@@ -11,18 +11,17 @@ import {
 import { Button } from "../../..";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { globalLanguagesSupported, languagesSupported } from "@repo/store";
-import { Dispatch, SetStateAction } from "react";
-import { CodeLanguage } from "prisma/prisma-client";
+import { CodeLanguage } from "@prisma/client";
 
 export default function LanguageDropDownInput() {
-  const [LlanguagesSupported, setLanguagesSupported]: [string[], Dispatch<SetStateAction<string[]>>] =
-    useRecoilState(languagesSupported);
-  const LglobalLanguagesSupported: CodeLanguage[] = useRecoilValue(globalLanguagesSupported);
+  const [LlanguagesSupported, setLanguagesSupported] = useRecoilState<CodeLanguage[]>(languagesSupported);
+  const LglobalLanguagesSupported = useRecoilValue<CodeLanguage[]>(globalLanguagesSupported);
+
   return (
     <div>
       <Label>
-        {LlanguagesSupported.map((lang) => {
-          return <MultipleOptionChip value={lang} key={lang} />;
+        {LlanguagesSupported.map((lang: CodeLanguage) => {
+          return <MultipleOptionChip value={lang.value} key={lang.value} />;
         })}
       </Label>
       <DropdownMenu>
@@ -37,13 +36,15 @@ export default function LanguageDropDownInput() {
           {LglobalLanguagesSupported.map((lang: CodeLanguage) => (
             <DropdownMenuCheckboxItem
               key={lang.value.toString() + "option"}
-              checked={LlanguagesSupported.includes(lang.value)}
+              checked={LlanguagesSupported.map(({ id }) => id).includes(lang.id)}
               onCheckedChange={() => {
-                if (LlanguagesSupported.includes(lang.value)) {
-                  const newArr: string[] = LlanguagesSupported.filter((language) => language !== lang.value);
+                if (LlanguagesSupported.map(({ id }) => id).includes(lang.id)) {
+                  const newArr: CodeLanguage[] = LlanguagesSupported.filter(
+                    (language) => language.value !== lang.value
+                  );
                   setLanguagesSupported(newArr);
                 } else {
-                  setLanguagesSupported((prev) => [...prev, lang.value]);
+                  setLanguagesSupported((prev) => [...prev, lang]);
                 }
               }}
             >

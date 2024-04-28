@@ -9,12 +9,12 @@ import {
 } from "../../../shad/ui/dailog";
 import { Input } from "../../../shad/ui/input";
 import { Label } from "../../../shad/ui/label";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useState } from "react";
 import { DialogClose, DialogTrigger } from "@radix-ui/react-dialog";
-import { createProblemStatement, createTestCase, updateProblemStatement } from "web/components/utils";
+import { createProblem, createProblemStatement, createTestCase } from "web/components/utils";
 import { useToast } from "../../../shad/ui/use-toast";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { CodeLanguage, ProblemStatement, TestCase } from "prisma/prisma-client";
+import { CodeLanguage, ProblemStatement } from "prisma/prisma-client";
 import {
   problemId,
   argumentNames,
@@ -23,60 +23,51 @@ import {
   mainFuncName,
   globalLanguagesSupported,
   languagesSupported,
-  Problem,
   problem,
+  testCases,
 } from "@repo/store";
+import { TestCase, ProblemType } from "@prisma/client";
 import { refetch } from "../ProblemStatements";
 
-export function AddCaseDialog() {
-  const LproblemId: string = useRecoilValue(problemId);
-  const LargumentNames: string[] = useRecoilValue(argumentNames);
-  const [LproblemStatementId, setProblemStatementId]: [string, Dispatch<SetStateAction<string>>] =
-    useRecoilState(problemStatementId);
-  const LmainFuncName: string = useRecoilValue(mainFuncName);
-  const LglobalLanguagesSupported: CodeLanguage[] = useRecoilValue(globalLanguagesSupported);
-  const LlanguagesSupported: string[] = useRecoilValue(languagesSupported);
-  const Lproblem: Problem = useRecoilValue(problem);
-  const [inputs, setInputs]: [string[], Dispatch<SetStateAction<string[]>>] = useState([""]);
-  const [expectedOutput, setExpectedOutput]: [string, Dispatch<SetStateAction<string>>] = useState("");
-  const toast = useToast();
-  const [isDialogOpen, setIsDialogOpen]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
-  const setproblemStatement: Dispatch<SetStateAction<ProblemStatement[]>> = useSetRecoilState(problemStatementsAtom);
+interface Problem {
+  id: string;
+  title: string;
+  description: string;
+  type: ProblemType;
+  notionDocId: string;
+}
 
-  useEffect(() => {
-    const { id, ...LproblemElse } = Lproblem;
-    const updateProblem = async () => {
-      const updatedProblem = await updateProblemStatement(LproblemStatementId, {
-        argumentNames: LargumentNames,
-        mainFuncName: LmainFuncName,
-        problem: {
-          update: {
-            where: {
-              id,
-            },
-            data: LproblemElse,
-          },
-        },
-        languagesSupported: {
-          set: LglobalLanguagesSupported.filter((lang) => LlanguagesSupported.includes(lang.value)),
-        },
-      });
-    };
-    updateProblem();
-  }, [isDialogOpen]);
+export function AddCaseDialog() {
+  const { toast } = useToast();
+  const [LproblemId, setProblemId] = useRecoilState<string>(problemId);
+  const [LargumentNames, setArgumentNames] = useRecoilState<string[]>(argumentNames);
+  const [LproblemStatementId, setProblemStatementId] = useRecoilState<string>(problemStatementId);
+  const [LmainFuncName, setMainFuncName] = useRecoilState<string>(mainFuncName);
+  const LglobalLanguagesSupported = useRecoilValue<CodeLanguage[]>(globalLanguagesSupported);
+  const LlanguagesSupported = useRecoilValue<CodeLanguage[]>(languagesSupported);
+  const [Lproblem, setProblem] = useRecoilState<Problem>(problem);
+  const [inputs, setInputs] = useState<string[]>([""]);
+  const [expectedOutput, setExpectedOutput] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const setproblemStatement = useSetRecoilState<ProblemStatement[]>(problemStatementsAtom);
+  const setTestCases = useSetRecoilState<TestCase[]>(testCases);
 
   async function handleCaseAdd() {
     if (inputs.length === LargumentNames.length) {
+      if (LproblemStatementId === "") {
+        return createFunction();
+      }
       try {
-        await createTestCase(LproblemStatementId, inputs, expectedOutput);
+        const createdTestCase: TestCase | null = await createTestCase(inputs, expectedOutput, LproblemStatementId);
         const newPs: ProblemStatement[] = await refetch();
+        createdTestCase ? setTestCases((prev: TestCase[]) => [...prev, createdTestCase]) : null;
         setproblemStatement(newPs);
         setIsDialogOpen(false);
         setInputs([""]);
         setExpectedOutput("");
       } catch (e) {}
     } else {
-      toast.toast({
+      toast({
         title: "Invalid input arguments",
         description: "Arguments and inputs size cannot be different",
         variant: "destructive",
@@ -84,24 +75,42 @@ export function AddCaseDialog() {
     }
   }
 
-  useEffect(() => {
-    const createFunction = async () => {
-      const newPS: ProblemStatement | null = await createProblemStatement({
-        problemStatement: {
-          argumentNames: LargumentNames,
-          mainFuncName: LmainFuncName,
-          problemId: LproblemId,
-        },
-        languages: LglobalLanguagesSupported.filter((lang: CodeLanguage) => LlanguagesSupported.includes(lang.value)),
-        testCases: [],
-      });
-      if (newPS) {
+  const createFunction = async () => {
+    const newProblem = await createProblem({
+      title: Lproblem.title,
+      description: Lproblem.description,
+      type: "Code",
+      notionDocId: Lproblem.notionDocId,
+    });
+    if (newProblem) {
+      setProblemId(newProblem.id);
+      setProblem(newProblem);
+    } else {
+      toast({ title: "Something went wrong!", description: "Cannot create Problem" });
+      return;
+    }
+    const newPS: ProblemStatement | null = await createProblemStatement({
+      problemStatement: {
+        argumentNames: LargumentNames,
+        mainFuncName: LmainFuncName,
+        problemId: newProblem.id,
+      },
+      languages: LglobalLanguagesSupported.filter((lang) => LlanguagesSupported.map(({ id }) => id).includes(lang.id)),
+      testCases: [],
+    });
+    if (newPS) {
+      const newTestCase = await createTestCase(inputs, expectedOutput, newPS.id);
+      if (newTestCase) {
+        setTestCases((prev: TestCase[]) => [...prev, newTestCase]);
         setProblemStatementId(newPS.id);
+        setArgumentNames(newPS.argumentNames);
+        setMainFuncName(newPS.mainFuncName);
+        setProblemId(newPS.problemId);
+        setIsDialogOpen(false);
       }
-      return newPS;
-    };
-    createFunction();
-  }, []);
+    }
+    return newPS;
+  };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

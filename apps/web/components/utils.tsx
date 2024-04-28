@@ -106,6 +106,10 @@ export async function createProblemStatement({
           },
         },
       },
+      include: {
+        testCases: true,
+        languagesSupported: true,
+      },
     });
     return createdProblemStatement;
   } catch (e: any) {
@@ -124,7 +128,6 @@ export async function createTrackProblems(data: any) {
     });
     return trackProblems;
   } catch (e) {
-    console.error(e);
     return null;
   }
 }
@@ -292,13 +295,11 @@ export async function createMCQ(data: any) {
     });
     return mcq;
   } catch (e) {
-    console.log(e);
     return null;
   }
 }
 
 export async function deleteMCQ(id: string) {
-  console.log(id);
   try {
     const mcq = await db.mCQQuestion.delete({
       where: {
@@ -386,30 +387,25 @@ export async function getAllTestCase(id: string) {
   }
 }
 
-export async function createTestCase(problemStatementId: string, inputs: string[], expectedOutput: string) {
+export async function createTestCase(inputs: string[], expectedOutput: string, problemStatementId: string) {
   try {
-    const problemStatement = await db.problemStatement.update({
-      where: {
-        id: problemStatementId,
-      },
+    const testCase = await db.testCase.create({
       data: {
-        testCases: {
-          create: {
-            expectedOutput,
-            inputs,
-          },
-        },
+        inputs,
+        expectedOutput,
+        problemStatementId,
       },
     });
-    return problemStatement;
+    return testCase;
   } catch (e) {
+    console.log(e);
     return null;
   }
 }
 
 export async function deleteTestCase(testCaseId: string) {
   try {
-    const updatedTestCase = await db.testCase.delete({
+    await db.testCase.delete({
       where: {
         id: testCaseId,
       },

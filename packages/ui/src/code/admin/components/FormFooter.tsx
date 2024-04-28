@@ -1,19 +1,31 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button, DialogClose } from "../../..";
-import { createProblemStatement, updateProblemStatement } from "web/components/utils";
+import { updateProblemStatement } from "web/components/utils";
 import {
+  problem,
   argumentNames,
   globalLanguagesSupported,
   languagesSupported,
   mainFuncName,
-  problem,
   problemId,
   problemStatementId,
   problemStatementsAtom,
+  testCases,
 } from "@repo/store";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { refetch } from "../ProblemStatements";
-import { Problem, ProblemStatement, CodeLanguage } from "prisma/prisma-client";
+import { ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
+import { createProblem, createProblemStatement } from "web/components/utils";
+import { useToast } from "../../../shad/ui/use-toast";
+import { ProblemType } from "@prisma/client";
+
+interface Problem {
+  id: string;
+  title: string;
+  description: string;
+  type: ProblemType;
+  notionDocId: string;
+}
 
 export default function FormFooter({
   setIsDialogOpen,
@@ -22,16 +34,17 @@ export default function FormFooter({
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
   isNew: boolean;
 }) {
-  const LargumentNames: string[] = useRecoilValue(argumentNames);
-  const Lproblem: Problem = useRecoilValue(problem);
-  const LmainFuncName: string = useRecoilValue(mainFuncName);
-  const LproblemStatementId: string = useRecoilValue(problemStatementId);
-  const LproblemId: string = useRecoilValue(problemId);
-  const setproblemStatements: Dispatch<SetStateAction<ProblemStatement[]>> = useSetRecoilState(problemStatementsAtom);
-  const LglobalLanguagesSupported: CodeLanguage[] = useRecoilValue(globalLanguagesSupported);
-  const [isSaving, setIsSaving]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
-  const LlanguagesSupported: CodeLanguage[] = useRecoilValue(languagesSupported);
-
+  const { toast } = useToast();
+  const LargumentNames = useRecoilValue<string[]>(argumentNames);
+  const Lproblem = useRecoilValue<Problem>(problem);
+  const LmainFuncName = useRecoilValue<string>(mainFuncName);
+  const [LproblemStatementId, setProblemStatementId] = useRecoilState<string>(problemStatementId);
+  const setproblemStatements = useSetRecoilState<ProblemStatement[]>(problemStatementsAtom);
+  const LglobalLanguagesSupported = useRecoilValue<CodeLanguage[]>(globalLanguagesSupported);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const LlanguagesSupported = useRecoilValue<CodeLanguage[]>(languagesSupported);
+  const setProblemId = useSetRecoilState<string>(problemId);
+  const LtestCases = useRecoilValue<TestCase[]>(testCases);
   function handleDiscard() {
     setIsDialogOpen(false);
   }
@@ -48,29 +61,59 @@ export default function FormFooter({
           data: LproblemElse,
         },
       },
-      languagesSupported: { set: LglobalLanguagesSupported.filter((lang) => LlanguagesSupported.includes(lang.value)) },
+      languagesSupported: {
+        set: LglobalLanguagesSupported.filter((lang) => LlanguagesSupported.map(({ id }) => id).includes(lang.id)),
+      },
     });
     setIsSaving(false);
     setIsDialogOpen(false);
     const newPs: ProblemStatement[] = await refetch();
     setproblemStatements(newPs);
   };
-
-  const createNewPS = async () => {
+  const handleCreateProblem = async () => {
     setIsSaving(true);
-    await createProblemStatement({
+    const createdProblem: Problem | null = await createProblem({
+      title: Lproblem.title,
+      description: Lproblem.description,
+      type: "Code",
+      notionDocId: Lproblem.notionDocId,
+    });
+    !createdProblem ? toast({ title: "Oops! Cannot create problem", description: "Unexpected error occured" }) : null;
+    if (createdProblem?.type === "Code") {
+      handleCreatePsStatement(createdProblem.id);
+    }
+    if (createdProblem) {
+      toast({
+        title: "Added problem",
+        description: "Problem added",
+      });
+      return;
+    }
+
+    toast({
+      title: "Couldn't add problem",
+      description: "Please try again later",
+    });
+  };
+
+  const handleCreatePsStatement = async (id: string) => {
+    const newPS: ProblemStatement | null = await createProblemStatement({
       problemStatement: {
         argumentNames: LargumentNames,
         mainFuncName: LmainFuncName,
-        problemId: LproblemId,
+        problemId: id,
       },
-      languages: LglobalLanguagesSupported.filter((lang) => LlanguagesSupported.includes(lang.value)),
-      testCases: [],
+      languages: LglobalLanguagesSupported.filter((lang) => LlanguagesSupported.map(({ id }) => id).includes(lang.id)),
+      testCases: LtestCases,
     });
-    setIsSaving(false);
+    const NewPSList = await refetch();
+    setproblemStatements(NewPSList);
     setIsDialogOpen(false);
-    const newPs: ProblemStatement[] = await refetch();
-    setproblemStatements(newPs);
+    setIsSaving(false);
+    if (newPS !== null && newPS !== undefined) {
+      setProblemStatementId(newPS.id);
+      setProblemId(newPS.problemId);
+    }
   };
 
   return (
@@ -80,8 +123,8 @@ export default function FormFooter({
           Discard
         </Button>
       </DialogClose>
-      <Button variant={"outline"} className="" onClick={isNew ? createNewPS : handleSave}>
-        {isSaving ? "Saving" : "Save"}
+      <Button variant={"outline"} className="" onClick={isNew ? handleCreateProblem : handleSave}>
+        {isNew ? (isSaving ? "Creating" : "Create") : isSaving ? "Saving" : "Save"}
       </Button>
     </div>
   );
