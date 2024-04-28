@@ -17,11 +17,11 @@ export const BlogAppbar = ({
 }: {
   problem: Problem & { notionRecordMap: any } & {
     problemStatement?:
-      | (ProblemStatement & {
-          languagesSupported: CodeLanguage[];
-          testCases: TestCase[];
-        })
-      | null;
+    | (ProblemStatement & {
+      languagesSupported: CodeLanguage[];
+      testCases: TestCase[];
+    })
+    | null;
   };
   track: Track & { problems: Problem[] };
 }) => {
@@ -96,9 +96,8 @@ export const BlogAppbar = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50 transition-transform duration-300 ${
-        !visible && scrollingDown ? "transform -translate-y-full " : " "
-      }`}
+      className={`flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50 transition-transform duration-300 ${!visible && scrollingDown ? "transform -translate-y-full " : " "
+        }`}
       style={{ transform: !visible && !scrollingDown ? "translateY(0)" : "" }}
     >
       <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
@@ -109,80 +108,47 @@ export const BlogAppbar = ({
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {track.title} ({problemIndex + 1} / {track.problems.length})
         </p>
+
         {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
-        <div className="flex space-x-2 mb-2">
-          <div className="mb-2">
+        <div className="flex gap-2 mb-2 md:mb-0 ">
+          <div className="mb-2 md:mb-0">
             <PageToggle allProblems={track.problems} track={track} />
           </div>
-          <Link
-            prefetch={true}
-            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
-            style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
-          >
-            <Button
-              variant="outline"
-              className="ml-2 bg-black text-white md:flex hidden"
-              disabled={problemIndex !== 0 ? false : true}
-            >
-              <div className="pr-2">
-                <ChevronLeftIcon />
-              </div>
-              Prev
-            </Button>
-            <Button
-              variant="outline"
-              className=" bg-black text-white md:hidden block"
-              disabled={problemIndex !== 0 ? false : true}
-            >
-              <div>
-                <ChevronLeftIcon />
-              </div>
-            </Button>
-          </Link>
 
-          <Link
-            prefetch={true}
-            href={
-              problemIndex + 1 === track.problems.length
-                ? ``
-                : `/tracks/${track.id}/${track.problems[problemIndex + 1]!.id}`
-            }
-            style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
-          >
-            <Button
-              variant="outline"
-              className="bg-black text-white md:flex hidden"
-              disabled={problemIndex + 1 !== track.problems.length ? false : true}
+          <Button variant={"outline"} asChild>
+            <Link
+              prefetch={true}
+              href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
+              className={`flex gap-1 items-center justify-center pointer ${problemIndex === 0 && "bg-muted cursor-not-allowed"}`}
             >
-              Next
-              <div className="pl-2">
-                <ChevronRightIcon />
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              className="bg-black text-white md:hidden block"
-              disabled={problemIndex + 1 !== track.problems.length ? false : true}
+              <ChevronLeftIcon />
+              <span className="hidden md:block">Prev</span>
+            </Link>
+          </Button>
+
+
+          <Button variant={"outline"} asChild>
+            <Link
+              prefetch={true}
+              href={
+                problemIndex + 1 === track.problems.length
+                  ? ``
+                  : `/tracks/${track.id}/${track.problems[problemIndex + 1]!.id}`
+              }
+              className={`flex gap-1 items-center justify-center pointer ${problemIndex + 1 === track.problems.length && "bg-muted cursor-not-allowed"}`}
             >
-              <div>
-                <ChevronRightIcon />
-              </div>
-            </Button>
-          </Link>
+              <span className="hidden md:block">Next</span>
+              <ChevronRightIcon />
+            </Link>
+          </Button>
           <ModeToggle />
-          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
-              Download
-              <div className="pl-2">
-                <DownloadIcon />
-              </div>
-            </Button>
-            <Button variant="outline" className=" bg-black text-white md:hidden block">
-              <div>
-                <DownloadIcon />
-              </div>
-            </Button>
-          </Link>
+
+          <Button variant={"outline"} asChild>
+            <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank" className="flex gap-1">
+              <span className="hidden md:block">Download</span>
+              <DownloadIcon />
+            </Link>
+          </Button>
           <UserAccountDropDown />
         </div>
       </div>
