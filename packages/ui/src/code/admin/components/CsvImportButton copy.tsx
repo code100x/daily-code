@@ -40,8 +40,8 @@ export default function CsvImportButton() {
   const [LproblemStatementId, setProblemStatementId] = useRecoilState<string>(problemStatementId);
   const LglobalLanguagesSupported = useRecoilValue<CodeLanguage[]>(globalLanguagesSupported);
   const setproblemStatements = useSetRecoilState<ProblemStatement[]>(problemStatementsAtom);
-  const sampleInput = ["arg1", "arg2", "arg3", "arg4", "arg5", "arg6", "arg7", "arg8", "arg9", "arg10"];
-  const sampleCSV =
+  const sampleInput: string[] = ["arg1", "arg2", "arg3", "arg4", "arg5", "arg6", "arg7", "arg8", "arg9", "arg10"];
+  const sampleCSV: string =
     sampleInput.slice(0, LargumentNames.length).join(",") +
     ",[0,1]" +
     "," +
@@ -67,8 +67,8 @@ export default function CsvImportButton() {
 
   const splitCsvString = (inputString: string): string[] => {
     const objects: string[] = [];
-    let currentObject = "";
-    let depth = 0;
+    let currentObject: string = "";
+    let depth: number = 0;
 
     for (const char of inputString) {
       if (char === "[" || char === "{") {
@@ -94,9 +94,9 @@ export default function CsvImportButton() {
 
   const importCSV = async () => {
     const promiseArr: Promise<void>[] = [];
-    const inputArr = inputCSV.split("\n");
+    const inputArr: string[] = inputCSV.split("\n");
     const testCasesFromCSV: Omit<TestCase, "problemStatementId" | "id">[] = [];
-    inputArr.forEach((input) => {
+    inputArr.forEach((input: string) => {
       const expectedOutput: string | undefined = splitCsvString(input).pop();
       testCasesFromCSV.push({
         inputs: splitCsvString(input).slice(0, LargumentNames.length),

@@ -76,7 +76,7 @@ export function AddCaseDialog() {
   }
 
   const createFunction = async () => {
-    const newProblem = await createProblem({
+    const newProblem: Problem | null = await createProblem({
       title: Lproblem.title,
       description: Lproblem.description,
       type: "Code",
@@ -99,7 +99,7 @@ export function AddCaseDialog() {
       testCases: [],
     });
     if (newPS) {
-      const newTestCase = await createTestCase(inputs, expectedOutput, newPS.id);
+      const newTestCase: TestCase | null = await createTestCase(inputs, expectedOutput, newPS.id);
       if (newTestCase) {
         setTestCases((prev: TestCase[]) => [...prev, newTestCase]);
         setProblemStatementId(newPS.id);
