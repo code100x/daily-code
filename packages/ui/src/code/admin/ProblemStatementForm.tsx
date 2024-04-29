@@ -38,8 +38,8 @@ interface Problem {
 
 type LocalPS = ProblemStatement & {
   languagesSupported: CodeLanguage[];
-  argumentNames: string[];
-  testCases: TestCase[];
+  argumentNames?: string[];
+  testCases?: TestCase[];
   problem: Problem;
 };
 

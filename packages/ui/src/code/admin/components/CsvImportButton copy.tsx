@@ -93,14 +93,14 @@ export default function CsvImportButton() {
   };
 
   const importCSV = async () => {
-    console.log(inputCSV);
     const promiseArr: Promise<void>[] = [];
     const inputArr = inputCSV.split("\n");
-    const testCasesFromCSV: TestCase[] = [];
+    const testCasesFromCSV: Omit<TestCase, "problemStatementId" | "id">[] = [];
     inputArr.forEach((input) => {
+      const expectedOutput: string | undefined = splitCsvString(input).pop();
       testCasesFromCSV.push({
         inputs: splitCsvString(input).slice(0, LargumentNames.length),
-        expectedOutput: splitCsvString(input)[LargumentNames.length],
+        expectedOutput: expectedOutput ?? "",
       });
     });
     testCasesFromCSV.forEach((testCase) => {
