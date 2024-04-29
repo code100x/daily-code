@@ -36,14 +36,12 @@ interface Problem {
   notionDocId: string;
 }
 
-type LocalPS =
-  | ProblemStatement
-  | {
-      languagesSupported?: CodeLanguage[];
-      argumentNames?: string[];
-      testCases?: TestCase[];
-      problem?: Problem;
-    };
+type LocalPS = ProblemStatement & {
+  languagesSupported: CodeLanguage[];
+  argumentNames: string[];
+  testCases: TestCase[];
+  problem: Problem;
+};
 
 export default function ProblemStatementForm({
   problemStatement,

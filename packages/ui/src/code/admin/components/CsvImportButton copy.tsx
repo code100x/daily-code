@@ -65,15 +65,42 @@ export default function CsvImportButton() {
     }
   }
 
+  const splitCsvString = (inputString: string): string[] => {
+    const objects: string[] = [];
+    let currentObject = "";
+    let depth = 0;
+
+    for (const char of inputString) {
+      if (char === "[" || char === "{") {
+        depth++;
+      } else if (char === "]" || char === "}") {
+        depth--;
+      }
+
+      if (char === "," && depth === 0) {
+        objects.push(currentObject.trim());
+        currentObject = "";
+      } else {
+        currentObject += char;
+      }
+    }
+
+    if (currentObject.trim() !== "") {
+      objects.push(currentObject.trim());
+    }
+
+    return objects;
+  };
+
   const importCSV = async () => {
     console.log(inputCSV);
     const promiseArr: Promise<void>[] = [];
     const inputArr = inputCSV.split("\n");
     const testCasesFromCSV: TestCase[] = [];
-    inputArr.forEach((input, index) => {
+    inputArr.forEach((input) => {
       testCasesFromCSV.push({
-        inputs: input.split(",").slice(0, LargumentNames.length),
-        expectedOutput: input.split(",")[LargumentNames.length],
+        inputs: splitCsvString(input).slice(0, LargumentNames.length),
+        expectedOutput: splitCsvString(input)[LargumentNames.length],
       });
     });
     testCasesFromCSV.forEach((testCase) => {
@@ -84,6 +111,7 @@ export default function CsvImportButton() {
       refetch().then((data: ProblemStatement[]) => {
         setproblemStatements(data);
         setIsDialogOpen(false);
+        setInputCSV("");
       });
     });
   };
@@ -144,12 +172,10 @@ export default function CsvImportButton() {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        {inputCSV && (
-          <DialogHeader>
-            <DialogTitle>Sample TestCase.json</DialogTitle>
-            <pre>{sampleCSV}</pre>
-          </DialogHeader>
-        )}
+        <DialogHeader>
+          <DialogTitle>Sample TestCase.json</DialogTitle>
+          {!inputCSV && <pre>Sample: {sampleCSV}</pre>}
+        </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="json-input" className="text-left">
@@ -161,6 +187,7 @@ export default function CsvImportButton() {
               onChange={(e) => {
                 setInputCSV(e.target.value);
               }}
+              value={inputCSV}
             />
           </div>
         </div>

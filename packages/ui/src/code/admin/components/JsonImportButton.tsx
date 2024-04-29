@@ -77,6 +77,7 @@ export default function JsonImportButton() {
       refetch().then((data: ProblemStatement[]) => {
         setproblemStatements(data);
         setIsDialogOpen(false);
+        setInputJSON([{ input: [""], output: "" }]);
       });
     });
   };
@@ -137,12 +138,10 @@ export default function JsonImportButton() {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        {inputJSON && (
-          <DialogHeader>
-            <DialogTitle>Sample TestCase.json</DialogTitle>
-            <pre>{JSON.stringify(sampleJSON, null, 2)}</pre>
-          </DialogHeader>
-        )}
+        <DialogHeader>
+          <DialogTitle>Sample TestCase.json</DialogTitle>
+          {inputJSON.length === 1 && <pre>Sample: {JSON.stringify(sampleJSON, null, 2)}</pre>}
+        </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="json-input" className="text-left">
@@ -154,6 +153,7 @@ export default function JsonImportButton() {
               onChange={(e) => {
                 setInputJSON(JSON.parse(e.target.value));
               }}
+              value={JSON.stringify(inputJSON)}
             />
           </div>
         </div>
