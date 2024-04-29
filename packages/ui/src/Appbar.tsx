@@ -4,7 +4,7 @@ import { ModeToggle } from "./ModeToggle";
 import { signIn, signOut } from "next-auth/react";
 
 import { useSession } from "next-auth/react";
-
+import GithubIcon from './assets/github.svg';
 import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
 import UserAccountDropDown from "./UserAccountDropDown";
@@ -35,6 +35,13 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
           ) : (
             ""
           )}
+          <Link href={"https://github.com/code100x/daily-code"}>
+          <Button
+              variant={"outline"}
+            >
+              <img src={GithubIcon.src} className="h-5 w-[15px] dark:invert scale-125" />
+            </Button>
+        </Link>
 
           <ModeToggle />
           <UserAccountDropDown />
