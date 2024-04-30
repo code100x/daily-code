@@ -33,7 +33,7 @@ export function History() {
       if (email) {
         try {
           const history = await getUsersHistory(email);
-          console.log("history :", history);
+          
           setHistory(history as HistoryItem[]);
         } catch (e) {}
       }
@@ -45,7 +45,7 @@ export function History() {
       if (pathname.match("/tracks/")) {
         const trackId = pathname.split("/")[2];
         const problemId = pathname.split("/")[3];
-        //update history
+        
         try {
           if (email && trackId && problemId) {
             await updateUserHistory(email, trackId, problemId);
