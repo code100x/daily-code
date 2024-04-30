@@ -29,15 +29,13 @@ export async function generateStaticParams() {
 }
 
 export default async function TrackComponent({ params }: { params: { trackIds: string[] } }) {
-  // @ts-ignore
-  const trackId: string = params.trackIds[0];
+  const trackId: string = params.trackIds[0] || "";
   const problemId = params.trackIds[1];
   let notionRecordMap = null;
   if (trackId === "43XrfL4n0LgSnTkSB4rO") {
     redirect("/tracks/oAjvkeRNZThPMxZf4aX5");
   }
 
-  //@ts-ignore
   const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
 
   if (trackDetails && !problemId) {
