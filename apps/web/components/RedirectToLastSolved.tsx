@@ -2,7 +2,6 @@
 
 import { Loader } from "@repo/ui/components";
 import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
 import { getFirstProblemForTrack } from "./utils";
 

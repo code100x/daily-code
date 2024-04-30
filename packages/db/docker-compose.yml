@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: 100xdevs
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - 100xdevs:/data/postgres
+    restart: unless-stopped
+
+
+volumes:
+  100xdevs:
