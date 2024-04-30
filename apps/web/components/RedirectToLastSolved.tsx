@@ -3,22 +3,16 @@
 import { Loader } from "@repo/ui/components";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { getFirstProblemForTrack } from "./utils";
 
 export const RedirectToLastSolved = ({ trackId }: { trackId: string }) => {
   const router = useRouter();
 
   useEffect(() => {
-    try {
-      getLastSolved({ trackId }).then((res: any) => {
-        if (res.data.nextProblemId) {
-          router.replace(`/tracks/${trackId}/${res.data.nextProblemId}`);
-          // window.location = `/tracks/${trackId}/${res.data.nextProblemId}`
-        }
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
+    getFirstProblemForTrack(trackId).then((problemId) => {
+      router.replace(`/tracks/${trackId}/${problemId}`);
+    });
+  }, [trackId]);
 
   return (
     <div>

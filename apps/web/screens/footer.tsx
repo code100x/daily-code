@@ -11,7 +11,9 @@ const Footer = () => {
       <div className="md:max-w-screen-2xl mt-4 mx-auto flex flex-row items-start justify-between w-full">
         <div className="flex flex-col md:flex-row w-3/5 md:justify-between">
           <div className=" ml-21 ">
-            <Image src={Logo} alt="Logo" width={300} height={200} />
+            <Link href={"https://app.100xdevs.com/"}>
+              <Image src={Logo} alt="Logo" width={300} height={200} className="hover:opacity-80" />
+            </Link>
           </div>
           <div className="flex flex-col justify-center my-8 md:my-0">
             <h3 className="font-semibold text-neutral-100 mb-4">Quick Links</h3>
