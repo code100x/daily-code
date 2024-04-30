@@ -1,11 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getFunction } from "@repo/common";
 import { Button } from ".";
 import { useRouter } from "next/navigation";
-
-const getUserDetails = getFunction("getUserDetails");
 
 export const AdminButton = () => {
   const [admin, _setAdmin] = useState(false);
@@ -14,7 +11,7 @@ export const AdminButton = () => {
   //TODO: propagate to state
   async function fetchUserDetailsClient() {
     try {
-      const userDetails = await getUserDetails();
+      return []
     } catch (e) {
       return [];
     }
