@@ -23,14 +23,23 @@ export const ProblemStatements = () => {
     };
     getAndSetLang();
   }, []);
-  
+
   return (
     <div className="grid grid-cols-1 place-items-center">
       <NewProblemStatement />
       <ScrollArea className="m-2 w-2/3">
         <div className="space-y-4">
           {problemStatements.map((problemStatement, i) => {
-            return <ProblemStatementCard key={i} problemStatement={problemStatement} />;
+            return (
+              <ProblemStatementCard
+                key={i}
+                problemStatement={{
+                  ...problemStatement,
+                  languagesSupported: [],
+                  problem: { description: "", id: "", notionDocId: "", title: "", type: "Code" },
+                }}
+              />
+            );
           })}
         </div>
       </ScrollArea>

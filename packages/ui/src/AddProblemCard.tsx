@@ -44,7 +44,7 @@ const AddProblemCard = () => {
     });
   };
 
-  const handleCreatePsStatement = async (id) => {
+  const handleCreatePsStatement = async (id: string) => {
     const newPS = await createProblemStatement({
       problemStatement: {
         argumentNames: [],
