@@ -1,7 +1,18 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["My_SECRET_TOKEN"],
-  "globalDependencies": ["**/.env.*local", ".env", ".env.local", "tsconfig.json"],
+  "globalEnv": [
+    "MY_SECRET_TOKEN",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GITHUB_ID",
+    "GITHUB_SECRET",
+    "CODE_SUBMISSION_BACKOFF_DELAY",
+    "CODE_SUBMISSION_BACKOFF_MAX_RETRIES",
+    "JUDGE0_API_URL",
+    "CODE_SUBMISSION_RATE_LIMIT_COUNT",
+    "CODE_SUBMISSION_RATE_LIMIT_INTERVAL"
+  ],
+  "globalDependencies": ["**/.env.*local", "**/.env", ".env", ".env.local", "tsconfig.json"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
