@@ -4,6 +4,40 @@ export async function POST(req: Request) {
   const { userid, trackid } = await req.json();
 
   try {
+    await prisma.bookmark.create({
+      data: {
+        user: userid,
+        track: trackid,
+      },
+    });
+    return Response.json(
+      {
+        success: true,
+        data: "created",
+      },
+      {
+        status: 200,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return Response.json(
+      {
+        success: false,
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+}
+
+
+
+export async function DELETE(req: Request) {
+  const { userid, trackid } = await req.json();
+
+  try {
     const userBookmarks = await prisma.bookmark.findFirst({
       where: {
         user: userid,
@@ -27,19 +61,12 @@ export async function POST(req: Request) {
         }
       );
     } else {
-      await prisma.bookmark.create({
-        data: {
-          user: userid,
-          track: trackid,
-        },
-      });
       return Response.json(
         {
-          success: true,
-          data: "created",
+          status: false,
         },
         {
-          status: 200,
+          status: 400,
         }
       );
     }

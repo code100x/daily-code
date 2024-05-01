@@ -7,6 +7,7 @@ import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
 
 export const revalidate = 0;
+export const dynamic = 'force-dynamic'
 
 interface ExtendedSession extends Session {
   user: {
@@ -15,6 +16,8 @@ interface ExtendedSession extends Session {
     id: string;
   };
 }
+
+
 
 const page = async () => {
   const session: ExtendedSession | null = await getServerSession(authOptions);
@@ -25,7 +28,8 @@ const page = async () => {
   // fetches all the bookmarked tracks of user logged in
   const BookmarkedTracks = await getAllBookmarkedTrack(userid!);
 
-  const BookMarkId = BookmarkedTracks.map((bkmark) => bkmark.track);
+  const bookmarkedTrackId = BookmarkedTracks.map(({track}:{track:string})=>track)
+  const BookMarkId = BookmarkedTracks.map((bkmark:any) => bkmark.track);
   // filtering out the bookmarked tracks from all the tracks
   const FilteredBookmarks = tracks.filter((track) => BookMarkId.includes(track.id));
   if (session === null) {
@@ -41,7 +45,7 @@ const page = async () => {
           {FilteredBookmarks.map((track) => (
             <li key={track.id} className="flex justify-center">
               <div className="max-w-screen-md w-full block">
-                <TrackCard track={track} />
+                <TrackCard track={track} bookmarks={bookmarkedTrackId}  />
               </div>
             </li>
           ))}

@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shad/ui/tabs";
 import { getAllCategories, getAllProblems, getAllTracks } from "../../../../apps/web/components/utils";
 import { LinkProblems } from "../LinkProblems";
 import CompleteAddTracks from "../CompleteAddTracks";
+import AdminMCQ from "../AdminMCQ";
 
 export const Admin = async () => {
   const problems = await getAllProblems();
@@ -19,6 +20,7 @@ export const Admin = async () => {
               <TabsTrigger value="problems">Problems</TabsTrigger>
               <TabsTrigger value="tracks">Tracks</TabsTrigger>
               <TabsTrigger value="link">Link</TabsTrigger>
+              <TabsTrigger value="MCQ">MCQ</TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="auto">
@@ -32,6 +34,9 @@ export const Admin = async () => {
           </TabsContent>
           <TabsContent value="link">
             <LinkProblems tracks={tracks} />
+          </TabsContent>
+          <TabsContent value="MCQ">
+            <AdminMCQ />
           </TabsContent>
         </Tabs>
       </div>

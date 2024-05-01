@@ -5,6 +5,8 @@ import { category } from "@repo/store";
 import { Track, Problem } from "@prisma/client";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 interface Tracks extends Track {
   problems: Problem[];
@@ -16,9 +18,16 @@ interface Tracks extends Track {
   }[];
 }
 
+
 export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
+  
+  const session = useSession()
+  // @ts-ignore
+  const userid =session.data?.user?.id
+
   const selectedCategory = useRecoilValue(category);
   const [filteredTracks, setFilteredTracks] = useState(tracks);
+  const [bookmarkedTrackId, setbookmarkedTrackId] = useState([])
   const filtereTracks = () => {
     let filteredTracks = tracks;
     if (selectedCategory.length > 0) {
@@ -26,8 +35,18 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
     }
     setFilteredTracks(filteredTracks);
   };
+
+  async function getBookMarkStatus(){
+    const { data } = await axios.post("/api/getAllBookmarks", {
+      userid: userid,
+    });
+    setbookmarkedTrackId(data.map(({track}:{track:string})=>track))
+  }
+  console.log(bookmarkedTrackId,"checking")
   useEffect(() => {
+    getBookMarkStatus()
     filtereTracks();
+
   }, [selectedCategory]);
   return (
     <div>
@@ -36,10 +55,10 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
           <li key={t.id} className="max-w-screen-md w-full">
             {t.problems.length > 0 ? (
               <div className="max-w-screen-md w-full block">
-                <TrackCard track={t} />
+                <TrackCard track={t} bookmarks={bookmarkedTrackId} />
               </div>
             ) : (
-              <TrackCard track={t} />
+              <TrackCard track={t} bookmarks={bookmarkedTrackId} />
             )}
           </li>
         ))}

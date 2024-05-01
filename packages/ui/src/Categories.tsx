@@ -56,7 +56,14 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
         <SelectTrigger className="w-[250px]">
           <SelectValue placeholder={selectedCategory || "All Categories"}></SelectValue>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent
+        ref={(ref)=>{
+          if(!ref) return;
+          ref.ontouchstart = (e)=>{
+            e.preventDefault();
+          }
+        }}
+        >
           {categories.map((category) => (
             <SelectItem value={category.category} key={category.category}>
               {category.category}
@@ -77,7 +84,7 @@ const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: 
           variant="ghost"
           onClick={() => handleCategoryChange(category.category)}
           className={
-            selectedCategory == category.category ? "bg-gray-100 dark:bg-slate-700 rounded-full" : "rounded-full"
+            selectedCategory == category.category ? "bg-gray-300 dark:bg-slate-700 rounded-full" : "rounded-full"
           }
         >
           {category.category}

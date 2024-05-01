@@ -15,7 +15,7 @@ interface TrackCardProps extends Track {
   }[];
 }
 //
-export function TrackCard({ track }: { track: TrackCardProps }) {
+export function TrackCard({ track, bookmarks }: { track: TrackCardProps, bookmarks?:string[] }) {
   return (
     <Card className="max-w-screen-md w-full cursor-pointer transition-all hover:border-primary/20 shadow-lg dark:shadow-black/60">
       <CardHeader>
@@ -35,7 +35,7 @@ export function TrackCard({ track }: { track: TrackCardProps }) {
           <h3 className="flex flex-col justify-center">{track.problems.length} Lessons</h3>
 
           <div className="flex items-center">
-            <BookMarkComponent track={track} />
+            <BookMarkComponent track={track} bookmarkStatus={bookmarks!.includes(track.id)} />
 
             <Link href={`/tracks/${track.id}/${track.problems[0]?.id}`}>
               <Button size={"lg"} className="flex items-center justify-center group">

@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 
 import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
+import UserAccountDropDown from "./UserAccountDropDown";
 
 export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
   const session = useSession();
@@ -38,20 +39,9 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
           ) : (
             ""
           )}
-          {user ? (
-            <Button
-              variant={"outline"}
-              onClick={async () => {
-                await signOut();
-              }}
-            >
-              Logout
-            </Button>
-          ) : (
-            ""
-          )}
 
           <ModeToggle />
+          <UserAccountDropDown />
         </div>
       </div>
     </div>

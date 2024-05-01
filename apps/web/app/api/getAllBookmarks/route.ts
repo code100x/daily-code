@@ -1,7 +1,7 @@
 import prisma from "@repo/db/client";
 
 export async function POST(req: Request) {
-  const { userid, trackid } = await req.json();
+  const { userid} = await req.json();
   if (userid === null) {
     return Response.json(
       {
@@ -13,26 +13,17 @@ export async function POST(req: Request) {
     );
   }
   try {
-    const bookmarkStatus = await prisma.bookmark.findFirst({
+    const bookmarkStatus = await prisma.bookmark.findMany({
       where: {
         user: userid,
-        track: trackid,
       },
     });
-    if (bookmarkStatus === null) {
-      return Response.json({
-        success: false,
-      });
-    }
     return Response.json(
-      {
-        bookmarkStatus,
-        success: true,
-      },
-      {
-        status: 200,
-      }
-    );
+      bookmarkStatus
+    ,{
+      status:200
+    });
+    
   } catch (error) {
     console.log(error);
     return Response.json({

@@ -8,6 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
+import UserAccountDropDown from "./UserAccountDropDown";
 import { Codebar } from "./code/Codebar";
 
 export const BlogAppbar = ({
@@ -106,24 +107,36 @@ export const BlogAppbar = ({
         </div>
 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
-          {problem.title} ({problemIndex + 1} / {track.problems.length})
+          {track.title} ({problemIndex + 1} / {track.problems.length})
         </p>
         {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
-        <div className="mb-2">
-          <PageToggle allProblems={track.problems} track={track} />
-        </div>
-
         <div className="flex space-x-2 mb-2">
+          <div className="mb-2">
+            <PageToggle allProblems={track.problems} track={track} />
+          </div>
           <Link
             prefetch={true}
             href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
             style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
           >
-            <Button variant="outline" className="ml-2 bg-black text-white" disabled={problemIndex !== 0 ? false : true}>
+            <Button
+              variant="outline"
+              className="ml-2 bg-black text-white md:flex hidden"
+              disabled={problemIndex !== 0 ? false : true}
+            >
               <div className="pr-2">
                 <ChevronLeftIcon />
               </div>
               Prev
+            </Button>
+            <Button
+              variant="outline"
+              className=" bg-black text-white md:hidden block"
+              disabled={problemIndex !== 0 ? false : true}
+            >
+              <div>
+                <ChevronLeftIcon />
+              </div>
             </Button>
           </Link>
 
@@ -138,7 +151,7 @@ export const BlogAppbar = ({
           >
             <Button
               variant="outline"
-              className="bg-black text-white"
+              className="bg-black text-white md:flex hidden"
               disabled={problemIndex + 1 !== track.problems.length ? false : true}
             >
               Next
@@ -146,21 +159,36 @@ export const BlogAppbar = ({
                 <ChevronRightIcon />
               </div>
             </Button>
+            <Button
+              variant="outline"
+              className="bg-black text-white md:hidden block"
+              disabled={problemIndex + 1 !== track.problems.length ? false : true}
+            >
+              <div>
+                <ChevronRightIcon />
+              </div>
+            </Button>
           </Link>
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white">
+            <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
               Download
               <div className="pl-2">
                 <DownloadIcon />
               </div>
             </Button>
+            <Button variant="outline" className=" bg-black text-white md:hidden block">
+              <div>
+                <DownloadIcon />
+              </div>
+            </Button>
           </Link>
+          <UserAccountDropDown />
         </div>
       </div>
 
       <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 border-t w-full text-center bg-opacity-60">
-        {problem.title} ({problemIndex + 1} / {track.problems.length})
+        {track.title} ({problemIndex + 1} / {track.problems.length})
       </p>
     </div>
   );

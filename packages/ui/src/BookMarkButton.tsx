@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useToast } from "./shad/ui/use-toast";
 import axios from "axios";
-import { Session } from "next-auth";
 
 interface TrackCardProps extends Track {
   problems: Problem[];
@@ -17,7 +16,8 @@ interface TrackCardProps extends Track {
   }[];
 }
 
-const BookMarkComponent = ({ track }: { track: TrackCardProps }) => {
+const BookMarkComponent = ({ track,bookmarkStatus }: { track: TrackCardProps,bookmarkStatus:Boolean }) => {
+
   const [BookMarkStatus, setBookMarkStatus] = useState<Boolean | null>(null);
 
   const { toast } = useToast();
@@ -39,7 +39,7 @@ const BookMarkComponent = ({ track }: { track: TrackCardProps }) => {
     setBookMarkStatus((prev) => !prev);
     try {
       if (BookMarkStatus === false) {
-        const { data } = await axios.post("/api/createBookMark", {
+        const { data } = await axios.post("/api/bookmark", {
           userid,
           trackid: track.id,
         });
@@ -53,9 +53,11 @@ const BookMarkComponent = ({ track }: { track: TrackCardProps }) => {
           });
       }
       if (BookMarkStatus === true) {
-        const { data } = await axios.post("/api/RemoveBookMark", {
-          userid,
-          trackid: track.id,
+        const { data } = await axios.delete("/api/bookmark", {
+          data: {
+            userid,
+            trackid: track.id,
+          },
         });
 
         data &&
@@ -71,7 +73,7 @@ const BookMarkComponent = ({ track }: { track: TrackCardProps }) => {
     }
   };
 
-  const getBookMarkStatus = async () => {
+  const getBookMarkStatus = async () => { 
     if (status === "unauthenticated" || data === null) {
       setBookMarkStatus(false);
       return;
@@ -79,9 +81,8 @@ const BookMarkComponent = ({ track }: { track: TrackCardProps }) => {
     try {
       if (status === "authenticated") {
         {
-          const { data } = await axios.post("/api/getBookmarkStatus", {
+          const { data } = await axios.post("/api/getAllBookmarks", {
             userid: userid,
-            trackid: track.id,
           });
 
           if (data.success === true) {
@@ -98,17 +99,21 @@ const BookMarkComponent = ({ track }: { track: TrackCardProps }) => {
   };
 
   useEffect(() => {
+    setBookMarkStatus(bookmarkStatus)
+
     getBookMarkStatus();
-  }, [status]);
+  }, [status,bookmarkStatus]);
+
 
   return (
     <div>
-      {BookMarkStatus === true && (
-        <BookmarkFilledIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} />
-      )}
-      {BookMarkStatus === false && (
-        <BookmarkIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} />
-      )}
+      {
+        BookMarkStatus === true && status === "authenticated"?
+          <BookmarkFilledIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} /> : null
+        }
+        {  BookMarkStatus ===false && status === "authenticated" ?
+          <BookmarkIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} /> : null
+        }
     </div>
   );
 };
