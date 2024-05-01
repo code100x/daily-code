@@ -1,8 +1,9 @@
 import { Button } from "./shad/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
 
-import { ArrowRightIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, ChevronRightIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import { Track, Problem } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 interface TrackCardProps extends Track {
   problems: Problem[];
@@ -15,7 +16,9 @@ interface TrackCardProps extends Track {
 }
 
 export function TrackCard({ track }: { track: TrackCardProps }) {
-  return (
+  const session = useSession();
+  const isAuthenticated = session.status === 'authenticated' && session.data !== null;
+  return ( 
     <Card className="max-w-screen-md w-full cursor-pointer transition-all hover:border-primary/20 shadow-lg dark:shadow-black/60">
       <CardHeader>
         <div className="flex flex-col sm:flex-row">
@@ -33,9 +36,18 @@ export function TrackCard({ track }: { track: TrackCardProps }) {
         <div className="flex justify-between">
           <h3 className="flex flex-col justify-center">{track.problems.length} Lessons</h3>
           <Button size={"lg"} className="flex items-center justify-center group">
-            Explore
-            <ChevronRightIcon className="pl-1 h-4 w-4 group-hover:translate-x-1 group-hover:hidden mt-[0.15rem] transition-all duration-150" />
-            <ArrowRightIcon className="pl-1 h-4 w-4 hidden group-hover:block mt-[0.15rem] transition-all duration-150" />
+            {isAuthenticated ? (
+              <>
+                Explore
+                <ChevronRightIcon className="pl-1 h-4 w-4 group-hover:translate-x-1 group-hover:hidden mt-[0.15rem] transition-all duration-150" />
+                <ArrowRightIcon className="pl-1 h-4 w-4 hidden group-hover:block mt-[0.15rem] transition-all duration-150" />
+              </>
+            ) : (
+              <>
+                <LockClosedIcon className="mr-1" />
+                Locked
+              </>
+            )}
           </Button>
         </div>
       </CardHeader>
