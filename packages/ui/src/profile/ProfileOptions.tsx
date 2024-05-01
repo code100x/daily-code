@@ -21,7 +21,6 @@ const ProfileOptions = () => {
   const [activeOption, setActiveOption] = useState<Number | null>(() => {
     return pathname === "/profile" ? 0 : null;
   });
-  console.log(pathname);
 
   useEffect(() => {
     const currentPath = pathname;
@@ -37,15 +36,14 @@ const ProfileOptions = () => {
     <div className="flex gap-2 flex-col px-2 !max-h-[80%] overflow-y-auto w-full">
       {optionsData.map((x, i) => {
         return (
-          <>
-            <div
-              onClick={() => handleOptionClick(i, x.href)}
-              className={` ${activeOption === i ? "border-r-8 border-blue-500 dark:bg-[#ffffff1d] bg-[#2020204d]" : ""}  cursor-pointer hover:bg-[#ffffff1f] flex items-center gap-2 rounded-md p-2 `}
-            >
-              <span>{x.icon}</span>
-              <span>{x.name}</span>
-            </div>
-          </>
+          <div
+            onClick={() => handleOptionClick(i, x.href)}
+            className={` ${activeOption === i ? "border-r-8 border-blue-500 dark:bg-[#ffffff1d] bg-[#2020204d]" : ""}  cursor-pointer hover:bg-[#ffffff1f] flex items-center gap-2 rounded-md p-2 `}
+            key={i}
+          >
+            <span>{x.icon}</span>
+            <span>{x.name}</span>
+          </div>
         );
       })}
     </div>
