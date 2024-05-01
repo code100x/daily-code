@@ -10,6 +10,7 @@ import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 import UserAccountDropDown from "./UserAccountDropDown";
 import { Codebar } from "./code/Codebar";
+import { useSession } from "next-auth/react";
 
 export const BlogAppbar = ({
   problem,
@@ -36,6 +37,8 @@ export const BlogAppbar = ({
   }
 
   const router = useRouter();
+  const session = useSession();
+  const isAuthenticated = session.status === 'authenticated' && session.data !== null;
 
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -170,6 +173,7 @@ export const BlogAppbar = ({
             </Button>
           </Link>
           <ModeToggle />
+          {isAuthenticated && (
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
             <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
               Download
@@ -182,7 +186,7 @@ export const BlogAppbar = ({
                 <DownloadIcon />
               </div>
             </Button>
-          </Link>
+          </Link>)}
           <UserAccountDropDown />
         </div>
       </div>
