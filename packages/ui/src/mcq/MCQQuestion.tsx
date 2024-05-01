@@ -1,13 +1,13 @@
 "use client";
-import { Dispatch, SetStateAction, use, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../shad/ui/card";
 import { Button } from "../shad/ui/button";
 import { MCQQuestion as Question } from "@prisma/client";
 
-const MCQQuestion = ({ question,score,setScore,isReset,isSubmitted,setisSubmitted }: { 
+
+const MCQQuestion = ({ question,setAtempted,isReset,isSubmitted,setisSubmitted }: { 
   question: Question,
-  score:number,
-  setScore:Dispatch<SetStateAction<number>>,
+  setAtempted:Dispatch<SetStateAction<Object>>,
   isReset:boolean,
   isSubmitted:boolean
   setisSubmitted:Dispatch<SetStateAction<boolean>>
@@ -21,10 +21,12 @@ const MCQQuestion = ({ question,score,setScore,isReset,isSubmitted,setisSubmitte
       return;
     }
     if (selectedOption === option) {
+      setAtempted((prev)=>({...prev,[question.id]:false}))
       setSelectedOption(null);
       return;
     }
     setSelectedOption(option);
+    setAtempted((prev)=>({...prev,[question.id]:option==question.correctOption}))
     setIsCorrect(null);
   };
 
@@ -37,7 +39,6 @@ const MCQQuestion = ({ question,score,setScore,isReset,isSubmitted,setisSubmitte
   const handleOnSubmit = () => {
     setisSubmitted(true);
     if (selectedOption === question.correctOption) {
-      setScore(currentScore => currentScore + 1);
     } else {
       setIsCorrect(false);
     }

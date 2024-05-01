@@ -1,7 +1,7 @@
 import { Blog } from "../../../packages/ui/src/Blog";
 import { CodeProblemRenderer } from "../../../packages/ui/src/code/CodeProblemRenderer";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import MCQQuestionRenderer from "../../../packages/ui/src/mcq/MCQQuestionRenderer";
+import MCQRenderer from "../../../packages/ui/src/mcq/MCQRenderer";
 import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
@@ -48,7 +48,7 @@ export const LessonView = async ({
   isPdfRequested?: Boolean;
 }) => {
   if (problem.type === "MCQ") {
-    return <MCQQuestionRenderer problem={problem} track={track} showAppBar={!!showAppBar} />;
+    return <MCQRenderer problem={problem} track={track} showAppBar={!!showAppBar} />;
   }
   if (problem.type === "Code" && problem.problemStatement) {
     const submissions = await getSubmissions(problem.problemStatement.id);

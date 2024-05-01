@@ -1,14 +1,14 @@
 "use client";
 import { Problem, Track } from "@prisma/client";
-import { ScrollArea } from "../shad/ui/scroll-area";
 import { NotionRenderer } from "../NotionRenderer";
 import { BlogAppbar } from "../BlogAppbar";
-import MCQQuestionCard from "./MCQQuestionCard";
+import MCQQuestionCard from "./MCQCard";
 import { useSession } from "next-auth/react";
 import { Loader } from "lucide-react";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../shad/ui/resizable";
+import MCQPanel from "./MCQPanel";
 
-const MCQQuestionRenderer = ({
+const MCQRenderer = ({
   problem,
   track,
   showAppBar,
@@ -30,15 +30,13 @@ const MCQQuestionRenderer = ({
       <div className="">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel className="" defaultSize={60}>
-          <div className="h-screen p-2 overflow-y-auto">
-            <NotionRenderer recordMap={problem.notionRecordMap}/>
-          </div>
+          <MCQPanel problem={problem}/>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={40}>
-        <ScrollArea className="h-screen p-2 rounded-lg">
+        <div className="h-[89vh] p-2 rounded-lg overflow-y-auto">
           <MCQQuestionCard problem={problem} />
-        </ScrollArea>
+        </div>
         </ResizablePanel>
       </ResizablePanelGroup>
       </div>
@@ -46,4 +44,4 @@ const MCQQuestionRenderer = ({
   );
 };
 
-export default MCQQuestionRenderer;
+export default MCQRenderer;

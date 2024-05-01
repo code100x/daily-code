@@ -324,3 +324,28 @@ export async function getAllMCQsForProblem(problemId: string) {
     return [];
   }
 }
+
+export async function createQuizScore(data: {
+  userId: string;
+  score: number;
+  problemId: string;
+}) {
+  const submission = await db.quizScore.create({
+    data,
+  })
+  return submission;
+}
+
+export async function getQuizScore({userId,problemId}: {userId: string, problemId: string}) {
+  try {
+    const submissions = await db.quizScore.findMany({
+      where: {
+        userId,
+        problemId,
+      }
+    });
+    return submissions;
+  } catch (e) {
+    return [];
+  }
+}
