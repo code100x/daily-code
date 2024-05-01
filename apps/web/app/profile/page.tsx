@@ -9,7 +9,7 @@ export default async function Profile() {
   const session = await getServerSession(authOptions);
 
   if (!session || !session?.user) {
-    redirect("/");
+    redirect("/auth");
   }
   return (
     <div>

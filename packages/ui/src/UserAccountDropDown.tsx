@@ -60,12 +60,10 @@ export default function UserAccountDropDown() {
 
             {dropDownData.map((item, index) => {
               return (
-                <>
-                  <DropdownMenuItem className="flex gap-2" onClick={() => router.push("/profile")} key={index}>
-                    <span>{item.icon}</span>
-                    <span>{item.name}</span>
-                  </DropdownMenuItem>
-                </>
+                <DropdownMenuItem className="flex gap-2" onClick={() => router.push("/profile")} key={index}>
+                  <span>{item.icon}</span>
+                  <span>{item.name}</span>
+                </DropdownMenuItem>
               );
             })}
             <DropdownMenuSeparator />
