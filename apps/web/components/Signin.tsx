@@ -4,6 +4,7 @@ import GithubIcon from "../app/assets/github.svg";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 const Signin = () => {
   const session = useSession();
   const router = useRouter();
@@ -51,7 +52,7 @@ const Signin = () => {
                       await signIn("google");
                     }}
                   >
-                    <img src={GoogleIcon.src} className="w-5 h-5 mr-2" />
+                    <Image src={GoogleIcon.src} className="w-5 h-5 mr-2" alt="Google Icon" width={25} height={25} />
                     Continue with Google
                   </button>
                   <button
@@ -60,7 +61,7 @@ const Signin = () => {
                       await signIn("github");
                     }}
                   >
-                    <img src={GithubIcon.src} className="w-5 h-5 mr-2" />
+                    <Image src={GithubIcon.src} className="w-5 h-5 mr-2" alt="Github Icon" width={25} height={25} />
                     Continue with Github
                   </button>
                 </div>
