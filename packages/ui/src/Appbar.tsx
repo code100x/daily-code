@@ -4,6 +4,7 @@ import { ModeToggle } from "./ModeToggle";
 import { signIn, signOut } from "next-auth/react";
 import { History } from "./History";
 
+
 import { useSession } from "next-auth/react";
 
 import { SearchDialog } from "./SearchDialog";
