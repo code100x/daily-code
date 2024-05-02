@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./sha
 import { Button } from "./shad/ui/button";
 import { Track } from "@prisma/client";
 import { useState } from "react";
-import { AddDatatoAlgolia } from "../../../apps/web/components/utils";
+import { AddDatatoAlgolia } from "web/lib/algolia";
 
 const AdminSearch = ({
   TracksinSearch,

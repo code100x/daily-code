@@ -1,11 +1,12 @@
 import { ProblemEditor } from "../ProblemEditor";
 import { TracksEditor } from "../TracksEditor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shad/ui/tabs";
-import { getAllCategories, getAllProblems, getAllTracks } from "../../../../apps/web/components/utils";
+import { getAllCategories, getAllProblems, getAllTracks } from "web/components/utils";
 import { LinkProblems } from "../LinkProblems";
 import CompleteAddTracks from "../CompleteAddTracks";
 import AdminSearch from "../AdminSearch";
 import db from "@repo/db/client";
+import AdminMCQ from "../AdminMCQ";
 
 export const Admin = async () => {
   const problems = await getAllProblems();
@@ -49,6 +50,7 @@ export const Admin = async () => {
           </TabsContent>
           <TabsContent value="search">
             <AdminSearch TracksNotinSearch={TracksNotinSearch} TracksinSearch={TracksinSearch} />
+          </TabsContent>
           <TabsContent value="MCQ">
             <AdminMCQ />
           </TabsContent>

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Input } from "./shad/ui/input";
 import Link from "next/link";
 import { Card, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
-import { getSearch } from "web/components/utils";
+import { getSearch } from "web/lib/algolia";
 
 interface data {
   id: string;

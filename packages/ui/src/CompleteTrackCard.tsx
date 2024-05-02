@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./shad/ui/sheet";
 import EditProblem from "./EditProblem";
 import { Button } from "./shad/ui/button";
-import { AddDatatoAlgolia, createTrack } from "../../../apps/web/components/utils";
+import { createTrack } from "web/components/utils";
+import { AddDatatoAlgolia } from "web/lib/algolia";
 
 interface CompleteProblemCard {
   id: string;
