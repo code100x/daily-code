@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 
 import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
-import UserAccountDropDown from "./UserAccountDropDown";
+import { UserAccountDropDown } from "./UserAccountDropDown";
 
 export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
   const session = useSession();

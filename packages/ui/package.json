@@ -5,6 +5,7 @@
   "exports": {
     "./components": "./src/index.tsx",
     "./button": "./src/shad/ui/button.tsx",
+    "./profileOptions": "./src/profile/ProfileOptions.tsx",
     "./card": "./src/shad/ui/card.tsx",
     "./code": "./src/code.tsx",
     "./globals.css": "./app/globals.css",

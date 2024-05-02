@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function UserImage({ image }: any) {
+export function UserImage({ image }: any) {
   return (
     <div>
       <img

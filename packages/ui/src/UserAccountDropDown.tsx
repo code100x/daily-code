@@ -11,7 +11,7 @@ import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { LogOut, UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
-import UserImage from "./UserImage";
+import { UserImage } from "./UserImage";
 
 const dropDownData = [
   {
@@ -21,7 +21,7 @@ const dropDownData = [
   },
 ];
 
-export default function UserAccountDropDown() {
+export function UserAccountDropDown() {
   const session = useSession();
   const user = session.data?.user;
   const router = useRouter();

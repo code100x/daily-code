@@ -8,7 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
-import UserAccountDropDown from "./UserAccountDropDown";
+import { UserAccountDropDown } from "./UserAccountDropDown";
 import { Codebar } from "./code/Codebar";
 
 export const BlogAppbar = ({
@@ -17,11 +17,11 @@ export const BlogAppbar = ({
 }: {
   problem: Problem & { notionRecordMap: any } & {
     problemStatement?:
-      | (ProblemStatement & {
-          languagesSupported: CodeLanguage[];
-          testCases: TestCase[];
-        })
-      | null;
+    | (ProblemStatement & {
+      languagesSupported: CodeLanguage[];
+      testCases: TestCase[];
+    })
+    | null;
   };
   track: Track & { problems: Problem[] };
 }) => {
@@ -96,9 +96,8 @@ export const BlogAppbar = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50 transition-transform duration-300 ${
-        !visible && scrollingDown ? "transform -translate-y-full " : " "
-      }`}
+      className={`flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50 transition-transform duration-300 ${!visible && scrollingDown ? "transform -translate-y-full " : " "
+        }`}
       style={{ transform: !visible && !scrollingDown ? "translateY(0)" : "" }}
     >
       <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
