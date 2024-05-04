@@ -11,6 +11,7 @@ yarn install
 
 ```
 cd packages/db
+chmod +x ./setupDB.sh
 ./setupDB.sh
 ```
 
