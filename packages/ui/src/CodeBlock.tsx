@@ -7,7 +7,7 @@ import "highlight.js/styles/github-dark.css";
 export default function CodeBlock({ block }: { block: any }) {
   const code: string = block.properties.title[0].toString();
   hljs.registerLanguage("javascript", javascript);
-  console.log(block);
+  // console.log(block);
   const copied_display_id = `copied_display_${block.id}`;
   useEffect(() => {
     hljs.highlightAll();

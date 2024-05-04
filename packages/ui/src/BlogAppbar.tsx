@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import UserAccountDropDown from "./UserAccountDropDown";
 import { Codebar } from "./code/Codebar";
 
+import { useSession } from "next-auth/react";
+
 export const BlogAppbar = ({
   problem,
   track,
@@ -25,6 +27,11 @@ export const BlogAppbar = ({
   };
   track: Track & { problems: Problem[] };
 }) => {
+  const session = useSession();
+  const user = session.data?.user;
+
+  console.log("user: ", user);
+
   const problemIndex = useMemo(() => {
     return track.problems.findIndex((p) => p.id === problem.id);
   }, [track, problem]);
@@ -170,19 +177,21 @@ export const BlogAppbar = ({
             </Button>
           </Link>
           <ModeToggle />
-          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
-              Download
-              <div className="pl-2">
-                <DownloadIcon />
-              </div>
-            </Button>
-            <Button variant="outline" className=" bg-black text-white md:hidden block">
-              <div>
-                <DownloadIcon />
-              </div>
-            </Button>
-          </Link>
+          {user && (
+            <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
+              <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
+                Download
+                <div className="pl-2">
+                  <DownloadIcon />
+                </div>
+              </Button>
+              <Button variant="outline" className=" bg-black text-white md:hidden block">
+                <div>
+                  <DownloadIcon />
+                </div>
+              </Button>
+            </Link>
+          )}
           <UserAccountDropDown />
         </div>
       </div>
