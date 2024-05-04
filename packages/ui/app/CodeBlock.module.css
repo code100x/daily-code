@@ -33,8 +33,11 @@
 }
 
 .copied_text {
-    background: #fff;
-    padding: 5px;
-    color: #161b22;
+    background: none;
+    border-radius: 10px;
+    padding: 3px;
+    color: gray;
+    font-size: 0.95rem;
+    font-weight: bold;
     display: none;
 }
