@@ -9,6 +9,7 @@ export default function UserImage({ image }: any) {
         width={100}
         height={100}
         alt="user_profile_image"
+        referrerPolicy="no-referrer"
       />
     </div>
   );
