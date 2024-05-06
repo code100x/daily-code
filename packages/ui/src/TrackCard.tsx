@@ -16,7 +16,7 @@ interface TrackCardProps extends Track {
 
 export function TrackCard({ track }: { track: TrackCardProps }) {
   return (
-    <Card className="max-w-screen-md w-full cursor-pointer transition-all hover:border-primary/20 shadow-lg dark:shadow-black/60">
+    <Card className="h-64 cursor-pointer transition-all hover:border-primary/20 shadow-lg dark:shadow-black/60">
       <CardHeader>
         <div className="flex flex-col sm:flex-row">
           <img src={track.image} className="min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"></img>
