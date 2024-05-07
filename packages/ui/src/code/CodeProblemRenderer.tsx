@@ -7,13 +7,13 @@ import { Problem, Track, Submission, CodeLanguage, ProblemStatement, TestCase } 
 import { BlogAppbar } from "../BlogAppbar";
 import { useSession } from "next-auth/react";
 import ProblemStatementPanel from "./ProblemStatementPanel";
-import RedirectToLoginCard from "../RedirectToLoginCard";
 import { Loader } from "lucide-react";
 
 export const CodeProblemRenderer = ({
   problem,
   track,
   submissions,
+  problemIndex
 }: {
   problem: Problem & { notionRecordMap: any } & {
     problemStatement:
@@ -25,6 +25,7 @@ export const CodeProblemRenderer = ({
   };
   track: Track & { problems: Problem[] };
   submissions: (Submission & { language: CodeLanguage })[] | null;
+  problemIndex: number
 }) => {
   const { data, status } = useSession();
   const user = data?.user;
@@ -32,7 +33,7 @@ export const CodeProblemRenderer = ({
   if (problem.problemStatement) {
     return (
       <div>
-        <BlogAppbar problem={problem} track={track} />
+        <BlogAppbar problem={problem} track={track} problemIndex={problemIndex}/>
         {status === "loading" ? (
           <Loader className="animate-spin mx-auto my-40" size={64} />
         ) : user ? (
