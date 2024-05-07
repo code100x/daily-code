@@ -243,16 +243,46 @@ export async function createTrack(data: {
   }
 }
 
-export async function updateTrack(trackId: string, data: any) {
+export async function updateTrack(trackId: string, data: {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  selectedCategory?: string[];
+  problems?: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
+  hidden: boolean;
+}) {
   try {
     const track = await db.track.update({
       where: {
         id: trackId,
       },
-      data,
+      data:{
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        hidden: data.hidden,
+      }
     });
+    await db.trackCategory.deleteMany({
+      where: {
+        trackId: trackId,
+      },
+    })
+    if (data.selectedCategory) {
+      data.selectedCategory.forEach(async (category) => {
+        await db.trackCategory.create({
+          data: {
+            trackId: trackId,
+            categoryId: category,
+          },
+        });
+      });
+    }
     return track;
   } catch (e) {
+    console.log(e);
     return null;
   }
 }
