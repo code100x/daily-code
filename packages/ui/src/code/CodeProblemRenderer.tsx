@@ -36,7 +36,7 @@ export const CodeProblemRenderer = ({
         <BlogAppbar problem={problem} track={track} problemIndex={problemIndex}/>
         {status === "loading" ? (
           <Loader className="animate-spin mx-auto my-40" size={64} />
-        ) : user ? (
+        ) : (
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={50}>
               <ProblemStatementPanel notionRecordMap={problem.notionRecordMap} submissions={submissions} />
@@ -58,8 +58,6 @@ export const CodeProblemRenderer = ({
               </ResizablePanelGroup>
             </ResizablePanel>
           </ResizablePanelGroup>
-        ) : (
-          <RedirectToLoginCard />
         )}
       </div>
     );
