@@ -30,7 +30,7 @@ export const BlogAppbar = ({
   }, [track, problem]);
 
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
-
+  localStorage.setItem('problemIndex', (problemIndex+1).toString());
   function setTheme(arg0: string) {
     throw new Error("Function not implemented.");
   }
