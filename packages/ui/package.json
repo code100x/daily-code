@@ -23,7 +23,8 @@
     "./Blog": "./src/Blog.tsx",
     "./CodeProblemRenderer": "./src/code/CodeProblemRenderer.tsx",
     "./MCQQuestionRenderer": "./src/MCQQuestionRenderer.tsx",
-    "./UserImage": "./src/UserImage.tsx"
+    "./UserImage": "./src/UserImage.tsx",
+    "./RepositorySelector": "./src/RepositorySelector.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
