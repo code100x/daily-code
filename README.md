@@ -8,6 +8,8 @@ yarn install
 ```
 
 > Setup DB (Windows users must have git-bash installed to run the script)
+>
+> 
 
 ```
 cd packages/db
