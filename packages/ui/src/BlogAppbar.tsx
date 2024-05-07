@@ -14,6 +14,7 @@ import { Codebar } from "./code/Codebar";
 export const BlogAppbar = ({
   problem,
   track,
+  problemIndex
 }: {
   problem: Problem & { notionRecordMap: any } & {
     problemStatement?:
@@ -24,11 +25,8 @@ export const BlogAppbar = ({
       | null;
   };
   track: Track & { problems: Problem[] };
+  problemIndex: number
 }) => {
-  const problemIndex = useMemo(() => {
-    return track.problems.findIndex((p) => p.id === problem.id);
-  }, [track, problem]);
-
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
 
   function setTheme(arg0: string) {
