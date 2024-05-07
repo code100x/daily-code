@@ -26,7 +26,7 @@ export const AddProblemStatementForm = ({ problem, languages }: { problem: Probl
   };
 
   const handleAddPS = async () => {
-    const problemStatement = await createProblemStatement({
+    await createProblemStatement({
       problemStatement: { argumentNames: argumentNames.trim().split(","), mainFuncName, problemId: problem.id },
       languages: supportedLanguages,
       testCases: adminTestCases,
