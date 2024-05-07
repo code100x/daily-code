@@ -199,7 +199,7 @@ export async function createTrack(data: {
   title: string;
   description: string;
   image: string;
-  selectedCategory?: string;
+  selectedCategory?: string[];
   problems: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
   hidden: boolean;
 }) {
@@ -227,12 +227,14 @@ export async function createTrack(data: {
     });
 
     if (data.selectedCategory) {
+    data.selectedCategory.forEach(async (category) => {
       await db.trackCategory.create({
         data: {
           trackId: data.id,
-          categoryId: data.selectedCategory,
+          categoryId: category,
         },
       });
+    });
     }
     return track;
   } catch (e) {
