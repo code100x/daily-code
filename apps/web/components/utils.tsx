@@ -1,6 +1,6 @@
 "use server";
 import db from "@repo/db/client";
-import { ProblemStatement, TestCase, CodeLanguage,MCQQuestion } from "@prisma/client";
+import { ProblemStatement, TestCase, CodeLanguage,MCQQuestion,Problem } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
@@ -59,7 +59,7 @@ export async function getAllProblems() {
   }
 }
 
-export async function updateProblem(problemId: string, data: any) {
+export async function updateProblem(problemId: string, data: Problem) {
   try {
     const problem = await db.problem.update({
       where: {
