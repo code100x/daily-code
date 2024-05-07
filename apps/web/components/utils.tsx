@@ -1,7 +1,6 @@
 "use server";
+import { CodeLanguage, Prisma, ProblemStatement, TestCase } from "@prisma/client";
 import db from "@repo/db/client";
-import { ProblemStatement, TestCase, CodeLanguage } from "@prisma/client";
-import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
   if (!problemId) {
@@ -157,11 +156,19 @@ export async function getTrack(trackId: string) {
   }
 }
 
-export async function getAllTracks() {
+export async function getAllTracks({ category = "" }: { category?: string } = {}) {
   try {
     const tracks = await db.track.findMany({
       where: {
         hidden: false,
+        categories:
+          category !== ""
+            ? {
+                some: {
+                  category: { category },
+                },
+              }
+            : undefined,
       },
       include: {
         problems: {
