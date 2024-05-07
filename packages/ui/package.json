@@ -19,6 +19,11 @@
     "./input": "./src/shad/ui/input.tsx",
     "./label": "./src/shad/ui/label.tsx",
     "./checkbox": "./src/shad/ui/checkbox.tsx",
+    "./profileOptions": "./src/profile/ProfileOptions.tsx",
+    "./Blog": "./src/Blog.tsx",
+    "./CodeProblemRenderer": "./src/code/CodeProblemRenderer.tsx",
+    "./MCQQuestionRenderer": "./src/MCQQuestionRenderer.tsx",
+    "./UserImage": "./src/UserImage.tsx",
     "./RepositorySelector": "./src/RepositorySelector.tsx"
   },
   "scripts": {

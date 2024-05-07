@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
-import { redirect } from "next/navigation";
 import { getAllTracks } from "../../components/utils";
 import { AppbarClient } from "../../components/AppbarClient";
 import ProfileSidebar from "../../components/ProfileSidebar";
@@ -12,10 +9,6 @@ export const metadata: Metadata = {
   description: "Code daily",
 };
 
-const session = await getServerSession(authOptions);
-if (!session || !session?.user) {
-  redirect("/auth");
-}
 const tracks = await getAllTracks();
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }): JSX.Element {

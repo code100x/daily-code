@@ -1,7 +1,7 @@
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
 import React from "react";
-import UserImage from "../../../packages/ui/src/UserImage";
+import UserImage from "@repo/ui/UserImage";
 import { User } from "@prisma/client";
 
 export default function UserDetailForm({ user }: { user: User }) {
@@ -10,7 +10,7 @@ export default function UserDetailForm({ user }: { user: User }) {
       <Label className="mb-2">Profile Picture</Label>
       <div className="flex items-center justify-center">
         <div className="!w-[6rem] !h-[6rem] flex items-center hover:bg-[#030712] p-[0.2rem] justify-center ">
-          <UserImage image={user?.image} />
+          <UserImage image={user?.image} key={user?.image} />
         </div>
       </div>
 

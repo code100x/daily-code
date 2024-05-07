@@ -59,7 +59,7 @@ fi
 
 echo "DATABASE_URL=\"$DATABASE_URL\"" > .env
 if [ "$db_mode" == 'D' ]; then
-  docker compose up -d
+  docker-compose up -d
   if [ $? -eq 0 ]; then
       echo "=================Container is up================="
       sleep 15
