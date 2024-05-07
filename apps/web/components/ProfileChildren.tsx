@@ -2,7 +2,7 @@
 import React from "react";
 import { Providers, ThemeProvider } from "./Providers";
 import { useRecoilState } from "recoil";
-import { profileSidebar } from "../../../packages/store/src/atoms/profileSidebar";
+import { profileSidebar } from "@repo/store";
 import { Menu } from "lucide-react";
 
 export default function ProfileChilldren({ children }: { children: React.ReactNode }) {

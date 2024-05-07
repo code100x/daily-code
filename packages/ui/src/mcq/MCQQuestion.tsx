@@ -1,34 +1,54 @@
 "use client";
-import { useState } from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./shad/ui/card";
-import { Button } from ".";
-import { MCQQuestion } from "@prisma/client";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../shad/ui/card";
+import { Button } from "../shad/ui/button";
+import { MCQQuestion as Question } from "@prisma/client";
 
-const MCQQuestion = ({ question }: { question: MCQQuestion }) => {
+
+const MCQQuestion = ({ question,setAtempted,isReset,isSubmitted,setisSubmitted }: { 
+  question: Question,
+  setAtempted:Dispatch<SetStateAction<Object>>,
+  isReset:boolean,
+  isSubmitted:boolean
+  setisSubmitted:Dispatch<SetStateAction<boolean>>
+
+}) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const handleOptionSelect = (option: string) => {
     if (isSubmitted) {
       return;
     }
     if (selectedOption === option) {
+      setAtempted((prev)=>({...prev,[question.id]:false}))
       setSelectedOption(null);
       return;
     }
     setSelectedOption(option);
+    setAtempted((prev)=>({...prev,[question.id]:option==question.correctOption}))
     setIsCorrect(null);
   };
 
+  useEffect(() => {
+    if (isSubmitted) {
+      handleOnSubmit();
+    }
+  }, [isSubmitted]);
+
   const handleOnSubmit = () => {
-    setIsSubmitted(true);
+    setisSubmitted(true);
     if (selectedOption === question.correctOption) {
-      setIsCorrect(true);
     } else {
       setIsCorrect(false);
     }
   };
+
+  useEffect(() => {
+    setSelectedOption(null);
+    setIsCorrect(null);
+    setisSubmitted(false);
+  },[isReset])
 
   return (
     <div>
@@ -56,9 +76,6 @@ const MCQQuestion = ({ question }: { question: MCQQuestion }) => {
           ))}
         </CardContent>
         <CardFooter className="justify-between">
-          <Button disabled={isSubmitted} onClick={handleOnSubmit}>
-            Submit
-          </Button>
           {isCorrect !== null && (
             <p>
               {isCorrect ? (
