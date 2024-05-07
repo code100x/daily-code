@@ -1,7 +1,7 @@
 import { Blog } from "../../../packages/ui/src/Blog";
 import { CodeProblemRenderer } from "../../../packages/ui/src/code/CodeProblemRenderer";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import MCQQuestionRenderer from "../../../packages/ui/src/MCQQuestionRenderer";
+import MCQRenderer from "../../../packages/ui/src/mcq/MCQRenderer";
 import RedirectToLoginCard from '../../../packages/ui/src/RedirectToLoginCard';
 import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
@@ -59,7 +59,7 @@ export const LessonView = async ({
    
   if (problem.type === "MCQ") {
     return (
-      <MCQQuestionRenderer problem={problem} track={track} showAppBar={!!showAppBar} problemIndex={problemIndex} />
+      <MCQRenderer problem={problem} track={track} showAppBar={!!showAppBar} problemIndex={problemIndex} />
     );
   }
   if (problem.type === "Code" && problem.problemStatement) {

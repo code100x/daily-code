@@ -12,10 +12,12 @@ const MCQRenderer = ({
   problem,
   track,
   showAppBar,
+  problemIndex
 }: {
   problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
   showAppBar?: Boolean;
+  problemIndex: number
 }) => {
   const { data, status } = useSession();
   const user = data?.user;
@@ -26,7 +28,7 @@ const MCQRenderer = ({
 
   return (
     <div>
-      {showAppBar && <BlogAppbar problem={problem} track={track} />}
+      {showAppBar && <BlogAppbar problem={problem} track={track} problemIndex={problemIndex}/>}
       <div className="">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel className="" defaultSize={60}>
