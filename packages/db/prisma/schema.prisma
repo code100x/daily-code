@@ -50,6 +50,7 @@ model User {
   admin         Boolean      @default(false)
   accounts      Account[]
   sessions      Session[]
+  history       History[]
   submissions   Submission[]
   quizScores    QuizScore[]
 }
@@ -69,8 +70,9 @@ model Track {
   image       String
   categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
-  hidden      Boolean         @default(false)
-  createdAt   DateTime        @default(now())
+  history     History[]
+  hidden      Boolean        @default(false)
+  createdAt   DateTime       @default(now())
 }
 
 model Categories {
@@ -89,13 +91,14 @@ model TrackCategory {
 }
 
 model Problem {
-  id               String            @id @default(uuid())
-  title            String
-  description      String
-  notionDocId      String
-  mcqQuestions     MCQQuestion[]
-  type             ProblemType
-  trackProblems    TrackProblems[]
+  id            String          @id @default(uuid())
+  title         String
+  description   String
+  notionDocId   String
+  mcqQuestions  MCQQuestion[]
+  type          ProblemType
+  trackProblems TrackProblems[]
+  history       History[]
   problemStatement ProblemStatement?
   quizScores       QuizScore[]
 }
@@ -176,6 +179,18 @@ model MCQQuestion {
   problemId     String
 }
 
+
+model History {
+  id          String   @unique
+  email       User     @relation(fields: [userEmail], references: [email])
+  track       Track    @relation(fields: [trackId], references: [id])
+  problem     Problem  @relation(fields: [problemId], references: [id])
+  userEmail   String
+  trackId     String
+  problemId   String
+  updatedAt   DateTime @default(now())
+}
+
 model QuizScore {
   id            String   @id @default(uuid())
   score         Int
@@ -185,3 +200,4 @@ model QuizScore {
   problemId     String
   createdAt     DateTime @default(now())
 }
+

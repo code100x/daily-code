@@ -269,7 +269,31 @@ export async function getAllCategories() {
     return [];
   }
 }
-
+export async function getUsersHistory(email: string) {
+  try {
+    const history = await db.history.findMany({
+      where: {
+        userEmail: email,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      include: {
+        track: {
+          select: {
+            title: true,
+            description: true,
+            image: true,
+          },
+        },
+      },
+    });
+    return history;
+     } catch (e) {
+    return [];
+  }
+}
+    
 export async function getAllMCQs() {
   try {
     const mcqs = await db.problem.findMany({
@@ -286,6 +310,27 @@ export async function getAllMCQs() {
   }
 }
 
+
+export async function updateUserHistory(email: string, trackId: string, problemId: string) {
+  try {
+    const history = await db.history.upsert({
+      where: { id: email + trackId },
+      update: { problemId: problemId, updatedAt: new Date(), userEmail: email },
+      create: {
+        id: email + trackId,
+        userEmail: email,
+        trackId: trackId,
+        problemId: problemId,
+        updatedAt: new Date(),
+      },
+    });
+    return history;
+  } catch (e) {
+    return [];
+      }
+}
+
+
 export async function getAllMCQQuestion(problemId: string) {
   try {
     const mcqs = await db.mCQQuestion.findMany({
@@ -298,6 +343,7 @@ export async function getAllMCQQuestion(problemId: string) {
     return [];
   }
 }
+
 
 export async function createMCQ(data: any) {
   try {
@@ -339,6 +385,7 @@ export async function deleteMCQ(id: string) {
   }
 }
 
+
 export async function getAllMCQsForProblem(problemId: string) {
   try {
     const mcqs = await db.mCQQuestion.findMany({
@@ -376,3 +423,4 @@ export async function getQuizScore({userId,problemId}: {userId: string, problemI
     return [];
   }
 }
+

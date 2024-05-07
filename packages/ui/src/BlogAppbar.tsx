@@ -8,6 +8,8 @@ import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react
 import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
+import { History } from "./History";
+import { useSession } from "next-auth/react";
 import UserAccountDropDown from "./UserAccountDropDown";
 import { Codebar } from "./code/Codebar";
 
@@ -27,6 +29,14 @@ export const BlogAppbar = ({
   track: Track & { problems: Problem[] };
   problemIndex: number
 }) => {
+
+  const session = useSession();
+  const user = session.data?.user;
+  const problemIndex = useMemo(() => {
+    return track.problems.findIndex((p) => p.id === problem.id);
+  }, [track, problem]);
+
+
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
 
   function setTheme(arg0: string) {
@@ -107,10 +117,13 @@ export const BlogAppbar = ({
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {track.title} ({problemIndex + 1} / {track.problems.length})
         </p>
+
         {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
+
         <div className="flex space-x-2 mb-2">
-          <div className="mb-2">
+          <div className="mb-2 flex space-x-2">
             <PageToggle allProblems={track.problems} track={track} />
+            {user ? <History /> : null}
           </div>
           <Link
             prefetch={true}
