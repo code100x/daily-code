@@ -32,7 +32,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
 
   useEffect(() => {
     setTrackData({ trackId, trackDescription, trackTitle, trackImage, selectedCategory });
-  }, [trackId, trackDescription, trackTitle, trackImage]);
+  }, [trackId, trackDescription, trackTitle, trackImage,selectedCategory]);
   return (
     <div className="flex flex-col justify-center">
       <div className="text-5xl text-center mb-4">Track</div>
