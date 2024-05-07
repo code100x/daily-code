@@ -1,6 +1,6 @@
 "use server";
 import db from "@repo/db/client";
-import { ProblemStatement, TestCase, CodeLanguage } from "@prisma/client";
+import { ProblemStatement, TestCase, CodeLanguage,MCQQuestion } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
@@ -286,6 +286,19 @@ export async function getAllMCQs() {
   }
 }
 
+export async function getAllMCQQuestion(problemId: string) {
+  try {
+    const mcqs = await db.mCQQuestion.findMany({
+      where: {
+        problemId,
+      },
+    });
+    return mcqs;
+  } catch (e) {
+    return [];
+  }
+}
+
 export async function createMCQ(data: any) {
   try {
     const mcq = await db.mCQQuestion.create({
@@ -298,8 +311,22 @@ export async function createMCQ(data: any) {
   }
 }
 
+export async function updateMCQ(id: string, data:MCQQuestion) {
+  try {
+    const mcq = await db.mCQQuestion.update({
+      where: {
+        id: id,
+      },
+      data,
+    });
+    return mcq;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 export async function deleteMCQ(id: string) {
-  console.log(id);
   try {
     const mcq = await db.mCQQuestion.delete({
       where: {
