@@ -52,6 +52,7 @@ model User {
   sessions      Session[]
   history       History[]
   submissions   Submission[]
+  quizScores    QuizScore[]
 }
 
 model VerificationToken {
@@ -99,6 +100,7 @@ model Problem {
   trackProblems TrackProblems[]
   history       History[]
   problemStatement ProblemStatement?
+  quizScores       QuizScore[]
 }
 
 model ProblemStatement {
@@ -177,6 +179,7 @@ model MCQQuestion {
   problemId     String
 }
 
+
 model History {
   id          String   @unique
   email       User     @relation(fields: [userEmail], references: [email])
@@ -187,3 +190,14 @@ model History {
   problemId   String
   updatedAt   DateTime @default(now())
 }
+
+model QuizScore {
+  id            String   @id @default(uuid())
+  score         Int
+  user          User?    @relation(fields: [userId], references: [id])
+  userId        String?
+  problem       Problem  @relation(fields: [problemId], references: [id])
+  problemId     String
+  createdAt     DateTime @default(now())
+}
+
