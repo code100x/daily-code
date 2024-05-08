@@ -5,6 +5,9 @@ node_modules
 .pnp
 .pnp.js
 
+# docker volume
+/postgres-data/
+
 # Local env files
 .env
 .env.local
