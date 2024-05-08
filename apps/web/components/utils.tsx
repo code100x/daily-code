@@ -1,6 +1,12 @@
 "use server";
 import db from "@repo/db/client";
-import { ProblemStatement, TestCase, CodeLanguage,MCQQuestion,Problem } from "@prisma/client";
+import { ProblemStatement, 
+  TestCase, 
+  CodeLanguage,
+  MCQQuestion,
+  Problem,
+  TrackProblems,
+ } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
@@ -74,7 +80,7 @@ export async function updateProblem(problemId: string, data: Problem) {
   }
 }
 
-export async function createProblem(data: any) {
+export async function createProblem(data: Omit<Problem, "id">) {
   try {
     const problem = await db.problem.create({
       data,
@@ -113,7 +119,7 @@ export async function createProblemStatement({
   }
 }
 
-export async function createTrackProblems(data: any) {
+export async function createTrackProblems(data: TrackProblems) {
   try {
     const trackProblems = await db.trackProblems.create({
       data: {
@@ -331,7 +337,7 @@ export async function getAllMCQQuestion(problemId: string) {
   }
 }
 
-export async function createMCQ(data: any) {
+export async function createMCQ(data: Omit<MCQQuestion,"id">) {
   try {
     const mcq = await db.mCQQuestion.create({
       data,
