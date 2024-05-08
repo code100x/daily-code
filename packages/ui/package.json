@@ -23,6 +23,8 @@
     "./Blog": "./src/Blog.tsx",
     "./CodeProblemRenderer": "./src/code/CodeProblemRenderer.tsx",
     "./MCQQuestionRenderer": "./src/MCQQuestionRenderer.tsx",
+    "./MCQRenderer" : "./src/mcq/MCQRenderer.tsx",
+    "./RedirectToLoginCard": "./src/RedirectToLoginCard.tsx",
     "./UserImage": "./src/UserImage.tsx"
   },
   "scripts": {
