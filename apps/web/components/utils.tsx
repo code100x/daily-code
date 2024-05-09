@@ -1,6 +1,6 @@
 "use server";
 import db from "@repo/db/client";
-import { ProblemStatement, TestCase, CodeLanguage,MCQQuestion } from "@prisma/client";
+import { ProblemStatement, TestCase, CodeLanguage, MCQQuestion } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
@@ -194,6 +194,12 @@ export async function getAllTracks() {
     return [];
   }
 }
+
+export async function getSortedTracks() {
+  const tracks = await getAllTracks();
+  return tracks.sort(({ createdAt: a }: any, { createdAt: b }: any) => a - b);
+}
+
 export async function createTrack(data: {
   id: string;
   title: string;
@@ -311,7 +317,7 @@ export async function createMCQ(data: any) {
   }
 }
 
-export async function updateMCQ(id: string, data:MCQQuestion) {
+export async function updateMCQ(id: string, data: MCQQuestion) {
   try {
     const mcq = await db.mCQQuestion.update({
       where: {
@@ -352,24 +358,20 @@ export async function getAllMCQsForProblem(problemId: string) {
   }
 }
 
-export async function createQuizScore(data: {
-  userId: string;
-  score: number;
-  problemId: string;
-}) {
+export async function createQuizScore(data: { userId: string; score: number; problemId: string }) {
   const submission = await db.quizScore.create({
     data,
-  })
+  });
   return submission;
 }
 
-export async function getQuizScore({userId,problemId}: {userId: string, problemId: string}) {
+export async function getQuizScore({ userId, problemId }: { userId: string; problemId: string }) {
   try {
     const submissions = await db.quizScore.findMany({
       where: {
         userId,
         problemId,
-      }
+      },
     });
     return submissions;
   } catch (e) {

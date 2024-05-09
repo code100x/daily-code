@@ -1,12 +1,12 @@
 import { TrackCard } from "@repo/ui/components";
 import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
-import { getAllCategories, getAllTracks } from "../components/utils";
+import { getAllCategories, getSortedTracks } from "../components/utils";
 import { Categories, Tracks } from "@repo/ui/components";
 import Footer from "./footer";
 
 export async function Landing() {
-  const tracks = await getAllTracks();
+  const tracks = await getSortedTracks();
   const categories = await getAllCategories();
 
   return (
