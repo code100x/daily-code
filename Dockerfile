@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /src/app
+WORKDIR usr/src/app
 
 #script to copy all package.json & yarn.lock file/s in docker image 
 COPY copyalljson.sh .
