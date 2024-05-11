@@ -5,9 +5,15 @@ docker_running="N"
 
 function migrate_seed_db () {
   echo "=================Migrating DB================="
-  npx prisma migrate dev
-  echo "=================Seeding DB================="
-  npx prisma db seed
+  migration_output=$(npx prisma migrate dev)
+
+  if [[ $migration_output == *"The following migration(s) have been applied"* ]]; then
+    echo "Migration already applied. Skipping seeding."
+  else
+    echo "Migration not applied. Proceeding to seed."
+    echo "=================Seeding DB================="
+    npx prisma db seed
+  fi
 }
 
 if [ -f .env ]; then
