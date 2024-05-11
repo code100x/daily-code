@@ -21,7 +21,9 @@
     "postcss": "^8.4.33",
     "prettier": "^3.1.1",
     "tailwindcss": "^3.4.1",
-    "turbo": "latest"
+    "turbo": "latest",
+    "@prisma/client": "^5.13.0",
+    "prisma": "^5.12.0"
   },
   "engines": {
     "node": ">=18"
@@ -34,6 +36,8 @@
   "dependencies": {
     "nextjs-toploader": "^1.6.11",
     "react": "^18.2.0",
-    "react-notion-x": "^6.16.0"
+    "react-notion-x": "^6.16.0",
+    "@prisma/client": "^5.13.0",
+    "prisma": "^5.12.0"
   }
 }
