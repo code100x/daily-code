@@ -1,5 +1,5 @@
 "use client";
-import { Braces, UserRound } from "lucide-react";
+import { AreaChart, Braces, UserRound } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -14,6 +14,11 @@ const ProfileOptions = () => {
       name: "Submissions",
       icon: <Braces color="#3b82f6" size={18} />,
       href: "/profile/submissions",
+    },
+    {
+      name: "Heatmap",
+      icon: <AreaChart color="#3b82f6" size={18} />,
+      href: "/profile/heatmap",
     },
   ];
   const router = useRouter();
