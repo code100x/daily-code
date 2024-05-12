@@ -1,12 +1,12 @@
-import { Blog } from "@repo/ui/Blog";
-import { CodeProblemRenderer } from "@repo/ui/CodeProblemRenderer";
+import { Blog } from "./Blog";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import MCQRenderer from "@repo/ui/MCQRenderer";
-import RedirectToLoginCard from '@repo/ui/RedirectToLoginCard';
+import MCQRenderer from "./mcq/MCQRenderer";
+import RedirectToLoginCard from './RedirectToLoginCard';
 
 import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
+import { CodeProblemRenderer } from "./code/CodeProblemRenderer";
 
 const getSubmissions = async (problemStatementId: string) => {
   const session = await getServerSession(authOptions);

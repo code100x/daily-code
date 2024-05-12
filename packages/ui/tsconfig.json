@@ -4,6 +4,6 @@
     "outDir": "dist",
     "rootDir": "./src",
   },
-  "include": ["src"],
+  "include": ["src", "../../apps/web/components/code/Codebar.tsx", "../../apps/web/components/code/CodeEditor.tsx", "../../apps/web/components/code/CodeProblemRenderer.tsx", "../../apps/web/components/code/CodeSubmitButton.tsx", "../../apps/web/components/code/CodeTestButton.tsx", "../../apps/web/components/code/ProblemStatementPanel.tsx", "../../apps/web/components/code/RunCodeOutput.tsx", "../../apps/web/components/code/admin/hooks"],
   "exclude": ["node_modules", "dist"],
 }

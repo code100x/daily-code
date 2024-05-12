@@ -1,9 +1,9 @@
 "use client";
-import { Input } from "@repo/ui/input";
-import { Button } from "@repo/ui/button";
-import { Label } from "@repo/ui/label";
+import { Input } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui/shad/ui";
+import { Label } from "@repo/ui/shad/ui";
 
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@repo/ui/components";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@repo/ui/shad/ui";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { adminTestCasesState } from "@repo/store";

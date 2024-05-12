@@ -1,7 +1,7 @@
-import { Input } from "@repo/ui/input";
-import { Label } from "@repo/ui/label";
+import { Input } from "@repo/ui/shad/ui";
+import { Label } from "@repo/ui/shad/ui";
 import React from "react";
-import UserImage from "@repo/ui/UserImage";
+import UserImage from "./UserImage";
 import { User } from "@prisma/client";
 
 export default function UserDetailForm({ user }: { user: User }) {

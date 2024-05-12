@@ -1,7 +1,7 @@
 "use client";
 
-import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@repo/ui/toast";
-import { useToast } from "@repo/ui/use-toast";
+import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@repo/ui/shad/ui";
+import { useToast } from "@repo/ui/shad/ui";
 
 export function Toaster() {
   const { toasts } = useToast();

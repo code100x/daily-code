@@ -1,4 +1,4 @@
-import { Admin } from "@repo/ui/pages";
+import { Admin } from "../../components/pages";
 import { AppbarClient } from "../../components/AppbarClient";
 
 export default async function AdminPage() {
