@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
-import UserImage from "../../../packages/ui/src/UserImage";
+import UserImage from "@repo/ui/UserImage";
 import { UserRound } from "lucide-react";
-import ProfileOptions from "../../../packages/ui/src/profile/ProfileOptions";
+import ProfileOptions from "@repo/ui/profileOptions";
 import { useRecoilValue } from "recoil";
-import { profileSidebar } from "../../../packages/store/src/atoms/profileSidebar";
+import { profileSidebar } from "@repo/store";
 import { useSession } from "next-auth/react";
 
 export default function ProfileSidebar() {
