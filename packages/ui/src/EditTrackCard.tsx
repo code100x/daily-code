@@ -2,23 +2,46 @@
 import { useState } from "react";
 import { Button } from "./shad/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
-import { Track } from "@prisma/client";
+import { Track,Categories } from "@prisma/client";
 import { Input } from "./shad/ui/input";
 import { updateTrack } from "../../../apps/web/components/utils";
 
-const EditTrackCard = ({ Track }: { Track: Track }) => {
+interface TrackCardProps extends Track {
+  categories: {
+    category: {
+      id: string;
+      category: string;
+    };
+  }[];
+}
+
+const EditTrackCard = ({ Track,categories }: { 
+  Track: TrackCardProps 
+  categories: Categories[] }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(Track.title);
   const [description, setDescription] = useState(Track.description);
   const [image, setImage] = useState(Track.image);
   const [hidden, setHidden] = useState(Track.hidden);
+  const [selectedCategory, setSelectedCategory] = useState<string[]>(Track.categories.map((item) => item.category.id));
+
+
   function handleEdit(id: string) {
     if (isEditing) {
-      updateTrack(id, { title, description, image, hidden });
+      updateTrack(id, { id, title, description, image, hidden, selectedCategory});
       return setIsEditing(false);
     }
     setIsEditing(true);
   }
+
+  function handleFilterButton(category: string) {
+    if (selectedCategory.includes(category)) {
+      setSelectedCategory(selectedCategory.filter((item) => item !== category));
+    } else {
+      setSelectedCategory([...selectedCategory, category]);
+    }
+  }
+
   function handleDiscardButton() {
     setTitle(Track.title);
     setDescription(Track.description);
@@ -40,6 +63,11 @@ const EditTrackCard = ({ Track }: { Track: Track }) => {
                 </Button>
               </div>
               <CardDescription>{description}</CardDescription>
+              <CardDescription>
+              {selectedCategory.map((item) => {
+                return <div key={item}>{item}</div>;
+              })}
+            </CardDescription>
             </CardHeader>
             <CardContent>{`hidden: ${hidden}`}</CardContent>
           </div>
@@ -66,6 +94,18 @@ const EditTrackCard = ({ Track }: { Track: Track }) => {
             </CardDescription>
             <CardDescription>
               <Input onChange={(e) => setImage(e.target.value)} value={image} />
+            </CardDescription>
+            <CardDescription>
+              {categories.map((item,i) => (
+                <Button
+                key={i}
+                variant="ghost"
+                onClick={() => handleFilterButton(item.id)}
+                className={selectedCategory.includes(item.id) ? "bg-gray-100 dark:bg-slate-700" : ""}
+              >
+                {item.category}
+              </Button>
+              ))}
             </CardDescription>
           </CardHeader>
           <CardContent>

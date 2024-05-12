@@ -7,21 +7,14 @@ import { Button } from "./shad/ui/button";
 import { useToast } from "./shad/ui/use-toast";
 import { createProblem } from "../../../apps/web/components/utils";
 import { useRouter } from "next/navigation";
-
-interface Problem {
-  id: string;
-  title: string;
-  description: string;
-  type: string;
-  notionDocId: string;
-}
+import { Problem,ProblemType } from "@prisma/client";
 
 const AddProblemCard = () => {
   const [newProblems, setNewProblems] = useState<Problem[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [notionDocId, setNotionDocId] = useState("");
-  const [type, setType] = useState("Blog");
+  const [type, setType] = useState<ProblemType>(ProblemType.Blog);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -46,7 +39,7 @@ const AddProblemCard = () => {
     <div>
       <Card className="cols-span-4 p-4 m-2 w-full">
         <Select
-          onValueChange={(e) => {
+          onValueChange={(e: ProblemType) => {
             setType(e);
           }}
         >
@@ -54,9 +47,9 @@ const AddProblemCard = () => {
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Code">Code</SelectItem>
-            <SelectItem value="Blog">Blog</SelectItem>
-            <SelectItem value="MCQ">MCQ</SelectItem>
+            <SelectItem value={ProblemType.Code}>Code</SelectItem>
+            <SelectItem value={ProblemType.Blog}>Blog</SelectItem>
+            <SelectItem value={ProblemType.MCQ}>MCQ</SelectItem>
           </SelectContent>
         </Select>
 
