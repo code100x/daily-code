@@ -75,7 +75,6 @@ export async function updateProblem(problemId: string, data: Problem) {
     });
     return problem;
   } catch (e) {
-    console.log(e);
     return null;
   }
 }
@@ -113,7 +112,12 @@ export async function createProblemStatement({
           },
         },
       },
+      include: {
+        testCases: true,
+        languagesSupported: true,
+      },
     });
+    return createdProblemStatement;
   } catch (e: any) {
     return null;
   }
@@ -130,7 +134,6 @@ export async function createTrackProblems(data: TrackProblems) {
     });
     return trackProblems;
   } catch (e) {
-    console.error(e);
     return null;
   }
 }
@@ -244,7 +247,6 @@ export async function createTrack(data: {
     }
     return track;
   } catch (e) {
-    console.log(e);
     return new Error("Failed to create track");
   }
 }
@@ -344,7 +346,6 @@ export async function createMCQ(data: Omit<MCQQuestion,"id">) {
     });
     return mcq;
   } catch (e) {
-    console.log(e);
     return null;
   }
 }
@@ -376,7 +377,6 @@ export async function deleteMCQ(id: string) {
     return null;
   }
 }
-
 export async function getAllMCQsForProblem(problemId: string) {
   try {
     const mcqs = await db.mCQQuestion.findMany({
@@ -410,6 +410,146 @@ export async function getQuizScore({userId,problemId}: {userId: string, problemI
       }
     });
     return submissions;
+  } catch (e) {
+    return [];
+  }
+}
+export async function getAllProblemStatements() {
+  try {
+    const problemStatements = await db.problemStatement.findMany({
+      select: {
+        id: true,
+        testCases: true,
+        problem: true,
+        problemId: true,
+        languagesSupported: true,
+        mainFuncName: true,
+        argumentNames: true,
+      },
+    });
+    return problemStatements;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function getProblemStatement(statementId: string) {
+  try {
+    const problemStatements = await db.problemStatement.findMany({
+      where: {
+        id: statementId,
+      },
+      select: {
+        id: true,
+        testCases: true,
+        problem: true,
+        problemId: true,
+        languagesSupported: true,
+        mainFuncName: true,
+        argumentNames: true,
+      },
+    });
+    return problemStatements;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function updateProblemStatement(problemStatementId: string, data: any) {
+  try {
+    const problemStatement = await db.problemStatement.update({
+      where: {
+        id: problemStatementId,
+      },
+      data: data,
+    });
+    return problemStatement;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function getAllTestCase(id: string) {
+  try {
+    const testCase = await db.testCase.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        expectedOutput: true,
+        problemStatement: true,
+        problemStatementId: true,
+        inputs: true,
+      },
+    });
+    return testCase;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function createTestCase(inputs: string[], expectedOutput: string, problemStatementId: string) {
+  try {
+    const testCase = await db.testCase.create({
+      data: {
+        inputs,
+        expectedOutput,
+        problemStatementId,
+      },
+    });
+    return testCase;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function deleteTestCase(testCaseId: string) {
+  try {
+    await db.testCase.delete({
+      where: {
+        id: testCaseId,
+      },
+    });
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function updateTestCase(
+  testCaseId: string,
+  expectedOutput: string,
+  problemStatementId: string,
+  inputs: string[]
+) {
+  try {
+    const updatedTestCase = await db.testCase.update({
+      where: {
+        id: testCaseId,
+      },
+      data: {
+        expectedOutput,
+        problemStatementId,
+        inputs,
+      },
+    });
+    return updatedTestCase;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function getAllLanguagesSupported() {
+  try {
+    const languagesSupported: CodeLanguage[] = await db.codeLanguage.findMany({
+      select: {
+        id: true,
+        label: true,
+        value: true,
+      },
+    });
+    return languagesSupported;
   } catch (e) {
     return [];
   }

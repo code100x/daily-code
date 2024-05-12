@@ -8,6 +8,16 @@ import { useToast } from "./shad/ui/use-toast";
 import { createProblem } from "../../../apps/web/components/utils";
 import { useRouter } from "next/navigation";
 import { Problem,ProblemType } from "@prisma/client";
+import { createProblem, createProblemStatement } from "../../../apps/web/components/utils";
+import ProblemStatementForm from "./code/admin/ProblemStatementForm";
+
+interface Problem {
+  id: string;
+  title: string;
+  description: string;
+  type: string;
+  notionDocId: string;
+}
 
 const AddProblemCard = () => {
   const [newProblems, setNewProblems] = useState<Problem[]>([]);
@@ -16,10 +26,12 @@ const AddProblemCard = () => {
   const [notionDocId, setNotionDocId] = useState("");
   const [type, setType] = useState<ProblemType>(ProblemType.Blog);
   const { toast } = useToast();
-  const router = useRouter();
 
   const handleCreateProblem = async () => {
     const problem = await createProblem({ title, description, type, notionDocId });
+    if (problem?.type === "Code") {
+      handleCreatePsStatement(problem.id);
+    }
     if (problem) {
       newProblems.push(problem);
       toast({
@@ -32,6 +44,18 @@ const AddProblemCard = () => {
     toast({
       title: "Couldn't add problem",
       description: "Please try again later",
+    });
+  };
+
+  const handleCreatePsStatement = async (id: string) => {
+    const newPS = await createProblemStatement({
+      problemStatement: {
+        argumentNames: [],
+        mainFuncName: "",
+        problemId: id,
+      },
+      languages: [],
+      testCases: [],
     });
   };
 
@@ -94,17 +118,6 @@ const AddProblemCard = () => {
               <CardDescription>{problem.type}</CardDescription>
             </CardHeader>
             <CardContent>{problem.notionDocId}</CardContent>
-            {problem.type === "Code" && (
-              <CardFooter>
-                <Button
-                  onClick={() => {
-                    router.push(`/admin/code/${problem.id}`);
-                  }}
-                >
-                  Add Problem Statement
-                </Button>
-              </CardFooter>
-            )}
           </Card>
         ))}
       </div>
