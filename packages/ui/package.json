@@ -22,6 +22,8 @@
     "./profileOptions": "./src/profile/ProfileOptions.tsx",
     "./Blog": "./src/Blog.tsx",
     "./CodeProblemRenderer": "./src/code/CodeProblemRenderer.tsx",
+    "./MCQRenderer": "./src/mcq/MCQRenderer.tsx",
+    "./RedirectToLoginCard": "./src/RedirectToLoginCard.tsx",
     "./MCQQuestionRenderer": "./src/MCQQuestionRenderer.tsx",
     "./UserImage": "./src/UserImage.tsx"
   },

@@ -1,8 +1,8 @@
 import { Blog } from "@repo/ui/Blog";
 import { CodeProblemRenderer } from "@repo/ui/CodeProblemRenderer";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import MCQRenderer from "@repo/ui/src/mcq/MCQRenderer";
-import RedirectToLoginCard from '@repo/ui/src/RedirectToLoginCard';
+import MCQRenderer from "@repo/ui/MCQRenderer";
+import { RedirectToLoginCard } from '@repo/ui/RedirectToLoginCard';
 
 import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
@@ -39,11 +39,11 @@ export const LessonView = async ({
 }: {
   problem: Problem & { notionRecordMap: any } & {
     problemStatement:
-      | (ProblemStatement & {
-          languagesSupported: CodeLanguage[];
-          testCases: TestCase[];
-        })
-      | null;
+    | (ProblemStatement & {
+      languagesSupported: CodeLanguage[];
+      testCases: TestCase[];
+    })
+    | null;
   };
   track: Track & { problems: Problem[] };
   showAppBar?: Boolean;
@@ -51,13 +51,13 @@ export const LessonView = async ({
 }) => {
 
   const session = await getServerSession(authOptions);
-  
+
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
-  
-  if(problemIndex > 1 && (!session || !session.user)) {
-    return <RedirectToLoginCard/>
+
+  if (problemIndex > 1 && (!session || !session.user)) {
+    return <RedirectToLoginCard />
   }
-   
+
   if (problem.type === "MCQ") {
     return (
       <MCQRenderer problem={problem} track={track} showAppBar={!!showAppBar} problemIndex={problemIndex} />

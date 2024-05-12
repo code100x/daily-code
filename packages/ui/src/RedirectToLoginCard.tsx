@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Button } from "./shad/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
 
-const RedirectToLoginCard = () => {
+export const RedirectToLoginCard = () => {
   const router = useRouter();
   const pathname = usePathname();
   const redirectToLogin = () => {
@@ -24,5 +24,3 @@ const RedirectToLoginCard = () => {
     </Card>
   );
 };
-
-export default RedirectToLoginCard;
