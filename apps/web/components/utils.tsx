@@ -1,6 +1,12 @@
 "use server";
 import db from "@repo/db/client";
-import { ProblemStatement, TestCase, CodeLanguage,MCQQuestion } from "@prisma/client";
+import { ProblemStatement, 
+  TestCase, 
+  CodeLanguage,
+  MCQQuestion,
+  Problem,
+  TrackProblems,
+ } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
@@ -59,7 +65,7 @@ export async function getAllProblems() {
   }
 }
 
-export async function updateProblem(problemId: string, data: any) {
+export async function updateProblem(problemId: string, data: Problem) {
   try {
     const problem = await db.problem.update({
       where: {
@@ -74,7 +80,7 @@ export async function updateProblem(problemId: string, data: any) {
   }
 }
 
-export async function createProblem(data: any) {
+export async function createProblem(data: Omit<Problem, "id">) {
   try {
     const problem = await db.problem.create({
       data,
@@ -113,7 +119,7 @@ export async function createProblemStatement({
   }
 }
 
-export async function createTrackProblems(data: any) {
+export async function createTrackProblems(data: TrackProblems) {
   try {
     const trackProblems = await db.trackProblems.create({
       data: {
@@ -199,7 +205,7 @@ export async function createTrack(data: {
   title: string;
   description: string;
   image: string;
-  selectedCategory?: string;
+  selectedCategory?: string[];
   problems: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
   hidden: boolean;
 }) {
@@ -227,12 +233,14 @@ export async function createTrack(data: {
     });
 
     if (data.selectedCategory) {
+    data.selectedCategory.forEach(async (category) => {
       await db.trackCategory.create({
         data: {
           trackId: data.id,
-          categoryId: data.selectedCategory,
+          categoryId: category,
         },
       });
+    });
     }
     return track;
   } catch (e) {
@@ -241,16 +249,46 @@ export async function createTrack(data: {
   }
 }
 
-export async function updateTrack(trackId: string, data: any) {
+export async function updateTrack(trackId: string, data: {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  selectedCategory?: string[];
+  problems?: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
+  hidden: boolean;
+}) {
   try {
     const track = await db.track.update({
       where: {
         id: trackId,
       },
-      data,
+      data:{
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        hidden: data.hidden,
+      }
     });
+    await db.trackCategory.deleteMany({
+      where: {
+        trackId: trackId,
+      },
+    })
+    if (data.selectedCategory) {
+      data.selectedCategory.forEach(async (category) => {
+        await db.trackCategory.create({
+          data: {
+            trackId: trackId,
+            categoryId: category,
+          },
+        });
+      });
+    }
     return track;
   } catch (e) {
+    console.log(e);
     return null;
   }
 }
@@ -299,7 +337,7 @@ export async function getAllMCQQuestion(problemId: string) {
   }
 }
 
-export async function createMCQ(data: any) {
+export async function createMCQ(data: Omit<MCQQuestion,"id">) {
   try {
     const mcq = await db.mCQQuestion.create({
       data,
