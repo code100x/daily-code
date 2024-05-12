@@ -1,11 +1,21 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@repo/ui/shad/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/shad/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui/shad/ui";
 import { Problem, ProblemStatement } from "@prisma/client";
-import { Input } from "@repo/ui/shad/ui";
-import { updateProblem } from "../../../apps/web/components/utils";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/shad/ui";
+import { updateProblem } from "web/components/utils";
 import { useRouter } from "next/navigation";
 
 const ProblemCard = ({ problem }: { problem: Problem & { problemStatement: ProblemStatement | null } }) => {

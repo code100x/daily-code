@@ -1,10 +1,20 @@
 "use client";
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/shad/ui";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/shad/ui";
-import { Input } from "@repo/ui/shad/ui";
-import { Button } from "@repo/ui/shad/ui";
-import { useToast } from "@repo/ui/shad/ui";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Input,
+  Button,
+  useToast,
+} from "@repo/ui/shad/ui";
 import { ProblemType } from "@prisma/client";
 import { createProblem, createProblemStatement } from "./utils";
 
@@ -21,7 +31,7 @@ const AddProblemCard = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [notionDocId, setNotionDocId] = useState("");
-  const [type, setType] = useState<ProblemType>(ProblemType.Blog);
+  const [type, setType] = useState<ProbleType>(ProblemType.Blog);
   const { toast } = useToast();
 
   const handleCreateProblem = async () => {

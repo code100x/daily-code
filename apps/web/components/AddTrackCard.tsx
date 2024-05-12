@@ -1,10 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/shad/ui";
-import { Input } from "@repo/ui/shad/ui";
-import { Button } from "@repo/ui/shad/ui";
-import { useToast } from "@repo/ui/shad/ui";
-import { createTrack } from "../../../apps/web/components/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, useToast } from "@repo/ui/shad/ui";
+import { createTrack } from "web/components/utils";
 import { Categories } from "@prisma/client";
 import { Track } from "@prisma/client";
 

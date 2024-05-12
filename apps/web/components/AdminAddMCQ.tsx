@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/shad/ui";
-import { Button } from "@repo/ui/shad/ui";
-import { Input } from "@repo/ui/shad/ui";
-import { Card, CardDescription, CardTitle } from "@repo/ui/shad/ui";
+import { Card, CardDescription, CardTitle, Button, Input, Sheet, SheetContent, SheetTrigger } from "@repo/ui/shad/ui";
 import { MCQQuestion, Problem } from "@prisma/client";
 import { createMCQ, deleteMCQ, getAllMCQQuestion } from "web/components/utils";
 import EditMCQ from "./mcq/EditMCQ";
@@ -12,7 +9,7 @@ interface AdminAddMCQProps extends Problem {
 }
 
 const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
-  const [mcqs, setMcqs] = useState<Omit<MCQQuestion,"id">[]>([]);
+  const [mcqs, setMcqs] = useState<Omit<MCQQuestion, "id">[]>([]);
   const [ExistingMCQs, setExistingMCQs] = useState<MCQQuestion[]>(problem.mcqQuestions);
   const [question, setQuestion] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
@@ -26,7 +23,7 @@ const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
       setExistingMCQs(mcqs);
     }
     fetchMCQs();
-  },[mcqs,isUpdate])
+  }, [mcqs, isUpdate]);
 
   function handleAddOption() {
     setOptions([...options, ...option.split(",")]);
@@ -51,7 +48,7 @@ const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
   function handleRemoveMCQ(question: string) {
     setMcqs(mcqs.filter((mcq) => mcq.question !== question));
   }
-  
+
   function handleSubmit() {
     mcqs.map(async (mcq) => {
       await createMCQ(mcq);
@@ -135,7 +132,7 @@ const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
               <CardDescription>Correct Option: {mcq.correctOption}</CardDescription>
             </div>
             <div className="space-x-3">
-              <EditMCQ mcq={mcq} setIsUpdate={setIsUpdate}/>
+              <EditMCQ mcq={mcq} setIsUpdate={setIsUpdate} />
               <Button variant={"outline"} onClick={() => handleRemoveExistingMCQs(mcq.id)}>
                 Remove
               </Button>

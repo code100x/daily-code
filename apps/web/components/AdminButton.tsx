@@ -11,7 +11,7 @@ export const AdminButton = () => {
   //TODO: propagate to state
   async function fetchUserDetailsClient() {
     try {
-      return []
+      return [];
     } catch (e) {
       return [];
     }

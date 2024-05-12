@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
 import { CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
-import { codeValueState, languageState } from "../../../../packages/store/src/atoms";
+import { codeValueState, languageState } from "@repo/store";
 import { useEffect } from "react";
 
 const getDefaultCode = (language: string, funcName: string, paramNames: string[]) => {

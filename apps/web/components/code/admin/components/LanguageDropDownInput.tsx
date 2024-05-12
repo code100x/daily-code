@@ -1,6 +1,7 @@
-import { Label } from "@radix-ui/react-label";
+import { Label } from "@repo/ui/shad/ui";
 import MultipleOptionChip from "../../../MultipleOptionChip";
 import {
+  Button,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -8,7 +9,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/shad/ui";
-import { Button } from "@repo/ui/shad/ui";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { globalLanguagesSupported, languagesSupported } from "@repo/store";
 import { CodeLanguage } from "@prisma/client";

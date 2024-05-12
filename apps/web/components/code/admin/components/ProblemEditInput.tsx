@@ -1,9 +1,7 @@
-import { Input } from "@repo/ui/shad/ui";
-import { Label } from "@repo/ui/shad/ui";
 import { Problem } from "@prisma/client";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/shad/ui";
 import { problem } from "@repo/store";
 import { useSetRecoilState } from "recoil";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Input, Label } from "@repo/ui/shad/ui";
 
 export default function ProblemEditInput({ Lproblem }: { Lproblem: Problem }) {
   const setProblem = useSetRecoilState<Problem>(problem);

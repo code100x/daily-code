@@ -1,17 +1,20 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@repo/ui/shad/ui";
-import { Button } from "@repo/ui/shad/ui";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "@repo/ui/shad/ui";
 import { MCQQuestion as Question } from "@prisma/client";
 
-
-const MCQQuestion = ({ question,setAtempted,isReset,isSubmitted,setisSubmitted }: { 
-  question: Question,
-  setAtempted:Dispatch<SetStateAction<Object>>,
-  isReset:boolean,
-  isSubmitted:boolean
-  setisSubmitted:Dispatch<SetStateAction<boolean>>
-
+const MCQQuestion = ({
+  question,
+  setAtempted,
+  isReset,
+  isSubmitted,
+  setisSubmitted,
+}: {
+  question: Question;
+  setAtempted: Dispatch<SetStateAction<Object>>;
+  isReset: boolean;
+  isSubmitted: boolean;
+  setisSubmitted: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -21,12 +24,12 @@ const MCQQuestion = ({ question,setAtempted,isReset,isSubmitted,setisSubmitted }
       return;
     }
     if (selectedOption === option) {
-      setAtempted((prev)=>({...prev,[question.id]:false}))
+      setAtempted((prev) => ({ ...prev, [question.id]: false }));
       setSelectedOption(null);
       return;
     }
     setSelectedOption(option);
-    setAtempted((prev)=>({...prev,[question.id]:option==question.correctOption}))
+    setAtempted((prev) => ({ ...prev, [question.id]: option == question.correctOption }));
     setIsCorrect(null);
   };
 
@@ -48,7 +51,7 @@ const MCQQuestion = ({ question,setAtempted,isReset,isSubmitted,setisSubmitted }
     setSelectedOption(null);
     setIsCorrect(null);
     setisSubmitted(false);
-  },[isReset])
+  }, [isReset]);
 
   return (
     <div>

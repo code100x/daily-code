@@ -5,7 +5,7 @@ import { Input } from "@repo/ui/shad/ui";
 import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/shad/ui";
 import ProblemCard from "./ProblemCard";
 import { useState } from "react";
-import { createTrackProblems } from "../../../apps/web/components/utils";
+import { createTrackProblems } from "web/components/utils";
 import { Card, CardDescription, CardTitle } from "@repo/ui/shad/ui";
 
 interface LinkCardProps extends Track {

@@ -1,8 +1,7 @@
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { useParams } from "next/navigation";
 import { cn } from "@repo/ui/utils";
-import { Button } from "@repo/ui/shad/ui";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@repo/ui/shad/ui";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Button } from "@repo/ui/shad/ui";
 import { Track, Problem } from "@prisma/client";
 import Link from "next/link";
 

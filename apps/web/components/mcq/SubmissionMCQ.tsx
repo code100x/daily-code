@@ -1,30 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Problem,QuizScore } from "@prisma/client";
-import { getQuizScore } from 'web/components/utils';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@repo/ui/shad/ui";
+import { Problem, QuizScore } from "@prisma/client";
+import { getQuizScore } from "web/components/utils";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/shad/ui";
 
-
-const SubmissionMCQ = ({problem}:{problem:Problem}) => {
-    const session = useSession();
-    // @ts-ignore
-    const userId = session.data?.user?.id;
-    const [scoreData, setScoreData] = useState<QuizScore[]>([]);
+const SubmissionMCQ = ({ problem }: { problem: Problem }) => {
+  const session = useSession();
+  // @ts-ignore
+  const userId = session.data?.user?.id;
+  const [scoreData, setScoreData] = useState<QuizScore[]>([]);
 
   useEffect(() => {
     async function fetchSubmission() {
-     const data = await getQuizScore({
+      const data = await getQuizScore({
         userId,
-        problemId: problem.id
-     });
+        problemId: problem.id,
+      });
       setScoreData(data);
     }
     fetchSubmission();
@@ -32,15 +23,15 @@ const SubmissionMCQ = ({problem}:{problem:Problem}) => {
 
   return (
     <div>
-        <Table>
-          <TableCaption></TableCaption>
-          <TableHeader>
+      <Table>
+        <TableCaption></TableCaption>
+        <TableHeader>
           <TableRow>
             <TableHead>Quiz Score</TableHead>
             <TableHead>Timestamp</TableHead>
           </TableRow>
-          </TableHeader>
-          <TableBody>
+        </TableHeader>
+        <TableBody>
           {scoreData.map((score) => (
             <TableRow key={score.id}>
               <TableCell>{score.score}</TableCell>
@@ -55,10 +46,10 @@ const SubmissionMCQ = ({problem}:{problem:Problem}) => {
               </TableCell>
             </TableRow>
           ))}
-          </TableBody>
+        </TableBody>
       </Table>
     </div>
-  )
-}
+  );
+};
 
-export default SubmissionMCQ
+export default SubmissionMCQ;

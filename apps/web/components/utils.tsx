@@ -1,12 +1,6 @@
 "use server";
 import db from "@repo/db/client";
-import { ProblemStatement, 
-  TestCase, 
-  CodeLanguage,
-  MCQQuestion,
-  Problem,
-  TrackProblems,
- } from "@prisma/client";
+import { ProblemStatement, TestCase, CodeLanguage, MCQQuestion, Problem, TrackProblems } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
@@ -236,14 +230,14 @@ export async function createTrack(data: {
     });
 
     if (data.selectedCategory) {
-    data.selectedCategory.forEach(async (category) => {
-      await db.trackCategory.create({
-        data: {
-          trackId: data.id,
-          categoryId: category,
-        },
+      data.selectedCategory.forEach(async (category) => {
+        await db.trackCategory.create({
+          data: {
+            trackId: data.id,
+            categoryId: category,
+          },
+        });
       });
-    });
     }
     return track;
   } catch (e) {
@@ -251,33 +245,36 @@ export async function createTrack(data: {
   }
 }
 
-export async function updateTrack(trackId: string, data: {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  selectedCategory?: string[];
-  problems?: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
-  hidden: boolean;
-}) {
+export async function updateTrack(
+  trackId: string,
+  data: {
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+    selectedCategory?: string[];
+    problems?: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
+    hidden: boolean;
+  }
+) {
   try {
     const track = await db.track.update({
       where: {
         id: trackId,
       },
-      data:{
+      data: {
         id: data.id,
         title: data.title,
         description: data.description,
         image: data.image,
         hidden: data.hidden,
-      }
+      },
     });
     await db.trackCategory.deleteMany({
       where: {
         trackId: trackId,
       },
-    })
+    });
     if (data.selectedCategory) {
       data.selectedCategory.forEach(async (category) => {
         await db.trackCategory.create({
@@ -339,7 +336,7 @@ export async function getAllMCQQuestion(problemId: string) {
   }
 }
 
-export async function createMCQ(data: Omit<MCQQuestion,"id">) {
+export async function createMCQ(data: Omit<MCQQuestion, "id">) {
   try {
     const mcq = await db.mCQQuestion.create({
       data,
@@ -350,7 +347,7 @@ export async function createMCQ(data: Omit<MCQQuestion,"id">) {
   }
 }
 
-export async function updateMCQ(id: string, data:MCQQuestion) {
+export async function updateMCQ(id: string, data: MCQQuestion) {
   try {
     const mcq = await db.mCQQuestion.update({
       where: {
@@ -390,24 +387,20 @@ export async function getAllMCQsForProblem(problemId: string) {
   }
 }
 
-export async function createQuizScore(data: {
-  userId: string;
-  score: number;
-  problemId: string;
-}) {
+export async function createQuizScore(data: { userId: string; score: number; problemId: string }) {
   const submission = await db.quizScore.create({
     data,
-  })
+  });
   return submission;
 }
 
-export async function getQuizScore({userId,problemId}: {userId: string, problemId: string}) {
+export async function getQuizScore({ userId, problemId }: { userId: string; problemId: string }) {
   try {
     const submissions = await db.quizScore.findMany({
       where: {
         userId,
         problemId,
-      }
+      },
     });
     return submissions;
   } catch (e) {

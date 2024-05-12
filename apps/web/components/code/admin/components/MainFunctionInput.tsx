@@ -1,6 +1,5 @@
 import { mainFuncName } from "@repo/store";
-import { Input } from "@repo/ui/shad/ui";
-import { Label } from "@repo/ui/shad/ui";
+import { Input, Label } from "@repo/ui/shad/ui";
 import { useRecoilState } from "recoil";
 
 export default function MainFunctionInput() {

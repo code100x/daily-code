@@ -1,7 +1,6 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { Button } from "@repo/ui/shad/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/shad/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from "@repo/ui/shad/ui";
 
 const RedirectToLoginCard = () => {
   const router = useRouter();

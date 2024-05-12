@@ -1,9 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Input } from "@repo/ui/shad/ui";
+import { Input, Button } from "@repo/ui/shad/ui";
 import { Categories } from "@prisma/client";
 import CompleteTrackCard from "./CompleteTrackCard";
-import { Button } from "@repo/ui/shad/ui";
 
 export interface CompleteTrack {
   trackId: string;

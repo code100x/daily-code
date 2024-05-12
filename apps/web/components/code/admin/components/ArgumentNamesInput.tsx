@@ -1,7 +1,6 @@
 import { useRecoilState } from "recoil";
 import { argumentNames } from "@repo/store";
-import { Label } from "@repo/ui/shad/ui";
-import { Input } from "@repo/ui/shad/ui";
+import { Label, Input } from "@repo/ui/shad/ui";
 
 export default function ArgumentNamesInput() {
   const [LargumentNames, setArgumentNames] = useRecoilState<string[]>(argumentNames);

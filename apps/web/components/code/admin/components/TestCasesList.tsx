@@ -1,5 +1,4 @@
-import { Label } from "@repo/ui/shad/ui";
-import { Input } from "@repo/ui/shad/ui";
+import { Label, Input } from "@repo/ui/shad/ui";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { problemStatementsAtom, testCases } from "@repo/store";
 import { Trash2Icon } from "lucide-react";

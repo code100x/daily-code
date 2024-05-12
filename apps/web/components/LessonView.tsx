@@ -1,7 +1,7 @@
 import { Blog } from "./Blog";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
 import MCQRenderer from "./mcq/MCQRenderer";
-import RedirectToLoginCard from './RedirectToLoginCard';
+import RedirectToLoginCard from "./RedirectToLoginCard";
 
 import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
@@ -49,19 +49,16 @@ export const LessonView = async ({
   showAppBar?: Boolean;
   isPdfRequested?: Boolean;
 }) => {
-
   const session = await getServerSession(authOptions);
-  
+
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
-  
-  if(problemIndex > 1 && (!session || !session.user)) {
-    return <RedirectToLoginCard/>
+
+  if (problemIndex > 1 && (!session || !session.user)) {
+    return <RedirectToLoginCard />;
   }
-   
+
   if (problem.type === "MCQ") {
-    return (
-      <MCQRenderer problem={problem} track={track} showAppBar={!!showAppBar} problemIndex={problemIndex} />
-    );
+    return <MCQRenderer problem={problem} track={track} showAppBar={!!showAppBar} problemIndex={problemIndex} />;
   }
   if (problem.type === "Code" && problem.problemStatement) {
     const submissions = await getSubmissions(problem.problemStatement.id);
