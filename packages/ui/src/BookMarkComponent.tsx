@@ -37,20 +37,20 @@ const BookMarkComponent = ({ track }: { track: TrackCardProps }) => {
     setBookMarkStatus((prev) => !prev);
     try {
       const { data } = await axios.post("/api/bookmark", {
-        userid,
+        userid, 
         trackid: track.id,
       });
       data && data.data == "created"
         ? toast({
-            description: "Bookmark Added Successfully",
-            className: "bg-primary text-white dark:text-black",
-            variant: "default",
-          })
+          description: "Bookmark Added Successfully",
+          className: "bg-primary text-white dark:text-black",
+          variant: "default",
+        })
         : toast({
-            className: "bg-primary text-white dark:text-black",
-            description: "Bookmark Removed Successfully",
-            variant: "default",
-          });
+          className: "bg-primary text-white dark:text-black",
+          description: "Bookmark Removed Successfully",
+          variant: "default",
+        });
     } catch (error) {
       console.log(error);
     }

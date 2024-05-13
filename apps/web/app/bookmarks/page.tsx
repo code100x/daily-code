@@ -28,8 +28,8 @@ const page = async () => {
   // fetches all the bookmarked tracks of user logged in
   const BookmarkedTracks = await getAllBookmarkedTrack(userid!);
 
-  const bookmarkedTrackId = BookmarkedTracks.map(({track}:{track:string})=>track)
-  const BookMarkId = BookmarkedTracks.map((bkmark:any) => bkmark.track);
+  const bookmarkedTrackId = BookmarkedTracks.map(({ track }: { track: string }) => track)
+  const BookMarkId = BookmarkedTracks.map((bkmark: any) => bkmark.track);
   // filtering out the bookmarked tracks from all the tracks
   const FilteredBookmarks = tracks.filter((track) => BookMarkId.includes(track.id));
   if (session === null) {
@@ -45,7 +45,7 @@ const page = async () => {
           {FilteredBookmarks.map((track) => (
             <li key={track.id} className="flex justify-center">
               <div className="max-w-screen-md w-full block">
-                <TrackCard track={track} bookmarks={bookmarkedTrackId}  />
+                <TrackCard track={track} bookmarks={bookmarkedTrackId} />
               </div>
             </li>
           ))}

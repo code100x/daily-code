@@ -6,11 +6,11 @@ export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
-    return Response.json( [] , { status: 200 });
+    return Response.json([], { status: 200 });
   }
 
   const userId = session.user.id;
-  
+
   if (userId === null || session === null) {
     return Response.json(
       {
@@ -30,10 +30,10 @@ export async function GET(req: Request) {
     });
     return Response.json(
       bookmarkStatus
-    ,{
-      status:200
-    });
-    
+      , {
+        status: 200
+      });
+
   } catch (error) {
     console.log(error);
     return Response.json({

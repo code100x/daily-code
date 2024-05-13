@@ -16,7 +16,7 @@ interface TrackCardProps extends Track {
   }[];
 }
 
-const BookMarkComponent = ({ track,bookmarkStatus }: { track: TrackCardProps,bookmarkStatus:Boolean }) => {
+const BookMarkComponent = ({ track, bookmarkStatus }: { track: TrackCardProps, bookmarkStatus: Boolean }) => {
 
   const [BookMarkStatus, setBookMarkStatus] = useState<Boolean | null>(null);
 
@@ -76,18 +76,18 @@ const BookMarkComponent = ({ track,bookmarkStatus }: { track: TrackCardProps,boo
   useEffect(() => {
     setBookMarkStatus(bookmarkStatus)
 
-  }, [status,bookmarkStatus]);
+  }, [status, bookmarkStatus]);
 
 
   return (
     <div>
       {
-        BookMarkStatus === true && status === "authenticated"?
+        BookMarkStatus === true && status === "authenticated" ?
           <BookmarkFilledIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} /> : null
-        }
-        {  BookMarkStatus ===false && status === "authenticated" ?
-          <BookmarkIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} /> : null
-        }
+      }
+      {BookMarkStatus === false && status === "authenticated" ?
+        <BookmarkIcon className="m-3 cursor-pointer " width={23} height={23} onClick={toggleBookmarkHandler} /> : null
+      }
     </div>
   );
 };
