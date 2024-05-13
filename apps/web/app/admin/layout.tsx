@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const session = await getServerSession(authOptions);
 
-  if (session?.user?.admin) {
+  if (!session?.user?.admin) {
     return (
       <div className="w-full min-h-screen flex items-center justify-center gap-4 p-4">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
