@@ -15,14 +15,14 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [hidden, setHidden] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const { toast } = useToast();
 
   function handleFilterButton(category: string) {
-    if (category == selectedCategory) {
-      setSelectedCategory("");
+    if (selectedCategory.includes(category)) {
+      setSelectedCategory(selectedCategory.filter((item) => item !== category));
     } else {
-      setSelectedCategory(category);
+      setSelectedCategory([...selectedCategory, category]);
     }
   }
 
@@ -67,7 +67,7 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
               key={i}
               variant="ghost"
               onClick={() => handleFilterButton(category.id)}
-              className={selectedCategory == category.id ? "bg-gray-100 dark:bg-slate-700" : ""}
+              className={selectedCategory.includes(category.id) ? "bg-gray-100 dark:bg-slate-700" : ""}
             >
               {category.category}
             </Button>

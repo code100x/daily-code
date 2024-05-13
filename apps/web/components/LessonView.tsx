@@ -1,8 +1,8 @@
 import { Blog } from "@repo/ui/Blog";
 import { CodeProblemRenderer } from "@repo/ui/CodeProblemRenderer";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import MCQRenderer from "@repo/ui/src/mcq/MCQRenderer";
-import RedirectToLoginCard from '@repo/ui/src/RedirectToLoginCard';
+import MCQRenderer from "@repo/ui/MCQRenderer";
+import RedirectToLoginCard from '@repo/ui/RedirectToLoginCard';
 
 import db from "@repo/db/client";
 import { getServerSession } from "next-auth";

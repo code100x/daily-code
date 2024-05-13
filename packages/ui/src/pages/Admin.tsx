@@ -7,7 +7,8 @@ import CompleteAddTracks from "../CompleteAddTracks";
 import AdminSearch from "../AdminSearch";
 import db from "@repo/db/client";
 import AdminMCQ from "../AdminMCQ";
-
+import { ProblemStatements } from "../code/admin/ProblemStatements";
+  
 export const Admin = async () => {
   const problems = await getAllProblems();
   const tracks = await getAllTracks();
@@ -34,6 +35,7 @@ export const Admin = async () => {
               <TabsTrigger value="link">Link</TabsTrigger>
               <TabsTrigger value="search">Search</TabsTrigger>
               <TabsTrigger value="MCQ">MCQ</TabsTrigger>
+              <TabsTrigger value="problem-statement">Problem Statements</TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="auto">
@@ -53,6 +55,9 @@ export const Admin = async () => {
           </TabsContent>
           <TabsContent value="MCQ">
             <AdminMCQ />
+          </TabsContent>
+          <TabsContent value="problem-statement">
+            <ProblemStatements />
           </TabsContent>
         </Tabs>
       </div>
