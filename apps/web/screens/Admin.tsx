@@ -1,9 +1,9 @@
-import { ProblemEditor } from "../components/ProblemEditor";
-import { TracksEditor } from "../components/TracksEditor";
+import { ProblemEditor } from "../components/admin/ProblemEditor";
+import { TracksEditor } from "../components/admin/TracksEditor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
-import { LinkProblems } from "../components/LinkProblems";
-import CompleteAddTracks from "../components/CompleteAddTracks";
-import AdminMCQ from "../components/AdminMCQ";
+import { LinkProblems } from "../components/admin/LinkProblems";
+import CompleteAddTracks from "../components/admin/CompleteAddTracks";
+import AdminMCQ from "../components/admin/AdminMCQ";
 import { ProblemStatements } from "../components/admin/code/ProblemStatements";
 import { getAllCategories, getAllProblems, getAllTracks } from "../components/utils";
 

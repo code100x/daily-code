@@ -16,7 +16,7 @@ import {
   useToast,
 } from "@repo/ui";
 import { ProblemType } from "@prisma/client";
-import { createProblem, createProblemStatement } from "./utils";
+import { createProblem, createProblemStatement } from "../utils";
 
 interface Problem {
   id: string;

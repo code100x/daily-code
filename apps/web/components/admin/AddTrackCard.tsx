@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, useToast } from "@repo/ui";
-import { createTrack } from "../components/utils";
+import { createTrack } from "../utils";
 import { Categories } from "@prisma/client";
 import { Track } from "@prisma/client";
 

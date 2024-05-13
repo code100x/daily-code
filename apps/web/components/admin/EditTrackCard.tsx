@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input } from "@repo/ui";
 import { Track, Categories } from "@prisma/client";
-import { updateTrack } from "../components/utils";
+import { updateTrack } from "../utils";
 
 interface TrackCardProps extends Track {
   categories: {

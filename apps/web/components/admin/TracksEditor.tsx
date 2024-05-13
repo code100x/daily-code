@@ -2,7 +2,7 @@ import AddTrackCard from "./AddTrackCard";
 import { ScrollArea } from "@repo/ui";
 import { Track } from "@prisma/client";
 import EditTrackCard from "./EditTrackCard";
-import { getAllCategories } from "../components/utils";
+import { getAllCategories } from "../utils";
 
 interface TrackCardProps extends Track {
   categories: {

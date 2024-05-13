@@ -5,7 +5,7 @@ import { Input } from "@repo/ui";
 import { Sheet, SheetContent, SheetTrigger } from "@repo/ui";
 import ProblemCard from "./ProblemCard";
 import { useState } from "react";
-import { createTrackProblems } from "../components/utils";
+import { createTrackProblems } from "../utils";
 import { Card, CardDescription, CardTitle } from "@repo/ui";
 
 interface LinkCardProps extends Track {

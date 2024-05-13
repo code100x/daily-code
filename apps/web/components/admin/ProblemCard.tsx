@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@repo/ui";
 import { Problem, ProblemStatement } from "@prisma/client";
-import { updateProblem } from "../components/utils";
+import { updateProblem } from "../utils";
 import { useRouter } from "next/navigation";
 
 const ProblemCard = ({ problem }: { problem: Problem & { problemStatement: ProblemStatement | null } }) => {
