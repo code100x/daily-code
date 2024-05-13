@@ -1,5 +1,13 @@
 # Quick Setup Locally
 
+* Docker
+
+```
+docker compose watch
+```
+
+    OR
+
 > Install the Dependencies
 
 ```
@@ -11,6 +19,7 @@ yarn install
 
 ```
 cd packages/db
+chmod +x ./setupDB.sh
 ./setupDB.sh
 ```
 

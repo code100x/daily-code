@@ -1,5 +1,5 @@
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { cn } from "../lib/utils";
 import { Button } from "./shad/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./shad/ui/dropdown-menu";
@@ -7,7 +7,8 @@ import { Track, Problem } from "@prisma/client";
 import Link from "next/link";
 
 export function PageToggle({ allProblems, track }: { allProblems: Problem[]; track: Track & { problems: Problem[] } }) {
-  const router = useRouter();
+  const { trackIds }: { trackIds: string[] } = useParams();
+  const currentTrack = trackIds.join("/");
 
   return (
     <DropdownMenu>
@@ -28,16 +29,16 @@ export function PageToggle({ allProblems, track }: { allProblems: Problem[]; tra
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cn("overflow-y-auto max-h-[80vh]")}>
         {allProblems.map((problem: { id: string; title: string }, index: number) => (
-          <Link
-            key={problem.id}
-            prefetch={true}
-            className="max-w-screen-md w-full"
-            href={`/tracks/${track.id}/${problem.id}`}
-          >
-            <DropdownMenuItem key={index}>
+          <DropdownMenuItem key={index} disabled={currentTrack === `${track.id}/${problem.id}`}>
+            <Link
+              key={problem.id}
+              prefetch={true}
+              className="max-w-screen-md w-full"
+              href={`/tracks/${track.id}/${problem.id}`}
+            >
               {index + 1} - {problem.title}
-            </DropdownMenuItem>
-          </Link>
+            </Link>
+          </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -6,11 +6,6 @@ import { useRouter } from "next/navigation";
 import { Submission } from "@prisma/client";
 import { ProblemStatement } from "@prisma/client";
 
-interface Problem {
-  id: string;
-  title: string;
-}
-
 interface ProblemSubmissionTableProps {
   problemStatements: ProblemStatement[];
 }

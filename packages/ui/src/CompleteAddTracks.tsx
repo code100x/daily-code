@@ -1,16 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Input } from "./shad/ui/input";
-import { Categories } from "@prisma/client";
+import { Track,Categories,TrackCategory } from "@prisma/client";
 import CompleteTrackCard from "./CompleteTrackCard";
 import { Button } from "./shad/ui/button";
 
-interface CompleteTrack {
+export interface CompleteTrack {
   trackId: string;
   trackTitle: string;
   trackDescription: string;
   trackImage: string;
-  selectedCategory: string;
+  selectedCategory: string[];
 }
 
 const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
@@ -19,20 +19,20 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
   const [trackTitle, setTrackTitle] = useState("");
   const [trackDescription, setTrackDescription] = useState("");
   const [trackImage, setTrackImage] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [trackData, setTrackData] = useState<CompleteTrack>({} as CompleteTrack);
 
   function handleFilterButton(category: string) {
-    if (category == selectedCategory) {
-      setSelectedCategory("");
+    if (selectedCategory.includes(category)) {
+      setSelectedCategory(selectedCategory.filter((item) => item !== category));
     } else {
-      setSelectedCategory(category);
+      setSelectedCategory([...selectedCategory, category]);
     }
   }
 
   useEffect(() => {
     setTrackData({ trackId, trackDescription, trackTitle, trackImage, selectedCategory });
-  }, [trackId, trackDescription, trackTitle, trackImage]);
+  }, [trackId, trackDescription, trackTitle, trackImage,selectedCategory]);
   return (
     <div className="flex flex-col justify-center">
       <div className="text-5xl text-center mb-4">Track</div>
@@ -67,7 +67,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
               key={i}
               variant="ghost"
               onClick={() => handleFilterButton(category.id)}
-              className={selectedCategory == category.id ? "bg-gray-100 dark:bg-slate-700" : ""}
+              className={selectedCategory.includes(category.id) ? "bg-gray-100 dark:bg-slate-700" : ""}
             >
               {category.category}
             </Button>

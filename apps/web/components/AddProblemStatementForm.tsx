@@ -7,7 +7,7 @@ import { Label } from "@repo/ui/label";
 import { Checkbox } from "@repo/ui/checkbox";
 import AddTestCase from "./AddTestCase";
 import { useRecoilValue } from "recoil";
-import { adminTestCasesState } from "../../../packages/store/src/atoms";
+import { adminTestCasesState } from "@repo/store";
 import { Card, CardContent } from "@repo/ui/card";
 import { createProblemStatement } from "./utils";
 
@@ -26,7 +26,7 @@ export const AddProblemStatementForm = ({ problem, languages }: { problem: Probl
   };
 
   const handleAddPS = async () => {
-    const problemStatement = await createProblemStatement({
+    await createProblemStatement({
       problemStatement: { argumentNames: argumentNames.trim().split(","), mainFuncName, problemId: problem.id },
       languages: supportedLanguages,
       testCases: adminTestCases,
