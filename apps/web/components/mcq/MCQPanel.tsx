@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NotionRenderer } from "../NotionRenderer";
 import { Problem } from "@prisma/client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/shad/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { History, NotepadText } from "lucide-react";
 import SubmissionMCQ from "./SubmissionMCQ";
 

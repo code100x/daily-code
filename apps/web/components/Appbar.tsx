@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui";
 import { ModeToggle } from "./ModeToggle";
 import { signIn } from "next-auth/react";
 

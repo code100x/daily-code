@@ -20,13 +20,13 @@ import {
   Label,
   Textarea,
   useToast,
-} from "@repo/ui/shad/ui";
+} from "@repo/ui";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { useState } from "react";
 import { ProblemStatement, CodeLanguage } from "prisma/prisma-client";
-import { createProblem, createProblemStatement, createTestCase } from "web/components/utils";
 import { refetch } from "../ProblemStatements";
 import { TestCase, ProblemType } from "@prisma/client";
+import { createProblem, createProblemStatement, createTestCase } from "../../../utils";
 
 interface Problem {
   id: string;

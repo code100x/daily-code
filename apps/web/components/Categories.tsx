@@ -1,8 +1,8 @@
 "use client";
 import { useRecoilState } from "recoil";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/shad/ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { category } from "@repo/store";
-import { Button } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui";
 
 interface Category {
   category: string;

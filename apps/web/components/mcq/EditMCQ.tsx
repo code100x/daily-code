@@ -11,9 +11,9 @@ import {
   Card,
   CardTitle,
   Button,
-} from "@repo/ui/shad/ui";
+} from "@repo/ui";
 import { Dispatch, SetStateAction, useState } from "react";
-import { updateMCQ } from "web/components/utils";
+import { updateMCQ } from "../utils";
 
 const EditMCQ = ({ mcq, setIsUpdate }: { mcq: MCQQuestion; setIsUpdate: Dispatch<SetStateAction<boolean>> }) => {
   const [question, setQuestion] = useState<string>(mcq.question);

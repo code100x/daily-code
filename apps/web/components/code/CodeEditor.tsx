@@ -1,5 +1,5 @@
 import Editor from "@monaco-editor/react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/shad/ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
 import { CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";

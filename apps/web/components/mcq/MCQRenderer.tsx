@@ -4,7 +4,7 @@ import { BlogAppbar } from "../BlogAppbar";
 import MCQQuestionCard from "./MCQCard";
 import { useSession } from "next-auth/react";
 import { Loader } from "lucide-react";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@repo/ui/shad/ui";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@repo/ui";
 import MCQPanel from "./MCQPanel";
 
 const MCQRenderer = ({

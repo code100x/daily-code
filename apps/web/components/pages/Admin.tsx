@@ -1,11 +1,11 @@
 import { ProblemEditor } from "../ProblemEditor";
 import { TracksEditor } from "../TracksEditor";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/shad/ui";
-import { getAllCategories, getAllProblems, getAllTracks } from "web/components/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { LinkProblems } from "../LinkProblems";
 import CompleteAddTracks from "../CompleteAddTracks";
 import AdminMCQ from "../AdminMCQ";
 import { ProblemStatements } from "../code/admin/ProblemStatements";
+import { getAllCategories, getAllProblems, getAllTracks } from "../utils";
 
 export const Admin = async () => {
   const problems = await getAllProblems();

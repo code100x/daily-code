@@ -14,7 +14,7 @@ import {
   Input,
   Button,
   useToast,
-} from "@repo/ui/shad/ui";
+} from "@repo/ui";
 import { ProblemType } from "@prisma/client";
 import { createProblem, createProblemStatement } from "./utils";
 

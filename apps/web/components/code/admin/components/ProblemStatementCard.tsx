@@ -1,6 +1,6 @@
 "use client";
 import { ProblemStatement, CodeLanguage, ProblemType } from "@prisma/client";
-import { Card, CardDescription, CardHeader, CardTitle } from "@repo/ui/shad/ui";
+import { Card, CardDescription, CardHeader, CardTitle } from "@repo/ui";
 import MultipleOptionChip from "../../../MultipleOptionChip";
 import ProblemStatementForm from "../ProblemStatementForm";
 interface Problem {

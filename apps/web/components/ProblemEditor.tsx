@@ -1,5 +1,5 @@
 import { Problem, ProblemStatement } from "@prisma/client";
-import { ScrollArea } from "@repo/ui/shad/ui";
+import { ScrollArea } from "@repo/ui";
 import ProblemCard from "./ProblemCard";
 import AddProblemCard from "./AddProblemCard";
 

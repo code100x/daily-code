@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, ReactNode, useState } from "react";
-import type { ToastActionElement, ToastProps } from "@repo/ui/shad/ui";
+import type { ToastActionElement, ToastProps } from "./toast";
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;

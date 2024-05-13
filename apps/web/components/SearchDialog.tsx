@@ -1,7 +1,7 @@
 "use client";
 
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Dialog, DialogClose, DialogContent, Button, Input } from "@repo/ui/shad/ui";
+import { Dialog, DialogClose, DialogContent, Button, Input } from "@repo/ui";
 import { useEffect, useRef, useState } from "react";
 import { Track, Problem } from "@prisma/client";
 import { TrackList } from "./TrackList";

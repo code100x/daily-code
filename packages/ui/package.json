@@ -3,19 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./components": "./src/index.tsx",
-    "./code": "./src/code.tsx",
-    "./globals.css": "./app/globals.css",
-    "./utils": "./lib/utils.ts",
-    "./pages": "./src/pages/index.ts",
-    "./shad/ui": "./src/index.ts",
-    "./profileOptions": "./src/profile/ProfileOptions.tsx",
-    "./Blog": "./src/Blog.tsx",
-    "./CodeProblemRenderer": "./src/code/CodeProblemRenderer.tsx",
-    "./MCQQuestionRenderer": "./src/MCQQuestionRenderer.tsx",
-    "./MCQRenderer": "./src/mcq/MCQRenderer.tsx",
-    "./RedirectToLoginCard": "./src/RedirectToLoginCard.tsx",
-    "./UserImage": "./src/UserImage.tsx"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

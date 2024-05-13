@@ -1,4 +1,4 @@
-import { Input, Label } from "@repo/ui/shad/ui";
+import { Input, Label } from "@repo/ui";
 import { useRecoilState } from "recoil";
 import { problemStatementId } from "@repo/store";
 export default function FormHeader() {

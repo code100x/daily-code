@@ -1,9 +1,9 @@
 import { Problem, MCQQuestion as mcq } from "@prisma/client";
 import MCQQuestion from "./MCQQuestion";
 import { useEffect, useState } from "react";
-import { createQuizScore, getAllMCQsForProblem } from "web/components/utils";
-import { Button, toast } from "@repo/ui/shad/ui";
+import { Button, toast } from "@repo/ui";
 import { useSession } from "next-auth/react";
+import { createQuizScore, getAllMCQsForProblem } from "../utils";
 
 function MCQCard({ problem }: { problem: Problem }) {
   const session = useSession();

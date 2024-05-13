@@ -1,7 +1,7 @@
 "use client";
 
 import { Submission, CodeLanguage } from "@prisma/client";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/shad/ui";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui";
 import { Clock4, Cpu } from "lucide-react";
 import { activeSubmissionIdState, fetchSubmissionsLoadingState } from "@repo/store";
 import { useSetRecoilState } from "recoil";

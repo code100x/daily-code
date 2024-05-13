@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Problem, QuizScore } from "@prisma/client";
-import { getQuizScore } from "web/components/utils";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/shad/ui";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui";
+import { getQuizScore } from "../utils";
 
 const SubmissionMCQ = ({ problem }: { problem: Problem }) => {
   const session = useSession();

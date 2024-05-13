@@ -1,6 +1,6 @@
 import { NotionRenderer } from "../NotionRenderer";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/shad/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { History, LoaderCircle, NotepadText } from "lucide-react";
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";

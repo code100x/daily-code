@@ -1,12 +1,12 @@
 "use client";
-import { Button } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui";
 import { TrackProblems, Track } from "@prisma/client";
-import { Input } from "@repo/ui/shad/ui";
-import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/shad/ui";
+import { Input } from "@repo/ui";
+import { Sheet, SheetContent, SheetTrigger } from "@repo/ui";
 import ProblemCard from "./ProblemCard";
 import { useState } from "react";
-import { createTrackProblems } from "web/components/utils";
-import { Card, CardDescription, CardTitle } from "@repo/ui/shad/ui";
+import { createTrackProblems } from "../components/utils";
+import { Card, CardDescription, CardTitle } from "@repo/ui";
 
 interface LinkCardProps extends Track {
   problems: {

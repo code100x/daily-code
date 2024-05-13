@@ -1,10 +1,10 @@
-import { Label, Input } from "@repo/ui/shad/ui";
+import { Label, Input } from "@repo/ui";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { problemStatementsAtom, testCases } from "@repo/store";
 import { Trash2Icon } from "lucide-react";
-import { deleteTestCase } from "web/components/utils";
 import { refetch } from "../ProblemStatements";
 import { TestCase, ProblemStatement } from "@prisma/client";
+import { deleteTestCase } from "../../../utils";
 
 export default function TestCasesList() {
   const [LtestCases, setTestCases] = useRecoilState<TestCase[]>(testCases);

@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardHeader, CardTitle, Button } from "@repo/ui/shad/ui";
+import { Card, CardDescription, CardHeader, CardTitle, Button } from "@repo/ui";
 
 import { ArrowRightIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Track, Problem } from "@prisma/client";

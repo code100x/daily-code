@@ -1,8 +1,8 @@
 import AddTrackCard from "./AddTrackCard";
-import { ScrollArea } from "@repo/ui/shad/ui";
+import { ScrollArea } from "@repo/ui";
 import { Track } from "@prisma/client";
 import EditTrackCard from "./EditTrackCard";
-import { getAllCategories } from "web/components/utils";
+import { getAllCategories } from "../components/utils";
 
 interface TrackCardProps extends Track {
   categories: {

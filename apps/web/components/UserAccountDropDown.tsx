@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@repo/ui/shad/ui";
+} from "@repo/ui";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { LogOut, UserRound } from "lucide-react";

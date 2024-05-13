@@ -1,6 +1,6 @@
 "use client";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@repo/ui/shad/ui";
-import { ScrollArea } from "@repo/ui/shad/ui";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@repo/ui";
+import { ScrollArea } from "@repo/ui";
 import { CodeEditor } from "./CodeEditor";
 import { RunCodeOutput } from "./RunCodeOutput";
 import { Problem, Track, Submission, CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";

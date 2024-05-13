@@ -1,4 +1,4 @@
-import { Label } from "@repo/ui/shad/ui";
+import { Label } from "@repo/ui";
 import MultipleOptionChip from "../../../MultipleOptionChip";
 import {
   Button,
@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@repo/ui/shad/ui";
+} from "@repo/ui";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { globalLanguagesSupported, languagesSupported } from "@repo/store";
 import { CodeLanguage } from "@prisma/client";

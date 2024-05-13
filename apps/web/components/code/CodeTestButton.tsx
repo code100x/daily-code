@@ -6,7 +6,7 @@ import {
   testRunResultsState,
 } from "@repo/store";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { Button } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui";
 import { CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
 
 const getInputString = (args: string[], funcName: string) => {

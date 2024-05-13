@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Card, CardDescription, CardTitle, Button, Input, Sheet, SheetContent, SheetTrigger } from "@repo/ui/shad/ui";
+import { Card, CardDescription, CardTitle, Button, Input, Sheet, SheetContent, SheetTrigger } from "@repo/ui";
 import { MCQQuestion, Problem } from "@prisma/client";
-import { createMCQ, deleteMCQ, getAllMCQQuestion } from "web/components/utils";
+import { createMCQ, deleteMCQ, getAllMCQQuestion } from "../components/utils";
 import EditMCQ from "./mcq/EditMCQ";
 
 interface AdminAddMCQProps extends Problem {

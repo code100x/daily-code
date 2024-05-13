@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Input, Button } from "@repo/ui/shad/ui";
+import { Input, Button } from "@repo/ui";
 import { Categories } from "@prisma/client";
 import CompleteTrackCard from "./CompleteTrackCard";
 

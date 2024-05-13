@@ -1,8 +1,8 @@
 import { Prisma, ProblemType } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, Button } from "@repo/ui/shad/ui";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, Button } from "@repo/ui";
 import EditProblem from "./EditProblem";
-import { createTrack } from "web/components/utils";
+import { createTrack } from "../components/utils";
 
 interface CompleteProblemCard {
   id: string;

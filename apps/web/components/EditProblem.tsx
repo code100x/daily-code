@@ -1,7 +1,7 @@
 "use client";
 import { Prisma } from "@prisma/client";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@repo/ui/shad/ui";
+import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@repo/ui";
 
 const EditProblem = ({ problem }: { problem: Prisma.ProblemCreateManyInput }) => {
   const [isEditing, setIsEditing] = useState(false);

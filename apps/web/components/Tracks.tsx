@@ -5,7 +5,7 @@ import { category } from "@repo/store";
 import { Track, Problem } from "@prisma/client";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@repo/ui/shad/ui";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@repo/ui";
 
 interface Tracks extends Track {
   problems: Problem[];

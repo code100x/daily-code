@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { updateProblemStatement } from "../../../utils";
-import { Button, DialogClose, useToast } from "@repo/ui/shad/ui";
+import { Button, DialogClose, useToast } from "@repo/ui";
 import {
   problem,
   argumentNames,
@@ -15,7 +15,7 @@ import {
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { refetch } from "../ProblemStatements";
 import { ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import { createProblem, createProblemStatement } from "web/components/utils";
+import { createProblem, createProblemStatement } from "../../../utils";
 import { ProblemType } from "@prisma/client";
 
 interface Problem {

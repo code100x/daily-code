@@ -1,6 +1,6 @@
 import { codeSubmitLoadingState } from "@repo/store";
 import { useRecoilValue } from "recoil";
-import { Button } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui";
 import { CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
 import { LoaderCircle } from "lucide-react";
 import CodeTestButton from "./CodeTestButton";

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/shad/ui";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui";
 import { Clock4, CodeXml } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Submission } from "@prisma/client";

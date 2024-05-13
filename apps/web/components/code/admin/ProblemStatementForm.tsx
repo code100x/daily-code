@@ -12,7 +12,7 @@ import {
   globalLanguagesSupported,
 } from "@repo/store";
 import { ProblemStatement } from "@prisma/client";
-import { Button, Label, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@repo/ui/shad/ui";
+import { Button, Label, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@repo/ui";
 import ProblemEditInput from "./components/ProblemEditInput";
 import TestCasesList from "./components/TestCasesList";
 import { AddCaseDialog } from "./components/AddCaseDialog";
@@ -21,7 +21,7 @@ import LanguageDropDownInput from "./components/LanguageDropDownInput";
 import MainFunctionInput from "./components/MainFunctionInput";
 import ArgumentNamesInput from "./components/ArgumentNamesInput";
 import FormFooter from "./components/FormFooter";
-import { getAllLanguagesSupported } from "web/components/utils";
+import { getAllLanguagesSupported } from "../../utils";
 import { CodeLanguage, TestCase, ProblemType } from "@prisma/client";
 import JsonImportButton from "./components/JsonImportButton";
 import CsvImportButton from "./components/CsvImportButton";

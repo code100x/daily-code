@@ -1,4 +1,4 @@
-import { Input, Label } from "@repo/ui/shad/ui";
+import { Input, Label } from "@repo/ui";
 import React from "react";
 import UserImage from "./UserImage";
 import { User } from "@prisma/client";

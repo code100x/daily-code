@@ -1,6 +1,6 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { activeSubmissionIdState, activeSubmissionResultSelector } from "@repo/store";
-import { Button } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui";
 import { ArrowLeft } from "lucide-react";
 import AcceptedSubmissionResult from "./AcceptedSubmissionResult";
 import WrongSubmissionResult from "./WrongSubmissionResult";

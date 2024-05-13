@@ -1,10 +1,10 @@
 "use client";
-import { ScrollArea } from "@repo/ui/shad/ui";
+import { ScrollArea } from "@repo/ui";
 import ProblemStatementCard from "./components/ProblemStatementCard";
 import { problemStatementsAtom } from "@repo/store";
 import { useRecoilState } from "recoil";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { getAllProblemStatements } from "web/components/utils";
+import { getAllProblemStatements } from "../../utils";
 import { ProblemStatement } from "prisma/prisma-client";
 import NewProblemStatement from "./components/NewProblemStatement";
 

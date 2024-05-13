@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui";
 import { useRouter } from "next/navigation";
 
 export const AdminButton = () => {

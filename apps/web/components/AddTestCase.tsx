@@ -9,7 +9,7 @@ import {
   Input,
   Button,
   Label,
-} from "@repo/ui/shad/ui";
+} from "@repo/ui";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { adminTestCasesState } from "@repo/store";

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getAllMCQs } from "web/components/utils";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/shad/ui";
+import { getAllMCQs } from "../components/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui";
 import { Problem, MCQQuestion } from "@prisma/client";
 import AdminAddMCQ from "./AdminAddMCQ";
 

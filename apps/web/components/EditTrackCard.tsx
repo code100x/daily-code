@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input } from "@repo/ui/shad/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input } from "@repo/ui";
 import { Track, Categories } from "@prisma/client";
-import { updateTrack } from "web/components/utils";
+import { updateTrack } from "../components/utils";
 
 interface TrackCardProps extends Track {
   categories: {

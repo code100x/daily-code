@@ -1,6 +1,6 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "@repo/ui/shad/ui";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "@repo/ui";
 import { MCQQuestion as Question } from "@prisma/client";
 
 const MCQQuestion = ({

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Problem, CodeLanguage } from "@prisma/client";
-import { Input, Button, Label, Checkbox, Card, CardContent } from "@repo/ui/shad/ui";
+import { Input, Button, Label, Checkbox, Card, CardContent } from "@repo/ui";
 import AddTestCase from "./AddTestCase";
 import { useRecoilValue } from "recoil";
 import { adminTestCasesState } from "@repo/store";

@@ -1,10 +1,10 @@
 "use client";
-import { ScrollArea } from "@repo/ui/shad/ui";
+import { ScrollArea } from "@repo/ui";
 import { Track } from "@prisma/client";
-import { Input } from "@repo/ui/shad/ui";
+import { Input } from "@repo/ui";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/shad/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui";
 import LinkCard from "./LinkCard";
 
 interface LinkProblemsProps extends Track {

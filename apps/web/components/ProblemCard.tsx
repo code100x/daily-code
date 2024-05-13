@@ -13,9 +13,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/ui/shad/ui";
+} from "@repo/ui";
 import { Problem, ProblemStatement } from "@prisma/client";
-import { updateProblem } from "web/components/utils";
+import { updateProblem } from "../components/utils";
 import { useRouter } from "next/navigation";
 
 const ProblemCard = ({ problem }: { problem: Problem & { problemStatement: ProblemStatement | null } }) => {

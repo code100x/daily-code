@@ -1,8 +1,8 @@
 "use client";
 import { LoaderCircle, SquareCheck, Terminal } from "lucide-react";
 import { ProblemStatement, TestCase } from "@prisma/client";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/shad/ui";
-import { Input } from "@repo/ui/shad/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
+import { Input } from "@repo/ui";
 import { codeRunLoadingState, testRunResultsState } from "@repo/store";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@repo/ui/shad/ui";
+import { Button } from "@repo/ui";
 import { Problem, Track, CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -9,7 +9,7 @@ import { ModeToggle } from "./ModeToggle";
 import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 import UserAccountDropDown from "./UserAccountDropDown";
-import { Codebar } from "web/components/code/Codebar";
+import { Codebar } from "../components/code/Codebar";
 
 export const BlogAppbar = ({
   problem,

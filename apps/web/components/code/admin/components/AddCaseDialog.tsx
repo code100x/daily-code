@@ -9,10 +9,10 @@ import {
   Input,
   Label,
   useToast,
-} from "@repo/ui/shad/ui";
+} from "@repo/ui";
 import { useState } from "react";
 import { DialogClose, DialogTrigger } from "@radix-ui/react-dialog";
-import { createProblem, createProblemStatement, createTestCase } from "web/components/utils";
+import { createProblem, createProblemStatement, createTestCase } from "../../../utils";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { CodeLanguage, ProblemStatement } from "prisma/prisma-client";
 import {
