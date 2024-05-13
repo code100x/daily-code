@@ -37,14 +37,17 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
   };
 
   async function getBookMarkStatus(){
-    const { data } = await axios.post("/api/getAllBookmarks", {
-      userid: userid,
-    });
+    const { data } = await axios.get("/api/getAllBookmarks")
+    console.log(data,"checking")
     setbookmarkedTrackId(data.map(({track}:{track:string})=>track))
   }
-  console.log(bookmarkedTrackId,"checking")
-  useEffect(() => {
+
+  useEffect(()=>{
     getBookMarkStatus()
+
+  },[])
+
+  useEffect(() => {
     filtereTracks();
 
   }, [selectedCategory]);

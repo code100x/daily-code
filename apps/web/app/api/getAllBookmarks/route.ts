@@ -1,8 +1,17 @@
 import prisma from "@repo/db/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../lib/auth";
 
-export async function POST(req: Request) {
-  const { userid} = await req.json();
-  if (userid === null) {
+export async function GET(req: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    return Response.json( [] , { status: 200 });
+  }
+
+  const userId = session.user.id;
+  
+  if (userId === null || session === null) {
     return Response.json(
       {
         success: false,
@@ -12,10 +21,11 @@ export async function POST(req: Request) {
       }
     );
   }
+
   try {
     const bookmarkStatus = await prisma.bookmark.findMany({
       where: {
-        user: userid,
+        user: userId,
       },
     });
     return Response.json(

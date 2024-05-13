@@ -73,35 +73,9 @@ const BookMarkComponent = ({ track,bookmarkStatus }: { track: TrackCardProps,boo
     }
   };
 
-  const getBookMarkStatus = async () => { 
-    if (status === "unauthenticated" || data === null) {
-      setBookMarkStatus(false);
-      return;
-    }
-    try {
-      if (status === "authenticated") {
-        {
-          const { data } = await axios.post("/api/getAllBookmarks", {
-            userid: userid,
-          });
-
-          if (data.success === true) {
-            setBookMarkStatus(true);
-          }
-          if (data.success === false) {
-            setBookMarkStatus(false);
-          }
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     setBookMarkStatus(bookmarkStatus)
 
-    getBookMarkStatus();
   }, [status,bookmarkStatus]);
 
 
