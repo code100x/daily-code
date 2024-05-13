@@ -5,6 +5,8 @@ import { category } from "@repo/store";
 import { Track, Problem } from "@prisma/client";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "./shad/ui/select";
 
 interface Tracks extends Track {
@@ -17,9 +19,17 @@ interface Tracks extends Track {
   }[];
 }
 
+
 export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
+  
+  const session = useSession()
+  // @ts-ignore
+  const userid =session.data?.user?.id
+
   const selectedCategory = useRecoilValue(category);
   const [filteredTracks, setFilteredTracks] = useState(tracks);
+  const [bookmarkedTrackId, setbookmarkedTrackId] = useState([])
+  const filtereTracks = () => {
   const [sortBy, setSortBy] = useState("");
   const filterTracks = () => {
     let filteredTracks = tracks;
@@ -28,6 +38,18 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
     }
     setFilteredTracks(filteredTracks);
   };
+
+  async function getBookMarkStatus(){
+    const { data } = await axios.get("/api/getAllBookmarks")
+    console.log(data,"checking")
+    setbookmarkedTrackId(data.map(({track}:{track:string})=>track))
+  }
+
+  useEffect(()=>{
+    getBookMarkStatus()
+
+  },[])
+
   const sortTracks = (sortBy: string) => {
     let sortedTracks = [...filteredTracks];
     if (sortBy === "ascending") {
@@ -41,9 +63,12 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
     }
     setFilteredTracks(sortedTracks);
   };
+  
   useEffect(() => {
     filterTracks();
+
   }, [selectedCategory]);
+
   useEffect(() => {
     sortTracks(sortBy);
   }, [sortBy]);
@@ -70,11 +95,11 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
         {filteredTracks.map((t) => (
           <li key={t.id} className="max-w-screen-md w-full">
             {t.problems.length > 0 ? (
-              <Link className="w-full" href={`/tracks/${t.id}/${t.problems[0]?.id}`}>
-                <TrackCard track={t} />
-              </Link>
+              <div className="max-w-screen-md w-full block">
+                <TrackCard track={t} bookmarks={bookmarkedTrackId} />
+              </div>
             ) : (
-              <TrackCard track={t} />
+              <TrackCard track={t} bookmarks={bookmarkedTrackId} />
             )}
           </li>
         ))}
@@ -82,3 +107,4 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
     </div>
   );
 };
+}

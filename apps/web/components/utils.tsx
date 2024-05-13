@@ -310,6 +310,24 @@ export async function getAllCategories() {
   }
 }
 
+export async function getAllBookmarkedTrack(userid: string) {
+  try {
+    const bookmarks = await db.bookmark.findMany({
+      where: {
+        user: userid,
+      },
+      select: {
+        id:true,
+        track: true,
+      },
+    });
+
+    return bookmarks;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
 export async function getAllMCQs() {
   try {
     const mcqs = await db.problem.findMany({
