@@ -1,11 +1,11 @@
-import { ProblemEditor } from "../ProblemEditor";
-import { TracksEditor } from "../TracksEditor";
+import { ProblemEditor } from "../components/ProblemEditor";
+import { TracksEditor } from "../components/TracksEditor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
-import { LinkProblems } from "../LinkProblems";
-import CompleteAddTracks from "../CompleteAddTracks";
-import AdminMCQ from "../AdminMCQ";
-import { ProblemStatements } from "../code/admin/ProblemStatements";
-import { getAllCategories, getAllProblems, getAllTracks } from "../utils";
+import { LinkProblems } from "../components/LinkProblems";
+import CompleteAddTracks from "../components/CompleteAddTracks";
+import AdminMCQ from "../components/AdminMCQ";
+import { ProblemStatements } from "../components/admin/code/ProblemStatements";
+import { getAllCategories, getAllProblems, getAllTracks } from "../components/utils";
 
 export const Admin = async () => {
   const problems = await getAllProblems();

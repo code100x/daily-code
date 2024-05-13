@@ -1,7 +1,7 @@
 "use client";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { ProblemStatement } from "prisma/prisma-client";
-import { getAllProblemStatements } from "../../../utils";
+import { getAllProblemStatements } from "../components/utils";
 
 export default function useProblemStatement() {
   const [problemStatements, setProblemStatements]: [ProblemStatement[], Dispatch<SetStateAction<ProblemStatement[]>>] =

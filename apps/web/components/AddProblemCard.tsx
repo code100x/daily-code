@@ -31,7 +31,7 @@ const AddProblemCard = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [notionDocId, setNotionDocId] = useState("");
-  const [type, setType] = useState<ProbleType>(ProblemType.Blog);
+  const [type, setType] = useState<ProblemType>(ProblemType.Blog);
   const { toast } = useToast();
 
   const handleCreateProblem = async () => {

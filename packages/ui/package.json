@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./utils": "./src/lib/utils.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

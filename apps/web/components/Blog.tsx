@@ -2,7 +2,7 @@
 import { Problem, Track } from "@prisma/client";
 import { BlogAppbar } from "./BlogAppbar";
 import { NotionRenderer } from "./NotionRenderer";
-import useMountStatus from "./hooks/useMountStatus";
+import useMountStatus from "../hooks/useMountStatus";
 
 export const Blog = ({
   problem,

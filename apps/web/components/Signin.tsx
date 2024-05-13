@@ -1,6 +1,4 @@
 "use client";
-import GoogleIcon from "./assets/google.svg";
-import GithubIcon from "./assets/github.svg";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -52,7 +50,7 @@ const Signin = () => {
                       await signIn("google");
                     }}
                   >
-                    <Image src={GoogleIcon.src} className="w-5 h-5 mr-2" alt="Google Icon" width={25} height={25} />
+                    <Image src="/google.svg" className="w-5 h-5 mr-2" alt="Google Icon" width={25} height={25} />
                     Continue with Google
                   </button>
                   <button
@@ -61,7 +59,7 @@ const Signin = () => {
                       await signIn("github");
                     }}
                   >
-                    <Image src={GithubIcon.src} className="w-5 h-5 mr-2" alt="Github Icon" width={25} height={25} />
+                    <Image src="/github.svg" className="w-5 h-5 mr-2" alt="Github Icon" width={25} height={25} />
                     Continue with Github
                   </button>
                 </div>
@@ -73,6 +71,5 @@ const Signin = () => {
     </div>
   );
 };
-export { GithubIcon };
 
 export default Signin;
