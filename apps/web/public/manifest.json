@@ -1,0 +1,17 @@
+{
+  "name": "DailyCode",
+  "short_name": "DailyCode",
+  "icons": [
+    {
+      "src": "/pwa-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
