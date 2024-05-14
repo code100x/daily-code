@@ -11,14 +11,27 @@ const Footer = () => {
       <div className="md:max-w-screen-2xl mt-4 mx-auto flex flex-row items-start justify-between w-full">
         <div className="flex flex-col md:flex-row w-3/5 md:justify-between">
           <div className=" ml-21 ">
-            <Link href={"https://app.100xdevs.com/"}>
+            <Link href={"https://app.100xdevs.com/"} target="_blank" rel="noopener noreferrer">
               <Image src={Logo} alt="Logo" width={300} height={200} className="hover:opacity-80" />
             </Link>
           </div>
           <div className="flex flex-col justify-center my-8 md:my-0">
             <h3 className="font-semibold text-neutral-100 mb-4">Quick Links</h3>
-            <Link href={"https://app.100xdevs.com/"} className="hover:text-blue-500 text-neutral-200">
+            <Link
+              href={"https://app.100xdevs.com/"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-500 text-neutral-200"
+            >
               100xdevs
+            </Link>
+            <Link
+              href={"https://github.com/code100x/daily-code/"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-500 text-neutral-200"
+            >
+              GitHub
             </Link>
             <Link href={"/tnc"} className="hover:text-blue-500 text-neutral-200">
               Terms & Conditions
@@ -41,13 +54,13 @@ const Footer = () => {
           <div>
             <h4 className="text-neutral-200 font-semibold mb-2">Follow us</h4>
             <div className="flex gap-x-2">
-              <Link target="_blank" href={"https://twitter.com/kirat_tw"}>
+              <Link target="_blank" rel="noopener noreferrer" href={"https://twitter.com/kirat_tw"}>
                 <SiX className="text-white hover:text-blue-500" />
               </Link>
-              <Link target="_blank" href={"https://www.instagram.com/kirat_ins/"}>
+              <Link target="_blank" rel="noopener noreferrer" href={"https://www.instagram.com/kirat_ins/"}>
                 <SiInstagram className="text-white hover:text-blue-500" />
               </Link>
-              <Link target="_blank" href={"https://www.youtube.com/@harkirat1"}>
+              <Link target="_blank" rel="noopener noreferrer" href={"https://www.youtube.com/@harkirat1"}>
                 <SiYoutube className="text-white hover:text-blue-500" />
               </Link>
             </div>
