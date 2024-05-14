@@ -30,7 +30,7 @@ if [ "$db_type" == 'L' ]; then
     read is_username
 
     if [ "$is_username" == "Y" ];then
-      echo "Enter your db password: "
+      echo "Enter your db username: "
       read db_username
     else
       db_username="postgres"
