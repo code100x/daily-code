@@ -11,8 +11,7 @@ import Link from "next/link";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const scrollableContainerRef
-    = useRef<HTMLDivElement>(null);
+  const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -68,7 +67,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
 
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
-      <Button variant="outline" className="pr-2" onClick={() => setDialogOpen(true)}>
+      <Button variant="outline" className="md:pr-2" onClick={() => setDialogOpen(true)}>
         <div className="items-center hidden gap-2 md:flex">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
           Search...
