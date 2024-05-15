@@ -10,7 +10,7 @@
     border: 1px solid #333;
     border-left: 3px solid #e81029;
     color: #564;
-    min-width: 500px;
+    min-width: auto;
     max-width: 800px;
     display: flex;
     justify-content: space-between;

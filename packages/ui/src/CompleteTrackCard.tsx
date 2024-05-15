@@ -15,7 +15,7 @@ interface CompleteTrackCard {
   trackTitle: string;
   trackDescription: string;
   trackImage: string;
-  selectedCategory: string;
+  selectedCategory: string[];
 }
 
 export interface Problem {

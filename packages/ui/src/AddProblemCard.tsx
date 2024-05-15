@@ -7,6 +7,9 @@ import { Button } from "./shad/ui/button";
 import { useToast } from "./shad/ui/use-toast";
 import { createProblem } from "../../../apps/web/components/utils";
 import { useRouter } from "next/navigation";
+import { Problem,ProblemType } from "@prisma/client";
+import { createProblem, createProblemStatement } from "../../../apps/web/components/utils";
+import ProblemStatementForm from "./code/admin/ProblemStatementForm";
 
 interface Problem {
   id: string;
@@ -21,12 +24,14 @@ const AddProblemCard = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [notionDocId, setNotionDocId] = useState("");
-  const [type, setType] = useState("Blog");
+  const [type, setType] = useState<ProblemType>(ProblemType.Blog);
   const { toast } = useToast();
-  const router = useRouter();
 
   const handleCreateProblem = async () => {
     const problem = await createProblem({ title, description, type, notionDocId });
+    if (problem?.type === "Code") {
+      handleCreatePsStatement(problem.id);
+    }
     if (problem) {
       newProblems.push(problem);
       toast({
@@ -42,11 +47,23 @@ const AddProblemCard = () => {
     });
   };
 
+  const handleCreatePsStatement = async (id: string) => {
+    const newPS = await createProblemStatement({
+      problemStatement: {
+        argumentNames: [],
+        mainFuncName: "",
+        problemId: id,
+      },
+      languages: [],
+      testCases: [],
+    });
+  };
+
   return (
     <div>
       <Card className="cols-span-4 p-4 m-2 w-full">
         <Select
-          onValueChange={(e) => {
+          onValueChange={(e: ProblemType) => {
             setType(e);
           }}
         >
@@ -54,9 +71,9 @@ const AddProblemCard = () => {
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Code">Code</SelectItem>
-            <SelectItem value="Blog">Blog</SelectItem>
-            <SelectItem value="MCQ">MCQ</SelectItem>
+            <SelectItem value={ProblemType.Code}>Code</SelectItem>
+            <SelectItem value={ProblemType.Blog}>Blog</SelectItem>
+            <SelectItem value={ProblemType.MCQ}>MCQ</SelectItem>
           </SelectContent>
         </Select>
 
@@ -101,17 +118,6 @@ const AddProblemCard = () => {
               <CardDescription>{problem.type}</CardDescription>
             </CardHeader>
             <CardContent>{problem.notionDocId}</CardContent>
-            {problem.type === "Code" && (
-              <CardFooter>
-                <Button
-                  onClick={() => {
-                    router.push(`/admin/code/${problem.id}`);
-                  }}
-                >
-                  Add Problem Statement
-                </Button>
-              </CardFooter>
-            )}
           </Card>
         ))}
       </div>
