@@ -19,7 +19,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === "KeyK" && event.ctrlKey) {
+      if ((event.code === "KeyK" && (event.ctrlKey || event.metaKey))) {
         event.preventDefault();
         setDialogOpen(true);
       } else if (event.code === "ArrowDown") {
