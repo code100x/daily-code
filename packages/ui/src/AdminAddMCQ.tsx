@@ -4,19 +4,30 @@ import { Button } from "./shad/ui/button";
 import { Input } from "./shad/ui/input";
 import { Card, CardDescription, CardTitle } from "./shad/ui/card";
 import { MCQQuestion, Problem } from "@prisma/client";
-import { createMCQ, deleteMCQ } from "../../../apps/web/components/utils";
+import { createMCQ, deleteMCQ, getAllMCQQuestion } from "web/components/utils";
+import EditMCQ from "./mcq/EditMCQ";
 
 interface AdminAddMCQProps extends Problem {
   mcqQuestions: MCQQuestion[];
 }
 
 const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
-  const [mcqs, setMcqs] = useState<MCQQuestion[]>([]);
+  const [mcqs, setMcqs] = useState<Omit<MCQQuestion,"id">[]>([]);
   const [ExistingMCQs, setExistingMCQs] = useState<MCQQuestion[]>(problem.mcqQuestions);
   const [question, setQuestion] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
   const [option, setoption] = useState<string>("");
   const [correctOption, setCorrectOption] = useState<string>("");
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function fetchMCQs() {
+      const mcqs = await getAllMCQQuestion(problem.id);
+      setExistingMCQs(mcqs);
+    }
+    fetchMCQs();
+  },[mcqs,isUpdate])
+
   function handleAddOption() {
     setOptions([...options, ...option.split(",")]);
     setoption("");
@@ -26,7 +37,6 @@ const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
   }
   function handleAddMCQ() {
     const data = {
-      id: problem.id + "-" + (mcqs.length + ExistingMCQs.length),
       question: question,
       options: options,
       correctOption: correctOption,
@@ -38,16 +48,17 @@ const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
     setoption("");
     setCorrectOption("");
   }
-  function handleRemoveMCQ(id: string) {
-    setMcqs(mcqs.filter((mcq) => mcq.id !== id));
+  function handleRemoveMCQ(question: string) {
+    setMcqs(mcqs.filter((mcq) => mcq.question !== question));
   }
+  
   function handleSubmit() {
     mcqs.map(async (mcq) => {
       await createMCQ(mcq);
     });
-    setExistingMCQs([...mcqs, ...ExistingMCQs]);
     setMcqs([]);
   }
+
   function handleRemoveExistingMCQs(id: string) {
     deleteMCQ(id);
     setExistingMCQs(ExistingMCQs.filter((mcq) => mcq.id !== id));
@@ -90,7 +101,7 @@ const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
             </Card>
           ))}
         </div>
-        {question && options.length > 1 && (
+        {question && options.length > 1 && correctOption && (
           <div className="flex justify-center mt-4">
             <Button onClick={handleAddMCQ}>Add MCQ</Button>
           </div>
@@ -99,12 +110,11 @@ const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
           {mcqs?.map((mcq, i) => (
             <Card key={i} className="m-4 p-4 flex justify-between">
               <div>
-                <CardDescription>{mcq.id}</CardDescription>
                 <CardTitle>{mcq.question}</CardTitle>
                 <CardDescription>{mcq.options.join(", ")}</CardDescription>
                 <CardDescription>Correct Option: {mcq.correctOption}</CardDescription>
               </div>
-              <Button variant={"outline"} onClick={() => handleRemoveMCQ(mcq.id)}>
+              <Button variant={"outline"} onClick={() => handleRemoveMCQ(mcq.question)}>
                 Remove
               </Button>
             </Card>
@@ -124,9 +134,12 @@ const AdminAddMCQ = ({ problem }: { problem: AdminAddMCQProps }) => {
               <CardDescription>{mcq.options.join(", ")}</CardDescription>
               <CardDescription>Correct Option: {mcq.correctOption}</CardDescription>
             </div>
-            <Button variant={"outline"} onClick={() => handleRemoveExistingMCQs(mcq.id)}>
-              Remove
-            </Button>
+            <div className="space-x-3">
+              <EditMCQ mcq={mcq} setIsUpdate={setIsUpdate}/>
+              <Button variant={"outline"} onClick={() => handleRemoveExistingMCQs(mcq.id)}>
+                Remove
+              </Button>
+            </div>
           </Card>
         ))}
       </SheetContent>

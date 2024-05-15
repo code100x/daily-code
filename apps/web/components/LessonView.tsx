@@ -1,7 +1,9 @@
-import { Blog } from "../../../packages/ui/src/Blog";
-import { CodeProblemRenderer } from "../../../packages/ui/src/code/CodeProblemRenderer";
+import { Blog } from "@repo/ui/Blog";
+import { CodeProblemRenderer } from "@repo/ui/CodeProblemRenderer";
 import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
-import MCQQuestionRenderer from "../../../packages/ui/src/MCQQuestionRenderer";
+import MCQRenderer from "@repo/ui/MCQRenderer";
+import RedirectToLoginCard from '@repo/ui/RedirectToLoginCard';
+
 import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
@@ -47,16 +49,37 @@ export const LessonView = async ({
   showAppBar?: Boolean;
   isPdfRequested?: Boolean;
 }) => {
+
+  const session = await getServerSession(authOptions);
+  
+  const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
+  
+  if(problemIndex > 1 && (!session || !session.user)) {
+    return <RedirectToLoginCard/>
+  }
+   
   if (problem.type === "MCQ") {
-    return <MCQQuestionRenderer problem={problem} track={track} showAppBar={!!showAppBar} />;
+    return (
+      <MCQRenderer problem={problem} track={track} showAppBar={!!showAppBar} problemIndex={problemIndex} />
+    );
   }
   if (problem.type === "Code" && problem.problemStatement) {
     const submissions = await getSubmissions(problem.problemStatement.id);
-    return <CodeProblemRenderer track={track} problem={problem} submissions={submissions} />;
+    return (
+      <CodeProblemRenderer track={track} problem={problem} submissions={submissions} problemIndex={problemIndex} />
+    );
   }
 
   if (problem.type === "Blog") {
-    return <Blog problem={problem} track={track} showAppBar={!!showAppBar} isPdfRequested={isPdfRequested} />;
+    return (
+      <Blog
+        problem={problem}
+        track={track}
+        showAppBar={!!showAppBar}
+        isPdfRequested={isPdfRequested}
+        problemIndex={problemIndex}
+      />
+    );
   }
   return <div>Not found</div>;
 };

@@ -1,6 +1,12 @@
 "use server";
 import db from "@repo/db/client";
-import { ProblemStatement, TestCase, CodeLanguage } from "@prisma/client";
+import { ProblemStatement, 
+  TestCase, 
+  CodeLanguage,
+  MCQQuestion,
+  Problem,
+  TrackProblems,
+ } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 export async function getProblem(problemId: string | null) {
@@ -59,7 +65,7 @@ export async function getAllProblems() {
   }
 }
 
-export async function updateProblem(problemId: string, data: any) {
+export async function updateProblem(problemId: string, data: Problem) {
   try {
     const problem = await db.problem.update({
       where: {
@@ -69,12 +75,11 @@ export async function updateProblem(problemId: string, data: any) {
     });
     return problem;
   } catch (e) {
-    console.log(e);
     return null;
   }
 }
 
-export async function createProblem(data: any) {
+export async function createProblem(data: Omit<Problem, "id">) {
   try {
     const problem = await db.problem.create({
       data,
@@ -107,13 +112,18 @@ export async function createProblemStatement({
           },
         },
       },
+      include: {
+        testCases: true,
+        languagesSupported: true,
+      },
     });
+    return createdProblemStatement;
   } catch (e: any) {
     return null;
   }
 }
 
-export async function createTrackProblems(data: any) {
+export async function createTrackProblems(data: TrackProblems) {
   try {
     const trackProblems = await db.trackProblems.create({
       data: {
@@ -124,7 +134,6 @@ export async function createTrackProblems(data: any) {
     });
     return trackProblems;
   } catch (e) {
-    console.error(e);
     return null;
   }
 }
@@ -199,7 +208,7 @@ export async function createTrack(data: {
   title: string;
   description: string;
   image: string;
-  selectedCategory?: string;
+  selectedCategory?: string[];
   problems: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
   hidden: boolean;
 }) {
@@ -227,30 +236,61 @@ export async function createTrack(data: {
     });
 
     if (data.selectedCategory) {
+    data.selectedCategory.forEach(async (category) => {
       await db.trackCategory.create({
         data: {
           trackId: data.id,
-          categoryId: data.selectedCategory,
+          categoryId: category,
         },
       });
+    });
     }
     return track;
   } catch (e) {
-    console.log(e);
     return new Error("Failed to create track");
   }
 }
 
-export async function updateTrack(trackId: string, data: any) {
+export async function updateTrack(trackId: string, data: {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  selectedCategory?: string[];
+  problems?: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
+  hidden: boolean;
+}) {
   try {
     const track = await db.track.update({
       where: {
         id: trackId,
       },
-      data,
+      data:{
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        hidden: data.hidden,
+      }
     });
+    await db.trackCategory.deleteMany({
+      where: {
+        trackId: trackId,
+      },
+    })
+    if (data.selectedCategory) {
+      data.selectedCategory.forEach(async (category) => {
+        await db.trackCategory.create({
+          data: {
+            trackId: trackId,
+            categoryId: category,
+          },
+        });
+      });
+    }
     return track;
   } catch (e) {
+    console.log(e);
     return null;
   }
 }
@@ -286,9 +326,36 @@ export async function getAllMCQs() {
   }
 }
 
-export async function createMCQ(data: any) {
+export async function getAllMCQQuestion(problemId: string) {
+  try {
+    const mcqs = await db.mCQQuestion.findMany({
+      where: {
+        problemId,
+      },
+    });
+    return mcqs;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function createMCQ(data: Omit<MCQQuestion,"id">) {
   try {
     const mcq = await db.mCQQuestion.create({
+      data,
+    });
+    return mcq;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function updateMCQ(id: string, data:MCQQuestion) {
+  try {
+    const mcq = await db.mCQQuestion.update({
+      where: {
+        id: id,
+      },
       data,
     });
     return mcq;
@@ -299,7 +366,6 @@ export async function createMCQ(data: any) {
 }
 
 export async function deleteMCQ(id: string) {
-  console.log(id);
   try {
     const mcq = await db.mCQQuestion.delete({
       where: {
@@ -309,5 +375,182 @@ export async function deleteMCQ(id: string) {
     return mcq;
   } catch (e) {
     return null;
+  }
+}
+export async function getAllMCQsForProblem(problemId: string) {
+  try {
+    const mcqs = await db.mCQQuestion.findMany({
+      where: {
+        problemId,
+      },
+    });
+    return mcqs;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function createQuizScore(data: {
+  userId: string;
+  score: number;
+  problemId: string;
+}) {
+  const submission = await db.quizScore.create({
+    data,
+  })
+  return submission;
+}
+
+export async function getQuizScore({userId,problemId}: {userId: string, problemId: string}) {
+  try {
+    const submissions = await db.quizScore.findMany({
+      where: {
+        userId,
+        problemId,
+      }
+    });
+    return submissions;
+  } catch (e) {
+    return [];
+  }
+}
+export async function getAllProblemStatements() {
+  try {
+    const problemStatements = await db.problemStatement.findMany({
+      select: {
+        id: true,
+        testCases: true,
+        problem: true,
+        problemId: true,
+        languagesSupported: true,
+        mainFuncName: true,
+        argumentNames: true,
+      },
+    });
+    return problemStatements;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function getProblemStatement(statementId: string) {
+  try {
+    const problemStatements = await db.problemStatement.findMany({
+      where: {
+        id: statementId,
+      },
+      select: {
+        id: true,
+        testCases: true,
+        problem: true,
+        problemId: true,
+        languagesSupported: true,
+        mainFuncName: true,
+        argumentNames: true,
+      },
+    });
+    return problemStatements;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function updateProblemStatement(problemStatementId: string, data: any) {
+  try {
+    const problemStatement = await db.problemStatement.update({
+      where: {
+        id: problemStatementId,
+      },
+      data: data,
+    });
+    return problemStatement;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function getAllTestCase(id: string) {
+  try {
+    const testCase = await db.testCase.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        expectedOutput: true,
+        problemStatement: true,
+        problemStatementId: true,
+        inputs: true,
+      },
+    });
+    return testCase;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function createTestCase(inputs: string[], expectedOutput: string, problemStatementId: string) {
+  try {
+    const testCase = await db.testCase.create({
+      data: {
+        inputs,
+        expectedOutput,
+        problemStatementId,
+      },
+    });
+    return testCase;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function deleteTestCase(testCaseId: string) {
+  try {
+    await db.testCase.delete({
+      where: {
+        id: testCaseId,
+      },
+    });
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function updateTestCase(
+  testCaseId: string,
+  expectedOutput: string,
+  problemStatementId: string,
+  inputs: string[]
+) {
+  try {
+    const updatedTestCase = await db.testCase.update({
+      where: {
+        id: testCaseId,
+      },
+      data: {
+        expectedOutput,
+        problemStatementId,
+        inputs,
+      },
+    });
+    return updatedTestCase;
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function getAllLanguagesSupported() {
+  try {
+    const languagesSupported: CodeLanguage[] = await db.codeLanguage.findMany({
+      select: {
+        id: true,
+        label: true,
+        value: true,
+      },
+    });
+    return languagesSupported;
+  } catch (e) {
+    return [];
   }
 }

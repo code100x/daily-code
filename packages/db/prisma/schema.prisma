@@ -51,6 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   submissions   Submission[]
+  quizScores    QuizScore[]
 }
 
 model VerificationToken {
@@ -96,6 +97,7 @@ model Problem {
   type             ProblemType
   trackProblems    TrackProblems[]
   problemStatement ProblemStatement?
+  quizScores       QuizScore[]
 }
 
 model ProblemStatement {
@@ -172,4 +174,14 @@ model MCQQuestion {
   correctOption String
   problem       Problem  @relation(fields: [problemId], references: [id])
   problemId     String
+}
+
+model QuizScore {
+  id            String   @id @default(uuid())
+  score         Int
+  user          User?    @relation(fields: [userId], references: [id])
+  userId        String?
+  problem       Problem  @relation(fields: [problemId], references: [id])
+  problemId     String
+  createdAt     DateTime @default(now())
 }
