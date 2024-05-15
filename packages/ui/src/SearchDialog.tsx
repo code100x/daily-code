@@ -11,15 +11,15 @@ import Link from "next/link";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const scrollableContainerRef
-    = useRef<HTMLDivElement>(null);
+  const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [shortcut, setShortcut] = useState("Ctrl K");
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if ((event.code === "KeyK" && (event.ctrlKey || event.metaKey))) {
+      if (event.code === "KeyK" && event.ctrlKey) {
         event.preventDefault();
         setDialogOpen(true);
       } else if (event.code === "ArrowDown") {
@@ -51,6 +51,11 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   }, [searchTracks, selectedIndex]);
 
   useEffect(() => {
+    const isMacOS = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    setShortcut(isMacOS ? "Cmd K" : "Ctrl K");
+  }, []);
+
+  useEffect(() => {
     const foundTracks = tracks.filter((track) => {
       return (
         track.title.toLowerCase().includes(input.toLowerCase()) ||
@@ -72,7 +77,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
         <div className="items-center hidden gap-2 md:flex">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
           Search...
-          <kbd className="bg-white/15 p-1.5 rounded-sm text-xs leading-3">Ctrl K</kbd>
+          <kbd className="bg-white/15 p-1.5 rounded-sm text-xs leading-3">{shortcut}</kbd>
         </div>
         <div className="block md:hidden">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
