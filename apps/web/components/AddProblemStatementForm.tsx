@@ -1,14 +1,10 @@
 "use client";
-import { Input } from "@repo/ui/input";
 import { useState } from "react";
 import { Problem, CodeLanguage } from "@prisma/client";
-import { Button } from "@repo/ui/button";
-import { Label } from "@repo/ui/label";
-import { Checkbox } from "@repo/ui/checkbox";
+import { Input, Button, Label, Checkbox, Card, CardContent } from "@repo/ui";
 import AddTestCase from "./AddTestCase";
 import { useRecoilValue } from "recoil";
 import { adminTestCasesState } from "@repo/store";
-import { Card, CardContent } from "@repo/ui/card";
 import { createProblemStatement } from "./utils";
 
 export const AddProblemStatementForm = ({ problem, languages }: { problem: Problem; languages: CodeLanguage[] }) => {

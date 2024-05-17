@@ -1,8 +1,7 @@
-import { TrackCard } from "@repo/ui/components";
-import Link from "next/link";
 import { AppbarClient } from "../components/AppbarClient";
 import { getAllCategories, getAllTracks } from "../components/utils";
-import { Categories, Tracks } from "@repo/ui/components";
+import { Categories } from "../components/Categories";
+import { Tracks } from "../components/Tracks";
 import Footer from "./footer";
 
 export async function Landing() {
