@@ -5,9 +5,15 @@ docker_running="N"
 
 function migrate_seed_db () {
   echo "=================Migrating DB================="
-  npx prisma migrate dev
-  echo "=================Seeding DB================="
-  npx prisma db seed
+  migration_output=$(npx prisma migrate dev)
+
+  if [[ $migration_output == *"Running seed command"* ]]; then
+    echo "Seeds already applied. Skipping seeding."
+  else
+    echo "Seeds not applied. Proceeding to seed."
+    echo "=================Seeding DB================="
+    npx prisma db seed
+  fi
 }
 
 if [ -f .env ]; then
@@ -19,17 +25,19 @@ fi
 
 echo "Will you use a Local DB (L) or Cloud DB (C)"
 read db_type
+db_type=$(echo "$db_type" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
 
-if [ "$db_type" == 'L' ]; then
+if [ "$db_type" == 'l' ]; then
   echo "Will you use Postgres Server (P) or Docker Setup (D)"
   read db_mode
+  db_mode=$(echo "$db_mode" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
 
-  if [ "$db_mode" == 'P' ]; then
+  if [ "$db_mode" == 'p' ]; then
     db_username="postgres"
     echo "Have you specified a username while setting up your server(Y/N)?"
     read is_username
 
-    if [ "$is_username" == "Y" ];then
+    if [ "$is_username" == "y" ];then
       echo "Enter your db username: "
       read db_username
     else
@@ -41,14 +49,14 @@ if [ "$db_type" == 'L' ]; then
     echo "Enter your db name: "
     read db_name
     DATABASE_URL="postgresql://$db_username:$db_password@localhost:5432/$db_name"
-  elif [ "$db_mode" == 'D' ]; then
+  elif [ "$db_mode" == 'd' ]; then
     echo "Setting up Docker"
     DATABASE_URL="postgresql://postgres:password@localhost:5432/100xdevs"
   else
     echo "Invalid Option"
   fi
 
-elif [ "$db_type" == 'C' ]; then
+elif [ "$db_type" == 'c' ]; then
   echo "Enter the DB URI of your Cloud DB"
   read cloud_db_uri
   DATABASE_URL=$cloud_db_uri
@@ -58,7 +66,7 @@ else
 fi
 
 echo "DATABASE_URL=\"$DATABASE_URL\"" > .env
-if [ "$db_mode" == 'D' ]; then
+if [ "$db_mode" == 'd' ]; then
   docker-compose up -d
   if [ $? -eq 0 ]; then
       echo "=================Container is up================="
