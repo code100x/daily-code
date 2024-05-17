@@ -9,7 +9,7 @@ import { SearchDialog } from "./SearchDialog";
 import { Track, Problem } from "@prisma/client";
 import UserAccountDropDown from "./UserAccountDropDown";
 
-export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) => {
+export const Appbar = ({ tracks }: { tracks?: (Track & { problems: Problem[] })[] }) => {
   const session = useSession();
   const user = session.data?.user;
   const admin = false;
@@ -21,7 +21,7 @@ export const Appbar = ({ tracks }: { tracks: (Track & { problems: Problem[] })[]
           <div className="dark:text-zinc-100 text-zinc-950 text-2xl font-semibold">DailyCode</div>
         </Link>
         <div className="flex items-center gap-2">
-          <SearchDialog tracks={tracks} />
+          {tracks && <SearchDialog tracks={tracks} />}
 
           {!user ? (
             <Button

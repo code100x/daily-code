@@ -7,6 +7,7 @@ import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
 import { CodeProblemRenderer } from "./code/CodeProblemRenderer";
+import { AppbarClient } from "./AppbarClient";
 
 const getSubmissions = async (problemStatementId: string) => {
   const session = await getServerSession(authOptions);
@@ -54,7 +55,10 @@ export const LessonView = async ({
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
 
   if (problemIndex > 1 && (!session || !session.user)) {
-    return <RedirectToLoginCard />;
+    return <div> 
+      <AppbarClient />
+      <RedirectToLoginCard />
+    </div>; 
   }
 
   if (problem.type === "MCQ") {
