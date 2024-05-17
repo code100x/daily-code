@@ -1,0 +1,40 @@
+.code_block {
+    position: relative;
+    padding: 10px;
+    font-size: 15px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    background: #161b22;
+    overflow: auto;
+    line-height: 1.6;
+    border: 1px solid #333;
+    border-left: 3px solid #e81029;
+    color: #564;
+    min-width: auto;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.copy_block {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.copy_button {
+    position: relative;
+    cursor: pointer;
+    color: #fff;
+    background: gray;
+    border-radius: 0.5em;
+    padding: 2px 7px;
+    margin: 10px;
+}
+
+.copied_text {
+    background: #fff;
+    padding: 5px;
+    color: #161b22;
+    display: none;
+}

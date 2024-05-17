@@ -1,9 +1,15 @@
 "use client";
-import { Input } from "@repo/ui/input";
-import { Button } from "@repo/ui/button";
-import { Label } from "@repo/ui/label";
-
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@repo/ui/components";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Input,
+  Button,
+  Label,
+} from "@repo/ui";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { adminTestCasesState } from "@repo/store";

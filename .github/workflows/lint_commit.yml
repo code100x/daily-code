@@ -1,0 +1,39 @@
+name: CommitLint, Linting and formatting
+on:
+  pull_request:
+    branches:
+      - '**'
+    
+jobs:
+
+  Continuous-Integration:
+
+    name: Performs linting, formatting on the application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install Yarn and Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Print versions
+        run: |
+          git --version
+          yarn --version
+
+      - name: Run linting check
+        run: yarn run lint
+
+      - name: Check formatting
+        run: yarn run format

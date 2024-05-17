@@ -1,5 +1,13 @@
 # Quick Setup Locally
 
+* Docker
+
+```
+docker compose watch
+```
+
+    OR
+
 > Install the Dependencies
 
 ```
