@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import UserImage from "@repo/ui/UserImage";
+import UserImage from "./UserImage";
 import { UserRound } from "lucide-react";
-import ProfileOptions from "@repo/ui/profileOptions";
+import ProfileOptions from "./profile/ProfileOptions";
 import { useRecoilValue } from "recoil";
 import { profileSidebar } from "@repo/store";
 import { useSession } from "next-auth/react";

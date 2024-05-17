@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader } from "@repo/ui/components";
+import { Loader } from "./Loader";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getFirstProblemForTrack } from "./utils";
