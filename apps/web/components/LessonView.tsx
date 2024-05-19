@@ -51,14 +51,18 @@ export const LessonView = async ({
   isPdfRequested?: Boolean;
 }) => {
   const session = await getServerSession(authOptions);
-
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
 
-  if (problemIndex > 1 && (!session || !session.user)) {
-    return <div> 
-      <AppbarClient />
-      <RedirectToLoginCard />
-    </div>; 
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  const isInDevMode = process?.env?.NODE_ENV === "development";
+
+  if (!isInDevMode && problemIndex > 1 && (!session || !session.user)) {
+    return (
+      <div>
+        <AppbarClient />
+        <RedirectToLoginCard />
+      </div>
+    );
   }
 
   if (problem.type === "MCQ") {
