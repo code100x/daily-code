@@ -42,16 +42,17 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  email         String?      @unique
-  emailVerified DateTime?
-  image         String?
-  admin         Boolean      @default(false)
-  accounts      Account[]
-  sessions      Session[]
-  submissions   Submission[]
-  quizScores    QuizScore[]
+  id             String         @id @default(cuid())
+  name           String?
+  email          String?        @unique
+  emailVerified  DateTime?
+  image          String?
+  admin          Boolean        @default(false)
+  accounts       Account[]
+  sessions       Session[]
+  submissions    Submission[]
+  quizScores     QuizScore[]
+  trackHistories TrackHistory[]
 }
 
 model VerificationToken {
@@ -63,14 +64,15 @@ model VerificationToken {
 }
 
 model Track {
-  id          String          @id @default(uuid())
-  title       String
-  description String
-  image       String
-  categories  TrackCategory[] // This replaces 'category Categories[]'
-  problems    TrackProblems[]
-  hidden      Boolean         @default(false)
-  createdAt   DateTime        @default(now())
+  id             String          @id @default(uuid())
+  title          String
+  description    String
+  image          String
+  categories     TrackCategory[] // This replaces 'category Categories[]'
+  problems       TrackProblems[]
+  hidden         Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+  trackHistories TrackHistory[]
 }
 
 model Categories {
@@ -184,4 +186,17 @@ model QuizScore {
   problem       Problem  @relation(fields: [problemId], references: [id])
   problemId     String
   createdAt     DateTime @default(now())
+}
+   
+model TrackHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trackId     String
+  track       Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  pageId      String
+  createdAt   DateTime @default(now())
+  isCompleted Boolean  @default(false)
+
+  @@unique([userId, trackId]) // Composite unique key to ensure one history per user per track
 }
