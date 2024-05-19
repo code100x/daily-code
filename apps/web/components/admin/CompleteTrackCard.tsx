@@ -1,6 +1,5 @@
 import { Prisma, ProblemType } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { AddDatatoAlgolia } from "web/lib/algolia";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, Button } from "@repo/ui";
 import EditProblem from "../EditProblem";
 import { createTrack } from "../utils";
@@ -33,7 +32,6 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       problems: problems,
       selectedCategory: TrackData.selectedCategory,
     });
-    await AddDatatoAlgolia({ trackId: TrackData.trackId });
     setIsSubmitting(true);
   }
 
