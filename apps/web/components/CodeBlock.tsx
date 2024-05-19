@@ -6,7 +6,7 @@ import javascript from "highlight.js/lib/languages/javascript";
 import styles from "./CodeBlock.module.css";
 import "highlight.js/styles/github-dark.css";
 import { Button } from "@repo/ui";
-import { CopyIcon } from "@radix-ui/react-icons";
+import { CheckIcon, CopyIcon } from "@radix-ui/react-icons";
 
 export default function CodeBlock({ block }: { block: any }) {
   const code: string = block.properties.title[0].toString();
@@ -36,7 +36,7 @@ export default function CodeBlock({ block }: { block: any }) {
               });
             }}
           >
-            {showCopiedMessage ? <span>Copied!!</span> : <CopyIcon className="w-4 h-4" />}
+            {showCopiedMessage ? <CheckIcon className="w-4 h-4" /> : <CopyIcon className="w-4 h-4" />}
           </Button>
         </div>
       </pre>
