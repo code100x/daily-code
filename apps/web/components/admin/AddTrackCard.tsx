@@ -6,7 +6,7 @@ import { Categories } from "@prisma/client";
 import { Track } from "@prisma/client";
 
 const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
-  const [newTracks, setNewProblems] = useState<Track[]>([]);
+  const [newTracks, setNewProblems] = useState<Omit<Track,"inSearch">[]>([]);
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { LinkProblems } from "../components/admin/LinkProblems";
 import CompleteAddTracks from "../components/admin/CompleteAddTracks";
 import AdminMCQ from "../components/admin/AdminMCQ";
+import AdminSearch from "../components/admin/AdminSearch";
 import { ProblemStatements } from "../components/admin/code/ProblemStatements";
 import { getAllCategories, getAllProblems, getAllTracks } from "../components/utils";
 import db from "@repo/db/client";

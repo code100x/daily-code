@@ -1,10 +1,8 @@
 "use client";
-import { ScrollArea } from "./shad/ui/scroll-area";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./shad/ui/card";
-import { Button } from "./shad/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, ScrollArea, toast } from "@repo/ui";
 import { Track } from "@prisma/client";
 import { useState } from "react";
-import { AddDatatoAlgolia } from "web/lib/algolia";
+import { createCollection, insertData } from "../../lib/search";
 
 const AdminSearch = ({
   TracksinSearch,
@@ -17,14 +15,35 @@ const AdminSearch = ({
   async function handleAddTracks() {
     setIsSubmitting(true);
     for (const track of TracksNotinSearch) {
-      await AddDatatoAlgolia({ trackId: track.id });
+      await insertData(track.id);
     }
     setIsSubmitting(false);
   }
+  async function handlecreateCollection() {
+    toast({
+      title: "Creating Collection",
+      description: "Please wait",
+    });
+    try {
+      await createCollection();
+      toast({
+        title: "Collection Created",
+        description: "Collection Created Successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Error Creating Collection",
+      });
+    }
+  }
   return (
     <div>
-      <div className="flex justify-center">
-        <Button disabled={isSubmitting} variant="outline" className="pr-2" onClick={handleAddTracks}>
+      <div className="flex justify-center space-x-3">
+        <Button variant="outline" onClick={handlecreateCollection}>
+          Create Collection
+        </Button>
+        <Button disabled={isSubmitting} variant="outline" onClick={handleAddTracks}>
           {!isSubmitting ? "Add Track" : "Adding Track to Search"}
         </Button>
       </div>

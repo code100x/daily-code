@@ -560,6 +560,11 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.56.0.tgz"
   integrity sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==
 
+"@fastify/busboy@^2.0.0":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
+  integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
+
 "@fisch0920/medium-zoom@^1.0.7":
   version "1.0.7"
   resolved "https://registry.npmjs.org/@fisch0920/medium-zoom/-/medium-zoom-1.0.7.tgz"
@@ -591,6 +596,11 @@
   version "0.2.1"
   resolved "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.1.tgz"
   integrity sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==
+
+"@google/generative-ai@^0.11.3":
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/@google/generative-ai/-/generative-ai-0.11.3.tgz#ed4ffc2f03054314f670fe500718829581a7e4da"
+  integrity sha512-QtQ1hz6rcybbw35uxXlFF26KNnaTVr2oWwnmDkC1M35KdzN4tVc4wakgJp8uXbY9KDCNHksyp11DbFg0HPckZQ==
 
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.14"
@@ -850,6 +860,20 @@
   integrity sha512-81Ptv9YJnwTArEBPQ2Lvu58sZPxy4OixKxVVgysFan6A3bFP7q8gIg15WTjsRuH4WXh6B667EM9sqoMTNu0fLQ==
   dependencies:
     "@prisma/debug" "5.12.0"
+
+"@qdrant/js-client-rest@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@qdrant/js-client-rest/-/js-client-rest-1.9.0.tgz#deef8acb520f47f9db1c1517758ccf88c12e69fe"
+  integrity sha512-YiX/IskbRCoAY2ujyPDI6FBcO0ygAS4pgkGaJ7DcrJFh4SZV2XHs+u0KM7mO72RWJn1eJQFF2PQwxG+401xxJg==
+  dependencies:
+    "@qdrant/openapi-typescript-fetch" "1.2.6"
+    "@sevinf/maybe" "0.5.0"
+    undici "~5.28.4"
+
+"@qdrant/openapi-typescript-fetch@1.2.6":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@qdrant/openapi-typescript-fetch/-/openapi-typescript-fetch-1.2.6.tgz#c2682a9fa26ded86384f421c991f6c461785af7e"
+  integrity sha512-oQG/FejNpItrxRHoyctYvT3rwGZOnK4jr3JdppO/c78ktDvkWiPXPHNsrDf33K9sZdRb6PR7gi4noIapu5q4HA==
 
 "@radix-ui/number@1.0.1":
   version "1.0.1"
@@ -1265,6 +1289,11 @@
   version "1.7.0"
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.7.0.tgz"
   integrity sha512-Jh4t/593gxs0lJZ/z3NnasKlplXT2f+4y/LZYuaKZW5KAaiVFL/fThhs+17EbUd53jUVJ0QudYCBGbN/psvaqg==
+
+"@sevinf/maybe@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@sevinf/maybe/-/maybe-0.5.0.tgz#e59fcea028df615fe87d708bb30e1f338e46bb44"
+  integrity sha512-ARhyoYDnY1LES3vYI0fiG6e9esWfTNcXcO6+MPJJXcnyMV3bim4lnFt45VXouV7y82F4x3YH8nOQ6VztuvUiWg==
 
 "@sindresorhus/is@^4.0.0":
   version "4.6.0"
@@ -7263,6 +7292,13 @@ undici-types@~5.26.4:
   version "5.26.5"
   resolved "https://registry.npmjs.org/undici-types/-/undici-types-5.26.5.tgz"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
+
+undici@~5.28.4:
+  version "5.28.4"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.28.4.tgz#6b280408edb6a1a604a9b20340f45b422e373068"
+  integrity sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==
+  dependencies:
+    "@fastify/busboy" "^2.0.0"
 
 unified@^10.0.0:
   version "10.1.2"

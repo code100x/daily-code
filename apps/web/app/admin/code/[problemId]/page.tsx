@@ -20,7 +20,7 @@ export default async function AddProblemStatementPage({ params: { problemId } }:
 
   return (
     <>
-      <AppbarClient tracks={[]} />
+      <AppbarClient />
       <div className="w-2/3 mx-auto my-20">
         <AddProblemStatementForm languages={allLanguages} problem={problemInfo} />
       </div>

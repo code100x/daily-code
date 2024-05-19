@@ -4,7 +4,7 @@ import { Admin } from "../../screens/Admin";
 export default async function AdminPage() {
   return (
     <>
-      <AppbarClient tracks={[]} />
+      <AppbarClient />
       <Admin />
     </>
   );
