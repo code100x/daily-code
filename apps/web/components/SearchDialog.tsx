@@ -13,10 +13,11 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [shortcut, setShortcut] = useState("Ctrl K");
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === "KeyK" && event.ctrlKey) {
+      if (event.code === "KeyK" && (event.ctrlKey || event.metaKey)) {
         event.preventDefault();
         setDialogOpen(true);
       } else if (event.code === "ArrowDown") {
@@ -58,6 +59,11 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
     setSelectedIndex(-1);
   }, [input]);
 
+  useEffect(() => {
+    const isMacOS = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    setShortcut(isMacOS ? "Cmd K" : "Ctrl K");
+  }, []);
+
   function handleClose(open: boolean) {
     if (!open) setDialogOpen(false);
     setInput("");
@@ -69,7 +75,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
         <div className="items-center hidden gap-2 md:flex">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
           Search...
-          <kbd className="bg-white/15 p-1.5 rounded-sm text-xs leading-3">Ctrl K</kbd>
+          <kbd className="bg-white/15 p-1.5 rounded-sm text-xs leading-3">{shortcut}</kbd>
         </div>
         <div className="block md:hidden">
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />

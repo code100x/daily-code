@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { ContentSearch } from "./ContentSearch";
 import UserAccountDropDown from "./UserAccountDropDown";
 
+
 export const Appbar = () => {
   const session = useSession();
   const user = session.data?.user;
