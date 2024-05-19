@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, Button } from "@repo/ui";
 import EditProblem from "../EditProblem";
 import { createTrack } from "../utils";
+import { insertData } from "../../lib/search";
 
 interface CompleteTrackCardProps {
   trackId: string;
@@ -32,6 +33,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       problems: problems,
       selectedCategory: TrackData.selectedCategory,
     });
+    await insertData(TrackData.trackId);
     setIsSubmitting(true);
   }
 
