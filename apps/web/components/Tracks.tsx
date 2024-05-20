@@ -5,9 +5,6 @@ import { Track, Problem } from "@prisma/client";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@repo/ui";
-import { getLastNavigatedTrackHistory } from "./utils";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 interface Tracks extends Track {
   problems: Problem[];
@@ -20,11 +17,10 @@ interface Tracks extends Track {
 }
 
 export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
-  const session = useSession();
-  const router = useRouter();
   const selectedCategory = useRecoilValue(category);
-  const [filteredTracks, setFilteredTracks] = useState(tracks);
-  const [sortBy, setSortBy] = useState("");
+  const [filteredTracks, setFilteredTracks] = useState<Tracks[]>(tracks);
+  const [sortBy, setSortBy] = useState<string>("");
+
   const filterTracks = () => {
     let filteredTracks = tracks;
     if (selectedCategory.length > 0) {
@@ -45,19 +41,7 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
     }
     setFilteredTracks(sortedTracks);
   };
-  const navigateToTrack = async (track: Tracks) => {
-    if (session.data?.user) {
-      let user: any = session.data.user;
-      const userId = user.id;
-      const lastTrack = await getLastNavigatedTrackHistory(userId, track.id);
-      if (lastTrack) {
-        const url = `/tracks/${track.id}/${lastTrack}`;
-        router.push(url);
-        return;
-      }
-    }
-    router.push(`/tracks/${track.id}/${track.problems[0]?.id}`);
-  };
+
   useEffect(() => {
     filterTracks();
   }, [selectedCategory]);
@@ -86,13 +70,7 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
       <ul className="p-8 md:20 grid grid-cols-1 gap-x-6 gap-y-8 place-items-center lg:grid-cols-2 w-full">
         {filteredTracks.map((t) => (
           <li key={t.id} className="max-w-screen-md w-full">
-            {t.problems.length > 0 ? (
-              <div className="w-full" onClick={()=>navigateToTrack(t)}>
-                <TrackCard track={t} />
-              </div>
-            ) : (
-              <TrackCard track={t} />
-            )}
+            <TrackCard track={t} />
           </li>
         ))}
       </ul>
