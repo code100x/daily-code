@@ -5,6 +5,11 @@ export const languageState = atom({
   default: "javascript",
 });
 
+export const notionThemeState = atom({
+  key: "notionThemeState",
+  default: true,
+});
+
 export const codeValueState = atom<any>({
   key: "codeValueState",
   default: null,
