@@ -1,14 +1,45 @@
 import Link from "next/link";
 import { Button } from "../../../packages/ui/src/shad/ui/button";
 import { Dialog, DialogContent } from "../../../packages/ui/src/shad/ui/dailog";
+import { Track, Problem } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { getLastNavigatedTrackHistory } from "./utils";
 
 type TrackPreviewProps = {
   showPreview: boolean;
   setShowPreview: (val: boolean) => void;
-  track: any;
+  track: TrackCardProps;
 };
 
+interface TrackCardProps extends Track {
+  problems: Problem[];
+  categories: {
+    category: {
+      id: string;
+      category: string;
+    };
+  }[];
+}
+
 export function TrackPreview({ showPreview, setShowPreview, track }: TrackPreviewProps) {
+  const session = useSession();
+  const router = useRouter();
+
+  const navigateToTrack = async (track: TrackCardProps) => {
+    if (session.data?.user) {
+      let user: any = session.data.user;
+      const userId = user.id;
+      const lastTrack = await getLastNavigatedTrackHistory(userId, track.id);
+      if (lastTrack) {
+        const url = `/tracks/${track.id}/${lastTrack}`;
+        router.push(url);
+        return;
+      }
+    }
+    router.push(`/tracks/${track.id}/${track.problems[0]?.id}`);
+  };
+
   return (
     <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
       <DialogContent className="max-w-2xl max-h-[90vh]">
@@ -38,15 +69,18 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
             ))}
           </div>
           <div className="w-full flex justify-center">
-            <Link href={track.problems.length ? `/tracks/${track.id}/${track.problems[0]?.id}` : ""}>
+            <div>
               <Button
                 size={"lg"}
                 className="flex items-center justify-center group"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) =>{
+                  navigateToTrack(track)
+                  e.stopPropagation()
+                }}
               >
                 Start
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
       </DialogContent>
