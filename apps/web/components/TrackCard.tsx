@@ -4,7 +4,9 @@ import { ArrowRightIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Track, Problem } from "@prisma/client";
 import { useState } from "react";
 import { TrackPreview } from "./TrackPreview";
-import Link from "next/link";
+import { getLastNavigatedTrackHistory } from "./utils";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface TrackCardProps extends Track {
   problems: Problem[];
@@ -18,6 +20,22 @@ interface TrackCardProps extends Track {
 
 export function TrackCard({ track }: { track: TrackCardProps }) {
   const [showPreview, setShowPreview] = useState<boolean>(false);
+  const session = useSession();
+  const router = useRouter();
+
+  const navigateToTrack = async (track: TrackCardProps) => {
+    if (session.data?.user) {
+      let user: any = session.data.user;
+      const userId = user.id;
+      const lastTrack = await getLastNavigatedTrackHistory(userId, track.id);
+      if (lastTrack) {
+        const url = `/tracks/${track.id}/${lastTrack}`;
+        router.push(url);
+        return;
+      }
+    }
+    router.push(`/tracks/${track.id}/${track.problems[0]?.id}`);
+  };
 
   return (
     <>
@@ -47,17 +65,20 @@ export function TrackCard({ track }: { track: TrackCardProps }) {
           </div>
           <div className="flex justify-between">
             <h3 className="flex flex-col justify-center">{track.problems.length} Lessons</h3>
-            <Link href={track.problems.length ? `/tracks/${track.id}/${track.problems[0]?.id}` : ""}>
+            <div>
               <Button
                 size={"lg"}
                 className="flex items-center justify-center group"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigateToTrack(track)
+                }}
               >
                 Start
                 <ChevronRightIcon className="pl-1 h-4 w-4 group-hover:translate-x-1 group-hover:hidden mt-[0.15rem] transition-all duration-150" />
                 <ArrowRightIcon className="pl-1 h-4 w-4 hidden group-hover:block mt-[0.15rem] transition-all duration-150" />
               </Button>
-            </Link>
+            </div>
           </div>
         </CardHeader>
       </Card>

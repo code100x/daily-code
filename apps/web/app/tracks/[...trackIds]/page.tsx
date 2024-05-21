@@ -1,9 +1,11 @@
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { redirect, notFound } from "next/navigation";
-import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
+import { getAllTracks, getProblem, getTrack, updateTrackHistory } from "../../../components/utils";
 import { cache } from "react";
 import { LessonView } from "../../../components/LessonView";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../lib/auth";
 
 const notion = new NotionAPI();
 export const dynamic = "auto";
@@ -47,6 +49,13 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
   }
 
   if (trackDetails && problemDetails) {
+    const session = await getServerSession(authOptions);
+    const user = session?.user;
+    if (user) {
+      const lastSlide = trackDetails.problems[trackDetails.problems.length - 1];
+      const isCompleted = lastSlide?.id === problemDetails.id;
+      updateTrackHistory(user.id, trackDetails.id, problemDetails.id, isCompleted || undefined);
+    }
     return (
       <div>
         <LessonView

@@ -197,6 +197,48 @@ export async function getAllTracks() {
     return [];
   }
 }
+
+export async function getLastNavigatedTrackHistory(userId: string, trackId: string) {
+  try {
+    const trackHistory = await db.trackHistory.findFirst({
+      where: {
+        userId,
+        trackId,
+      },
+    });
+    return trackHistory?.pageId || undefined;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+}
+
+export async function updateTrackHistory(userId: string, trackId: string, pageId: string, isCompleted?: boolean) {
+  try {
+    await db.trackHistory.upsert({
+      where: {
+        userId_trackId: {
+          userId,
+          trackId,
+        },
+      },
+      update: {
+        pageId,
+        isCompleted,
+      },
+      create: {
+        userId,
+        trackId,
+        pageId,
+        isCompleted,
+      },
+    });
+    return;
+  } catch (e) {
+    console.error(e);
+    return;
+  }
+}
 export async function createTrack(data: {
   id: string;
   title: string;

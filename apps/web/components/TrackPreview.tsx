@@ -1,14 +1,45 @@
 import Link from "next/link";
 import { Button } from "../../../packages/ui/src/shad/ui/button";
 import { Dialog, DialogContent } from "../../../packages/ui/src/shad/ui/dailog";
+import { Track, Problem } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { getLastNavigatedTrackHistory } from "./utils";
 
 type TrackPreviewProps = {
-    showPreview: boolean;
-    setShowPreview: (val: boolean) => void;
-    track: any;
+  showPreview: boolean;
+  setShowPreview: (val: boolean) => void;
+  track: TrackCardProps;
+};
+
+interface TrackCardProps extends Track {
+  problems: Problem[];
+  categories: {
+    category: {
+      id: string;
+      category: string;
+    };
+  }[];
 }
 
 export function TrackPreview({ showPreview, setShowPreview, track }: TrackPreviewProps) {
+  const session = useSession();
+  const router = useRouter();
+
+  const navigateToTrack = async (track: TrackCardProps) => {
+    if (session.data?.user) {
+      let user: any = session.data.user;
+      const userId = user.id;
+      const lastTrack = await getLastNavigatedTrackHistory(userId, track.id);
+      if (lastTrack) {
+        const url = `/tracks/${track.id}/${lastTrack}`;
+        router.push(url);
+        return;
+      }
+    }
+    router.push(`/tracks/${track.id}/${track.problems[0]?.id}`);
+  };
+
   return (
     <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
       <DialogContent className="max-w-2xl max-h-[90vh]">
@@ -30,23 +61,26 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
           <p className="mt-5 font-bold px-5 text-xl">Contents</p>
           <div className="max-h-[40vh] overflow-y-auto">
             {track.problems.map((topic: any, idx: number) => (
-                <Link href={`/tracks/${track.id}/${track.problems[idx]?.id}`}>
-              <div className="hover:cursor-pointer my-2 rounded-md dark:hover:bg-slate-700 hover:bg-slate-200 px-5 py-1 transition-all duration-450 scroll-smooth">
-                {topic.title}
-              </div>
+              <Link href={`/tracks/${track.id}/${track.problems[idx]?.id}`} key={idx}>
+                <div className="hover:cursor-pointer my-2 rounded-md dark:hover:bg-slate-700 hover:bg-slate-200 px-5 py-1 transition-all duration-450 scroll-smooth">
+                  {topic.title}
+                </div>
               </Link>
             ))}
           </div>
           <div className="w-full flex justify-center">
-            <Link href={track.problems.length ? `/tracks/${track.id}/${track.problems[0]?.id}` : ""}>
+            <div>
               <Button
                 size={"lg"}
                 className="flex items-center justify-center group"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) =>{
+                  navigateToTrack(track)
+                  e.stopPropagation()
+                }}
               >
                 Start
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
       </DialogContent>
