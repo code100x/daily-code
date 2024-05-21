@@ -101,15 +101,15 @@ export const BlogAppbar = ({
     >
       <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
         <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
-          <Link href={"/"}>DailyCode</Link>
+          <Link href={"/"} className="mx-20">DailyCode</Link>
         </div>
 
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {track.title} ({problemIndex + 1} / {track.problems.length})
         </p>
         {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
-        <div className="flex space-x-2 mb-2">
-          <div className="mb-2">
+        <div className="flex justify-end items-center font-medium md:flex-1 mb-2 md:mb-0 space-x-2">
+          <div>
             <PageToggle allProblems={track.problems} track={track} />
           </div>
           <Link
@@ -169,13 +169,13 @@ export const BlogAppbar = ({
           </Link>
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
+            <Button variant="outline" className="mx-2 bg-black text-white md:flex hidden">
               Download
               <div className="pl-2">
                 <DownloadIcon />
               </div>
             </Button>
-            <Button variant="outline" className=" bg-black text-white md:hidden block">
+            <Button variant="outline" className="bg-black text-white md:hidden block">
               <div>
                 <DownloadIcon />
               </div>
