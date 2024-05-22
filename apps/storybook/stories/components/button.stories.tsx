@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@repo/ui";
-import "../styles/tailwind.css";
 
 const meta: Meta<typeof Button> = {
   title: "Buttons",
