@@ -119,7 +119,7 @@ export const BlogAppbar = ({
           >
             <Button
               variant="outline"
-              className="ml-2 bg-black text-white md:flex hidden"
+              className="ml-2 md:flex hidden"
               disabled={problemIndex !== 0 ? false : true}
             >
               <div className="pr-2">
@@ -129,7 +129,7 @@ export const BlogAppbar = ({
             </Button>
             <Button
               variant="outline"
-              className=" bg-black text-white md:hidden block"
+              className="md:hidden block"
               disabled={problemIndex !== 0 ? false : true}
             >
               <div>
@@ -149,7 +149,7 @@ export const BlogAppbar = ({
           >
             <Button
               variant="outline"
-              className="bg-black text-white md:flex hidden"
+              className="md:flex hidden"
               disabled={problemIndex + 1 !== track.problems.length ? false : true}
             >
               Next
@@ -159,7 +159,7 @@ export const BlogAppbar = ({
             </Button>
             <Button
               variant="outline"
-              className="bg-black text-white md:hidden block"
+              className="md:hidden block"
               disabled={problemIndex + 1 !== track.problems.length ? false : true}
             >
               <div>
@@ -169,13 +169,13 @@ export const BlogAppbar = ({
           </Link>
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
+            <Button variant="outline" className="ml-2 md:flex hidden">
               Download
               <div className="pl-2">
                 <DownloadIcon />
               </div>
             </Button>
-            <Button variant="outline" className=" bg-black text-white md:hidden block">
+            <Button variant="outline" className="md:hidden block">
               <div>
                 <DownloadIcon />
               </div>
