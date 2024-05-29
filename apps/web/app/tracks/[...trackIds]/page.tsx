@@ -4,6 +4,7 @@ import { redirect, notFound } from "next/navigation";
 import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
 import { cache } from "react";
 import { LessonView } from "../../../components/LessonView";
+import ScrollToTopWrapper from "../../../components/ScrollToTopWrapper";
 
 const notion = new NotionAPI();
 export const dynamic = "auto";
@@ -49,14 +50,16 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
   if (trackDetails && problemDetails) {
     return (
       <div>
-        <LessonView
-          showAppBar
-          track={trackDetails}
-          problem={{
-            ...problemDetails,
-            notionRecordMap,
-          }}
-        />
+        <ScrollToTopWrapper>
+          <LessonView
+            showAppBar
+            track={trackDetails}
+            problem={{
+              ...problemDetails,
+              notionRecordMap,
+            }}
+          />
+        </ScrollToTopWrapper>
       </div>
     );
   } else {
