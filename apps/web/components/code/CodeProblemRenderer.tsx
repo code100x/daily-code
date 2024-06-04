@@ -13,7 +13,7 @@ export const CodeProblemRenderer = ({
   problem,
   track,
   submissions,
-  problemIndex
+  problemIndex,
 }: {
   problem: Problem & { notionRecordMap: any } & {
     problemStatement:
@@ -25,7 +25,7 @@ export const CodeProblemRenderer = ({
   };
   track: Track & { problems: Problem[] };
   submissions: (Submission & { language: CodeLanguage })[] | null;
-  problemIndex: number
+  problemIndex: number;
 }) => {
   const { data, status } = useSession();
   const user = data?.user;
@@ -33,7 +33,7 @@ export const CodeProblemRenderer = ({
   if (problem.problemStatement) {
     return (
       <div>
-        <BlogAppbar problem={problem} track={track} problemIndex={problemIndex}/>
+        <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />
         {status === "loading" ? (
           <Loader className="animate-spin mx-auto my-40" size={64} />
         ) : (

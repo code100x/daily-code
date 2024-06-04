@@ -1,6 +1,6 @@
 # Quick Setup Locally
 
-* Docker
+- Docker
 
 ```
 docker compose watch

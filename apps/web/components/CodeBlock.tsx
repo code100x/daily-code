@@ -39,13 +39,9 @@ export default function CodeBlock({ block }: { block: any }) {
 }
 
 export function CopyIcon() {
-  return (
-    <button className={`${styles.copy_button}`}>Copy</button>
-  );
+  return <button className={`${styles.copy_button}`}>Copy</button>;
 }
 
 export function CopyTick() {
-  return (
-    <button className={`${styles.copy_button}`}>Copied!!</button>
-  );
+  return <button className={`${styles.copy_button}`}>Copied!!</button>;
 }

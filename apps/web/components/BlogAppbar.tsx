@@ -14,7 +14,7 @@ import { Codebar } from "../components/code/Codebar";
 export const BlogAppbar = ({
   problem,
   track,
-  problemIndex
+  problemIndex,
 }: {
   problem: Problem & { notionRecordMap: any } & {
     problemStatement?:
@@ -25,7 +25,7 @@ export const BlogAppbar = ({
       | null;
   };
   track: Track & { problems: Problem[] };
-  problemIndex: number
+  problemIndex: number;
 }) => {
   let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
 

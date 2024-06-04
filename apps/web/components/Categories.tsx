@@ -57,12 +57,12 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
           <SelectValue placeholder={selectedCategory || "All Categories"}></SelectValue>
         </SelectTrigger>
         <SelectContent
-        ref={(ref)=>{
-          if(!ref) return;
-          ref.ontouchstart = (e)=>{
-            e.preventDefault();
-          }
-        }}
+          ref={(ref) => {
+            if (!ref) return;
+            ref.ontouchstart = (e) => {
+              e.preventDefault();
+            };
+          }}
         >
           {categories.map((category) => (
             <SelectItem value={category.category} key={category.category}>

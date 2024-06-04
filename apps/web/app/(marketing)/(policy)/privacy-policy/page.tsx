@@ -1,4 +1,4 @@
-import { privacyPolicyContent } from '../../../../components/privacy-policy/privacy-policy';
+import { privacyPolicyContent } from "../../../../components/privacy-policy/privacy-policy";
 
 const PrivacyPolicyPage = () => {
   return (
@@ -8,10 +8,7 @@ const PrivacyPolicyPage = () => {
       </h1>
       {privacyPolicyContent.map((item) => {
         return (
-          <div
-            className="my-3 text-neutral-700 dark:text-neutral-300 font-normal text-lg"
-            key={item.id}
-          >
+          <div className="my-3 text-neutral-700 dark:text-neutral-300 font-normal text-lg" key={item.id}>
             <p className="">{item.description}</p>
           </div>
         );
