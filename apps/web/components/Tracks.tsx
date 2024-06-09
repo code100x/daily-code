@@ -21,6 +21,8 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
   const selectedCategory = useRecoilValue(category);
   const [filteredTracks, setFilteredTracks] = useState<Tracks[]>(tracks);
   const [sortBy, setSortBy] = useState<string>("");
+  const [selectOpen, setSelectOpen] = useState<boolean>(false);
+
   
   const filterTracks = () => {
     let filteredTracks = tracks;
@@ -51,6 +53,8 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
   return (
     <div>
       <Select
+        open = {selectOpen}
+        onOpenChange={() => { setTimeout(() => { setSelectOpen(!selectOpen); }, 20); }}
         onValueChange={(e) => {
           setSortBy(e);
         }}
