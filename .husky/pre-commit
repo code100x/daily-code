@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh/env bash
 . "$(dirname "$0")/_/husky.sh"
 
 # Define the unwanted lock files
