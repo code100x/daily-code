@@ -18,7 +18,7 @@ const Signin = () => {
   }, [redirected, session, router]);
 
   return (
-    <div className="flex bg-black">
+    <div className="flex bg-black ">
       <div className="w-full md:w-2/5 bg-black flex justify-center items-center h-screen max-sm:hidden max-md:hidden">
         <div>
           <h1 className="text-4xl font-bold mb-4 text-white">Daily Code</h1>
@@ -38,14 +38,14 @@ const Signin = () => {
           </div>
           <div className=" mb-4  justify-center py-1 sm:px-6 lg:px-8 ">
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-              <div className="bg-white py-12 px-4 shadow sm:rounded-lg sm:px-10">
+              <div className="bg-slate-200 py-12 px-4 shadow sm:rounded-lg sm:px-10">
                 <div className="flex flex-col items-center justify-center gap-4">
                   <p className="font-normal text-2xl text-gray-900">Welcome</p>
 
-                  <p className="font-light text-sm text-gray-600">Log in to continue to DailyCode.</p>
+                  <p className="font-light text-sm text-gray-700">Log in to continue to DailyCode.</p>
                   <button
                     type="submit"
-                    className="w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 "
+                    className="w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 "
                     onClick={async () => {
                       await signIn("google");
                     }}
@@ -54,7 +54,7 @@ const Signin = () => {
                     Continue with Google
                   </button>
                   <button
-                    className="w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 -mt-2"
+                    className="w-full flex justify-center items-center gap-2 py-3 px-4 border rounded font-light text-md text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 -mt-2"
                     onClick={async () => {
                       await signIn("github");
                     }}
