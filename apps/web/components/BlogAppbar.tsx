@@ -10,6 +10,7 @@ import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 import UserAccountDropDown from "./UserAccountDropDown";
 import { Codebar } from "../components/code/Codebar";
+import Pagination from "./Pagination";
 
 export const BlogAppbar = ({
   problem,
@@ -109,64 +110,7 @@ export const BlogAppbar = ({
         </p>
         {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
         <div className="flex space-x-2 mb-2">
-          <div className="mb-2">
-            <PageToggle allProblems={track.problems} track={track} />
-          </div>
-          <Link
-            prefetch={true}
-            href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
-            style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
-          >
-            <Button
-              variant="outline"
-              className="ml-2 bg-black text-white md:flex hidden"
-              disabled={problemIndex !== 0 ? false : true}
-            >
-              <div className="pr-2">
-                <ChevronLeftIcon />
-              </div>
-              Prev
-            </Button>
-            <Button
-              variant="outline"
-              className=" bg-black text-white md:hidden block"
-              disabled={problemIndex !== 0 ? false : true}
-            >
-              <div>
-                <ChevronLeftIcon />
-              </div>
-            </Button>
-          </Link>
-
-          <Link
-            prefetch={true}
-            href={
-              problemIndex + 1 === track.problems.length
-                ? ``
-                : `/tracks/${track.id}/${track.problems[problemIndex + 1]!.id}`
-            }
-            style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
-          >
-            <Button
-              variant="outline"
-              className="bg-black text-white md:flex hidden"
-              disabled={problemIndex + 1 !== track.problems.length ? false : true}
-            >
-              Next
-              <div className="pl-2">
-                <ChevronRightIcon />
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              className="bg-black text-white md:hidden block"
-              disabled={problemIndex + 1 !== track.problems.length ? false : true}
-            >
-              <div>
-                <ChevronRightIcon />
-              </div>
-            </Button>
-          </Link>
+          <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
             <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
