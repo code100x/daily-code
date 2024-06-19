@@ -3,10 +3,10 @@ import { Button } from "../../../packages/ui/src/shad/ui/button";
 import { Dialog, DialogContent } from "../../../packages/ui/src/shad/ui/dailog";
 
 type TrackPreviewProps = {
-    showPreview: boolean;
-    setShowPreview: (val: boolean) => void;
-    track: any;
-}
+  showPreview: boolean;
+  setShowPreview: (val: boolean) => void;
+  track: any;
+};
 
 export function TrackPreview({ showPreview, setShowPreview, track }: TrackPreviewProps) {
   return (
@@ -30,10 +30,10 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
           <p className="mt-5 font-bold px-5 text-xl">Contents</p>
           <div className="max-h-[40vh] overflow-y-auto">
             {track.problems.map((topic: any, idx: number) => (
-                <Link href={`/tracks/${track.id}/${track.problems[idx]?.id}`}>
-              <div className="hover:cursor-pointer my-2 rounded-md dark:hover:bg-slate-700 hover:bg-slate-200 px-5 py-1 transition-all duration-450 scroll-smooth">
-                {topic.title}
-              </div>
+              <Link href={`/tracks/${track.id}/${track.problems[idx]?.id}`}>
+                <div className="hover:cursor-pointer my-2 rounded-md dark:hover:bg-slate-700 hover:bg-slate-200 px-5 py-1 transition-all duration-450 scroll-smooth">
+                  {topic.title}
+                </div>
               </Link>
             ))}
           </div>

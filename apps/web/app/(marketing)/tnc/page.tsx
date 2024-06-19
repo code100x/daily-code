@@ -1,4 +1,4 @@
-import { tncContent } from '../../../components/tnc/tnc-content';
+import { tncContent } from "../../../components/tnc/tnc-content";
 
 const TermsAndConditionsPage = () => {
   return (
@@ -8,16 +8,13 @@ const TermsAndConditionsPage = () => {
       </h1>
       {tncContent.map((item) => {
         return (
-          <div
-            className="my-4 text-neutral-700 dark:text-neutral-300 font-normal text-lg"
-            key={item.id}
-          >
+          <div className="my-4 text-neutral-700 dark:text-neutral-300 font-normal text-lg" key={item.id}>
             <p>{item.description}</p>
             {item.points?.map((point) => {
               return (
                 <p className="my-2" key={point.id}>
                   {point.id}
-                  {'. '}
+                  {". "}
                   {point.description}
                 </p>
               );

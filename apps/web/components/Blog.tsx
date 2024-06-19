@@ -10,13 +10,13 @@ export const Blog = ({
   track,
   showAppBar,
   isPdfRequested,
-  problemIndex
+  problemIndex,
 }: {
   problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
   showAppBar: Boolean;
   isPdfRequested?: Boolean;
-  problemIndex: number
+  problemIndex: number;
 }) => {
   const mounted = useMountStatus();
 
@@ -28,7 +28,7 @@ export const Blog = ({
 
   return (
     <div>
-      {showAppBar && <BlogAppbar problem={problem} track={track} problemIndex={problemIndex}/>}
+      {showAppBar && <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />}
       <NotionRenderer recordMap={problem.notionRecordMap} />
       <div className="justify-center pt-2">
         <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />

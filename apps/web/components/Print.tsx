@@ -2,14 +2,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-
 export function Print() {
   const router = useRouter();
 
   useEffect(() => {
     // Open all <details> elements
     document.querySelectorAll("details").forEach((e) => (e.open = true));
-
 
     const closeWindow = () => {
       console.log("PDF has been printed.");
