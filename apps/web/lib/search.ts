@@ -13,6 +13,7 @@ const client = new QdrantClient({
 const genAI = new GoogleGenerativeAI(process.env.GOOGLEAI_API_KEY!);
 const model = genAI.getGenerativeModel({ model: "embedding-001"});
 
+const VECTOR_SIZE = parseInt(process.env.VECTOR_SIZE!) || 768;
 
 export async function scrapeData({ trackId }: { trackId: string }) {
   const notion = new NotionAPI();
@@ -48,7 +49,7 @@ export async function scrapeData({ trackId }: { trackId: string }) {
 
 export async function createCollection(){
   await client.createCollection("DailyCode",{
-    vectors:{ size: 150 , distance: "Dot" },
+    vectors:{ size: VECTOR_SIZE , distance: "Dot" },
   });
 }
 
@@ -56,7 +57,7 @@ export async function insertData(trackId: string) {
   const data = await scrapeData({ trackId });
   data.forEach(async (problem) => {
     const response = await model.embedContent(problem.titles);
-    problem.vector = response.embedding.values.slice(0, 150);
+    problem.vector = response.embedding.values.slice(0, VECTOR_SIZE);
     await client.upsert("DailyCode", {
       wait: true,
       points: [
@@ -87,7 +88,7 @@ export async function insertData(trackId: string) {
 export async function getSearchResults(query: string) {
   const vector = await model.embedContent(query);
   const response = await client.search("DailyCode", {
-    vector: vector.embedding.values.slice(0, 150),
+    vector: vector.embedding.values.slice(0, VECTOR_SIZE),
     limit: 5,
   });
   return response;

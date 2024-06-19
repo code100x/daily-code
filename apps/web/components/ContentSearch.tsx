@@ -1,8 +1,18 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useDeferredValue } from "react";
 import Link from "next/link";
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, DialogClose, DialogContent, Input, Card, CardDescription, CardHeader, CardTitle } from "@repo/ui";
+import {
+  Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  Input,
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui";
 import { getSearchResults } from "../lib/search";
 
 export function ContentSearch() {
@@ -11,22 +21,19 @@ export function ContentSearch() {
   const [searchTracks, setSearchTracks] = useState<any[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
+  const deferredInput = useDeferredValue(input);
 
-  const debouncedFetch = useCallback(
-    debounce(async (searchQuery: string) => {
-      if (searchQuery.length > 0) {
-          const data = await getSearchResults(searchQuery);
-          setSearchTracks(data);
+  useEffect(() => {
+    async function fetchSearchResults() {
+      if (deferredInput.length > 0) {
+        const data = await getSearchResults(deferredInput);
+        setSearchTracks(data);
       } else {
         setSearchTracks([]);
       }
-    }, 1000),
-    []
-  );
-
-  useEffect(() => {
-    debouncedFetch(input);
-  }, [input, debouncedFetch]);
+    }
+    fetchSearchResults();
+  }, [deferredInput]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -108,10 +115,19 @@ export function ContentSearch() {
           {searchTracks.length > 0 &&
             searchTracks.map((track, index) => (
               <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
-                <Link className="flex" href={`/tracks/${track.payload.trackId}/${track.payload.problemId}`} target="_blank" passHref>
+                <Link
+                  className="flex"
+                  href={`/tracks/${track.payload.trackId}/${track.payload.problemId}`}
+                  target="_blank"
+                  passHref
+                >
                   <Card className="p-2 w-full mx-2">
                     <div className="flex my-2">
-                      <img alt={track.payload.problemTitle} src={track.payload.image} className="flex mx-2 w-1/6 rounded-xl" />
+                      <img
+                        alt={track.payload.problemTitle}
+                        src={track.payload.image}
+                        className="flex mx-2 w-1/6 rounded-xl"
+                      />
                       <div>
                         <CardHeader>
                           <CardTitle>{track.payload.problemTitle}</CardTitle>
@@ -127,12 +143,4 @@ export function ContentSearch() {
       </DialogContent>
     </Dialog>
   );
-}
-
-function debounce<T extends (...args: any[]) => any>(func: T, delay: number): (...args: Parameters<T>) => void {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: any, ...args: Parameters<T>) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func.apply(this, args), delay);
-  };
 }
