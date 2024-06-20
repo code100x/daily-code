@@ -113,13 +113,13 @@ export const BlogAppbar = ({
           <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
+            <Button variant="outline" className="ml-2 md:flex hidden">
               Download
               <div className="pl-2">
                 <DownloadIcon />
               </div>
             </Button>
-            <Button variant="outline" className=" bg-black text-white md:hidden block">
+            <Button variant="outline" className="md:hidden block">
               <div>
                 <DownloadIcon />
               </div>

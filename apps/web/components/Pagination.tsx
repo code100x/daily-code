@@ -19,7 +19,7 @@ const Pagination = ({ allProblems, track ,problemIndex}: { allProblems: Problem[
           >
             <Button
               variant="outline"
-              className="ml-2 bg-black text-white md:flex hidden"
+              className="ml-2 md:flex hidden"
               disabled={problemIndex !== 0 ? false : true}
             >
               <div className="pr-2">
@@ -29,7 +29,7 @@ const Pagination = ({ allProblems, track ,problemIndex}: { allProblems: Problem[
             </Button>
             <Button
               variant="outline"
-              className=" bg-black text-white md:hidden block"
+              className="md:hidden block"
               disabled={problemIndex !== 0 ? false : true}
             >
               <div>
@@ -49,7 +49,7 @@ const Pagination = ({ allProblems, track ,problemIndex}: { allProblems: Problem[
           >
             <Button
               variant="outline"
-              className="bg-black text-white md:flex hidden"
+              className="md:flex hidden"
               disabled={problemIndex + 1 !== track.problems.length ? false : true}
             >
               Next
@@ -59,7 +59,7 @@ const Pagination = ({ allProblems, track ,problemIndex}: { allProblems: Problem[
             </Button>
             <Button
               variant="outline"
-              className="bg-black text-white md:hidden block"
+              className="md:hidden block"
               disabled={problemIndex + 1 !== track.problems.length ? false : true}
             >
               <div>
