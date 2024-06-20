@@ -58,7 +58,13 @@ export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
         <SelectTrigger className="w-[250px] mx-auto mt-6">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent
+        ref={(ref)=>{
+          if(!ref) return;
+          ref.ontouchstart = (e)=>{
+            e.preventDefault();
+          }
+        }}>
           <SelectGroup>
             <SelectItem value="ascending">Ascending (A to Z)</SelectItem>
             <SelectItem value="descending">Descending (Z to A)</SelectItem>
