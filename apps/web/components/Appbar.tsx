@@ -4,15 +4,13 @@ import { ModeToggle } from "./ModeToggle";
 import { signIn } from "next-auth/react";
 
 import { useSession } from "next-auth/react";
-
-import { SearchDialog } from "./SearchDialog";
-import { Track, Problem } from "@prisma/client";
+import { ContentSearch } from "./ContentSearch";
 import UserAccountDropDown from "./UserAccountDropDown";
 
-export const Appbar = ({ tracks }: { tracks?: (Track & { problems: Problem[] })[] }) => {
+
+export const Appbar = () => {
   const session = useSession();
   const user = session.data?.user;
-  const admin = false;
 
   return (
     <div className="bg-zinc-50 dark:bg-zinc-950 p-3 flex justify-center border-b shadow-md sticky top-0 z-50">
@@ -21,8 +19,9 @@ export const Appbar = ({ tracks }: { tracks?: (Track & { problems: Problem[] })[
           <div className="dark:text-zinc-100 text-zinc-950 text-2xl font-semibold">DailyCode</div>
         </Link>
         <div className="flex items-center gap-2">
-          {tracks && <SearchDialog tracks={tracks} />}
-
+          <div>
+            <ContentSearch/>
+          </div>
           {!user ? (
             <Button
               variant={"outline"}

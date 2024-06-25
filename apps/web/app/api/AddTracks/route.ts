@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const notionId = body.notionId;
   const notion = new NotionAPI();
   try {
-    const recordMap = await notion.getPage(notionId!);
+    const recordMap = await notion.getPage(notionId);
     const data = Object.keys(recordMap.block).map((key) => {
       const block = recordMap.block[key];
       return {

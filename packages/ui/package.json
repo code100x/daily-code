@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
+    "./globals.css": "./app/globals.css",
     ".": "./src/index.ts",
     "./utils": "./src/lib/utils.ts"
   },

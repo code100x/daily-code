@@ -7,7 +7,7 @@ import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@repo/ui";
 
-interface Tracks extends Track {
+interface TrackPros extends Track {
   problems: Problem[];
   categories: {
     category: {
@@ -17,9 +17,9 @@ interface Tracks extends Track {
   }[];
 }
 
-export const Tracks = ({ tracks }: { tracks: Tracks[] }) => {
+export const Tracks = ({ tracks }: { tracks: TrackPros[] }) => {
   const selectedCategory = useRecoilValue(category);
-  const [filteredTracks, setFilteredTracks] = useState<Tracks[]>(tracks);
+  const [filteredTracks, setFilteredTracks] = useState<TrackPros[]>(tracks);
   const [sortBy, setSortBy] = useState<string>("");
   
   const filterTracks = () => {

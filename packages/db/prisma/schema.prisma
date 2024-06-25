@@ -69,6 +69,7 @@ model Track {
   image       String
   categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
+  inSearch    Boolean         @default(false)
   hidden      Boolean         @default(false)
   createdAt   DateTime        @default(now())
 }
