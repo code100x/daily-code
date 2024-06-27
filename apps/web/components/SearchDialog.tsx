@@ -14,6 +14,8 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [shortcut, setShortcut] = useState("Ctrl K");
+  const [filteredsearchTrack, setfilteredsearchTrack] = useState<any>();
+  const debounceTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -49,14 +51,37 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   }, [searchTracks, selectedIndex]);
 
   useEffect(() => {
-    const foundTracks = tracks.filter((track) => {
-      return (
-        track.title.toLowerCase().includes(input.toLowerCase()) ||
-        track.description.toLowerCase().includes(input.toLowerCase())
-      );
-    });
-    setSearchTracks(foundTracks);
-    setSelectedIndex(-1);
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+    debounceTimeoutRef.current = window.setTimeout(() => {
+      const foundTracks = tracks.filter((track) => {
+        return track.problems.some((problem) => problem.title.toLowerCase().includes(input.toLowerCase()));
+      });
+      setSearchTracks(foundTracks);
+      const foundPgNumbers = foundTracks.reduce((acc: string[], foundTrack) => {
+        foundTrack.problems.forEach((problem) => {
+          if (problem.title.toLowerCase().includes(input.toLowerCase())) {
+            acc.push(problem.id);
+          }
+        });
+        return acc;
+      }, []);
+      const filteredSearchTracksarr = foundTracks.map((track) => ({
+        track: track,
+        matchingProblemIds: track.problems
+          .filter((problem) => foundPgNumbers.includes(problem.id))
+          .map((problem) => problem.id),
+      }));
+      setfilteredsearchTrack(filteredSearchTracksarr);
+      setSelectedIndex(-1);
+    }, 700);
+
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
   }, [input]);
 
   useEffect(() => {
@@ -97,16 +122,36 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
           </DialogClose>
         </div>
         <div className="h-[400px] overflow-y-scroll" ref={scrollableContainerRef}>
-          {searchTracks.map((track, index) => (
-            <div key={track.id} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
-              <Link href={`/tracks/${track.id}`} passHref>
-                <p id={`track-link-${index}`} tabIndex={-1} style={{ display: "none" }}>
-                  Navigate
-                </p>
-              </Link>
-              <TrackList track={track} />
-            </div>
-          ))}
+          {Array.isArray(filteredsearchTrack) &&
+            filteredsearchTrack.map((item, index) => (
+              <div key={item.track.id} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
+                <div className="flex space-y-2">
+                  <Link href={`/tracks/${item.track.id}`} passHref>
+                    <p id={`track-link-${index}`} tabIndex={-1} style={{ display: "none" }}>
+                      Navigate
+                    </p>
+                  </Link>
+                  {input && (
+                    <div className="flex items-center space-x-2 space-y-2 text-zinc-950 dark:text-zinc-50 p-2 font-semibold border-2 rounded-full py-1 w-full">
+                      {<p>Jump to</p>}
+                      <ul className="flex items-center space-x-2 justify-center group ">
+                        {item.matchingProblemIds.map((problemId: any, idx: any) => (
+                          <li key={idx}>
+                            <Link href={`/tracks/${item.track.id}/${problemId}`} passHref>
+                              <Button size={"sm"} className="flex items-center justify-center group">
+                                {problemId}
+                              </Button>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <TrackList track={item.track} />
+              </div>
+            ))}
         </div>
       </DialogContent>
     </Dialog>

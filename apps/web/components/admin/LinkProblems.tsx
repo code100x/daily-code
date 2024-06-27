@@ -6,6 +6,7 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui";
 import LinkCard from "./LinkCard";
+import Image from "next/image";
 
 interface LinkProblemsProps extends Track {
   problems: {
@@ -42,7 +43,8 @@ export const LinkProblems = ({ tracks }: { tracks: LinkProblemsProps[] }) => {
             {filteredTracks.map((track) => (
               <Card key={track.id}>
                 <div className="grid grid-cols-6">
-                  <img
+                  <Image
+                    alt="track-image"
                     src={track.image}
                     className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"
                   />
