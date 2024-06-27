@@ -52,6 +52,7 @@ model User {
   sessions      Session[]
   submissions   Submission[]
   quizScores    QuizScore[]
+  solutions     Solution[]
 }
 
 model VerificationToken {
@@ -109,6 +110,7 @@ model ProblemStatement {
   submissions        Submission[]
   mainFuncName       String // the function name which will return the output
   argumentNames      String[]
+  solutions          Solution[]
 }
 
 model TestCase {
@@ -126,6 +128,7 @@ model CodeLanguage {
   label             String
   problemStatements ProblemStatement[] //implicit m-n relationship
   submissions       Submission[]
+  solutions         Solution[]
 }
 
 model Submission {
@@ -184,4 +187,19 @@ model QuizScore {
   problem       Problem  @relation(fields: [problemId], references: [id])
   problemId     String
   createdAt     DateTime @default(now())
+}
+
+model Solution {
+  id                    String            @id @default(uuid())
+  title                 String
+  explanation           String
+  code                  String
+  language              CodeLanguage      @relation(fields: [languageId], references: [id])
+  languageId            Int
+  problemStatement      ProblemStatement  @relation(fields: [problemStatementId], references: [id])
+  problemStatementId    String
+  user                  User              @relation(fields: [userId], references: [id])
+  userId                String
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @default(now())
 }

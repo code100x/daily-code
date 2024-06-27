@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { TestCase } from "@prisma/client";
+import { TestCase, Solution } from "@prisma/client";
 export const languageState = atom({
   key: "languageState",
   default: "javascript",
@@ -64,4 +64,24 @@ export const activeSubmissionResultSelector = selector({
 export const adminTestCasesState = atom<Omit<TestCase, "id" | "problemStatementId">[]>({
   key: "adminTestCasesState",
   default: [],
+});
+
+export const problemStatementIdState = atom<String>({
+  key: "problemStatementIdState",
+  default: ""
+});
+
+export const solutionsState = atom<Solution[]>({
+  key: "solutionsState",
+  default: []
+});
+
+export const showSolutionDetailState = atom<boolean>({
+  key: "showSolutionDetailState",
+  default: false
+})
+
+export const solutionDetailState = atom({
+  key: "solutionDetailState",
+  default: null,
 });

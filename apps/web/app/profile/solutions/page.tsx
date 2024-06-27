@@ -8,20 +8,20 @@ import ProblemSubmissionTable from "../../../components/ProblemSubmissionTable";
 import { Braces } from "lucide-react";
 import { ProfileStats } from "../../../components/ProfileStats";
 
-export default async function Submissions() {
+export default async function Solutions() {
   const session = await getServerSession(authOptions);
 
   if (!session || !session?.user) {
     redirect("/");
   }
 
-  const getAllSubmissions = async () => {
+  const getAllSolutions = async () => {
     if (!session || !session.user) {
       return null;
     }
 
     const userId = session.user.id;
-    const submissions = await db.submission.findMany({
+    const solutions = await db.solution.findMany({
       where: {
         userId,
       },
@@ -32,7 +32,7 @@ export default async function Submissions() {
         createdAt: "desc",
       },
     });
-    return submissions;
+    return solutions;
   };
 
   async function fetchProblemStatements(problemStatementIds: string[] | undefined) {
@@ -44,7 +44,7 @@ export default async function Submissions() {
         },
       },
       include: {
-        submissions: true,
+        solutions: true,
         problem: {
           select: {
             title: true,
@@ -58,16 +58,13 @@ export default async function Submissions() {
     return fetchedProblemStatements;
   }
 
-  const submissions = await getAllSubmissions();
-
-  const acceptedSubmissions = submissions?.filter((submission) => submission.statusId <= 3);
-  const problemStatementIds = acceptedSubmissions?.map((submission) => submission.problemStatementId);
-
+  const solutions = await getAllSolutions();
+  const problemStatementIds: string[] | undefined = solutions?.map((solution) => solution.problemStatementId);
   const problemStatements = await fetchProblemStatements(problemStatementIds);
 
   return (
     <>
-      <ProfileStats problemStatements={problemStatements} stat={"Submissions"}/>
+      <ProfileStats problemStatements={problemStatements} stat={"Solutions"}/>
     </>
   );
 }

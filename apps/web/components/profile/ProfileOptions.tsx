@@ -1,5 +1,5 @@
 "use client";
-import { Braces, UserRound } from "lucide-react";
+import { Braces, UserRound, FlaskConical } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -15,7 +15,13 @@ const ProfileOptions = () => {
       icon: <Braces color="#3b82f6" size={18} />,
       href: "/profile/submissions",
     },
+    {
+      name: "Solutions",
+      icon: <FlaskConical color="#3b82f6" size={18} />,
+      href: "/profile/solutions"
+    }
   ];
+  
   const router = useRouter();
   const pathname = usePathname();
   const [activeOption, setActiveOption] = useState<Number | null>(() => {

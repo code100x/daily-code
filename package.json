@@ -8,8 +8,8 @@
     "lint:fix": "turbo lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky",
-    "dev:docker":"npm run prisma:docker && yarn run dev",
-    "prisma:docker":"cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed"
+    "dev:docker": "npm run prisma:docker && yarn run dev",
+    "prisma:docker": "cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.6.0",
@@ -34,8 +34,10 @@
     "packages/*"
   ],
   "dependencies": {
+    "@uiw/react-md-editor": "^4.0.4",
     "nextjs-toploader": "^1.6.11",
     "react": "^18.2.0",
+    "react-markdown-editor-lite": "^1.3.4",
     "react-notion-x": "^6.16.0"
   }
 }

@@ -1,4 +1,4 @@
-const SubmissionCreatedAt = ({ createdAt }: { createdAt: Date }) => {
+export const SubmissionCreatedAt = ({ createdAt }: { createdAt: Date }) => {
   return (
     <div className="text-xs mt-2">
       submitted at{" "}
