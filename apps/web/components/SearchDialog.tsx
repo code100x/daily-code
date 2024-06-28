@@ -1,11 +1,12 @@
 "use client";
 
-import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { Cross2Icon, MagnifyingGlassIcon, VercelLogoIcon } from "@radix-ui/react-icons";
 import { Dialog, DialogClose, DialogContent, Button, Input } from "@repo/ui";
 import { useEffect, useRef, useState } from "react";
 import { Track, Problem } from "@prisma/client";
 import { TrackList } from "./TrackList";
 import Link from "next/link";
+import { MdOutlineKeyboardVoice } from "react-icons/md";
 
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -14,6 +15,29 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [shortcut, setShortcut] = useState("Ctrl K");
+  const [bounce, setBounce] = useState(false);
+
+  function handleCLick() {
+    setBounce(true);
+    setTimeout(() => {
+      setBounce(false);
+    }, 4000);
+  }
+  function handleSpeech() {
+    const Speechrecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new Speechrecognition();
+    recognition.start();
+    recognition.onresult = async function (event) {
+      const voiceData = event.results && event.results[0] && event.results[0][0] && event.results[0][0].transcript;
+      console.log(voiceData);
+      setInput(voiceData || "");
+    };
+  }
+
+  function handleFunction() {
+    handleSpeech();
+    handleCLick();
+  }
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -83,7 +107,11 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
       </Button>
       <DialogContent className="max-w-2xl gap-0 p-0 ">
         <div className="flex items-center px-4 py-2 border-b">
-          <MagnifyingGlassIcon className="h-[1.5rem] w-[1.5rem]" />
+          <MagnifyingGlassIcon className="h-[1.5rem] w-[1.5rem] " />
+          <MdOutlineKeyboardVoice
+            onClick={handleFunction}
+            className={`pl-2 h-[2.2rem] w-[2.2rem] cursor-pointer fill-white ${bounce ? "animate-bounce" : " "}  `}
+          />
           <Input
             type="text"
             placeholder="Type title"
