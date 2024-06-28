@@ -9,7 +9,7 @@ export default function UserDetailForm({ user }: { user: User }) {
       <Label className="mb-2">Profile Picture</Label>
       <div className="flex items-center justify-center">
         <div className="!w-[6rem] !h-[6rem] flex items-center hover:bg-[#030712] p-[0.2rem] justify-center ">
-          <UserImage image={user?.image} key={user?.image} />
+          <UserImage image={user?.image} key={user?.image} width={100} height={100}/>
         </div>
       </div>
 

@@ -4,8 +4,6 @@ import { authOptions } from "../../../lib/auth";
 import db from "@repo/db/client";
 
 import { redirect } from "next/navigation";
-import ProblemSubmissionTable from "../../../components/ProblemSubmissionTable";
-import { Braces } from "lucide-react";
 import { ProfileStats } from "../../../components/ProfileStats";
 
 export default async function Submissions() {

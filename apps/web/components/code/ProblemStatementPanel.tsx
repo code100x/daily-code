@@ -8,9 +8,10 @@ import {
   activeTabState,
   fetchSubmissionsLoadingState,
   problemStatementIdState,
-  showSolutionDetailState,
+  currentSolutionIdState,
   solutionsState,
   submissionResultState,
+  solutionLoadingState,
 } from "@repo/store";
 import SubmissionDetail from "../submission/SubmissionDetail";
 import SubmissionList from "../submission/SubmissionList";
@@ -35,8 +36,9 @@ const ProblemStatementPanel = ({
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const setProblemStatementId = useSetRecoilState(problemStatementIdState);
   const [solutions, setSolutions] = useRecoilState(solutionsState);
-  const showSolutionDetail = useRecoilValue(showSolutionDetailState);
-
+  const currentSolutionId = useRecoilValue(currentSolutionIdState);
+  const isSolutionLoading = useRecoilValue(solutionLoadingState);
+  
   useEffect(() => {
     if (problemStatement) {
       setProblemStatementId(problemStatement.id);
@@ -92,7 +94,11 @@ const ProblemStatementPanel = ({
             Submissions
           </TabsTrigger>
           <TabsTrigger value="solutions" className="w-full px-4">
-            <FlaskConical className="mr-2 text-[#195698]" size={16} />
+            {isSolutionLoading ? (
+              <LoaderCircle className="animate-spin mr-2" size={16} />
+              ) : (
+                <FlaskConical className="mr-2 text-[#195698]" size={16} />
+              )}
             Solutions
           </TabsTrigger>
         </TabsList>
@@ -103,7 +109,7 @@ const ProblemStatementPanel = ({
           {activeSubmissionId ? <SubmissionDetail /> : <SubmissionList submissions={submissions} />}
         </TabsContent>
         <TabsContent value="solutions">
-          {showSolutionDetail ? <SolutionDetail /> : <SolutionList />}
+          {currentSolutionId ? <SolutionDetail /> : <SolutionList />}
         </TabsContent>
       </Tabs>
     </div>

@@ -1,21 +1,12 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { showSolutionDetailState, solutionDetailState, solutionsState } from "@repo/store";
+import { useRecoilValue } from "recoil";
+import { solutionsState } from "@repo/store";
 import { Button } from "@repo/ui";
 import { SquarePen } from "lucide-react";
 import { Solution } from "./Solution";
 
 export const SolutionList = () => {
   const solutions = useRecoilValue(solutionsState);
-  const setSolutionDetail = useSetRecoilState(solutionDetailState);
-  const setShowSolutionDetailState = useSetRecoilState(showSolutionDetailState);
   console.log(solutions);
-
-  const handleSolutionClick = async (solution: any) => {
-    const res = await fetch(`/api/solution/${solution.id}`);
-    const data = await res.json();
-    setSolutionDetail(data);
-    setShowSolutionDetailState(true);
-  };
 
   return (
     <div>
@@ -28,9 +19,9 @@ export const SolutionList = () => {
       </div>
       {solutions ? (
         <div>
-          {solutions.map((sol, idx) => {
+          {solutions.map((sol) => {
             return <div key={sol.id}>
-              <Solution solution={sol} onClick={() => handleSolutionClick(sol)}/>
+              <Solution solution={sol}/>
             </div>;
           })}
         </div>

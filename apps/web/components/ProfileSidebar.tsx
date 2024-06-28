@@ -25,7 +25,7 @@ export default function ProfileSidebar() {
                   <UserRound size={55} />
                 </div>
               ) : (
-                <UserImage image={user?.image} />
+                <UserImage image={user?.image} width={100} height={100}/>
               )}
             </div>
             <div className="font-bold text-lg">{user?.name}</div>

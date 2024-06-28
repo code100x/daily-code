@@ -1,14 +1,27 @@
 import { useSetRecoilState } from "recoil";
 import SubmissionCreatedAt from "../submission/SubmissionCreatedAt";
-import { showSolutionDetailState } from "@repo/store";
+import { currentSolutionIdState, solutionLoadingState } from "@repo/store";
+import UserImage from "../UserImage";
 
-export function Solution({ solution, onClick  }: { solution: any,  onClick: () => void }) {
-  const setShowSolutionDetailState = useSetRecoilState(showSolutionDetailState);
+export function Solution({ solution }: { solution: any }) {
+  const setCurrentSolutionId = useSetRecoilState(currentSolutionIdState);
+  const setSolutionLoading = useSetRecoilState(solutionLoadingState);
+  
+  const handleSolutionClick = (solution: any) => {
+    setCurrentSolutionId(solution.id);
+    setSolutionLoading(true);
+  };
 
   return (
-    <div className="border-b-2 p-2 cursor-pointer" onClick={onClick}>
-      <div className="flex gap-4">  
-        <Avatar />
+    <div className="border-b-2 p-2 cursor-pointer" onClick={() => handleSolutionClick(solution)}>
+      <div className="flex gap-3">  
+        {!solution.user?.image ? (
+          <Avatar />
+        ) : (
+          <div className="pt-3">
+            <UserImage image={solution.user?.image} height={40} width={40} />
+          </div>
+        )}
         <div className="flex flex-col">
           <div className="text-xs text-slate-500 flex">
             <div className="mt-2">

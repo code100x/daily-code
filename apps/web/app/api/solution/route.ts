@@ -40,7 +40,6 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.search);
     const problemId = searchParams.get("problemStatementId");
-    console.log('problemId', problemId)
 
     if (!problemId) return;
         
@@ -51,7 +50,8 @@ export async function GET(req: NextRequest) {
       include: {
         user: {
           select: {
-            name: true
+            name: true,
+            image: true
           }
         },
         language: {
@@ -59,6 +59,9 @@ export async function GET(req: NextRequest) {
             label: true
           }
         }
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     });
     

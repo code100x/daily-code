@@ -76,12 +76,17 @@ export const solutionsState = atom<Solution[]>({
   default: []
 });
 
-export const showSolutionDetailState = atom<boolean>({
-  key: "showSolutionDetailState",
-  default: false
-})
+export const currentSolutionIdState = atom<any>({
+  key: "currentSolutionIdState",
+  default: null
+});
 
-export const solutionDetailState = atom({
+export const solutionDetailState = atom<any>({
   key: "solutionDetailState",
-  default: null,
+  default: {},
+});
+
+export const solutionLoadingState = atom<boolean>({
+  key: "solutionLoadingState",
+  default: false
 });
