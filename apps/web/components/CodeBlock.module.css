@@ -1,6 +1,6 @@
 .code_block {
     position: relative;
-    padding: 10px;
+    padding: 25px;
     font-size: 15px;
     word-wrap: break-word;
     white-space: pre-wrap;
@@ -20,17 +20,32 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding: 8px 12px; /* Add padding: top/bottom 8px, left/right 12px */
+    border-radius: 4px;
+}
+.copy_block button {
+    border-radius: 8px;
 }
 
-.copy_button {
-    position: relative;
-    cursor: pointer;
-    color: #fff;
-    background: gray;
-    border-radius: 0.5em;
-    padding: 2px 7px;
-    margin: 10px;
+.copied_alert {
+    position: fixed;
+    bottom: 1rem;  /* Use relative units like rem for better responsiveness */
+    right: 1rem;
+    background-color: #4CAF50; /* A pleasant shade of green */
+    color: white;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    animation: fadeIn 0.3s ease-in; /* Optional fade-in animation */
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
 
 .copied_text {
     background: #fff;
