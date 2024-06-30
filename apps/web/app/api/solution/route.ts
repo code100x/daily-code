@@ -62,7 +62,8 @@ export async function GET(req: NextRequest) {
       },
       orderBy: {
         createdAt: 'desc'
-      }
+      },
+      take: 10
     });
     
     return NextResponse.json({solutions: solutions}, {status: 200});

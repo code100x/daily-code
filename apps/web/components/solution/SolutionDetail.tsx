@@ -16,12 +16,16 @@ export function SolutionDetail() {
   useEffect(() => {
     async function fetchSolution() {
       if (!solutionDetail[currentSolutionId] && currentSolutionId) {
-        const res = await fetch(`/api/solution/${currentSolutionId}`);
-        if (res.status == 200) {
-          const data = await res.json();
-          console.log(data);
-          setSolutionDetail((prev: any) => ({ ...prev, [currentSolutionId]: data.solution }));
-          setSolutionLoading(false);
+        try {
+          const res = await fetch(`/api/solution/${currentSolutionId}`);
+          if (res.status == 200) {
+            const data = await res.json();
+            // logic to cache the solution detail
+            setSolutionDetail((prev: any) => ({ ...prev, [currentSolutionId]: data.solution }));
+            setSolutionLoading(false);
+          }
+        } catch (error) {
+          console.error("Failed to fetch solution:", error);
         }
       } else {
         setSolutionLoading(false);
@@ -37,7 +41,7 @@ export function SolutionDetail() {
       {currentSolutionId && currentSolutionDetail ? (
         <div>
           <Button variant="ghost" onClick={() => setCurrentSolutionId(null)}>
-            <ArrowLeft size={16} className="mr-2" /> All Solutions{" "}
+            <ArrowLeft size={16} className="mr-2" /> All Solutions
           </Button>
           <div className="flex flex-col gap-2 px-2 py-1">
             <span className="text-xl font-semibold">{currentSolutionDetail?.title}</span>
