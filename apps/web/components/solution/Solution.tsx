@@ -40,7 +40,7 @@ export function Solution({ solution }: { solution: any }) {
   );
 }
 
-function Avatar() {
+export function Avatar() {
   return (
     <div className="relative w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 mt-3">
       <svg

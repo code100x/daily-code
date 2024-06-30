@@ -16,21 +16,28 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  useToast
 } from "@repo/ui";
 import { Input } from "@repo/ui";
 import { Label } from "@repo/ui";
-import { activeSubmissionResultSelector, codeValueState, languageState, problemStatementIdState, solutionsState } from "@repo/store";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { activeSubmissionResultSelector, languageState, problemStatementIdState } from "@repo/store";
+import { useRecoilValue } from "recoil";
 import { getAllLanguagesSupported } from "../utils";
 import { CodeLanguage } from "@prisma/client";
 
 const editorDefualtValue = `
-  # Intuition
+  # Intuition 
+
   <!-- Describe your first thoughts on how to solve this problem. --> 
+  
   # Approach 
+  
   <!-- Describe your approach to solving the problem. --> 
+  
   # Complexity 
+  
   - Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> 
+  
   - Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ -->`;
 
 export function AddSolution() {
@@ -40,25 +47,44 @@ export function AddSolution() {
   const language = useRecoilValue(languageState);
   const problemStatementId = useRecoilValue(problemStatementIdState);
   const [languageId, setLanguageId] = useState<number>();
-  
-  async function handleAddSolution() {
-    const res = await fetch("/api/solution", {
-      method: "POST",
-      body: JSON.stringify({
-        problemStatementId,
-        title: title,
-        explanation: explanation,
-        code: submissionDetails.code,
-        languageId: languageId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const [open, setOpen] = useState(false);
+  const { toast } = useToast();
+  const [toggleButton, setToggleButton] = useState<boolean>(false);
 
-    if (res.status == 200) {
-      const data = await res.json();
-      console.log(data.solution);
+  async function handleAddSolution() {
+    try {
+      setToggleButton(true);
+      const res = await fetch("/api/solution", {
+        method: "POST",
+        body: JSON.stringify({
+          problemStatementId,
+          title: title,
+          explanation: explanation,
+          code: submissionDetails.code,
+          languageId: languageId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (res.status == 200) {
+        const data = await res.json();
+        console.log(data.solution);
+        if (data.solution) {
+          toast({
+            title: "Added solution",
+            description: "Solution added",
+          });
+          setOpen(false);
+        }
+        setToggleButton(false);
+      }
+    } catch (error) {
+      toast({
+        title: "An error occured",
+        description: `${error}`
+      });
     }
   }
 
@@ -75,7 +101,7 @@ export function AddSolution() {
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button className="bg-[rgb(14,120,42)] text-white hover:bg-[#24572e]">
             <div className="flex gap-2 items-center">
@@ -83,7 +109,7 @@ export function AddSolution() {
             </div>
           </Button>
         </DialogTrigger>
-        <DialogContent className="min-w-full overflow-y-scroll max-h-screen">
+        <DialogContent className="min-w-full overflow-y-scroll max-h-[600px]">
           <DialogHeader>
             <DialogTitle className="flex justify-center text-xl">Add solution</DialogTitle>
           </DialogHeader>
@@ -103,7 +129,6 @@ export function AddSolution() {
               <Label htmlFor="language" className="pl-8 text-lg">
                 Explanation
               </Label>
-              
               {/* <Select disabled={true} value={language}>
                 <SelectTrigger className="">
                   <SelectValue placeholder="Select a language" />
@@ -142,15 +167,18 @@ export function AddSolution() {
               </div>
             </div>
           </div>
-          <DialogFooter>
-            <DialogClose asChild>
+          <div className="flex justify-end">
+              <Button 
+                className="mr-4"
+                onClick={() => setOpen(false)}>
+                  Close
+              </Button>
               <Button 
                 className="mr-8"
                 onClick={handleAddSolution}>
-                  Add Solution
+                  {toggleButton ? "Adding solution..." : "Add solution"}
               </Button>
-            </DialogClose>
-          </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

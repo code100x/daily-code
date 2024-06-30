@@ -25,7 +25,8 @@ export async function GET(req: NextRequest, { params }: { params: { solutionId: 
         },
         language: {
           select: {
-            label: true
+            label: true,
+            value: true
           }
         }
       }
