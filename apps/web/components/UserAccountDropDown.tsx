@@ -35,19 +35,19 @@ export default function UserAccountDropDown() {
                 <UserRound />
               </div>
             ) : (
-              <UserImage image={user.image} />
+              <UserImage image={user.image} width={100} height={100} />
             )}
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg">
             <DropdownMenuLabel className="flex gap-4 items-center">
-              <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
+              <div className="!w-[2rem] flex items-center p-[0.2rem] justify-center !h-[2rem]">
                 {!user.image ? (
                   <div className="p-1 border-2 rounded-full border-[#1a1a1a]">
                     <UserRound />
                   </div>
                 ) : (
-                  <UserImage image={user.image} />
+                  <UserImage image={user.image} width={100} height={100} />
                 )}
               </div>
 

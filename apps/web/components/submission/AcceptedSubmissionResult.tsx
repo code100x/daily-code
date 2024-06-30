@@ -3,6 +3,7 @@ import SubmissionCreatedAt from "./SubmissionCreatedAt";
 import { ReactNode } from "react";
 import { activeSubmissionResultSelector } from "@repo/store";
 import { useRecoilValue } from "recoil";
+import { AddSolution } from "../solution/AddSolution";
 
 const SubmissionStats = ({
   icon,
@@ -51,7 +52,10 @@ const AcceptedSubmissionResult = () => {
 
   return (
     <div className="p-4">
-      <div className="font-bold text-xl text-[#0E902A]">{statusDesc}</div>
+      <div className="font-bold text-xl text-[#0E902A] flex justify-between">
+        <span>{statusDesc}</span>
+        <AddSolution />
+      </div>
       <SubmissionCreatedAt createdAt={createdAt} />
       <div className="my-4 flex items-center w-full gap-4">
         {stats.map((stat) => (

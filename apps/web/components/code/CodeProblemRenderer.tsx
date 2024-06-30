@@ -39,7 +39,7 @@ export const CodeProblemRenderer = ({
         ) : (
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={50}>
-              <ProblemStatementPanel notionRecordMap={problem.notionRecordMap} submissions={submissions} />
+              <ProblemStatementPanel notionRecordMap={problem.notionRecordMap} submissions={submissions} problemStatement={problem.problemStatement}/>
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel>

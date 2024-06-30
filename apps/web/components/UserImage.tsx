@@ -1,13 +1,13 @@
 import React from "react";
 
-export default function UserImage({ image }: any) {
+export default function UserImage({ image, height, width }: any) {
   return (
     <div>
       <img
-        className="w-full h-full rounded-full cursor-pointer"
+        className="rounded-full cursor-pointer"
         src={image || ""}
-        width={100}
-        height={100}
+        width={width}
+        height={height}
         alt="user_profile_image"
         referrerPolicy="no-referrer"
       />

@@ -3,7 +3,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui";
 import { Clock4, CodeXml } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Submission } from "@prisma/client";
+import { Submission, Solution } from "@prisma/client";
 import { ProblemStatement } from "@prisma/client";
 
 interface ProblemSubmissionTableProps {
@@ -30,7 +30,7 @@ export default function ProblemSubmissionTable({ problemStatements }: ProblemSub
     const days = Math.floor(hours / 24);
 
     if (days === 1) {
-      return "yesterday";
+      return "Yesterday";
     } else if (days > 1) {
       return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(dateTime);
     } else if (hours > 0) {
@@ -40,21 +40,49 @@ export default function ProblemSubmissionTable({ problemStatements }: ProblemSub
     }
   }
 
-  problemStatements.sort((a: any, b: any) => {
-    const latestSubmissionA = a.submissions
-      .filter((sub: Submission) => sub.statusId <= 3)
-      .sort((x: Submission, y: Submission) => new Date(y.createdAt).getTime() - new Date(x.createdAt).getTime())[0];
-    const latestSubmissionB = b.submissions
-      .filter((sub: Submission) => sub.statusId <= 3)
-      .sort((x: Submission, y: Submission) => new Date(y.createdAt).getTime() - new Date(x.createdAt).getTime())[0];
+  function sortSubmissions(problemStatements: ProblemStatement[]) {
+    return problemStatements.sort((a: any, b: any) => {
+      const latestSubmissionA = a.submissions
+        .filter((sub: Submission) => sub.statusId <= 3)
+        .sort((x: Submission, y: Submission) => new Date(y.createdAt).getTime() - new Date(x.createdAt).getTime())[0];
+      const latestSubmissionB = b.submissions
+        .filter((sub: Submission) => sub.statusId <= 3)
+        .sort((x: Submission, y: Submission) => new Date(y.createdAt).getTime() - new Date(x.createdAt).getTime())[0];
 
-    return new Date(latestSubmissionB.createdAt).getTime() - new Date(latestSubmissionA.createdAt).getTime();
-  });
+      return new Date(latestSubmissionB.createdAt).getTime() - new Date(latestSubmissionA.createdAt).getTime();
+    });
+  }
+
+  function sortSolutions(problemStatements: ProblemStatement[]) {
+    return problemStatements.sort((a: any, b: any) => {
+      const latestSolutionA = a.solutions
+        .sort((x: Solution, y: Solution) => new Date(y.createdAt).getTime() - new Date(x.createdAt).getTime())[0];
+      const latestSolutionB = b.solutions
+        .sort((x: Solution, y: Solution) => new Date(y.createdAt).getTime() - new Date(x.createdAt).getTime())[0];
+
+      return new Date(latestSolutionB.createdAt).getTime() - new Date(latestSolutionA.createdAt).getTime();
+    });
+  }
+
+  function sortProblemStatements(problemStatements: any) {
+    const hasSubmissions = problemStatements.some((ps: any) => {
+      if (ps.submissions && ps.submissions.length > 0) {
+        return true;
+      }
+    });
+    if (hasSubmissions) {
+      return sortSubmissions(problemStatements);
+    } else {
+      return sortSolutions(problemStatements);
+    }
+  }
+
+  const sortedProblemStatements = sortProblemStatements(problemStatements);
 
   const router = useRouter();
   return (
     <div className="p-4 flex flex-col text-[#CCC]">
-      {problemStatements && problemStatements?.length > 0 ? (
+      {sortedProblemStatements && sortedProblemStatements?.length > 0 ? (
         <div className="min-h-[20rem]  mb-4">
           <Table className="">
             <TableHeader>
@@ -73,7 +101,7 @@ export default function ProblemSubmissionTable({ problemStatements }: ProblemSub
               </TableRow>
             </TableHeader>
             <TableBody>
-              {problemStatements?.map(({ id, problem, problemId, submissions }: any) => {
+              {sortedProblemStatements?.map(({ id, problem, problemId, submissions, solutions }: any) => {
                 return (
                   <TableRow
                     key={id}
@@ -87,7 +115,7 @@ export default function ProblemSubmissionTable({ problemStatements }: ProblemSub
                     </TableCell>
                     <TableCell>
                       <span className="text-black text-center dark:text-white">
-                        {submissions.length > 0 &&
+                        {submissions && submissions.length > 0 &&
                           getTimeFromDateTime(
                             submissions
                               .filter((sub: Submission) => sub.statusId >= 1 && sub.statusId <= 3)
@@ -96,7 +124,16 @@ export default function ProblemSubmissionTable({ problemStatements }: ProblemSub
                                   new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                               )
                               .map((sub: Submission) => sub.createdAt)[0]
-                          )}
+                        )}
+                        {solutions && solutions.length > 0 &&
+                          getTimeFromDateTime(
+                            solutions
+                              .sort(
+                                (a: Solution, b: Solution) =>
+                                  new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                              )
+                              .map((solution: Solution) => solution.createdAt)[0]
+                        )}
                       </span>
                     </TableCell>
                   </TableRow>
