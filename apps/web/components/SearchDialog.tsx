@@ -1,6 +1,7 @@
 "use client";
 
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { FaMicrophone, FaStop } from "react-icons/fa"; 
 import { Dialog, DialogClose, DialogContent, Button, Input } from "@repo/ui";
 import { useEffect, useRef, useState } from "react";
 import { Track, Problem } from "@prisma/client";
@@ -14,6 +15,8 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [shortcut, setShortcut] = useState("Ctrl K");
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -69,6 +72,36 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
     setInput("");
   }
 
+  useEffect(() => {
+    if (!("webkitSpeechRecognition" in window)) {
+      return;
+    }
+
+    const SpeechRecognition = (window as any).webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+      setIsListening(false); 
+    };
+
+    recognitionRef.current = recognition;
+  }, []);
+
+  function handleMicClick() {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current?.start();
+      setIsListening(true);
+    }
+  }
+
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
       <Button variant="outline" className="pr-2" onClick={() => setDialogOpen(true)}>
@@ -91,6 +124,9 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
+          <Button variant="outline" onClick={handleMicClick}>
+            {isListening ? <FaStop className="w-4 h-4" /> : <FaMicrophone className="w-4 h-4" />}
+          </Button>
           <DialogClose>
             <Cross2Icon className="w-4 h-4" />
             <span className="sr-only">Close</span>
