@@ -24,7 +24,7 @@ chmod +x ./setupDB.sh
 ./setupDB.sh
 ```
 
-For windows users
+For Windows users
 ```
 cd packages/db
 yarn prisma migrate dev
