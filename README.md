@@ -15,12 +15,20 @@ cd daily-code
 yarn install
 ```
 
-> Setup DB (Windows users must have git-bash installed to run the script)
+> Setup DB 
 
+For Mac and Linux users
 ```
 cd packages/db
 chmod +x ./setupDB.sh
 ./setupDB.sh
+```
+
+For windows users
+```
+cd packages/db
+yarn prisma migrate dev
+yarn prisma db seed
 ```
 
 > Run locally
