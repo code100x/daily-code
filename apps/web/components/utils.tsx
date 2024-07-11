@@ -3,7 +3,31 @@ import db from "@repo/db/client";
 import { ProblemStatement, TestCase, CodeLanguage, MCQQuestion, Problem, TrackProblems } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
+const cache: { [key: string]: { data: any; timer: NodeJS.Timeout } } = {};
+
+function setCache(key: string, data: any, duration: number) {
+  if (cache[key]) {
+    clearTimeout(cache[key].timer);
+  }
+  const timer = setTimeout(() => {
+    delete cache[key];
+  }, duration);
+  cache[key] = { data, timer };
+}
+
+function getCache(key: string) {
+  return cache[key]?.data;
+}
+
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+
 export async function getProblem(problemId: string | null) {
+  const cacheKey = `problem_${problemId}`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+
   if (!problemId) {
     return null;
   }
@@ -21,6 +45,7 @@ export async function getProblem(problemId: string | null) {
         },
       },
     });
+    setCache(cacheKey, problem, CACHE_DURATION);
     return problem;
   } catch (err) {
     return null;
@@ -28,6 +53,11 @@ export async function getProblem(problemId: string | null) {
 }
 
 export async function getFirstProblemForTrack(trackId: string) {
+  const cacheKey = `first_problem_for_track_${trackId}`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
   try {
     const track = await db.track.findUnique({
       where: {
@@ -37,13 +67,20 @@ export async function getFirstProblemForTrack(trackId: string) {
         problems: true,
       },
     });
-    return track?.problems[0]?.problemId || null;
+    const firstProblemId = track?.problems[0]?.problemId || null;
+    setCache(cacheKey, firstProblemId, CACHE_DURATION);
+    return firstProblemId;
   } catch (err) {
     return null;
   }
 }
 
 export async function getAllProblems() {
+  const cacheKey = `all_problems`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
   try {
     const problems = await db.problem.findMany({
       orderBy: {
@@ -53,6 +90,7 @@ export async function getAllProblems() {
         problemStatement: true,
       },
     });
+    setCache(cacheKey, problems, CACHE_DURATION);
     return problems;
   } catch (e) {
     return [];
@@ -67,6 +105,7 @@ export async function updateProblem(problemId: string, data: Problem) {
       },
       data,
     });
+    delete cache[`problem_${problemId}`];
     return problem;
   } catch (e) {
     return null;
@@ -133,6 +172,11 @@ export async function createTrackProblems(data: TrackProblems) {
 }
 
 export async function getTrack(trackId: string) {
+  const cacheKey = `track_${trackId}`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
   try {
     const track = await db.track.findUnique({
       where: {
@@ -152,6 +196,8 @@ export async function getTrack(trackId: string) {
         ...track,
         problems: track.problems.map((problem) => ({ ...problem.problem })),
       };
+      setCache(cacheKey, trackWithProblems, CACHE_DURATION);
+      return trackWithProblems;
     }
 
     return null;
@@ -161,6 +207,12 @@ export async function getTrack(trackId: string) {
 }
 
 export async function getAllTracks() {
+  const cacheKey = `all_tracks`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+  
   try {
     const tracks = await db.track.findMany({
       where: {
@@ -192,6 +244,8 @@ export async function getAllTracks() {
       ...track,
       problems: track.problems.map((problem) => ({ ...problem.problem })),
     }));
+    setCache(cacheKey, tracksWithProblems, CACHE_DURATION);
+    return tracksWithProblems;
   } catch (e) {
     console.error(e);
     return [];
@@ -239,6 +293,7 @@ export async function createTrack(data: {
         });
       });
     }
+    delete cache['all_tracks'];
     return track;
   } catch (e) {
     return new Error("Failed to create track");
@@ -285,6 +340,8 @@ export async function updateTrack(
         });
       });
     }
+    delete cache[`track_${trackId}`];
+    delete cache['all_tracks'];
     return track;
   } catch (e) {
     console.log(e);
@@ -293,6 +350,11 @@ export async function updateTrack(
 }
 
 export async function getAllCategories() {
+  const cacheKey = `all_categories`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
   try {
     const categories = await db.categories.findMany({
       select: {
@@ -301,6 +363,7 @@ export async function getAllCategories() {
       },
       distinct: ["category"],
     });
+    setCache(cacheKey, categories, CACHE_DURATION);
     return categories;
   } catch (e) {
     return [];
@@ -308,6 +371,12 @@ export async function getAllCategories() {
 }
 
 export async function getAllMCQs() {
+  const cacheKey = `all_mcqs`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+
   try {
     const mcqs = await db.problem.findMany({
       where: {
@@ -317,6 +386,7 @@ export async function getAllMCQs() {
         mcqQuestions: true,
       },
     });
+    setCache(cacheKey, mcqs, CACHE_DURATION);
     return mcqs;
   } catch (e) {
     return [];
@@ -324,12 +394,18 @@ export async function getAllMCQs() {
 }
 
 export async function getAllMCQQuestion(problemId: string) {
+  const cacheKey = `mcq_questions_for_problem_${problemId}`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
   try {
     const mcqs = await db.mCQQuestion.findMany({
       where: {
         problemId,
       },
     });
+    setCache(cacheKey, mcqs, CACHE_DURATION);
     return mcqs;
   } catch (e) {
     return [];
@@ -341,6 +417,7 @@ export async function createMCQ(data: Omit<MCQQuestion, "id">) {
     const mcq = await db.mCQQuestion.create({
       data,
     });
+    delete cache['all_mcqs'];
     return mcq;
   } catch (e) {
     return null;
@@ -355,6 +432,8 @@ export async function updateMCQ(id: string, data: MCQQuestion) {
       },
       data,
     });
+    delete cache['all_mcqs'];
+    delete cache[`mcq_questions_for_problem_${data.problemId}`];
     return mcq;
   } catch (e) {
     console.log(e);
@@ -369,18 +448,25 @@ export async function deleteMCQ(id: string) {
         id: id,
       },
     });
+    delete cache['all_mcqs'];
     return mcq;
   } catch (e) {
     return null;
   }
 }
 export async function getAllMCQsForProblem(problemId: string) {
+  const cacheKey = `mcqs_for_problem_${problemId}`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
   try {
     const mcqs = await db.mCQQuestion.findMany({
       where: {
         problemId,
       },
     });
+    setCache(cacheKey, mcqs, CACHE_DURATION);
     return mcqs;
   } catch (e) {
     return [];
@@ -408,6 +494,12 @@ export async function getQuizScore({ userId, problemId }: { userId: string; prob
   }
 }
 export async function getAllProblemStatements() {
+  const cacheKey = `all_problem_statements`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+  
   try {
     const problemStatements = await db.problemStatement.findMany({
       select: {
@@ -420,6 +512,7 @@ export async function getAllProblemStatements() {
         argumentNames: true,
       },
     });
+    setCache(cacheKey, problemStatements, CACHE_DURATION);
     return problemStatements;
   } catch (e) {
     return [];
@@ -427,6 +520,12 @@ export async function getAllProblemStatements() {
 }
 
 export async function getProblemStatement(statementId: string) {
+  const cacheKey = `problem_statement_${statementId}`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+
   try {
     const problemStatements = await db.problemStatement.findMany({
       where: {
@@ -442,6 +541,7 @@ export async function getProblemStatement(statementId: string) {
         argumentNames: true,
       },
     });
+    setCache(cacheKey, problemStatements, CACHE_DURATION);
     return problemStatements;
   } catch (e) {
     return null;
@@ -456,6 +556,8 @@ export async function updateProblemStatement(problemStatementId: string, data: a
       },
       data: data,
     });
+    delete cache[`problem_statement_${problemStatementId}`];
+    delete cache['all_problem_statements'];
     return problemStatement;
   } catch (e) {
     return null;
@@ -463,6 +565,12 @@ export async function updateProblemStatement(problemStatementId: string, data: a
 }
 
 export async function getAllTestCase(id: string) {
+  const cacheKey = `test_case_${id}`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+  
   try {
     const testCase = await db.testCase.findUnique({
       where: {
@@ -476,6 +584,7 @@ export async function getAllTestCase(id: string) {
         inputs: true,
       },
     });
+    setCache(cacheKey, testCase, CACHE_DURATION);
     return testCase;
   } catch (e) {
     return null;
@@ -491,6 +600,7 @@ export async function createTestCase(inputs: string[], expectedOutput: string, p
         problemStatementId,
       },
     });
+    delete cache[`test_cases_for_problem_statement_${problemStatementId}`];
     return testCase;
   } catch (e) {
     console.log(e);
@@ -505,6 +615,8 @@ export async function deleteTestCase(testCaseId: string) {
         id: testCaseId,
       },
     });
+    delete cache[`test_case_${testCaseId}`];
+    return testCase;
   } catch (e) {
     return null;
   }
@@ -527,6 +639,7 @@ export async function updateTestCase(
         inputs,
       },
     });
+    delete cache[`test_case_${testCaseId}`];
     return updatedTestCase;
   } catch (e) {
     return [];
@@ -534,6 +647,12 @@ export async function updateTestCase(
 }
 
 export async function getAllLanguagesSupported() {
+  const cacheKey = `all_languages_supported`;
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+  
   try {
     const languagesSupported: CodeLanguage[] = await db.codeLanguage.findMany({
       select: {
@@ -542,6 +661,7 @@ export async function getAllLanguagesSupported() {
         value: true,
       },
     });
+    setCache(cacheKey, languagesSupported, CACHE_DURATION);
     return languagesSupported;
   } catch (e) {
     return [];
