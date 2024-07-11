@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import UserAccountDropDown from "./UserAccountDropDown";
 import { Codebar } from "../components/code/Codebar";
 import Pagination from "./Pagination";
+import { HomeButton } from "./HomeButton";
 
 export const BlogAppbar = ({
   problem,
@@ -33,6 +34,10 @@ export const BlogAppbar = ({
   function setTheme(arg0: string) {
     throw new Error("Function not implemented.");
   }
+
+  const handleGoHome = () => {
+    router.push('/');
+  };
 
   const router = useRouter();
 
@@ -111,6 +116,9 @@ export const BlogAppbar = ({
         {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
         <div className="flex space-x-2 mb-2">
           <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
+          <button onClick={handleGoHome}>
+          <HomeButton />
+          </button>
           <ModeToggle />
           <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
             <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
