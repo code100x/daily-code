@@ -9,9 +9,7 @@ export async function getProblem(problemId: string | null) {
     return null;
   }
   const value = await cache.get("problems", []);
-  console.log(value);
   if(value) {
-    console.log(value);
     return value;
   }
   try {
@@ -29,11 +27,9 @@ export async function getProblem(problemId: string | null) {
       },
     });
     if(problem) {
-      const a = await cache.set('problems', [], problem);
-      console.log(`Successfully set cache for key`);
+      await cache.set('problems', [], problem);
 
-    } 
-    // console.log(value);
+    }
     return problem;
   } catch (err) {
     return null;
