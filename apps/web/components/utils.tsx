@@ -2,10 +2,16 @@
 import db from "@repo/db/client";
 import { ProblemStatement, TestCase, CodeLanguage, MCQQuestion, Problem, TrackProblems } from "@prisma/client";
 import { Prisma } from "@prisma/client";
+import { cache } from '../../../packages/db/Cache';
 
 export async function getProblem(problemId: string | null) {
   if (!problemId) {
     return null;
+  }
+  const key = ['problem', problemId]
+  const value = await cache.get("problems", key);
+  if(value) {
+    return value;
   }
   try {
     const problem = await db.problem.findUnique({
@@ -21,6 +27,10 @@ export async function getProblem(problemId: string | null) {
         },
       },
     });
+    if(problem) {
+      await cache.set('problems', key, problem, 1800);
+    }
+    console.log(value);
     return problem;
   } catch (err) {
     return null;
