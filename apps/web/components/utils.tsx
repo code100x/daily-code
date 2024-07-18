@@ -8,7 +8,7 @@ export async function getProblem(problemId: string | null) {
   if (!problemId) {
     return null;
   }
-  const value = await cache.get('problems', [problemId.toString()]);
+  const value = await cache.get("problems", [problemId.toString()]);
   if(value) {
     return value;
   }
@@ -26,9 +26,7 @@ export async function getProblem(problemId: string | null) {
         },
       },
     });
-    if(problem) {
-      await cache.set('problems', [problemId.toString()], problem);
-    }
+    await cache.set("problems", [problemId.toString()], problem);
     return problem;
   } catch (err) {
     return null;
@@ -38,8 +36,7 @@ export async function getProblem(problemId: string | null) {
 export async function getFirstProblemForTrack(trackId: string) {
   const value = await cache.get("tracks", [trackId.toString()]);
   if(value) {
-    console.log("successfully added");
-    return value;
+    return value?.problems[0]?.problemId || null;;
   }
 
   try {
@@ -155,7 +152,11 @@ export async function createTrackProblems(data: TrackProblems) {
 export async function getTrack(trackId: string) {
   const value = await cache.get('Track', [trackId.toString()]);
   if(value) {
-    return value;
+    console.log(value);
+    return {
+      ...value,
+      problems: value.problems.map((problem: any) => ({ ...problem.problem })),
+    };
   }
   try {
     const track = await db.track.findUnique({
@@ -170,7 +171,6 @@ export async function getTrack(trackId: string) {
         },
       },
     });
-
     if (track) {
       await cache.set('Track', [trackId.toString()], track);
       return {
@@ -178,7 +178,6 @@ export async function getTrack(trackId: string) {
         problems: track.problems.map((problem) => ({ ...problem.problem })),
       };
     }
-
     return null;
   } catch (err) {
     return null;
@@ -186,10 +185,12 @@ export async function getTrack(trackId: string) {
 }
 
 export async function getAllTracks() {
-  const value = await cache.get('getAllTracks', []);
+  const value = await cache.get("getAllTracks", []);
   if(value) {
-    console.log("get successfully");
-    return value;
+    return value.map((track: any) => ({
+      ...track,
+      problems: track.problems.map((problem: any) => ({ ...problem.problem })),
+    }));
   }
   try {
     const tracks = await db.track.findMany({
@@ -218,9 +219,7 @@ export async function getAllTracks() {
         createdAt: "asc",
       },
     });
-    console.log(tracks);
-    await cache.set('getAllTracks', [], tracks);
-    console.log("hello set successfully");
+    await cache.set("getAllTracks", [], tracks);
     return tracks.map((track) => ({
       ...track,
       problems: track.problems.map((problem) => ({ ...problem.problem })),
