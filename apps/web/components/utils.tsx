@@ -152,7 +152,6 @@ export async function createTrackProblems(data: TrackProblems) {
 export async function getTrack(trackId: string) {
   const value = await cache.get('Track', [trackId.toString()]);
   if(value) {
-    console.log(value);
     return {
       ...value,
       problems: value.problems.map((problem: any) => ({ ...problem.problem })),
