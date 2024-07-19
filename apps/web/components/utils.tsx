@@ -2,10 +2,15 @@
 import db from "@repo/db/client";
 import { ProblemStatement, TestCase, CodeLanguage, MCQQuestion, Problem, TrackProblems } from "@prisma/client";
 import { Prisma } from "@prisma/client";
+import { cache } from '../../../packages/db/Cache';
 
 export async function getProblem(problemId: string | null) {
   if (!problemId) {
     return null;
+  }
+  const value = await cache.get("problems", [problemId.toString()]);
+  if(value) {
+    return value;
   }
   try {
     const problem = await db.problem.findUnique({
@@ -21,6 +26,7 @@ export async function getProblem(problemId: string | null) {
         },
       },
     });
+    await cache.set("problems", [problemId.toString()], problem);
     return problem;
   } catch (err) {
     return null;
@@ -28,6 +34,11 @@ export async function getProblem(problemId: string | null) {
 }
 
 export async function getFirstProblemForTrack(trackId: string) {
+  const value = await cache.get("tracks", [trackId.toString()]);
+  if(value) {
+    return value?.problems[0]?.problemId || null;;
+  }
+
   try {
     const track = await db.track.findUnique({
       where: {
@@ -37,6 +48,7 @@ export async function getFirstProblemForTrack(trackId: string) {
         problems: true,
       },
     });
+    await cache.set('tracks', [trackId.toString()], track);
     return track?.problems[0]?.problemId || null;
   } catch (err) {
     return null;
@@ -44,6 +56,10 @@ export async function getFirstProblemForTrack(trackId: string) {
 }
 
 export async function getAllProblems() {
+  const value = await cache.get('getAllProblems', []);
+  if(value) {
+    return value;
+  }
   try {
     const problems = await db.problem.findMany({
       orderBy: {
@@ -53,6 +69,7 @@ export async function getAllProblems() {
         problemStatement: true,
       },
     });
+    await cache.set('getAllProblems', [], problems);
     return problems;
   } catch (e) {
     return [];
@@ -133,6 +150,13 @@ export async function createTrackProblems(data: TrackProblems) {
 }
 
 export async function getTrack(trackId: string) {
+  const value = await cache.get('Track', [trackId.toString()]);
+  if(value) {
+    return {
+      ...value,
+      problems: value.problems.map((problem: any) => ({ ...problem.problem })),
+    };
+  }
   try {
     const track = await db.track.findUnique({
       where: {
@@ -146,14 +170,13 @@ export async function getTrack(trackId: string) {
         },
       },
     });
-
     if (track) {
+      await cache.set('Track', [trackId.toString()], track);
       return {
         ...track,
         problems: track.problems.map((problem) => ({ ...problem.problem })),
       };
     }
-
     return null;
   } catch (err) {
     return null;
@@ -161,6 +184,13 @@ export async function getTrack(trackId: string) {
 }
 
 export async function getAllTracks() {
+  const value = await cache.get("getAllTracks", []);
+  if(value) {
+    return value.map((track: any) => ({
+      ...track,
+      problems: track.problems.map((problem: any) => ({ ...problem.problem })),
+    }));
+  }
   try {
     const tracks = await db.track.findMany({
       where: {
@@ -188,6 +218,7 @@ export async function getAllTracks() {
         createdAt: "asc",
       },
     });
+    await cache.set("getAllTracks", [], tracks);
     return tracks.map((track) => ({
       ...track,
       problems: track.problems.map((problem) => ({ ...problem.problem })),
@@ -293,6 +324,10 @@ export async function updateTrack(
 }
 
 export async function getAllCategories() {
+  const value = await cache.get('getAllCategories', []);
+  if(value) {
+    return value;
+  } 
   try {
     const categories = await db.categories.findMany({
       select: {
@@ -301,6 +336,7 @@ export async function getAllCategories() {
       },
       distinct: ["category"],
     });
+    await cache.set('getAllCategories', [], categories);
     return categories;
   } catch (e) {
     return [];
@@ -308,6 +344,10 @@ export async function getAllCategories() {
 }
 
 export async function getAllMCQs() {
+  const value = await cache.get('getAllMCQs', []);
+  if(value) {
+    return value;
+  }
   try {
     const mcqs = await db.problem.findMany({
       where: {
@@ -317,6 +357,7 @@ export async function getAllMCQs() {
         mcqQuestions: true,
       },
     });
+    await cache.set('getAllMCQs', [], mcqs);
     return mcqs;
   } catch (e) {
     return [];
@@ -324,12 +365,17 @@ export async function getAllMCQs() {
 }
 
 export async function getAllMCQQuestion(problemId: string) {
+  const value = await cache.get('getAllMCQQuestion', [problemId.toString()]);
+  if(value) {
+    return value;
+  }
   try {
     const mcqs = await db.mCQQuestion.findMany({
       where: {
         problemId,
       },
     });
+    await cache.set('getAllMCQQuestion', [problemId.toString()], mcqs);
     return mcqs;
   } catch (e) {
     return [];
@@ -375,12 +421,17 @@ export async function deleteMCQ(id: string) {
   }
 }
 export async function getAllMCQsForProblem(problemId: string) {
+  const value = await cache.get('getAllMCQsForProblem', [problemId.toString()]);
+  if(value) {
+    return value;
+  }
   try {
     const mcqs = await db.mCQQuestion.findMany({
       where: {
         problemId,
       },
     });
+    await cache.set('getAllMCQsForProblem', [problemId.toString()], mcqs);
     return mcqs;
   } catch (e) {
     return [];
@@ -395,6 +446,10 @@ export async function createQuizScore(data: { userId: string; score: number; pro
 }
 
 export async function getQuizScore({ userId, problemId }: { userId: string; problemId: string }) {
+  const value = await cache.get('getQuizScore', [userId.toString(), problemId.toString()]);
+  if(value) {
+    return value;
+  }
   try {
     const submissions = await db.quizScore.findMany({
       where: {
@@ -402,12 +457,17 @@ export async function getQuizScore({ userId, problemId }: { userId: string; prob
         problemId,
       },
     });
+    await cache.set('getQuizScore', [userId.toString(), problemId.toString()], submissions);
     return submissions;
   } catch (e) {
     return [];
   }
 }
 export async function getAllProblemStatements() {
+  const value = await cache.get('getAllProblemStatements', []);
+  if(value) {
+    return value;
+  }
   try {
     const problemStatements = await db.problemStatement.findMany({
       select: {
@@ -420,6 +480,7 @@ export async function getAllProblemStatements() {
         argumentNames: true,
       },
     });
+    await cache.set('getAllProblemStatements', [], problemStatements);
     return problemStatements;
   } catch (e) {
     return [];
@@ -427,6 +488,10 @@ export async function getAllProblemStatements() {
 }
 
 export async function getProblemStatement(statementId: string) {
+  const value = await cache.get('getProblemStatement', [statementId.toString()]);
+  if(value) {
+    return value;
+  }
   try {
     const problemStatements = await db.problemStatement.findMany({
       where: {
@@ -442,6 +507,7 @@ export async function getProblemStatement(statementId: string) {
         argumentNames: true,
       },
     });
+    cache.set('getProblemStatement', [statementId.toString()], problemStatements);
     return problemStatements;
   } catch (e) {
     return null;
@@ -463,6 +529,10 @@ export async function updateProblemStatement(problemStatementId: string, data: a
 }
 
 export async function getAllTestCase(id: string) {
+  const value = await cache.get('getAllTestCase', [id.toString()]);
+  if(value) {
+    return value;
+  }
   try {
     const testCase = await db.testCase.findUnique({
       where: {
@@ -476,6 +546,7 @@ export async function getAllTestCase(id: string) {
         inputs: true,
       },
     });
+    await cache.set('getAllTestCase', [id.toString()], testCase);
     return testCase;
   } catch (e) {
     return null;
@@ -534,6 +605,7 @@ export async function updateTestCase(
 }
 
 export async function getAllLanguagesSupported() {
+  const value = await cache.get('getAllLanguagesSupported', []);
   try {
     const languagesSupported: CodeLanguage[] = await db.codeLanguage.findMany({
       select: {
@@ -542,6 +614,7 @@ export async function getAllLanguagesSupported() {
         value: true,
       },
     });
+    await cache.set('getAllLanguagesSupported', [], languagesSupported);
     return languagesSupported;
   } catch (e) {
     return [];
