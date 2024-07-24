@@ -18,7 +18,7 @@ export default function CodeBlock({ block }: { block: any }) {
     <div className="max-w-full overflow-auto">
       <pre className={`${styles.code_block} px-4 sm:px-6 md:px-8 relative`}>
         <code className="language-javascript">{code}</code>
-        <div className={`${styles.copy_block} absolute top-0 right-0`}>
+        <div className={`${styles.copy_block} absolute top-2 right-2`}>
           <button
             className=" text-gray-500"
             onClick={() => {
