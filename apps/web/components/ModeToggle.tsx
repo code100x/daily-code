@@ -3,9 +3,30 @@ import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Button } from "@repo/ui";
+import { useEffect, useState } from "react";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
+  const [ themeMode, setThemeMode ] = useState<'light' | 'dark'>("light");
+  
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+        if (event.ctrlKey && event.code === 'KeyD') {
+            event.preventDefault();
+            const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
+            setTheme(newThemeMode);
+            setThemeMode(newThemeMode);
+        }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    // Cleanup function
+    return () => {
+        window.removeEventListener('keydown', handleKeyPress);
+    };
+}, [themeMode]);
 
   return (
     <DropdownMenu>

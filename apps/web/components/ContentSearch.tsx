@@ -38,7 +38,7 @@ export function ContentSearch() {
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       switch (event.code) {
-        case "KeyK":
+        case "KeyL":
           if (event.ctrlKey) {
             event.preventDefault();
             setDialogOpen(true);
