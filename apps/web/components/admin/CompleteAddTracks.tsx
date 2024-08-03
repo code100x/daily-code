@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Input, Button } from "@repo/ui";
 import { Categories } from "@prisma/client";
 import CompleteTrackCard from "./CompleteTrackCard";
+import EditCategories from "./EditCategories";
 
 export interface CompleteTrack {
   trackId: string;
@@ -60,6 +61,10 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
           <div className="mr-3">{"NotionId: "}</div>
           <Input className="w-1/3 mr-3" onChange={(e) => setNotionId(e.target.value)} placeholder="NotionId" />
         </div>
+        <div className="flex justify-center">
+          <div className="mr-3">{"Cohort: "}</div>
+          <Input className="w-1/3 mr-3" type="number" onChange={(e) => setNotionId(e.target.value)} placeholder="3" />
+        </div>
         <div className="flex lg:flex-row justify-evenly mx-auto py-1">
           {categories.map((category, i) => (
             <Button
@@ -71,6 +76,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
               {category.category}
             </Button>
           ))}
+        <EditCategories categories={categories} />
         </div>
         <div className="flex justify-center">
           <CompleteTrackCard notionId={notionId} TrackData={trackData} />
