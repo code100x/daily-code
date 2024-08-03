@@ -13,7 +13,12 @@ services:
     volumes:
       - 100xdevs:/data/postgres
     restart: unless-stopped
-
+  
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
 
 volumes:
   100xdevs:
