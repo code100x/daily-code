@@ -11,6 +11,7 @@ export interface CompleteTrack {
   trackDescription: string;
   trackImage: string;
   selectedCategory: string[];
+  cohort: string;
 }
 
 const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
@@ -19,6 +20,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
   const [trackTitle, setTrackTitle] = useState("");
   const [trackDescription, setTrackDescription] = useState("");
   const [trackImage, setTrackImage] = useState("");
+  const [cohort, setCohort] = useState<string>("3");
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [trackData, setTrackData] = useState<CompleteTrack>({} as CompleteTrack);
 
@@ -31,7 +33,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
   }
 
   useEffect(() => {
-    setTrackData({ trackId, trackDescription, trackTitle, trackImage, selectedCategory });
+    setTrackData({ trackId, trackDescription, trackTitle, trackImage, selectedCategory, cohort });
   }, [trackId, trackDescription, trackTitle, trackImage,selectedCategory]);
   return (
     <div className="flex flex-col justify-center">
@@ -63,7 +65,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
         </div>
         <div className="flex justify-center">
           <div className="mr-3">{"Cohort: "}</div>
-          <Input className="w-1/3 mr-3" type="number" onChange={(e) => setNotionId(e.target.value)} placeholder="3" />
+          <Input className="w-1/3 mr-3" type="number" value={cohort} onChange={(e) => setCohort(e.target.value)} placeholder="3" />
         </div>
         <div className="flex lg:flex-row justify-evenly mx-auto py-1">
           {categories.map((category, i) => (

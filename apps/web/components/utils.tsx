@@ -236,6 +236,7 @@ export async function createTrack(data: {
   selectedCategory?: string[];
   problems: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
   hidden: boolean;
+  cohort?: number;
 }) {
   try {
     await db.problem.createMany({
@@ -248,6 +249,7 @@ export async function createTrack(data: {
         title: data.title,
         description: data.description,
         image: data.image,
+        cohort: data.cohort,
         hidden: data.hidden,
         problems: {
           createMany: {
