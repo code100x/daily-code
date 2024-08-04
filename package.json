@@ -1,6 +1,9 @@
 {
   "name": "dailycode",
   "private": true,
+  "prisma": {
+    "seed": "ts-node packages\\db\\prisma\\seed.ts"
+  },
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",

@@ -16,7 +16,7 @@ export function Print() {
       window.close();
     };
 
-    // Add event listener for 'afterprint' event
+    // // Add event listener for 'afterprint' event
     window.addEventListener("afterprint", closeWindow);
 
     // Print the document

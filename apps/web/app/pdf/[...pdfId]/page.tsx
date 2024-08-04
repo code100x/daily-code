@@ -8,12 +8,16 @@ import { LessonView } from "../../../components/LessonView";
 const notion = new NotionAPI();
 
 export default async function TrackComponent({ params }: { params: { pdfId: string[] } }) {
+
+
   const trackId: string = params.pdfId[0] || "";
   const problemId = params.pdfId[1];
   let notionRecordMaps: any[] = [];
+
   if (trackId === "43XrfL4n0LgSnTkSB4rO") {
     redirect("/tracks/oAjvkeRNZThPMxZf4aX5");
   }
+
   const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
 
   if (!problemId) {
@@ -28,20 +32,23 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
   }
   if (trackDetails && problemDetails) {
     return (
-      <div>
-        {trackDetails?.problems.map((problem, i) => (
-          <LessonView
-            isPdfRequested={true}
-            track={trackDetails}
-            problem={{
-              ...problemDetails,
-              notionRecordMap: notionRecordMaps[i],
-            }}
-            key={i}
-          />
-        ))}
-        <Print />
-      </div>
+      <>
+        
+        <div>
+          {trackDetails?.problems.map((problem, i) => (
+            <LessonView
+              isPdfRequested={true}
+              track={trackDetails}
+              problem={{
+                ...problemDetails,
+                notionRecordMap: notionRecordMaps[i],
+              }}
+              key={i}
+            />
+          ))}
+          <Print />
+        </div>
+      </>
     );
   }
 }

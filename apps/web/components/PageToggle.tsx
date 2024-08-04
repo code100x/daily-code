@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export function PageToggle({ allProblems, track }: { allProblems: Problem[]; track: Track & { problems: Problem[] } }) {
   const { trackIds }: { trackIds: string[] } = useParams();
-  const currentTrack = trackIds.join("/");
+  const currentTrack = trackIds?.join("/");
 
   return (
     <DropdownMenu>
