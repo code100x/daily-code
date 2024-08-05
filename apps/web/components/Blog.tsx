@@ -4,7 +4,6 @@ import { BlogAppbar } from "./BlogAppbar";
 import { NotionRenderer } from "./NotionRenderer";
 import useMountStatus from "../hooks/useMountStatus";
 import Pagination from "./Pagination";
-import { useRef } from "react";
 
 export const Blog = ({
   problem,
@@ -22,7 +21,6 @@ export const Blog = ({
   problemIndex: number;
 }) => {
   const mounted = useMountStatus();
- 
 
   if (isPdfRequested == undefined || !isPdfRequested) {
     if (!mounted) {
@@ -31,14 +29,14 @@ export const Blog = ({
   }
 
   return (
-    <>
-      <div className="break-after-page">
-        {showAppBar && <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />}
-        <NotionRenderer recordMap={problem.notionRecordMap} />
-        {showPagination && <div className="justify-center pt-2">
+    <div className="break-after-page">
+      {showAppBar && <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />}
+      <NotionRenderer recordMap={problem.notionRecordMap} />
+      {showPagination && (
+        <div className="justify-center pt-2">
           <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
-        </div>}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 };

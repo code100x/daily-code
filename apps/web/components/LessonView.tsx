@@ -8,7 +8,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
 import { CodeProblemRenderer } from "./code/CodeProblemRenderer";
 import { AppbarClient } from "./AppbarClient";
-import { forwardRef, LegacyRef } from "react";
 
 const getSubmissions = async (problemStatementId: string) => {
   const session = await getServerSession(authOptions);
@@ -87,7 +86,6 @@ export const LessonView = async ({
         showPagination={!!showPagination}
         isPdfRequested={isPdfRequested}
         problemIndex={problemIndex}
-    
       />
     );
   }
