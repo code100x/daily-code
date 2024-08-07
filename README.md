@@ -15,8 +15,7 @@ cd daily-code
 yarn install
 ```
 
-> Setup DB & Redis
-
+> Setup DB
 For Mac and Linux users
 ```
 cd packages/db
@@ -24,7 +23,7 @@ chmod +x ./setupDB.sh
 ./setupDB.sh
 ```
 
-For Windows users (using docker to start db and redis locally)
+For Windows users (using docker to start db locally)
 ```
 cd packages/db
 copy .env.example .env
