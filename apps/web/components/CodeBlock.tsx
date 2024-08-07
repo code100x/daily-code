@@ -20,7 +20,7 @@ export default function CodeBlock({ block }: { block: any }) {
         <code className="language-javascript">{code}</code>
         <div className={`${styles.copy_block} absolute top-2 right-2`}>
           <button
-            className=" text-gray-500"
+            className="text-gray-500  p-1"
             onClick={() => {
               navigator.clipboard.writeText(code).then(() => {
                 setShowCopiedMessage(true);
