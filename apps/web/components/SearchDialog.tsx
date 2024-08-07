@@ -7,6 +7,12 @@ import { Track, Problem } from "@prisma/client";
 import { TrackList } from "./TrackList";
 import Link from "next/link";
 
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+  }
+}
+
 export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[] })[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
@@ -14,6 +20,39 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   const [searchTracks, setSearchTracks] = useState(tracks);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [shortcut, setShortcut] = useState("Ctrl K");
+  const [isListening, setIsListening] = useState(false);
+  const speechRecognitionRef = useRef<any | null>(null);
+  
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      speechRecognitionRef.current = new SpeechRecognition();
+      speechRecognitionRef.current.continuous = false; 
+      speechRecognitionRef.current.interimResults = false; 
+      speechRecognitionRef.current.lang = 'en-US'; 
+
+      speechRecognitionRef.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(transcript); 
+        setIsListening(false); 
+      };
+
+      speechRecognitionRef.current.onstart = () => setIsListening(true);
+      speechRecognitionRef.current.onend = () => setIsListening(false);
+    }
+  }, []);
+
+  const startListening = () => {
+    if (speechRecognitionRef.current) {
+      speechRecognitionRef.current.start();
+    }
+  };
+
+  const endListening = () =>{
+    if(speechRecognitionRef.current){
+      speechRecognitionRef.current.stop();
+    }
+  }
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -67,6 +106,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
   function handleClose(open: boolean) {
     if (!open) setDialogOpen(false);
     setInput("");
+    endListening();
   }
 
   return (
@@ -91,6 +131,9 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
+          <button onClick={isListening?endListening:startListening}><div className={`h-8 w-8 mr-2 ${isListening?`bg-red-600`:`bg-black`} rounded-full flex  items-center justify-center`}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 304 408">
+            <path fill="white" d="M149.5 259q-26.5 0-45.5-19t-19-45V67q0-27 19-45.5T149.5 3t45 18.5T213 67v128q0 26-18.5 45t-45 19zM262 195h37q0 54-37.5 94.5T171 338v70h-43v-70q-53-8-90.5-49T0 195h36q0 46 34 77t79.5 31t79-31t33.5-77z" />
+          </svg></div></button>
           <DialogClose>
             <Cross2Icon className="w-4 h-4" />
             <span className="sr-only">Close</span>
