@@ -5,7 +5,7 @@ import { category } from "@repo/store";
 import { Track, Problem } from "@prisma/client";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem, Button, Checkbox } from "@repo/ui";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem, Switch, Label } from "@repo/ui";
 
 interface TrackPros extends Track {
   problems: Problem[];
@@ -54,13 +54,13 @@ export const Tracks = ({ tracks }: { tracks: TrackPros[] }) => {
   }, [sortBy]);
   return (
     <div>
-      <div className="flex justify-evenly mt-6">
+      <div className="flex flex-col gap-4 md:flex-row items-center justify-evenly mt-6">
         <Select
           onValueChange={(e) => {
             setSortBy(e);
           }}
         >
-          <SelectTrigger className="w-[250px]">
+          <SelectTrigger className="max-w-[250px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent
@@ -79,13 +79,10 @@ export const Tracks = ({ tracks }: { tracks: TrackPros[] }) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Button
-          onClick={() => setCohort3(!cohort3)}
-          variant={"outline"}
-          className={cohort3 ? "bg-gray-100 dark:bg-slate-700" : ""}
-        >
-          Cohort 3
-        </Button>
+        <div className="flex items-center space-x-2">
+          <Switch id="cohort 3" checked={cohort3} onCheckedChange={(e)=>setCohort3(e.valueOf())} />
+          <Label htmlFor="cohort-3">Cohort 3 Only</Label>
+        </div>
       </div>
       <ul className="p-8 md:20 grid grid-cols-1 gap-x-6 gap-y-8 place-items-center lg:grid-cols-2 w-full">
         {filteredTracks.map((t) => (
