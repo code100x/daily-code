@@ -2,17 +2,26 @@ import db from "../src";
 import seedsData from "./seedsData";
 
 async function main() {
-  const hashID: any[] = [];
-  const promises: Promise<any>[] = [];
-  seedsData.forEach((seed) => {
+  const hashID: string[] = [];
+  for (const seed of seedsData) {
     if (!hashID.includes(seed.data.id)) {
-      const promise = db.track.create(seed);
-      promises.push(promise);
+      try {
+        const alreadyExists = await db.track.findUnique({
+          where:{
+            id:seed.data.id
+          }
+        })
+        if(!alreadyExists){
+          const track = await db.track.create({
+            data: seed.data,
+          });
+        }
+        hashID.push(seed.data.id);
+      } catch (error) {
+        console.log(error);
+      }
     }
-    hashID.push(seed.data.id);
-  });
-
-  await Promise.all(promises);
+  }
   await db.codeLanguage.createMany({
     data: [
       {
