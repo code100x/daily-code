@@ -6,6 +6,22 @@ import playstore from "../public/playstore.png";
 import Logo from "../public/logo.png";
 
 const Footer = () => {
+  
+  const socials = {
+    x: {
+      link: "https://twitter.com/kirat_tw",
+      color: "868686"
+    },
+    insta: {
+      link: "https://www.instagram.com/kirat_ins/",
+      color: "b72a99"
+    },
+    youtube: {
+      link: "https://www.youtube.com/@harkirat1",
+      color: "ce1312"
+    }
+  }
+
   return (
     <div className="bottom-0 w-full p-4 bg-neutral-900 dark:bg-slate-900 px-6 lg:px-36 print:hidden">
       <div className="md:max-w-screen-2xl mt-4 mx-auto flex flex-row items-start justify-between w-full">
@@ -54,14 +70,14 @@ const Footer = () => {
           <div>
             <h4 className="text-neutral-200 font-semibold mb-2">Follow us</h4>
             <div className="flex gap-x-2">
-              <Link target="_blank" rel="noopener noreferrer" href={"https://twitter.com/kirat_tw"}>
-                <SiX className="text-white hover:text-blue-500" />
+              <Link target="_blank" rel="noopener noreferrer" href={socials.x.link}>
+                <SiX className={`text-white hover:text-[#${socials.x.color}]`} />
               </Link>
-              <Link target="_blank" rel="noopener noreferrer" href={"https://www.instagram.com/kirat_ins/"}>
-                <SiInstagram className="text-white hover:text-blue-500" />
+              <Link target="_blank" rel="noopener noreferrer" href={socials.insta.link}>
+                <SiInstagram className={`text-white hover:text-[#${socials.insta.color}]`} />
               </Link>
-              <Link target="_blank" rel="noopener noreferrer" href={"https://www.youtube.com/@harkirat1"}>
-                <SiYoutube className="text-white hover:text-blue-500" />
+              <Link target="_blank" rel="noopener noreferrer" href={socials.youtube.link}>
+                <SiYoutube className={`text-white hover:text-[#${socials.youtube.color}]`} />
               </Link>
             </div>
           </div>
