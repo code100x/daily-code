@@ -15,8 +15,7 @@ cd daily-code
 yarn install
 ```
 
-> Setup DB 
-
+> Setup DB
 For Mac and Linux users
 ```
 cd packages/db
@@ -24,9 +23,14 @@ chmod +x ./setupDB.sh
 ./setupDB.sh
 ```
 
-For Windows users
+For Windows users (using docker to start db locally)
 ```
 cd packages/db
+copy .env.example .env
+docker-compose up
+
+now, write the connection string in DATABASE_URL
+
 yarn prisma migrate dev
 yarn prisma db seed
 ```

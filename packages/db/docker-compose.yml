@@ -14,6 +14,5 @@ services:
       - 100xdevs:/data/postgres
     restart: unless-stopped
 
-
 volumes:
   100xdevs:
