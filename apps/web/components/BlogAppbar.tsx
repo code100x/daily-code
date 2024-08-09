@@ -1,39 +1,22 @@
 "use client";
-
 import { Button } from "@repo/ui";
-import { Problem, Track, CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
+import { Problem, Track } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "@radix-ui/react-icons";
+import { DownloadIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "./ModeToggle";
-import { PageToggle } from "./PageToggle";
 import { useRouter } from "next/navigation";
 import UserAccountDropDown from "./UserAccountDropDown";
-import { Codebar } from "../components/code/Codebar";
 import Pagination from "./Pagination";
 
 export const BlogAppbar = ({
-  problem,
   track,
   problemIndex
 }: {
-  problem: Problem & { notionRecordMap: any } & {
-    problemStatement?:
-      | (ProblemStatement & {
-          languagesSupported: CodeLanguage[];
-          testCases: TestCase[];
-        })
-      | null;
-  };
+  problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
   problemIndex: number
 }) => {
-  let totalPages = Array.from({ length: track.problems.length }, (_, i) => i + 1);
-
-  function setTheme(arg0: string) {
-    throw new Error("Function not implemented.");
-  }
-
   const router = useRouter();
 
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -55,14 +38,7 @@ export const BlogAppbar = ({
     setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 50);
     setScrollingDown(prevScrollPos < currentScrollPos);
     setPrevScrollPos(currentScrollPos);
-  }, 90); // Adjust the delay (in milliseconds) as needed
-
-  const handleScroll = () => {
-    const currentScrollPos = window.scrollY;
-    setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 50);
-    setScrollingDown(prevScrollPos < currentScrollPos);
-    setPrevScrollPos(currentScrollPos);
-  };
+  }, 90);
 
   useEffect(() => {
     window.addEventListener("scroll", debouncedHandleScroll);
@@ -108,7 +84,6 @@ export const BlogAppbar = ({
         <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
           {track.title} ({problemIndex + 1} / {track.problems.length})
         </p>
-        {problem.type === "Code" && problem.problemStatement && <Codebar problemStatement={problem.problemStatement} />}
         <div className="flex space-x-2 mb-2">
           <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
           <ModeToggle />

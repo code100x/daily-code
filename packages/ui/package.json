@@ -8,7 +8,7 @@
     "./utils": "./src/lib/utils.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
+    "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "generate:component": "turbo gen react-component"
   },

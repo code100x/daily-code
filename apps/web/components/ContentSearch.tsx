@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef, useState, useDeferredValue } from "react";
+import { useEffect, useRef, useState, useDeferredValue } from "react";
 import Link from "next/link";
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import {

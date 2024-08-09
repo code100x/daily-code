@@ -1,36 +1,11 @@
 import { Blog } from "./Blog";
-import { Problem, Track, ProblemStatement, CodeLanguage, TestCase } from "@prisma/client";
+import { Problem, Track } from "@prisma/client";
 import MCQRenderer from "./mcq/MCQRenderer";
 import RedirectToLoginCard from "./RedirectToLoginCard";
-
-import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
-import { CodeProblemRenderer } from "./code/CodeProblemRenderer";
 import { AppbarClient } from "./AppbarClient";
 
-const getSubmissions = async (problemStatementId: string) => {
-  const session = await getServerSession(authOptions);
-
-  if (!session || !session.user) {
-    return null;
-  }
-
-  const userId = session.user.id;
-  const submissions = await db.submission.findMany({
-    where: {
-      problemStatementId,
-      userId,
-    },
-    include: {
-      language: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  return submissions;
-};
 
 export const LessonView = async ({
   problem,
@@ -38,14 +13,7 @@ export const LessonView = async ({
   showAppBar,
   isPdfRequested,
 }: {
-  problem: Problem & { notionRecordMap: any } & {
-    problemStatement:
-      | (ProblemStatement & {
-          languagesSupported: CodeLanguage[];
-          testCases: TestCase[];
-        })
-      | null;
-  };
+  problem: Problem & { notionRecordMap: any }
   track: Track & { problems: Problem[] };
   showAppBar?: Boolean;
   isPdfRequested?: Boolean;
@@ -67,12 +35,6 @@ export const LessonView = async ({
 
   if (problem.type === "MCQ") {
     return <MCQRenderer problem={problem} track={track} showAppBar={!!showAppBar} problemIndex={problemIndex} />;
-  }
-  if (problem.type === "Code" && problem.problemStatement) {
-    const submissions = await getSubmissions(problem.problemStatement.id);
-    return (
-      <CodeProblemRenderer track={track} problem={problem} submissions={submissions} problemIndex={problemIndex} />
-    );
   }
 
   if (problem.type === "Blog") {
