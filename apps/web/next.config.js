@@ -11,5 +11,5 @@ module.exports = {
     );
     return config;
   },
-  transpilePackages: ["@repo/ui", "@repo/common", "@repo/recoil"],
+  transpilePackages: ["@repo/ui", "@repo/recoil"],
 };
