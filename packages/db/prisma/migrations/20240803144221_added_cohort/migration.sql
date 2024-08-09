@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Track" ADD COLUMN     "cohort" INTEGER NOT NULL DEFAULT 0;
