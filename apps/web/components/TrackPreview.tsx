@@ -40,7 +40,7 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
   return (
     <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
       <DialogContent className="max-w-2xl h-max flex items-center">
-        <div className="p-5">
+        <div className="p-5 w-full">
           <div className="mb-6 relative">
             <img src={track.image} className="h-20 w-full scale-90 object-cover rounded-lg" />
             <div className="text-xl md:text-3xl backdrop-blur-md font-black absolute w-full text-center -translate-y-14 drop-shadow-[2px_2px_var(--tw-shadow-color)] dark:shadow-stone-900 shadow-stone-100">
