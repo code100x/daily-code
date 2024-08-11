@@ -5,7 +5,8 @@ import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
 import { cache } from "react";
 import { LessonView } from "../../../components/LessonView";
 import ScrollToTopWrapper from "../../../components/ScrollToTopWrapper";
-
+//i have problem in the tracks page https://projects.100xdevs.com/tracks/web-orientation/Web-Dev---Devops-Orientation-8  
+//in place of justify centent we have to put content 
 const notion = new NotionAPI();
 export const dynamic = "auto";
 
