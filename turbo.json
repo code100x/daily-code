@@ -10,7 +10,10 @@
     "CODE_SUBMISSION_BACKOFF_MAX_RETRIES",
     "JUDGE0_API_URL",
     "CODE_SUBMISSION_RATE_LIMIT_COUNT",
-    "CODE_SUBMISSION_RATE_LIMIT_INTERVAL"
+    "CODE_SUBMISSION_RATE_LIMIT_INTERVAL",
+    "QDRANT_API_KEY",
+    "QDRANT_URL",
+    "GOOGLEAI_API_KEY"
   ],
   "globalDependencies": ["**/.env.*local", "**/.env", ".env", ".env.local", "tsconfig.json"],
   "pipeline": {

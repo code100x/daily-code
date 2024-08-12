@@ -11,7 +11,7 @@ export async function Landing() {
   return (
     <div className="flex flex-col h-screen justify-between">
       <div>
-        <AppbarClient tracks={tracks} />
+        <AppbarClient />
         <div className="flex justify-center pt-4">
           <div className="text-zinc-950 dark:text-zinc-50 text-4xl p-2 max-w-screen-md font-semibold mt-2 mb-4">
             Learning Paths

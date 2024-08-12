@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Input, Button } from "@repo/ui";
 import { Categories } from "@prisma/client";
 import CompleteTrackCard from "./CompleteTrackCard";
+import EditCategories from "./EditCategories";
 
 export interface CompleteTrack {
   trackId: string;
@@ -10,6 +11,7 @@ export interface CompleteTrack {
   trackDescription: string;
   trackImage: string;
   selectedCategory: string[];
+  cohort: string;
 }
 
 const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
@@ -18,6 +20,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
   const [trackTitle, setTrackTitle] = useState("");
   const [trackDescription, setTrackDescription] = useState("");
   const [trackImage, setTrackImage] = useState("");
+  const [cohort, setCohort] = useState<string>("3");
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [trackData, setTrackData] = useState<CompleteTrack>({} as CompleteTrack);
 
@@ -30,7 +33,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
   }
 
   useEffect(() => {
-    setTrackData({ trackId, trackDescription, trackTitle, trackImage, selectedCategory });
+    setTrackData({ trackId, trackDescription, trackTitle, trackImage, selectedCategory, cohort });
   }, [trackId, trackDescription, trackTitle, trackImage,selectedCategory]);
   return (
     <div className="flex flex-col justify-center">
@@ -60,6 +63,10 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
           <div className="mr-3">{"NotionId: "}</div>
           <Input className="w-1/3 mr-3" onChange={(e) => setNotionId(e.target.value)} placeholder="NotionId" />
         </div>
+        <div className="flex justify-center">
+          <div className="mr-3">{"Cohort: "}</div>
+          <Input className="w-1/3 mr-3" type="number" value={cohort} onChange={(e) => setCohort(e.target.value)} placeholder="3" />
+        </div>
         <div className="flex lg:flex-row justify-evenly mx-auto py-1">
           {categories.map((category, i) => (
             <Button
@@ -71,6 +78,7 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
               {category.category}
             </Button>
           ))}
+        <EditCategories categories={categories} />
         </div>
         <div className="flex justify-center">
           <CompleteTrackCard notionId={notionId} TrackData={trackData} />

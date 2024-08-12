@@ -1,6 +1,9 @@
 {
   "name": "dailycode",
   "private": true,
+  "prisma": {
+    "seed": "ts-node packages\\db\\prisma\\seed.ts"
+  },
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -8,8 +11,8 @@
     "lint:fix": "turbo lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky",
-    "dev:docker":"npm run prisma:docker && yarn run dev",
-    "prisma:docker":"cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed"
+    "dev:docker": "npm run prisma:docker && yarn run dev",
+    "prisma:docker": "cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.6.0",
@@ -34,6 +37,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "ioredis": "^5.4.1",
     "nextjs-toploader": "^1.6.11",
     "react": "^18.2.0",
     "react-notion-x": "^6.16.0"

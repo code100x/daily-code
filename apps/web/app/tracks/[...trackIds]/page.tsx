@@ -53,6 +53,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
         <ScrollToTopWrapper>
           <LessonView
             showAppBar
+            showPagination
             track={trackDetails}
             problem={{
               ...problemDetails,

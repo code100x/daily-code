@@ -36,6 +36,7 @@ export const LessonView = async ({
   problem,
   track,
   showAppBar,
+  showPagination,
   isPdfRequested,
 }: {
   problem: Problem & { notionRecordMap: any } & {
@@ -48,6 +49,7 @@ export const LessonView = async ({
   };
   track: Track & { problems: Problem[] };
   showAppBar?: Boolean;
+  showPagination?:Boolean;
   isPdfRequested?: Boolean;
 }) => {
   const session = await getServerSession(authOptions);
@@ -81,6 +83,7 @@ export const LessonView = async ({
         problem={problem}
         track={track}
         showAppBar={!!showAppBar}
+        showPagination={!!showPagination}
         isPdfRequested={isPdfRequested}
         problemIndex={problemIndex}
       />

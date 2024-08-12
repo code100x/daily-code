@@ -3,18 +3,15 @@ import { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, Button } from "@repo/ui";
 import EditProblem from "../EditProblem";
 import { createTrack } from "../utils";
+import { insertData } from "../../lib/search";
 
-interface CompleteProblemCard {
-  id: string;
-  title: string;
-  notionDocId: string;
-}
-interface CompleteTrackCard {
+interface CompleteTrackCardProps {
   trackId: string;
   trackTitle: string;
   trackDescription: string;
   trackImage: string;
   selectedCategory: string[];
+  cohort: string;
 }
 
 export interface Problem {
@@ -25,7 +22,7 @@ export interface Problem {
   description: string;
   type: string;
 }
-const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackData: CompleteTrackCard }) => {
+const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackData: CompleteTrackCardProps }) => {
   async function handleAddTrack() {
     setIsSubmitting(true);
     await createTrack({
@@ -36,7 +33,9 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       hidden: false,
       problems: problems,
       selectedCategory: TrackData.selectedCategory,
+      cohort: parseInt(TrackData.cohort),
     });
+    await insertData(TrackData.trackId);
     setIsSubmitting(true);
   }
 

@@ -6,7 +6,7 @@ const MarketingLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <main className=" h-full overflow-y-auto no-scrollbar">
         <div>
-        <AppbarClient tracks={[]} />
+        <AppbarClient />
         </div>
         <div className='pt-20'>
         {children}
