@@ -4,7 +4,6 @@ import { redirect, notFound } from "next/navigation";
 import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
 import { cache } from "react";
 import { LessonView } from "../../../components/LessonView";
-import ScrollToTopWrapper from "../../../components/ScrollToTopWrapper";
 
 const notion = new NotionAPI();
 export const dynamic = "auto";
@@ -12,8 +11,8 @@ export const dynamic = "auto";
 export async function generateStaticParams() {
   try {
     const tracks = await cache(getAllTracks)();
-    const allPages = tracks.map((t) =>
-      t.problems.map((p) => {
+    const allPages = tracks.map((t: any) =>
+      t.problems.map((p: any) => {
         if (p.type === "Blog") {
           return {
             trackIds: [t.id, p.id],
@@ -50,17 +49,14 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
   if (trackDetails && problemDetails) {
     return (
       <div>
-        <ScrollToTopWrapper>
-          <LessonView
-            showAppBar
-            showPagination
-            track={trackDetails}
-            problem={{
-              ...problemDetails,
-              notionRecordMap,
-            }}
-          />
-        </ScrollToTopWrapper>
+        <LessonView
+          showAppBar
+          track={trackDetails}
+          problem={{
+            ...problemDetails,
+            notionRecordMap,
+          }}
+        />
       </div>
     );
   } else {

@@ -14,14 +14,14 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
         {`
           .notion-header {
             display: none !important;
-          }
-
-          .notion-page: {
+            }
+            
+            .notion-page: {
             padding: 0px !important;
           }
         `}
       </style>
-      <div className="rounded-full">
+      <div>
         <NotionRendererLib
           components={{
             Code: CodeBlock,

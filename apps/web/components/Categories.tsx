@@ -2,7 +2,6 @@
 import { useRecoilState } from "recoil";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { category } from "@repo/store";
-import { Button } from "@repo/ui";
 
 interface Category {
   category: string;
@@ -27,15 +26,9 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
 
   return (
     <div>
-      <div className="xl:hidden block">
+      <div className="flex gap-2 items-center w-full justify-end">
+        <span className="font-medium">Filter by:</span>
         <SelectCategory
-          categories={categories}
-          selectedCategory={selectedCategory}
-          handleCategoryChange={handleCategoryChange}
-        />
-      </div>
-      <div className="xl:block hidden">
-        <ButtonCategory
           categories={categories}
           selectedCategory={selectedCategory}
           handleCategoryChange={handleCategoryChange}
@@ -72,30 +65,6 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
           ))}
         </SelectContent>
       </Select>
-    </div>
-  );
-};
-
-const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
-  return (
-    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
-      <div>
-        <Button variant="ghost" onClick={() => handleCategoryChange("All")}>
-          All
-        </Button>
-      </div>
-      {categories.map((category) => (
-        <Button
-          key={category.category}
-          variant="ghost"
-          onClick={() => handleCategoryChange(category.category)}
-          className={
-            selectedCategory === category.category ? "bg-gray-300 dark:bg-slate-700 rounded-full" : "rounded-full"
-          }
-        >
-          {category.category}
-        </Button>
-      ))}
     </div>
   );
 };

@@ -7,11 +7,11 @@ async function main() {
     if (!hashID.includes(seed.data.id)) {
       try {
         const alreadyExists = await db.track.findUnique({
-          where:{
-            id:seed.data.id
-          }
-        })
-        if(!alreadyExists){
+          where: {
+            id: seed.data.id,
+          },
+        });
+        if (!alreadyExists) {
           const track = await db.track.create({
             data: seed.data,
           });

@@ -7,11 +7,7 @@ const ScrollToTopWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div>
-      <ScrollToTop
-        smooth
-        className={"flex justify-center items-center !rounded-full dark:bg-zinc-950"}
-        color={resolvedTheme == "light" ? "black" : "white"}
-      />
+      <ScrollToTop smooth className={"flex justify-center items-center !rounded-full "} style={{ zIndex: 100 }} />
       {children}
     </div>
   );
