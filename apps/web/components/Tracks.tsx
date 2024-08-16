@@ -21,7 +21,6 @@ export const Tracks = ({ tracks }: { tracks: TrackPros[] }) => {
   const selectedCategory = useRecoilValue(category);
   const [filteredTracks, setFilteredTracks] = useState<TrackPros[]>(tracks);
   const [sortBy, setSortBy] = useState<string>("");
-
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
   const [cohort3, setCohort3] = useState<boolean>(false);
 
