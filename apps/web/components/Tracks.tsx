@@ -58,7 +58,7 @@ export const Tracks = ({ tracks }: { tracks: TrackPros[] }) => {
       <div className="flex flex-col gap-4 md:flex-row items-center justify-evenly mt-6">
         <Select
           open = {isSelectOpen}
-          onOpenChange={() => { setTimeout(() => { setSelectOpen(!selectOpen); }, 20); }}
+          onOpenChange={() => { setTimeout(() => { setIsSelectOpen(!isSelectOpen); }, 20); }}
           onValueChange={(e) => {
             setSortBy(e);
           }}
