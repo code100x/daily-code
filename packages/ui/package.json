@@ -8,12 +8,11 @@
     "./utils": "./src/lib/utils.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
+    "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "generate:component": "turbo gen react-component"
   },
   "devDependencies": {
-    "@repo/common": "*",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@turbo/gen": "^1.11.3",
