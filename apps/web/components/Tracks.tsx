@@ -21,6 +21,7 @@ export const Tracks = ({ tracks }: { tracks: TrackPros[] }) => {
   const selectedCategory = useRecoilValue(category);
   const [filteredTracks, setFilteredTracks] = useState<TrackPros[]>(tracks);
   const [sortBy, setSortBy] = useState<string>("");
+  const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const [cohort3, setCohort3] = useState<boolean>(false);
 
   const filterTracks = () => {
@@ -56,6 +57,8 @@ export const Tracks = ({ tracks }: { tracks: TrackPros[] }) => {
     <div>
       <div className="flex flex-col gap-4 md:flex-row items-center justify-evenly mt-6">
         <Select
+          open = {isSelectOpen}
+          onOpenChange={() => { setTimeout(() => { setIsSelectOpen(!isSelectOpen); }, 20); }}
           onValueChange={(e) => {
             setSortBy(e);
           }}
