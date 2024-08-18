@@ -65,6 +65,7 @@ async function main() {
     },
   });
 
+
   await db.trackCategory.createMany({
     data: [
       {
