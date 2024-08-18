@@ -32,11 +32,11 @@ export const Blog = ({
     <div className="break-after-page">
       {showAppBar && <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />}
       <NotionRenderer recordMap={problem.notionRecordMap} />
-      {showPagination && (
+      {/* {showPagination && (
         <div className="justify-center pt-2">
           <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
