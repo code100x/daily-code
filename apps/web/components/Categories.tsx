@@ -1,8 +1,21 @@
 "use client";
-import { useRecoilState } from "recoil";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { category } from "@repo/store";
-import { Button } from "@repo/ui";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui";
+import { useMemo } from "react";
+import { useRecoilState } from "recoil";
 
 interface Category {
   category: string;
@@ -25,6 +38,12 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
     }
   };
 
+  const [visibleCategories, hiddenCategories] = useMemo(() => {
+    const visible = categories.slice(0, 5);
+    const hidden = categories.slice(5);
+    return [visible, hidden];
+  }, [categories]);
+
   return (
     <div>
       <div className="xl:hidden block">
@@ -35,11 +54,18 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
         />
       </div>
       <div className="xl:block hidden">
-        <ButtonCategory
-          categories={categories}
-          selectedCategory={selectedCategory}
-          handleCategoryChange={handleCategoryChange}
-        />
+        <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
+          <ButtonCategory
+            categories={visibleCategories}
+            selectedCategory={selectedCategory}
+            handleCategoryChange={handleCategoryChange}
+          />
+          <DropDownCategory
+            categories={hiddenCategories}
+            selectedCategory={selectedCategory}
+            handleCategoryChange={handleCategoryChange}
+          />
+        </div>
       </div>
     </div>
   );
@@ -78,7 +104,7 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
 
 const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
   return (
-    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
+    <>
       <div>
         <Button variant="ghost" onClick={() => handleCategoryChange("All")}>
           All
@@ -96,6 +122,35 @@ const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: 
           {category.category}
         </Button>
       ))}
-    </div>
+    </>
+  );
+};
+
+const DropDownCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
+  return (
+    <>
+      {categories.length > 0 && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="rounded-full">
+              More
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>More Categories</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {categories.map((category) => (
+              <DropdownMenuItem
+                key={category.category}
+                onClick={() => handleCategoryChange(category.category)}
+                className={selectedCategory === category.category ? "bg-gray-300 dark:bg-slate-700" : ""}
+              >
+                {category.category}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </>
   );
 };
