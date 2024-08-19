@@ -29,6 +29,7 @@ export default function CodeBlock({ block }: { block: any }) {
             }}
           >
             {showCopiedMessage ? <CopyTick /> : <CopyIcon />}
+            {showCopiedMessage && <p className="absolute border p-1 text-xs bg-gray-500 text-slate-100 rounded-sm right-7 top-1 z-10">Copied!</p>}
           </button>
       </div>
       <div className="max-w-full overflow-auto relative">
