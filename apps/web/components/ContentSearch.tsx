@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@repo/ui";
 import { getSearchResults } from "../lib/search";
+import { useDebouncedValue } from "../hooks/useDebounced";
 
 export function ContentSearch() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -22,18 +23,19 @@ export function ContentSearch() {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const deferredInput = useDeferredValue(input);
+  const debounceInput = useDebouncedValue(deferredInput, 500);
 
   useEffect(() => {
     async function fetchSearchResults() {
-      if (deferredInput.length > 0) {
-        const data = await getSearchResults(deferredInput);
+      if (debounceInput.length > 0) {
+        const data = await getSearchResults(debounceInput);
         setSearchTracks(data);
       } else {
         setSearchTracks([]);
       }
     }
     fetchSearchResults();
-  }, [deferredInput]);
+  }, [debounceInput]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
