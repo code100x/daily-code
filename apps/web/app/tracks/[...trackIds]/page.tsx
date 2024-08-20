@@ -48,16 +48,14 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
 
   if (trackDetails && problemDetails) {
     return (
-      <div>
-        <LessonView
-          showAppBar
-          track={trackDetails}
-          problem={{
-            ...problemDetails,
-            notionRecordMap,
-          }}
-        />
-      </div>
+      <LessonView
+        showAppBar
+        track={trackDetails}
+        problem={{
+          ...problemDetails,
+          notionRecordMap,
+        }}
+      />
     );
   } else {
     notFound();

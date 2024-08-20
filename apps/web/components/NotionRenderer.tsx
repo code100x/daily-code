@@ -20,7 +20,8 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
 
   return (
     <NotionRendererLib
-      className="pt-12"
+      className={`pt-12 ${isDarkMode ? "!bg-[#0a0a0a]" : "bg-slate-50"}`}
+      bodyClassName="text-base sm:text-lg"
       components={components}
       darkMode={isDarkMode}
       disableHeader

@@ -3,8 +3,8 @@ import { PageToggle } from "./PageToggle";
 import Link from "next/link";
 import { Button } from "@repo/ui";
 import { ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
-import { ModeToggle } from "./ModeToggle";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 const TrackTools = ({
   track,
@@ -14,6 +14,9 @@ const TrackTools = ({
   track: Track & { problems: Problem[] };
   problemIndex: number;
 }) => {
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -32,7 +35,11 @@ const TrackTools = ({
           href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
           style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
         >
-          <Button size={"lg"} className="flex gap-2 font-semibold" disabled={problemIndex === 0}>
+          <Button
+            className={`flex gap-2 font-semibold ${isDarkMode ? "bg-slate-50" : "bg-[#323232]"}`}
+            disabled={problemIndex === 0}
+            size={"lg"}
+          >
             <ChevronLeft className="size-4" />
             <span className="hidden md:block">Prev</span>
           </Button>
@@ -47,9 +54,9 @@ const TrackTools = ({
           style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
         >
           <Button
-            size={"lg"}
-            className="flex gap-2 font-semibold"
+            className={`flex gap-2 font-semibold ${isDarkMode ? "bg-slate-50" : "bg-[#323232]"}`}
             disabled={problemIndex + 1 === track.problems.length}
+            size={"lg"}
           >
             <span className="hidden md:block">Next</span>
             <ChevronRight className="size-4" />
@@ -57,7 +64,12 @@ const TrackTools = ({
         </Link>
 
         {/* To Top */}
-        <Button onClick={scrollToTop} className="flex gap-2 " variant={"secondary"} size={"lg"}>
+        <Button
+          className={`flex gap-2 ${isDarkMode ? "bg-[#323232]" : "bg-slate-50"}`}
+          onClick={scrollToTop}
+          size={"lg"}
+          variant={"secondary"}
+        >
           <span className="hidden md:block">Go to Top</span>
           <ArrowUp className="size-4" />
         </Button>
