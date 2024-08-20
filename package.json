@@ -1,18 +1,18 @@
 {
   "name": "dailycode",
   "private": true,
-  "prisma": {
-    "seed": "ts-node packages\\db\\prisma\\seed.ts"
-  },
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "lint:fix": "turbo lint:fix",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "prepare": "husky",
-    "dev:docker": "npm run prisma:docker && yarn run dev",
-    "prisma:docker": "cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed"
+    "lint:fix": "turbo lint:fix",       
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,css,md}\"",
+    "dev:docker": "yarn run prisma:docker && yarn run dev",
+    "prisma:docker": "cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed",
+    "prepare": "husky"
+  },
+  "prisma": {
+    "seed": "ts-node packages\\db\\prisma\\seed.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.6.0",
