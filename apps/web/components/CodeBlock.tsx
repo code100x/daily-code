@@ -14,26 +14,26 @@ export default function CodeBlock({ block }: { block: any }) {
 
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(code).then(() => {
+      setShowCopiedMessage(true);
+      setTimeout(() => {
+        setShowCopiedMessage(false);
+      }, 2000);
+    });
+  };
+
   return (
-    <div className="max-w-full overflow-auto">
-      <pre className={`${styles.code_block} px-4 sm:px-6 md:px-8 relative`}>
+    <div className="w-full relative">
+      <pre className={`${styles.code_block} px-4 sm:px-6 md:px-8`}>
         <code className="language-javascript">{code}</code>
-        <div className={`${styles.copy_block} absolute top-2 right-2`}>
-          <button
-            className="text-gray-500  p-1"
-            onClick={() => {
-              navigator.clipboard.writeText(code).then(() => {
-                setShowCopiedMessage(true);
-                setTimeout(() => {
-                  setShowCopiedMessage(false);
-                }, 2000);
-              });
-            }}
-          >
-            {showCopiedMessage ? <CopyTick /> : <CopyIcon />}
-          </button>
-        </div>
       </pre>
+      <button className="text-gray-500  p-1 absolute top-2 right-2" onClick={handleCopyClick}>
+        {showCopiedMessage ? <CopyTick /> : <CopyIcon />}
+        {showCopiedMessage && (
+          <p className="absolute border p-1 text-xs bg-gray-500 text-slate-100 rounded-sm right-8 top-1">Copied!</p>
+        )}
+      </button>
     </div>
   );
 }
