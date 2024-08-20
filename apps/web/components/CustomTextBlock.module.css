@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap");
+
+.textBlock {
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #2c3e50;
+  margin-bottom: 1.5em;
+  font-family: "Open Sans", sans-serif;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
+.textBlock:hover {
+  color: #ecf0f1;
+  background-color: #34495e;
+}
