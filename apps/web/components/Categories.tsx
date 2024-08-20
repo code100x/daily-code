@@ -78,24 +78,25 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
 
 const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
   return (
-    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
-      <div>
+    <div className="relative flex justify-center mx-auto border-2 rounded-full py-1 w-2/3 overflow-x-auto">
+      <div className="flex items-center space-x-4 w-[90%] mx-auto overflow-x-auto scrollbar-hide">
         <Button variant="ghost" onClick={() => handleCategoryChange("All")}>
           All
         </Button>
+        {categories.map((category) => (
+          <Button
+            key={category.category}
+            variant="ghost"
+            onClick={() => handleCategoryChange(category.category)}
+            className={
+              selectedCategory === category.category ? "bg-gray-300 dark:bg-slate-700 rounded-full" : "rounded-full"
+            }
+          >
+            {category.category}
+          </Button>
+        ))}
       </div>
-      {categories.map((category) => (
-        <Button
-          key={category.category}
-          variant="ghost"
-          onClick={() => handleCategoryChange(category.category)}
-          className={
-            selectedCategory === category.category ? "bg-gray-300 dark:bg-slate-700 rounded-full" : "rounded-full"
-          }
-        >
-          {category.category}
-        </Button>
-      ))}
     </div>
   );
 };
+
