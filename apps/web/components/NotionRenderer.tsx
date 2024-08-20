@@ -9,20 +9,36 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
   const { resolvedTheme } = useTheme();
 
   return (
-    <div className="w-full">
+    <div className=".notion_ w-full .notion-bg-black">
       <style>
-        {`
-          .notion-header {
-            display: none !important;
-          }
+        {` 
+            .notion-app {
+                background: #111827;
+            }
+            .notion-title{
+                font-family: open-montserrat;
+                font-size: xxx-large;
+            }
+            .notion-list li{
+                font-size: larger;
+                font-family: open-poppins 
+            }
+            .notion-text{
+                font-size: larger;
+                font-family: open-poppins 
+            }
+            .notion-header {
+                display: none !important;
+            }
+            .notion-page: {
+                padding: 0px !important;
+            }
 
-          .notion-page: {
-            padding: 0px !important;
-          }
         `}
       </style>
       <div className="rounded-full">
         <NotionRendererLib
+          className="text-red-500 "
           components={{
             Code: CodeBlock,
           }}

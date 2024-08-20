@@ -2,16 +2,21 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    '../../packages/ui/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-    './screens/**/*{.ts,tsx}',
+    "../../packages/ui/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+    "./screens/**/*{.ts,tsx}",
   ],
   prefix: "",
   theme: {
+       fontFamily: {
+        "open-talk": ["Open Sans", " sans - serif"],
+        "open-poppins": ["Poppins", "sans-serif"],
+        "open-montserrat": ["Montserrat Alternates", "sans-serif"]
+      },
     container: {
       center: true,
       padding: "2rem",
@@ -77,4 +82,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
