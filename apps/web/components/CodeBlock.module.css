@@ -4,11 +4,11 @@
     font-size: 15px;
     word-wrap: break-word;
     white-space: pre-wrap;
-    background: #161b22;
+    background: #0f172a;
     overflow: auto;
     line-height: 1.6;
-    border: 1px solid #333;
-    border-left: 3px solid #e81029;
+    border: 1px solid #10b981;
+    border-left: 2px solid #b91c1c;
     color: #564;
     min-width: 200px;
     width: 800px;

@@ -17,22 +17,22 @@ export default function CodeBlock({ block }: { block: any }) {
   return (
     <div className="max-w-full relative">
       <div className={`${styles.copy_block} absolute top-2 right-2 z-10`}>
-          <button
-            className="text-gray-500 p-1 relative"
-            onClick={() => {
-              navigator.clipboard.writeText(code).then(() => {
-                setShowCopiedMessage(true);
-                setTimeout(() => {
-                  setShowCopiedMessage(false);
-                }, 2000);
-              });
-            }}
-          >
-            {showCopiedMessage ? <CopyTick /> : <CopyIcon />}
-          </button>
+        <button
+          className="text-gray-500 p-1 relative"
+          onClick={() => {
+            navigator.clipboard.writeText(code).then(() => {
+              setShowCopiedMessage(true);
+              setTimeout(() => {
+                setShowCopiedMessage(false);
+              }, 2000);
+            });
+          }}
+        >
+          {showCopiedMessage ? <CopyTick /> : <CopyIcon />}
+        </button>
       </div>
       <div className="max-w-full overflow-auto relative">
-        <pre className={`${styles.code_block} px-4 sm:px-6 md:px-8`}>
+        <pre className={`${styles.code_block} rounded-3xl px-4 sm:px-6 md:px-8`}>
           <code className="language-javascript">{code}</code>
         </pre>
       </div>
