@@ -6,14 +6,13 @@
     "GOOGLE_CLIENT_SECRET",
     "GITHUB_ID",
     "GITHUB_SECRET",
-    "CODE_SUBMISSION_BACKOFF_DELAY",
-    "CODE_SUBMISSION_BACKOFF_MAX_RETRIES",
-    "JUDGE0_API_URL",
-    "CODE_SUBMISSION_RATE_LIMIT_COUNT",
-    "CODE_SUBMISSION_RATE_LIMIT_INTERVAL",
     "QDRANT_API_KEY",
     "QDRANT_URL",
-    "GOOGLEAI_API_KEY"
+    "GOOGLEAI_API_KEY",
+    "GOOGLEAI_URL",
+    "VECTOR_SIZE",
+    "NEXTAUTH_SECRET",
+    "CACHE_EXPIRE"
   ],
   "globalDependencies": ["**/.env.*local", "**/.env", ".env", ".env.local", "tsconfig.json"],
   "pipeline": {

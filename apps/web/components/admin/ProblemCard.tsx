@@ -14,12 +14,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui";
-import { Problem, ProblemStatement } from "@prisma/client";
+import { Problem, ProblemType } from "@prisma/client";
 import { updateProblem } from "../utils";
-import { useRouter } from "next/navigation";
 
-const ProblemCard = ({ problem }: { problem: Problem & { problemStatement: ProblemStatement | null } }) => {
-  const router = useRouter();
+const ProblemCard = ({ problem }: { problem: Problem }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(problem.id);
   const [title, setTitle] = useState(problem.title);
@@ -51,11 +49,6 @@ const ProblemCard = ({ problem }: { problem: Problem & { problemStatement: Probl
                 <CardTitle>{title}</CardTitle>
               </div>
               <div className="flex gap-4 items-center">
-                {problem.type === "Code" && !problem.problemStatement && (
-                  <Button onClick={() => router.push(`/admin/code/${problem.id}`)} variant={"outline"}>
-                    Add Problem Statement
-                  </Button>
-                )}
                 <Button variant={"outline"} className="" onClick={() => handleEdit(problem.id)}>
                   Edit
                 </Button>
@@ -93,7 +86,7 @@ const ProblemCard = ({ problem }: { problem: Problem & { problemStatement: Probl
             </CardDescription>
             <CardDescription>
               <Select
-                onValueChange={(e: "Blog" | "Code" | "MCQ") => {
+                onValueChange={(e: ProblemType) => {
                   setType(e);
                 }}
               >
