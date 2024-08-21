@@ -11,6 +11,7 @@ import "react-notion-x/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 // used for rendering equations (optional)
 import "katex/dist/katex.min.css";
+import { Toaster } from "@repo/ui";
 
 const fontSans = Poppins({
   subsets: ["latin"],
@@ -20,8 +21,8 @@ const fontSans = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "DailyCode",
-  description: "Code daily",
+  title: "Projects | 100xDevs",
+  description: "Code Daily",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextTopLoader color="#2E78C7" height={2} />
           <Providers>{children}</Providers>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

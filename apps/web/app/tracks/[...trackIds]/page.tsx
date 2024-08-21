@@ -7,6 +7,43 @@ import { LessonView } from "../../../components/LessonView";
 
 const notion = new NotionAPI();
 export const dynamic = "auto";
+// Dynamic Metadata
+export async function generateMetadata({ params }: { params: { trackIds: string[] } }) {
+  const trackId = params.trackIds[0] || "";
+  const track = await getTrack(trackId);
+
+  if (track) {
+    return {
+      title: track.title,
+      description: track.description,
+      openGraph: {
+        title: track.title,
+        description: track.description,
+        images: [
+          {
+            url: track.image || "/default-thumbnail.jpg", // Fallback to a default image if thumbnail is not available
+            alt: `${track.title} Thumbnail`,
+          },
+        ],
+      },
+    };
+  } else {
+    return {
+      title: "Track Not Found",
+      description: "The track you are looking for does not exist.",
+      openGraph: {
+        title: "Track Not Found",
+        description: "The track you are looking for does not exist.",
+        images: [
+          {
+            url: "/default-thumbnail.jpg", // Use a default image if the track is not found
+            alt: "Default Thumbnail",
+          },
+        ],
+      },
+    };
+  }
+}
 
 export async function generateStaticParams() {
   try {

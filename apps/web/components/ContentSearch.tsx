@@ -1,18 +1,8 @@
 "use client";
-import { useCallback, useEffect, useRef, useState, useDeferredValue } from "react";
+import { useEffect, useRef, useState, useDeferredValue } from "react";
 import Link from "next/link";
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import {
-  Button,
-  Dialog,
-  DialogClose,
-  DialogContent,
-  Input,
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui";
+import { Dialog, DialogClose, DialogContent, Input, Card, CardDescription, CardHeader, CardTitle } from "@repo/ui";
 import { getSearchResults } from "../lib/search";
 import Image from "next/image";
 

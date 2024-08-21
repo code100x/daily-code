@@ -93,7 +93,7 @@ export const BlogAppbar = ({
           onClick={() => setIsOpen(!isOpen)}
           className="cursor-pointer flex gap-4 p-3 text-primary bg-black/10 backdrop-blur-lg rounded-lg border border-primary/10 items-center"
         >
-          {isOpen ? <X className="size-6 md:size-8" /> : <Menu className="size-6 md:size-8" />}
+          {isOpen ? <X className="size-6" /> : <Menu className="size-6" />}
         </div>
         <motion.div
           initial={{ y: -20, opacity: 0 }}
@@ -108,21 +108,21 @@ export const BlogAppbar = ({
               <Image
                 src={"https://d2szwvl7yo497w.cloudfront.net/courseThumbnails/main.png"}
                 alt="Logo"
-                width={300}
+                width={200}
                 height={200}
-                className="rounded-full size-10"
+                className="rounded-full size-8"
               />
             </Link>
             <Separator className="hidden md:flex w-0.5 h-6 bg-primary/25" />
             {problem.type === "Code" && problem.problemStatement && (
               <Codebar problemStatement={problem.problemStatement} />
             )}
-            <h3 className="tracking-tighter justify-center text-lg md:text-xl items-center font-medium gap-2 line-clamp-1">
+            <h4 className="tracking-tighter flex items-center md:text-lg font-medium gap-2 md:max-w-[50vw]">
               {track.title}{" "}
-              <span className="text-primary/80">
+              <span className="text-primary/80 text-sm">
                 {problemIndex + 1} of {track.problems.length}
               </span>
-            </h3>
+            </h4>
           </div>
         </motion.div>
       </div>
