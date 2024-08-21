@@ -13,13 +13,13 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
       <style>
         {` 
             .notion-app {
-                background: #f4f4f5;
+                background: #ffffff;
                 color: #000000
                 }  
             .dark-mode {
-                  background: #111827;                
+                  background: #000000;                
                   color: #ffffff
-                }
+                  }
             .notion-title{
                 font-family: open-montserrat;
                 font-size: xxx-large;

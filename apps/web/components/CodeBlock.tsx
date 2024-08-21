@@ -14,27 +14,39 @@ export default function CodeBlock({ block }: { block: any }) {
 
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
-  return (
-    <div className="max-w-full relative">
-      <div className={`${styles.copy_block} absolute top-2 right-2 z-10`}>
-        <button
-          className="text-gray-500 p-1 relative"
-          onClick={() => {
-            navigator.clipboard.writeText(code).then(() => {
-              setShowCopiedMessage(true);
-              setTimeout(() => {
-                setShowCopiedMessage(false);
-              }, 2000);
-            });
-          }}
-        >
-          {showCopiedMessage ? <CopyTick /> : <CopyIcon />}
-        </button>
-      </div>
-      <div className="max-w-full overflow-auto relative">
-        <pre className={`${styles.code_block} rounded-3xl px-4 sm:px-6 md:px-8`}>
-          <code className="language-javascript">{code}</code>
-        </pre>
+  return (  
+    <div>
+      <style>
+        {`
+          code[class*="language-"], pre[class*="language-"]{
+
+            font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;;
+            font-size: 5rem 
+            line-height: 2rem 
+          }
+        `}
+      </style>
+      <div className="max-w-full relative">
+        <div className="flex w-full justify-end pr-1 pt-1 z-10 absolute">
+          <button
+            className="text-slate-100"
+            onClick={() => {
+              navigator.clipboard.writeText(code).then(() => {
+                setShowCopiedMessage(true);
+                setTimeout(() => {
+                  setShowCopiedMessage(false);
+                }, 2000);
+              });
+            }}
+          >
+            {showCopiedMessage ? <CopyTick /> : <CopyIcon />}
+          </button>
+        </div>
+        <div className="max-w-full overflow-auto relative">
+          <pre className={`${styles.code_block} w-full rounded-md px-4 sm:px-6 md:px-8`}>
+            <code className="language-javascript">{code}</code>
+          </pre>
+        </div>
       </div>
     </div>
   );
