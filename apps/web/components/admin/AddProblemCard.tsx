@@ -16,7 +16,7 @@ import {
   useToast,
 } from "@repo/ui";
 import { ProblemType } from "@prisma/client";
-import { createProblem, createProblemStatement } from "../utils";
+import { createProblem } from "../utils";
 
 interface Problem {
   id: string;
@@ -36,9 +36,7 @@ const AddProblemCard = () => {
 
   const handleCreateProblem = async () => {
     const problem = await createProblem({ title, description, type, notionDocId });
-    if (problem?.type === "Code") {
-      handleCreatePsStatement(problem.id);
-    }
+
     if (problem) {
       newProblems.push(problem);
       toast({
@@ -54,18 +52,6 @@ const AddProblemCard = () => {
     });
   };
 
-  const handleCreatePsStatement = async (id: string) => {
-    const newPS = await createProblemStatement({
-      problemStatement: {
-        argumentNames: [],
-        mainFuncName: "",
-        problemId: id,
-      },
-      languages: [],
-      testCases: [],
-    });
-  };
-
   return (
     <div>
       <Card className="cols-span-4 p-4 m-2 w-full">
@@ -78,7 +64,6 @@ const AddProblemCard = () => {
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={ProblemType.Code}>Code</SelectItem>
             <SelectItem value={ProblemType.Blog}>Blog</SelectItem>
             <SelectItem value={ProblemType.MCQ}>MCQ</SelectItem>
           </SelectContent>

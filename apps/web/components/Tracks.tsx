@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
 import { TrackCard2 } from "./TrackCard-2";
 import { category } from "@repo/store";
+import { useEffect, useState } from "react";
 import { Track, Problem } from "@prisma/client";
 import { useRecoilState } from "recoil";
 import {
@@ -49,8 +49,6 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const tracksPerPage = 10;
   const [loading, setLoading] = useState<boolean>(true);
-
-  const trackTop = document.getElementById("tracks")?.offsetTop;
 
   const filterTracks = () => {
     setLoading(true);
@@ -198,7 +196,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             ☹️ Sorry - currently there are no tracks available.
           </p>
         ) : (
-          visibleTracks.map((t) => (
+          filteredTracks.map((t) => (
             <motion.li key={t.id} className="w-full" variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}>
               <TrackCard2 track={t} />
             </motion.li>
@@ -224,7 +222,6 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
               <PaginationPrevious
                 onClick={() => {
                   setCurrentPage((prev) => Math.max(prev - 1, 1));
-                  window.scrollTo({ top: trackTop - 100, behavior: "smooth" });
                 }}
               />
             </PaginationItem>
@@ -244,7 +241,6 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             <PaginationItem>
               <PaginationNext
                 onClick={() => {
-                  window.scrollTo({ top: trackTop - 100, behavior: "smooth" });
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages));
                 }}
               />

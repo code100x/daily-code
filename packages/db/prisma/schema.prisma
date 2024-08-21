@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") 
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -50,7 +50,6 @@ model User {
   admin         Boolean      @default(false)
   accounts      Account[]
   sessions      Session[]
-  submissions   Submission[]
   quizScores    QuizScore[]
 }
 
@@ -98,59 +97,8 @@ model Problem {
   mcqQuestions     MCQQuestion[]
   type             ProblemType
   trackProblems    TrackProblems[]
-  problemStatement ProblemStatement?
   quizScores       QuizScore[]
 }
-
-model ProblemStatement {
-  id                 String         @id @default(uuid())
-  testCases          TestCase[]
-  problem            Problem        @relation(fields: [problemId], references: [id])
-  problemId          String         @unique
-  languagesSupported CodeLanguage[] //implicit m-n relationship
-  submissions        Submission[]
-  mainFuncName       String // the function name which will return the output
-  argumentNames      String[]
-}
-
-model TestCase {
-  id                 String           @id @default(uuid())
-  expectedOutput     String
-  problemStatement   ProblemStatement @relation(fields: [problemStatementId], references: [id])
-  problemStatementId String
-  inputs             String[]
-  Submission         Submission[]
-}
-
-model CodeLanguage {
-  id                Int                @id // judge0 language id
-  value             String // monaco language string
-  label             String
-  problemStatements ProblemStatement[] //implicit m-n relationship
-  submissions       Submission[]
-}
-
-model Submission {
-  id                 String           @id @default(uuid())
-  code               String
-  language           CodeLanguage     @relation(fields: [codeLanguageId], references: [id])
-  codeLanguageId     Int
-  statusId           Int
-  statusDesc         String
-  runtime            Int //in ms
-  memoryUsage        Int //in bytes
-  errorMessage       String?
-  testCasesPassed    Int
-  problemStatement   ProblemStatement @relation(fields: [problemStatementId], references: [id])
-  problemStatementId String
-  user               User?            @relation(fields: [userId], references: [id])
-  userId             String?
-  createdAt          DateTime         @default(now())
-  lastTestCase       TestCase?        @relation(fields: [lastTestCaseId], references: [id])
-  lastTestCaseId     String?
-  stdout             String?
-}
-
 model TrackProblems {
   track   Track  @relation(fields: [trackId], references: [id])
   trackId String
@@ -165,7 +113,6 @@ model TrackProblems {
 
 enum ProblemType {
   Blog
-  Code
   MCQ
 }
 

@@ -6,13 +6,15 @@ import { Categories } from "@prisma/client";
 import { Track } from "@prisma/client";
 
 const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
-  const [newTracks, setNewProblems] = useState<Omit<Track,"inSearch">[]>([]);
+  const [newTracks, setNewProblems] = useState<Omit<Track, "inSearch">[]>([]);
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [hidden, setHidden] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const [cohort, setCohort] = useState(0);
+
   const { toast } = useToast();
 
   function handleFilterButton(category: string) {
@@ -58,6 +60,15 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
             setImage(event.target.value);
           }}
         />
+        <Input
+          type="number"
+          placeholder="Cohort"
+          className="my-2"
+          value={cohort}
+          onChange={(event) => {
+            setCohort(parseInt(event.target.value));
+          }}
+        />
         <div className="flex lg:flex-row justify-evenly mx-auto py-1">
           {categories.map((category, i) => (
             <Button
@@ -78,7 +89,10 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
           className="w-full mt-4"
           onClick={async () => {
             await createTrack({ problems: [], id, title, description, image, hidden, selectedCategory });
-            setNewProblems((prev) => [...prev, { id, title, description, image, hidden, createdAt: new Date() }]);
+            setNewProblems((prev) => [
+              ...prev,
+              { id, title, description, image, hidden, cohort, createdAt: new Date() },
+            ]);
             toast({
               title: "Added a Track",
               description: "a new Track added",
@@ -101,7 +115,10 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
                   <CardTitle>{Track.title}</CardTitle>
                   <CardDescription>{Track.description}</CardDescription>
                 </CardHeader>
-                <CardContent>{`hidden: ${Track.hidden}`}</CardContent>
+                <CardContent>
+                  {`hidden: ${Track.hidden}`}
+                  {`Cohort: ${Track.cohort}`}
+                </CardContent>
               </div>
             </div>
           </Card>

@@ -1,13 +1,9 @@
-import { Problem, ProblemStatement } from "@prisma/client";
+import { Problem } from "@prisma/client";
 import { ScrollArea } from "@repo/ui";
 import ProblemCard from "./ProblemCard";
 import AddProblemCard from "./AddProblemCard";
 
-export const ProblemEditor = ({
-  problems,
-}: {
-  problems: (Problem & { problemStatement: ProblemStatement | null })[];
-}) => {
+export const ProblemEditor = ({ problems }: { problems: Problem[] }) => {
   return (
     <div className="grid grid-cols-2">
       <ScrollArea className="h-screen m-2">

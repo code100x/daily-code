@@ -1,6 +1,6 @@
 "use client";
 
-import { Problem, Track, CodeLanguage, ProblemStatement, TestCase } from "@prisma/client";
+import { Problem, Track } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,21 +12,12 @@ import UserAccountDropDown from "./UserAccountDropDown";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Download, Menu, User, X } from "lucide-react";
-import { Codebar } from "./code/Codebar";
 
 export const BlogAppbar = ({
-  problem,
   track,
   problemIndex,
 }: {
-  problem: Problem & { notionRecordMap: any } & {
-    problemStatement?:
-      | (ProblemStatement & {
-          languagesSupported: CodeLanguage[];
-          testCases: TestCase[];
-        })
-      | null;
-  };
+  problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
   problemIndex: number;
 }) => {
@@ -114,9 +105,7 @@ export const BlogAppbar = ({
               />
             </Link>
             <Separator className="hidden md:flex w-0.5 h-6 bg-primary/25" />
-            {problem.type === "Code" && problem.problemStatement && (
-              <Codebar problemStatement={problem.problemStatement} />
-            )}
+
             <h4 className="tracking-tighter flex items-center md:text-lg font-medium gap-2 md:max-w-[50vw]">
               {track.title}{" "}
               <span className="text-primary/80 text-sm">

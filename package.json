@@ -1,6 +1,9 @@
 {
   "name": "dailycode",
   "private": true,
+  "prisma": {
+    "seed": "ts-node packages\\db\\prisma\\seed.ts"
+  },
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -34,15 +37,9 @@
     "packages/*"
   ],
   "dependencies": {
-    "clsx": "^2.1.1",
-    "date-fns": "^3.6.0",
-    "framer-motion": "^11.3.24",
-    "gsap": "^3.12.5",
     "ioredis": "^5.4.1",
-    "lucide-react": "^0.427.0",
     "nextjs-toploader": "^1.6.11",
     "react": "^18.2.0",
-    "react-notion-x": "^6.16.0",
-    "tailwind-merge": "^2.5.1"
+    "react-notion-x": "^6.16.0"
   }
 }
