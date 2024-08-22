@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Button } from "@repo/ui";
 import { ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
 
 const TrackTools = ({
   track,
@@ -14,9 +13,6 @@ const TrackTools = ({
   track: Track & { problems: Problem[] };
   problemIndex: number;
 }) => {
-  const { resolvedTheme } = useTheme();
-  const isDarkMode = resolvedTheme === "dark";
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -36,7 +32,7 @@ const TrackTools = ({
           style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
         >
           <Button
-            className={`flex gap-2 font-semibold ${isDarkMode ? "bg-slate-50" : "bg-[#323232]"}`}
+            className="flex gap-2 font-semibold dark:bg-slate-50 bg-[#323232]"
             disabled={problemIndex === 0}
             size={"lg"}
           >
@@ -54,7 +50,7 @@ const TrackTools = ({
           style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
         >
           <Button
-            className={`flex gap-2 font-semibold ${isDarkMode ? "bg-slate-50" : "bg-[#323232]"}`}
+            className="flex gap-2 font-semibold dark:bg-slate-50 bg-[#323232]"
             disabled={problemIndex + 1 === track.problems.length}
             size={"lg"}
           >
@@ -64,12 +60,7 @@ const TrackTools = ({
         </Link>
 
         {/* To Top */}
-        <Button
-          className={`flex gap-2 ${isDarkMode ? "bg-[#323232]" : "bg-slate-50"}`}
-          onClick={scrollToTop}
-          size={"lg"}
-          variant={"secondary"}
-        >
+        <Button className="flex gap-2 dark:bg-[#323232]" onClick={scrollToTop} size={"lg"} variant={"secondary"}>
           <span className="hidden md:block">Go to Top</span>
           <ArrowUp className="size-4" />
         </Button>
