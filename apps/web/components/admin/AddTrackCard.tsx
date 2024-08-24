@@ -13,8 +13,7 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
   const [image, setImage] = useState("");
   const [hidden, setHidden] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [cohort, setCohort] = useState(0);
-
+  const [cohort, setCohort] = useState(3);
   const { toast } = useToast();
 
   function handleFilterButton(category: string) {

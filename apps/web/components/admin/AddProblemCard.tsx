@@ -36,7 +36,6 @@ const AddProblemCard = () => {
 
   const handleCreateProblem = async () => {
     const problem = await createProblem({ title, description, type, notionDocId });
-
     if (problem) {
       newProblems.push(problem);
       toast({

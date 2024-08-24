@@ -1,6 +1,6 @@
 "use server";
-import db from "@repo/db/client";
 import { MCQQuestion, Prisma, Problem, Track, TrackProblems } from "@prisma/client";
+import db from "@repo/db/client";
 import { cache } from "../../../packages/db/Cache";
 
 interface Tracks extends Track {
@@ -122,7 +122,6 @@ export async function getTrack(trackId: string) {
   if (value) {
     return {
       ...value,
-
       problems: value.problems.map((problem: { problem: Problem }) => ({ ...problem.problem })),
     };
   }
