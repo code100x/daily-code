@@ -88,3 +88,7 @@
     @apply flex items-center justify-between;
   }
 }
+
+* {
+  font-family: "Poppins", sans-serif !important;
+}

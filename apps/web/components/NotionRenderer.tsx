@@ -13,7 +13,6 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
       <style>
         {`
           :root {
-            --notion-font-family: "Poppins", sans-serif;
             --bg-color: #FAFAFA;
             --fg-color: #0a0a0a;
           }
