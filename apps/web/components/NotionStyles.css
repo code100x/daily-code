@@ -1,0 +1,75 @@
+.notion-page > h1 {
+    font-family: 'Poppins',sans-serif;
+    font-size: 100px;
+    text-shadow: -2px 2px 0px #e87e8a,
+    -4px 4px 0px #e87e8a,
+    -6px 6px 0px #e87e8a,
+    -8px 8px 0px #e87e8a,
+    -9px 9px 0px #e87e8a;
+ 
+   }
+ 
+ .notion-h.notion-h1,
+ .notion-h.notion-h2,
+ .notion-h.notion-h3 {
+     font-family: "Poppins", sans-serif;
+     background: linear-gradient(
+         to bottom,
+         transparent 50%,
+         #e87e8a 50%
+     );
+ }
+   
+ .notion-page p,
+ .notion-page span,
+ .notion-page div,
+ .notion-page .notion-text {
+   
+   font-family: verdana;
+ }
+ 
+ @media (max-width: 1200px) {
+   .notion-page > h1 {
+       font-size: 70px;
+       text-shadow: -1.5px 1.5px 0px #e87e8a,
+                    -3px   3px   0px #e87e8a,
+                    -4.5px 4.5px 0px #e87e8a,
+                    -6px   6px   0px #e87e8a;
+   }
+ }
+ 
+ @media (max-width: 992px) {
+   .notion-page > h1 {
+       font-size: 60px;
+       text-shadow: -1px 1px 0px #e87e8a,
+                    -2px 2px 0px #e87e8a,
+                    -3px 3px 0px #e87e8a,
+                    -4px 4px 0px #e87e8a;
+   }
+ }
+ 
+ @media (max-width: 768px) {
+   .notion-page > h1 {
+       font-size: 50px;
+       text-shadow: -0.75px 0.75px 0px #e87e8a,
+                    -1.5px  1.5px  0px #e87e8a,
+                    -2.25px 2.25px 0px #e87e8a,
+                    -3px    3px    0px #e87e8a;
+   }
+ 
+   .notion-h.notion-h1,
+   .notion-h.notion-h2,
+   .notion-h.notion-h3 {
+       background: none; /* Simplify gradient on smaller screens */
+   }
+ }
+ 
+ @media (max-width: 576px) {
+   .notion-page > h1 {
+       font-size: 40px;
+       text-shadow: -0.5px 0.5px 0px #e87e8a,
+                    -1px   1px   0px #e87e8a,
+                    -1.5px 1.5px 0px #e87e8a,
+                    -2px   2px   0px #e87e8a;
+   }
+ }
