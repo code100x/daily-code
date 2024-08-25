@@ -78,9 +78,10 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
 
 const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
   return (
-    <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
+    <div className="flex justify-evenly mx-auto border-2 rounded-full p-1 w-fit">
       <div>
-        <Button variant="ghost" onClick={() => handleCategoryChange("All")}>
+        <Button variant="ghost" onClick={() => handleCategoryChange("All")} className={"rounded-full"
+          }>
           All
         </Button>
       </div>
