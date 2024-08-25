@@ -6,8 +6,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 export function PageToggle({ allProblems, track }: { allProblems: Problem[]; track: Track & { problems: Problem[] } }) {
-  const { trackIds }: { trackIds: string[] } = useParams();
-  const currentTrack = trackIds.join("/");
+  const { trackIds }: { trackIds?: string[] } = useParams();
+  const currentTrack = trackIds ? trackIds.join("/") : "";
 
   return (
     <DropdownMenu>
