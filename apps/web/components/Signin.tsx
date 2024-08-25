@@ -1,16 +1,17 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 const Signin = () => {
   const session = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const redirected = useRef(false);
   useEffect(() => {
     if (redirected.current === false && session.data?.user) {
-      const redirectUrl = localStorage.getItem("loginRedirectUrl");
+      const redirectUrl = localStorage.getItem("loginRedirectUrl") || searchParams.get("redirectUrl");
       localStorage.removeItem("loginRedirectUrl");
       router.replace(redirectUrl || "/");
       redirected.current = true;
