@@ -65,6 +65,20 @@ async function main() {
     },
   });
 
+  await db.categories.create({
+    data: {
+      id: "cohort-3-web3",
+      category: "cohort 3 web 3 ",
+    },
+  });
+
+  await db.categories.create({
+    data: {
+      id: "cohort-3-web-dev",
+      category: "cohort 3 web dev ",
+    },
+  });
+
   await db.trackCategory.createMany({
     data: [
       {
