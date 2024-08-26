@@ -39,6 +39,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
             background-color: transparent !important;
             
           }
+
         `}
       </style>
       <div>
