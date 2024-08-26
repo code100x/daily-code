@@ -9,7 +9,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
   const { resolvedTheme } = useTheme();
 
   return (
-    <div className="w-full">
+    <div className=".notion_ w-full .notion-bg-black">
       <style>
         {`
           :root {
@@ -43,6 +43,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
       </style>
       <div>
         <NotionRendererLib
+          className="text-red-500 "
           components={{
             Code: CodeBlock,
           }}

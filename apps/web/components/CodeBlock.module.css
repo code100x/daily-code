@@ -1,0 +1,12 @@
+.code_block {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 10px;
+    font-size: 15px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    background: #111827;
+    overflow: auto;
+    color: #564;
+}

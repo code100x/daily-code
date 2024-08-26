@@ -12,6 +12,11 @@ module.exports = {
   ],
   prefix: "",
   theme: {
+       fontFamily: {
+        "open-talk": ["Open Sans", " sans - serif"],
+        "open-poppins": ["Poppins", "sans-serif"],
+        "open-montserrat": ["Montserrat Alternates", "sans-serif"]
+      },
     container: {
       center: true,
       padding: "2rem",
@@ -20,6 +25,9 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        "2.5xl": "1730px",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

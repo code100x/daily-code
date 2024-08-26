@@ -21,7 +21,7 @@ export const Appbar = () => {
       >
         <Link href={"/"} className="flex items-center gap-2 cursor-pointer">
           <Image
-            src={"https://d2szwvl7yo497w.cloudfront.net/courseThumbnails/main.png"}
+            src={"https://appx-wsb-gcp.akamai.net.in/subject/2023-01-17-0.17044360120951185.jpg"}
             alt="Logo"
             width={300}
             height={200}

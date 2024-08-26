@@ -45,6 +45,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [visibleTracks, setVisibleTracks] = useState<TrackPros[]>([]);
   const [sortBy, setSortBy] = useState<string>("new");
   const [cohort2, setCohort2] = useState<boolean>(false);
+  const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const [cohort3, setCohort3] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const tracksPerPage = 10;

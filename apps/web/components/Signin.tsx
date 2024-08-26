@@ -1,7 +1,7 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Button, Separator } from "@repo/ui";
 import Link from "next/link";
@@ -10,11 +10,12 @@ import { motion } from "framer-motion";
 const Signin = () => {
   const session = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const redirected = useRef(false);
   useEffect(() => {
     if (redirected.current === false && session.data?.user) {
-      const redirectUrl = localStorage.getItem("loginRedirectUrl");
+      const redirectUrl = localStorage.getItem("loginRedirectUrl") || searchParams.get("redirectUrl");
       localStorage.removeItem("loginRedirectUrl");
       router.replace(redirectUrl || "/");
       redirected.current = true;
@@ -81,7 +82,7 @@ const Signin = () => {
           <Separator className="w-full my-2" />
           <Link href={"/"} className="flex items-center gap-2 cursor-pointer mx-auto">
             <Image
-              src={"https://d2szwvl7yo497w.cloudfront.net/courseThumbnails/main.png"}
+              src={"https://appx-wsb-gcp.akamai.net.in/subject/2023-01-17-0.17044360120951185.jpg"}
               alt="Logo"
               width={300}
               height={200}
