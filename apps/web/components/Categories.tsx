@@ -27,14 +27,14 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
 
   return (
     <div>
-      <div className="xl:hidden block">
+      <div className="2.5xl:hidden block">
         <SelectCategory
           categories={categories}
           selectedCategory={selectedCategory}
           handleCategoryChange={handleCategoryChange}
         />
       </div>
-      <div className="xl:block hidden">
+      <div className="2.5xl:block hidden">
         <ButtonCategory
           categories={categories}
           selectedCategory={selectedCategory}
