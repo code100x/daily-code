@@ -12,12 +12,12 @@ export function PageToggle({ allProblems, track }: { allProblems: Problem[]; tra
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size={"lg"} className="flex gap-2 font-semibold" variant={"secondary"}>
+        <Button className="flex gap-2 font-semibold dark:bg-[#323232]" size={"lg"} variant={"secondary"}>
           <span className="hidden md:block">Jump To</span>
           <ArrowUpRight className="size-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className={cn("overflow-y-auto max-h-[80vh]")}>
+      <DropdownMenuContent align="start" className={cn("overflow-y-auto max-h-[80vh] dark:bg-[#151515]")}>
         {allProblems.map((problem: { id: string; title: string }, index: number) => (
           <DropdownMenuItem key={index} disabled={currentTrack === `${track.id}/${problem.id}`}>
             <Link
