@@ -1,9 +1,10 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "../../../packages/ui/src/shad/ui/button";
 import { Dialog, DialogContent } from "../../../packages/ui/src/shad/ui/dailog";
-import { EnterIcon } from "@radix-ui/react-icons";
+import { ArrowRight } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 type TrackPreviewProps = {
   showPreview: boolean;
@@ -39,46 +40,54 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
 
   return (
     <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
-      <DialogContent className="max-w-2xl h-max flex items-center">
-        <div className="p-5">
-          <div className="mb-6 relative">
-            <img src={track.image} className="h-20 w-full scale-90 object-cover rounded-lg" />
-            <div className="text-xl md:text-3xl backdrop-blur-md font-black absolute w-full text-center -translate-y-14 drop-shadow-[2px_2px_var(--tw-shadow-color)] dark:shadow-stone-900 shadow-stone-100">
-              {track.title}
+      <DialogContent className="flex items-center gap-4">
+        <div className="flex flex-col gap-4 w-full">
+          <img src={track.image} className="h-[25vh] w-full object-cover rounded-lg" />
+          <div className="flex flex-col gap-4 bg-primary/5 rounded-lg p-4">
+            <div className="flex flex-col gap-4">
+              <h3 className="text-xl md:text-2xl font-semibold w-full tracking-tight">{track.title}</h3>
+              <div className="flex items-center gap-4">
+                {track.categories.map((item: any, idx: number) => (
+                  <p
+                    key={item.category.id}
+                    className="bg-secondary/25 border border-primary/10 rounded-lg px-3 py-2 text-sm w-fit cursor-default"
+                  >
+                    {item.category.category}{" "}
+                  </p>
+                ))}
+              </div>
+            </div>
+            <p className="md:text-lg tracking-tighter line-clamp-3 text-primary/60">{truncatedDescription}</p>
+          </div>
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex gap-2 items-center">
+              <p className="flex tracking-tighter gap-2 text-primary text-lg md:text-xl font-semibold">
+                {track.problems.length} Chapters
+              </p>
+              <p className="flex tracking-tight gap-2 text-primary/60 md:text-lg">
+                {formatDistanceToNow(new Date(track.createdAt), { addSuffix: true })}
+              </p>
+            </div>
+            <div className="max-h-[25vh] overflow-y-auto flex flex-col gap-3 w-full py-2">
+              {track.problems.map((topic: any, idx: number) => (
+                <Link key={topic.id} href={`/tracks/${track.id}/${track.problems[idx]?.id}`}>
+                  <div className="cursor-pointer hover:-translate-y-1 flex items-center justify-between bg-primary/5 rounded-lg px-4 py-3 hover:bg-primary/10 transition-all duration-300 scroll-smooth w-full">
+                    {topic.title}
+                    <ArrowRight className="size-4" />
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
-          {track.categories.map((item: any, idx: number) => (
-            <p key={item.category.id} className="inline-block text-sm font-extrabold mb-3 md:px-5">
-              {item.category.category}{" "}
-              <span className={`${track.categories[idx + 1] ? "inline-block" : "hidden"}`}> |&nbsp;</span>
-            </p>
-          ))}
-          <p className="pb-5 md:px-5">{truncatedDescription}</p>
-          <hr />
-          <p className="mt-5 font-bold md:px-5 text-xl">Contents</p>
-          <div className="max-h-[40vh] overflow-y-auto">
-            {track.problems.map((topic: any, idx: number) => (
-              <Link key={topic.id} href={`/tracks/${track.id}/${track.problems[idx]?.id}`}>
-                <div className="hover:cursor-pointer flex items-center justify-between my-2 rounded-md dark:hover:bg-slate-700 hover:bg-slate-200 md:px-5 py-1 transition-all duration-450 scroll-smooth">
-                  {topic.title}
-                  <div className="pr-2">
-                    <EnterIcon />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="w-full flex justify-center">
-            <Link href={track.problems.length ? `/tracks/${track.id}/${track.problems[0]?.id}` : ""}>
-              <Button
-                size={"lg"}
-                className="flex my-4 items-center justify-center group"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Start
-              </Button>
-            </Link>
-          </div>
+          <Link href={track.problems.length ? `/tracks/${track.id}/${track.problems[0]?.id}` : ""}>
+            <Button
+              size={"lg"}
+              className="flex items-center justify-center bg-blue-600 text-white hover:bg-blue-500 transition-all duration-300"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Start
+            </Button>
+          </Link>
         </div>
       </DialogContent>
     </Dialog>

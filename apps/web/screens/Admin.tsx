@@ -5,14 +5,13 @@ import { LinkProblems } from "../components/admin/LinkProblems";
 import CompleteAddTracks from "../components/admin/CompleteAddTracks";
 import AdminMCQ from "../components/admin/AdminMCQ";
 import AdminSearch from "../components/admin/AdminSearch";
-import { ProblemStatements } from "../components/admin/code/ProblemStatements";
-import { getAllCategories, getAllProblems, getAllTracks } from "../components/utils";
+import { getAllProblems, getAllTracks, getCategories } from "../components/utils";
 import db from "@repo/db/client";
 
 export const Admin = async () => {
   const problems = await getAllProblems();
   const tracks = await getAllTracks();
-  const categories = await getAllCategories();
+  const categories = await getCategories();
   const TracksinSearch = await db.track.findMany({
     where: {
       inSearch: true,
@@ -35,7 +34,6 @@ export const Admin = async () => {
               <TabsTrigger value="link">Link</TabsTrigger>
               <TabsTrigger value="search">Search</TabsTrigger>
               <TabsTrigger value="MCQ">MCQ</TabsTrigger>
-              <TabsTrigger value="problem-statement">Problem Statements</TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="auto">
@@ -55,9 +53,6 @@ export const Admin = async () => {
           </TabsContent>
           <TabsContent value="MCQ">
             <AdminMCQ />
-          </TabsContent>
-          <TabsContent value="problem-statement">
-            <ProblemStatements />
           </TabsContent>
         </Tabs>
       </div>

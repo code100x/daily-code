@@ -11,6 +11,7 @@ interface CompleteTrackCardProps {
   trackDescription: string;
   trackImage: string;
   selectedCategory: string[];
+  cohort: string;
 }
 
 export interface Problem {
@@ -32,6 +33,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       hidden: false,
       problems: problems,
       selectedCategory: TrackData.selectedCategory,
+      cohort: parseInt(TrackData.cohort),
     });
     await insertData(TrackData.trackId);
     setIsSubmitting(true);

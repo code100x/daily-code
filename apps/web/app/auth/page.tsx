@@ -1,7 +1,8 @@
+import { Suspense } from "react";
 import Signin from "../../components/Signin";
 
 const SigninPage = async () => {
-  return <Signin />;
+  return <Suspense> <Signin /> </Suspense>;
 };
 
 export default SigninPage;

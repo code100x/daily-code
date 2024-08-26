@@ -1,29 +1,33 @@
 "use server";
+import { MCQQuestion, Prisma, Problem, Track, TrackProblems } from "@prisma/client";
 import db from "@repo/db/client";
-import { ProblemStatement, TestCase, CodeLanguage, MCQQuestion, Problem, TrackProblems } from "@prisma/client";
-import { Prisma } from "@prisma/client";
-import { cache } from '../../../packages/db/Cache';
+import { cache } from "../../../packages/db/Cache";
+
+interface Tracks extends Track {
+  problems: { problem: Problem }[];
+}
+interface AllTracks extends Track {
+  problems: Problem[];
+  categories: {
+    category: {
+      id: string;
+      category: string;
+    };
+  }[];
+}
 
 export async function getProblem(problemId: string | null) {
   if (!problemId) {
     return null;
   }
-  const value = await cache.get("problems", [problemId.toString()]);
-  if(value) {
+  const value: Problem = await cache.get("problems", [problemId.toString()]);
+  if (value) {
     return value;
   }
   try {
     const problem = await db.problem.findUnique({
       where: {
         id: problemId,
-      },
-      include: {
-        problemStatement: {
-          include: {
-            testCases: true,
-            languagesSupported: true,
-          },
-        },
       },
     });
     await cache.set("problems", [problemId.toString()], problem);
@@ -35,8 +39,8 @@ export async function getProblem(problemId: string | null) {
 
 export async function getFirstProblemForTrack(trackId: string) {
   const value = await cache.get("tracks", [trackId.toString()]);
-  if(value) {
-    return value?.problems[0]?.problemId || null;;
+  if (value) {
+    return value?.problems[0]?.problemId || null;
   }
 
   try {
@@ -48,7 +52,7 @@ export async function getFirstProblemForTrack(trackId: string) {
         problems: true,
       },
     });
-    await cache.set('tracks', [trackId.toString()], track);
+    await cache.set("tracks", [trackId.toString()], track);
     return track?.problems[0]?.problemId || null;
   } catch (err) {
     return null;
@@ -56,8 +60,8 @@ export async function getFirstProblemForTrack(trackId: string) {
 }
 
 export async function getAllProblems() {
-  const value = await cache.get('getAllProblems', []);
-  if(value) {
+  const value = await cache.get("getAllProblems", []);
+  if (value) {
     return value;
   }
   try {
@@ -65,11 +69,8 @@ export async function getAllProblems() {
       orderBy: {
         id: "desc",
       },
-      include: {
-        problemStatement: true,
-      },
     });
-    await cache.set('getAllProblems', [], problems);
+    await cache.set("getAllProblems", [], problems);
     return problems;
   } catch (e) {
     return [];
@@ -101,39 +102,6 @@ export async function createProblem(data: Omit<Problem, "id">) {
   }
 }
 
-export async function createProblemStatement({
-  problemStatement,
-  languages,
-  testCases,
-}: {
-  problemStatement: Omit<ProblemStatement, "id">;
-  languages: CodeLanguage[];
-  testCases: Omit<TestCase, "id" | "problemStatementId">[];
-}) {
-  try {
-    const createdProblemStatement = await db.problemStatement.create({
-      data: {
-        ...problemStatement,
-        languagesSupported: {
-          connect: languages.map(({ id }) => ({ id })),
-        },
-        testCases: {
-          createMany: {
-            data: testCases,
-          },
-        },
-      },
-      include: {
-        testCases: true,
-        languagesSupported: true,
-      },
-    });
-    return createdProblemStatement;
-  } catch (e: any) {
-    return null;
-  }
-}
-
 export async function createTrackProblems(data: TrackProblems) {
   try {
     const trackProblems = await db.trackProblems.create({
@@ -150,11 +118,11 @@ export async function createTrackProblems(data: TrackProblems) {
 }
 
 export async function getTrack(trackId: string) {
-  const value = await cache.get('Track', [trackId.toString()]);
-  if(value) {
+  const value: Tracks = await cache.get("Track", [trackId.toString()]);
+  if (value) {
     return {
       ...value,
-      problems: value.problems.map((problem: any) => ({ ...problem.problem })),
+      problems: value.problems.map((problem: { problem: Problem }) => ({ ...problem.problem })),
     };
   }
   try {
@@ -171,10 +139,10 @@ export async function getTrack(trackId: string) {
       },
     });
     if (track) {
-      await cache.set('Track', [trackId.toString()], track);
+      await cache.set("Track", [trackId.toString()], track);
       return {
         ...track,
-        problems: track.problems.map((problem) => ({ ...problem.problem })),
+        problems: track.problems.map((problem: any) => ({ ...problem.problem })),
       };
     }
     return null;
@@ -185,11 +153,12 @@ export async function getTrack(trackId: string) {
 
 export async function getAllTracks() {
   const value = await cache.get("getAllTracks", []);
-  if(value) {
-    return value.map((track: any) => ({
+  if (value) {
+    const data: AllTracks[] = value.map((track: Tracks) => ({
       ...track,
-      problems: track.problems.map((problem: any) => ({ ...problem.problem })),
+      problems: track.problems.map((problem: { problem: Problem }) => ({ ...problem.problem })),
     }));
+    return data;
   }
   try {
     const tracks = await db.track.findMany({
@@ -219,15 +188,16 @@ export async function getAllTracks() {
       },
     });
     await cache.set("getAllTracks", [], tracks);
-    return tracks.map((track) => ({
+    return tracks.map((track: any) => ({
       ...track,
-      problems: track.problems.map((problem) => ({ ...problem.problem })),
+      problems: track.problems.map((problem: any) => ({ ...problem.problem })),
     }));
   } catch (e) {
     console.error(e);
     return [];
   }
 }
+
 export async function createTrack(data: {
   id: string;
   title: string;
@@ -236,6 +206,7 @@ export async function createTrack(data: {
   selectedCategory?: string[];
   problems: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
   hidden: boolean;
+  cohort?: number;
 }) {
   try {
     await db.problem.createMany({
@@ -248,6 +219,7 @@ export async function createTrack(data: {
         title: data.title,
         description: data.description,
         image: data.image,
+        cohort: data.cohort,
         hidden: data.hidden,
         problems: {
           createMany: {
@@ -324,10 +296,10 @@ export async function updateTrack(
 }
 
 export async function getAllCategories() {
-  const value = await cache.get('getAllCategories', []);
-  if(value) {
+  const value = await cache.get("getAllCategories", []);
+  if (value) {
     return value;
-  } 
+  }
   try {
     const categories = await db.categories.findMany({
       select: {
@@ -336,7 +308,7 @@ export async function getAllCategories() {
       },
       distinct: ["category"],
     });
-    await cache.set('getAllCategories', [], categories);
+    await cache.set("getAllCategories", [], categories);
     return categories;
   } catch (e) {
     return [];
@@ -344,8 +316,8 @@ export async function getAllCategories() {
 }
 
 export async function getAllMCQs() {
-  const value = await cache.get('getAllMCQs', []);
-  if(value) {
+  const value = await cache.get("getAllMCQs", []);
+  if (value) {
     return value;
   }
   try {
@@ -357,7 +329,7 @@ export async function getAllMCQs() {
         mcqQuestions: true,
       },
     });
-    await cache.set('getAllMCQs', [], mcqs);
+    await cache.set("getAllMCQs", [], mcqs);
     return mcqs;
   } catch (e) {
     return [];
@@ -365,8 +337,8 @@ export async function getAllMCQs() {
 }
 
 export async function getAllMCQQuestion(problemId: string) {
-  const value = await cache.get('getAllMCQQuestion', [problemId.toString()]);
-  if(value) {
+  const value = await cache.get("getAllMCQQuestion", [problemId.toString()]);
+  if (value) {
     return value;
   }
   try {
@@ -375,7 +347,7 @@ export async function getAllMCQQuestion(problemId: string) {
         problemId,
       },
     });
-    await cache.set('getAllMCQQuestion', [problemId.toString()], mcqs);
+    await cache.set("getAllMCQQuestion", [problemId.toString()], mcqs);
     return mcqs;
   } catch (e) {
     return [];
@@ -421,8 +393,8 @@ export async function deleteMCQ(id: string) {
   }
 }
 export async function getAllMCQsForProblem(problemId: string) {
-  const value = await cache.get('getAllMCQsForProblem', [problemId.toString()]);
-  if(value) {
+  const value = await cache.get("getAllMCQsForProblem", [problemId.toString()]);
+  if (value) {
     return value;
   }
   try {
@@ -431,7 +403,7 @@ export async function getAllMCQsForProblem(problemId: string) {
         problemId,
       },
     });
-    await cache.set('getAllMCQsForProblem', [problemId.toString()], mcqs);
+    await cache.set("getAllMCQsForProblem", [problemId.toString()], mcqs);
     return mcqs;
   } catch (e) {
     return [];
@@ -446,8 +418,8 @@ export async function createQuizScore(data: { userId: string; score: number; pro
 }
 
 export async function getQuizScore({ userId, problemId }: { userId: string; problemId: string }) {
-  const value = await cache.get('getQuizScore', [userId.toString(), problemId.toString()]);
-  if(value) {
+  const value = await cache.get("getQuizScore", [userId.toString(), problemId.toString()]);
+  if (value) {
     return value;
   }
   try {
@@ -457,166 +429,41 @@ export async function getQuizScore({ userId, problemId }: { userId: string; prob
         problemId,
       },
     });
-    await cache.set('getQuizScore', [userId.toString(), problemId.toString()], submissions);
+    await cache.set("getQuizScore", [userId.toString(), problemId.toString()], submissions);
     return submissions;
   } catch (e) {
     return [];
   }
 }
-export async function getAllProblemStatements() {
-  const value = await cache.get('getAllProblemStatements', []);
-  if(value) {
-    return value;
-  }
+
+export async function getCategories() {
   try {
-    const problemStatements = await db.problemStatement.findMany({
+    const categories = await db.categories.findMany({
       select: {
         id: true,
-        testCases: true,
-        problem: true,
-        problemId: true,
-        languagesSupported: true,
-        mainFuncName: true,
-        argumentNames: true,
+        category: true,
       },
+      distinct: ["category"],
     });
-    await cache.set('getAllProblemStatements', [], problemStatements);
-    return problemStatements;
+    return categories;
   } catch (e) {
     return [];
   }
 }
 
-export async function getProblemStatement(statementId: string) {
-  const value = await cache.get('getProblemStatement', [statementId.toString()]);
-  if(value) {
-    return value;
-  }
-  try {
-    const problemStatements = await db.problemStatement.findMany({
-      where: {
-        id: statementId,
-      },
-      select: {
-        id: true,
-        testCases: true,
-        problem: true,
-        problemId: true,
-        languagesSupported: true,
-        mainFuncName: true,
-        argumentNames: true,
-      },
-    });
-    cache.set('getProblemStatement', [statementId.toString()], problemStatements);
-    return problemStatements;
-  } catch (e) {
-    return null;
-  }
+export async function addCategory(category: string) {
+  const newCategory = await db.categories.create({
+    data: {
+      category,
+    },
+  });
+  return newCategory;
 }
 
-export async function updateProblemStatement(problemStatementId: string, data: any) {
-  try {
-    const problemStatement = await db.problemStatement.update({
-      where: {
-        id: problemStatementId,
-      },
-      data: data,
-    });
-    return problemStatement;
-  } catch (e) {
-    return null;
-  }
-}
-
-export async function getAllTestCase(id: string) {
-  const value = await cache.get('getAllTestCase', [id.toString()]);
-  if(value) {
-    return value;
-  }
-  try {
-    const testCase = await db.testCase.findUnique({
-      where: {
-        id,
-      },
-      select: {
-        id: true,
-        expectedOutput: true,
-        problemStatement: true,
-        problemStatementId: true,
-        inputs: true,
-      },
-    });
-    await cache.set('getAllTestCase', [id.toString()], testCase);
-    return testCase;
-  } catch (e) {
-    return null;
-  }
-}
-
-export async function createTestCase(inputs: string[], expectedOutput: string, problemStatementId: string) {
-  try {
-    const testCase = await db.testCase.create({
-      data: {
-        inputs,
-        expectedOutput,
-        problemStatementId,
-      },
-    });
-    return testCase;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
-}
-
-export async function deleteTestCase(testCaseId: string) {
-  try {
-    await db.testCase.delete({
-      where: {
-        id: testCaseId,
-      },
-    });
-  } catch (e) {
-    return null;
-  }
-}
-
-export async function updateTestCase(
-  testCaseId: string,
-  expectedOutput: string,
-  problemStatementId: string,
-  inputs: string[]
-) {
-  try {
-    const updatedTestCase = await db.testCase.update({
-      where: {
-        id: testCaseId,
-      },
-      data: {
-        expectedOutput,
-        problemStatementId,
-        inputs,
-      },
-    });
-    return updatedTestCase;
-  } catch (e) {
-    return [];
-  }
-}
-
-export async function getAllLanguagesSupported() {
-  const value = await cache.get('getAllLanguagesSupported', []);
-  try {
-    const languagesSupported: CodeLanguage[] = await db.codeLanguage.findMany({
-      select: {
-        id: true,
-        label: true,
-        value: true,
-      },
-    });
-    await cache.set('getAllLanguagesSupported', [], languagesSupported);
-    return languagesSupported;
-  } catch (e) {
-    return [];
-  }
+export async function deleteCategory(categoryId: string) {
+  await db.categories.delete({
+    where: {
+      id: categoryId,
+    },
+  });
 }

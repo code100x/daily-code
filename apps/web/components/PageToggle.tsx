@@ -1,30 +1,21 @@
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { useParams } from "next/navigation";
 import { cn } from "@repo/ui/utils";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Button } from "@repo/ui";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@repo/ui";
 import { Track, Problem } from "@prisma/client";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export function PageToggle({ allProblems, track }: { allProblems: Problem[]; track: Track & { problems: Problem[] } }) {
-  const { trackIds }: { trackIds: string[] } = useParams();
-  const currentTrack = trackIds.join("/");
+  const { trackIds }: { trackIds?: string[] } = useParams();
+  const currentTrack = trackIds ? trackIds.join("/") : "";
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div>
-          <Button variant="outline" className="md:flex hidden">
-            Jump To
-            <div className="pl-2">
-              <ArrowTopRightIcon />
-            </div>
-          </Button>
-          <Button variant="outline" className="md:hidden block">
-            <div>
-              <ArrowTopRightIcon />
-            </div>
-          </Button>
-        </div>
+        <Button size={"lg"} className="flex gap-2 font-semibold" variant={"secondary"}>
+          <span className="hidden md:block">Jump To</span>
+          <ArrowUpRight className="size-4" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cn("overflow-y-auto max-h-[80vh]")}>
         {allProblems.map((problem: { id: string; title: string }, index: number) => (

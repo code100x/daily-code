@@ -3,20 +3,19 @@ import { Problem, Track } from "@prisma/client";
 import { BlogAppbar } from "./BlogAppbar";
 import { NotionRenderer } from "./NotionRenderer";
 import useMountStatus from "../hooks/useMountStatus";
-import Pagination from "./Pagination";
+import TrackTools from "./TrackTools";
 
 export const Blog = ({
   problem,
   track,
-  showAppBar,
   isPdfRequested,
-  problemIndex
+  problemIndex,
 }: {
   problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
   showAppBar: Boolean;
   isPdfRequested?: Boolean;
-  problemIndex: number
+  problemIndex: number;
 }) => {
   const mounted = useMountStatus();
 
@@ -28,11 +27,14 @@ export const Blog = ({
 
   return (
     <div>
-      {showAppBar && <BlogAppbar problem={problem} track={track} problemIndex={problemIndex}/>}
       <NotionRenderer recordMap={problem.notionRecordMap} />
-      <div className="justify-center pt-2">
-        <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
+      <div className="fixed top-0 w-full">
+        <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />
+      </div>
+      <div className="fixed bottom-0 itemsc-center justify-center mx-auto w-full">
+        <TrackTools allProblems={track.problems} track={track} problemIndex={problemIndex} />
       </div>
     </div>
   );
 };
+ 

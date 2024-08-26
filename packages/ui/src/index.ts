@@ -16,4 +16,9 @@ export * from "./shad/ui/textarea";
 export * from "./shad/ui/toast";
 export * from "./shad/ui/toaster";
 export * from "./shad/ui/tooltip";
-export * from "./shad/ui/use-toast"
+export * from "./shad/ui/use-toast";
+export * from "./shad/ui/switch";
+export * from "./shad/ui/spotlight";
+export * from "./shad/ui/skeleton";
+export * from "./shad/ui/separator";
+export * from "./shad/ui/pagination";

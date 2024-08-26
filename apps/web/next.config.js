@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
+
 const path = require('path');
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 module.exports = {
   webpack: (config) => {
@@ -21,5 +22,10 @@ module.exports = {
     );
     return config;
   },
+  
   transpilePackages: ["@repo/ui", "@repo/common", "@repo/recoil"],
+  images: {
+    domains: ["d2szwvl7yo497w.cloudfront.net"], // Add your domain here
+  },
+
 };
