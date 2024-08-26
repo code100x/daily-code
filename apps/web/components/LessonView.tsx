@@ -6,18 +6,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
 import { AppbarClient } from "./AppbarClient";
 
-
 export const LessonView = async ({
   problem,
   track,
   showAppBar,
-  showPagination,
   isPdfRequested,
 }: {
-  problem: Problem & { notionRecordMap: any }
+  problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
   showAppBar?: Boolean;
-  showPagination?:Boolean;
   isPdfRequested?: Boolean;
 }) => {
   const session = await getServerSession(authOptions);
@@ -45,7 +42,6 @@ export const LessonView = async ({
         problem={problem}
         track={track}
         showAppBar={!!showAppBar}
-        showPagination={!!showPagination}
         isPdfRequested={isPdfRequested}
         problemIndex={problemIndex}
       />

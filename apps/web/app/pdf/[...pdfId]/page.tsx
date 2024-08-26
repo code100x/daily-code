@@ -18,6 +18,7 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
     redirect("/tracks/oAjvkeRNZThPMxZf4aX5");
   }
   const [problemDetails, trackDetails] = await Promise.all([getProblem(problemId || null), getTrack(trackId)]);
+
   if (!problemId) {
     return <RedirectToLastSolved trackId={trackId} />;
   }
@@ -25,7 +26,7 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
   if (problemDetails?.notionDocId && trackDetails?.problems) {
     // notionRecordMaps = await notion.getPage(problemDetails.notionDocId);
     notionRecordMaps = await Promise.all(
-      trackDetails.problems.map(async (problem) => await notion.getPage((await getProblem(problem.id))?.notionDocId!))
+      trackDetails.problems.map(async (problem: any) => await notion.getPage((await getProblem(problem.id))?.notionDocId!))
     );
   }
 
@@ -36,7 +37,7 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
   if (trackDetails && problemDetails) {
     return (
         <div>
-          {trackDetails?.problems.map((problem, i) => (
+          {trackDetails?.problems.map((problem: any, i: number) => (
             <LessonView
               isPdfRequested={true}
               track={trackDetails}

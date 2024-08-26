@@ -2,18 +2,9 @@
 import { useEffect, useRef, useState, useDeferredValue } from "react";
 import Link from "next/link";
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import {
-  Button,
-  Dialog,
-  DialogClose,
-  DialogContent,
-  Input,
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui";
+import { Dialog, DialogClose, DialogContent, Input, Card, CardDescription, CardHeader, CardTitle } from "@repo/ui";
 import { getSearchResults } from "../lib/search";
+import Image from "next/image";
 
 export function ContentSearch() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -86,22 +77,27 @@ export function ContentSearch() {
 
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
-      <Button variant="outline" className="pr-2" onClick={() => setDialogOpen(true)}>
-        <div className="md:flex gap-2 items-center hidden">
-          <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
-          Search...
-          <kbd className="bg-white/15 p-1.5 rounded-sm text-xs leading-3">Ctrl K</kbd>
+      <div
+        className="md:max-w-screen border border-primary/15 p-3 rounded-lg cursor-text w-full mx-auto"
+        onClick={() => setDialogOpen(true)}
+      >
+        <div className="md:flex gap-2 items-center hidden justify-between ">
+          <div className="flex gap-2 items-center">
+            <MagnifyingGlassIcon className="size-4" />
+            Search
+          </div>
+          <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3">Ctrl + K</kbd>
         </div>
         <div className="block md:hidden">
-          <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
+          <MagnifyingGlassIcon className="size-4" />
         </div>
-      </Button>
+      </div>
       <DialogContent className="p-0 gap-0 max-w-2xl">
-        <div className="flex items-center px-4 py-2 border-b">
-          <MagnifyingGlassIcon className="h-[1.5rem] w-[1.5rem]" />
+        <div className="flex items-center px-6 py-4 border-b">
+          <MagnifyingGlassIcon className="size-4" />
           <Input
             type="text"
-            placeholder="Type title"
+            placeholder="Search"
             className="border-none focus-visible:outline-none focus-visible:ring-0 text-base shadow-none"
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -123,11 +119,12 @@ export function ContentSearch() {
                 >
                   <Card className="p-2 w-full mx-2">
                     <div className="flex my-2">
-                      <img
+                      <Image
                         alt={track.payload.problemTitle}
                         src={track.payload.image}
                         className="flex mx-2 w-1/6 rounded-xl"
                       />
+
                       <div>
                         <CardHeader>
                           <CardTitle>{track.payload.problemTitle}</CardTitle>

@@ -11,37 +11,38 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
   return (
     <div className=".notion_ w-full .notion-bg-black">
       <style>
-        {` 
-            .notion-app {
-                background: #ffffff;
-                color: #000000
-                }  
-            .dark-mode {
-                  background: #000000;                
-                  color: #ffffff
-                  }
-            .notion-title{
-                font-family: open-montserrat;
-                font-size: xxx-large;
-            }
-            .notion-list li{
-                font-size: larger;
-                font-family: open-poppins 
-            }
-            .notion-text{
-                font-size: larger;
-                font-family: open-poppins 
-            }
-            .notion-header {
-                display: none !important;
-            }
-            .notion-page: {
-                padding: 0px !important;
-            }
+        {`
+          :root {
+            --notion-font-family: "Poppins", sans-serif; !important;
+            --bg-color: #FAFAFA;
+            --fg-color: #0a0a0a;
+          }
+          .dark-mode {
+            --bg-color: #0a0a0a;
+            --fg-color: #FAFAFA;
+          }
+          .notion-header {
+            display: none !important;
+          }          
+          .notion-code {
+          border-radius: 12px;
+          }
+
+          .medium-zoom-image {
+            border-radius: 0.5rem;
+            border: 1px solid #0a0a0a36;
+            background-size: cover;
+            cursor: pointer;
+          }
+          .notion-page: {
+            padding: 0px !important;
+            background-color: transparent !important;
+            
+          }
 
         `}
       </style>
-      <div className="rounded-full">
+      <div>
         <NotionRendererLib
           className="text-red-500 "
           components={{
