@@ -41,8 +41,6 @@ export function ContentSearch() {
     async function fetchSearchResults() {
       if (deferredInput.length > 0) {
         const allTracks = await getAllTracks();
-        console.log(allTracks);
-
         const options = {
           keys: ["title"],
           includeScore: true,
