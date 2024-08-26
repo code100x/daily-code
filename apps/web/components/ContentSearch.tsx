@@ -2,9 +2,20 @@
 import { useEffect, useRef, useState, useDeferredValue } from "react";
 import Link from "next/link";
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Dialog, DialogClose, DialogContent, Input, Card, CardDescription, CardHeader, CardTitle } from "@repo/ui";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  Input,
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui";
 import { getSearchResults } from "../lib/search";
 import Image from "next/image";
+import Fuse from "fuse.js";
+import { getAllTracks } from "./utils";
 
 export function ContentSearch() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -27,6 +38,33 @@ export function ContentSearch() {
   }, [deferredInput]);
 
   useEffect(() => {
+    async function fetchSearchResults() {
+      if (deferredInput.length > 0) {
+        const allTracks = await getAllTracks();
+        console.log(allTracks);
+
+        const options = {
+          keys: ["title"],
+          includeScore: true,
+          threshold: 0.3,
+        };
+
+        const fuse = new Fuse(allTracks, options);
+
+        const filteredTracks = fuse.search(
+          `${deferredInput.toLocaleLowerCase()}`
+        );
+
+        setSearchTracks(filteredTracks);
+      } else {
+        setSearchTracks([]);
+      }
+    }
+
+    fetchSearchResults();
+  }, [deferredInput]);
+
+  useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       switch (event.code) {
         case "KeyK":
@@ -37,17 +75,25 @@ export function ContentSearch() {
           break;
         case "ArrowDown":
           event.preventDefault();
-          setSelectedIndex((prevIndex) => (prevIndex + 1) % searchTracks.length);
+          setSelectedIndex(
+            (prevIndex) => (prevIndex + 1) % searchTracks.length
+          );
           break;
         case "ArrowUp":
           event.preventDefault();
-          setSelectedIndex((prevIndex) => (prevIndex - 1 + searchTracks.length) % searchTracks.length);
+          setSelectedIndex(
+            (prevIndex) =>
+              (prevIndex - 1 + searchTracks.length) % searchTracks.length
+          );
           break;
         case "Enter":
           if (selectedIndex !== -1) {
             event.preventDefault();
             const selectedTrack = searchTracks[selectedIndex];
-            window.open(`/tracks/${selectedTrack?.payload.trackId}/${selectedTrack?.payload.problemId}`, "_blank");
+            window.open(
+              `/tracks/${selectedTrack?.payload.trackId}/${selectedTrack?.payload.problemId}`,
+              "_blank"
+            );
           }
           break;
         default:
@@ -61,9 +107,13 @@ export function ContentSearch() {
 
   useEffect(() => {
     if (selectedIndex !== -1 && scrollableContainerRef.current) {
-      const selectedElement = scrollableContainerRef.current.children[selectedIndex];
+      const selectedElement =
+        scrollableContainerRef.current.children[selectedIndex];
       if (selectedElement) {
-        selectedElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        selectedElement.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
       }
     }
   }, [selectedIndex]);
@@ -86,7 +136,9 @@ export function ContentSearch() {
             <MagnifyingGlassIcon className="size-4" />
             Search
           </div>
-          <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3">Ctrl + K</kbd>
+          <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3">
+            Ctrl + K
+          </kbd>
         </div>
         <div className="block md:hidden">
           <MagnifyingGlassIcon className="size-4" />
@@ -107,28 +159,40 @@ export function ContentSearch() {
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
-        <div className="h-[400px] py-4 space-y-4 overflow-y-scroll" ref={scrollableContainerRef}>
+        <div
+          className="h-[400px] py-4 space-y-4 overflow-y-scroll"
+          ref={scrollableContainerRef}
+        >
           {searchTracks.length > 0 &&
             searchTracks.map((track, index) => (
-              <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
+              <div
+                key={track.id}
+                className={`p-2 ${
+                  index === selectedIndex ? "bg-blue-600/20" : ""
+                }`}
+              >
                 <Link
                   className="flex"
-                  href={`/tracks/${track.payload.trackId}/${track.payload.problemId}`}
+                  href={`/tracks/${track.item.id}`}
                   target="_blank"
                   passHref
                 >
                   <Card className="p-2 w-full mx-2">
                     <div className="flex my-2">
                       <Image
-                        alt={track.payload.problemTitle}
-                        src={track.payload.image}
-                        className="flex mx-2 w-1/6 rounded-xl"
+                        alt={track.item.title}
+                        src={track.item?.image}
+                        className="flex mx-2 w-[110px] h-[110px] rounded-xl"
+                        width={110}
+                        height={110}
                       />
 
                       <div>
                         <CardHeader>
-                          <CardTitle>{track.payload.problemTitle}</CardTitle>
-                          <CardDescription>{track.payload.trackTitle}</CardDescription>
+                          <CardTitle>{track.item.title}</CardTitle>
+                          <CardDescription>
+                            {track.item.description}
+                          </CardDescription>
                         </CardHeader>
                       </div>
                     </div>
