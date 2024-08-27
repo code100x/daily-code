@@ -20,8 +20,8 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
 
   return (
     <NotionRendererLib
-      bodyClassName="text-base sm:text-lg"
-      className="pt-12 dark:!bg-[#0a0a0a]"
+      bodyClassName="pt-12 text-base sm:text-lg"
+      className="py-10 dark:!bg-[#0a0a0a]"
       components={components}
       darkMode={isDarkMode}
       disableHeader
