@@ -142,6 +142,7 @@ export const BlogAppbar = ({
                   width={200}
                   height={200}
                   className="rounded-full size-8"
+                  priority
                 />
               </Link>
               <Separator className="hidden md:flex w-0.5 h-6 bg-primary/25" />
