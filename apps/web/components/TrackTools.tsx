@@ -25,6 +25,12 @@ const TrackTools = ({
       className="flex gap-2 justify-between w-full items-center p-6"
     >
       <div className="flex gap-2 p-1 bg-black/10 backdrop-blur-lg rounded-lg border border-primary/10">
+        <Link 
+        href={"/"}>
+          <Button className="flex gap-2 font-semibold dark:#eb3232 text-white bg-[#eb3232]" size={"lg"}>
+            Back to home
+          </Button>
+        </Link>
         <PageToggle allProblems={track.problems} track={track} />
         <Link
           prefetch={true}
