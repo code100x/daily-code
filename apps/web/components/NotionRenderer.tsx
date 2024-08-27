@@ -19,7 +19,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
   );
 
   return (
-    <div className=".notion_ w-full .notion-bg-black">
+    <div className=".notion_ w-full .notion-bg-black mt-10">
       <style>
         {`
           :root {
