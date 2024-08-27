@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const webpack = require("webpack");
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   webpack: (config) => {
@@ -13,8 +14,11 @@ module.exports = {
   },
   
   transpilePackages: ["@repo/ui", "@repo/common", "@repo/recoil"],
-  images: {
-    domains: ["d2szwvl7yo497w.cloudfront.net"], // Add your domain here
-  },
+   images: isDev
+    ? { unoptimized: true }
+    : {
+        domains: ["d2szwvl7yo497w.cloudfront.net"],
+        //Add your domain here
+      },
 
 };
