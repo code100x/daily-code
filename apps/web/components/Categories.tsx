@@ -1,8 +1,7 @@
 "use client";
 import { useRecoilState } from "recoil";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { category } from "@repo/store";
-import { Button } from "@repo/ui";
 
 interface Category {
   category: string;
@@ -27,14 +26,14 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
 
   return (
     <div>
-      <div className="xl:hidden block">
+      <div className="2.5xl:hidden block">
         <SelectCategory
           categories={categories}
           selectedCategory={selectedCategory}
           handleCategoryChange={handleCategoryChange}
         />
       </div>
-      <div className="xl:block hidden">
+      <div className="2.5xl:block hidden">
         <ButtonCategory
           categories={categories}
           selectedCategory={selectedCategory}
@@ -79,11 +78,9 @@ const SelectCategory = ({ categories, selectedCategory, handleCategoryChange }: 
 const ButtonCategory = ({ categories, selectedCategory, handleCategoryChange }: CategoryProps) => {
   return (
     <div className="flex justify-evenly mx-auto border-2 rounded-full py-1 w-2/3">
-      <div>
-        <Button variant="ghost" onClick={() => handleCategoryChange("All")}>
+        <Button variant="ghost" className="rounded-full" onClick={() => handleCategoryChange("All")}>
           All
         </Button>
-      </div>
       {categories.map((category) => (
         <Button
           key={category.category}

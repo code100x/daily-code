@@ -135,6 +135,11 @@ export async function getTrack(trackId: string) {
           select: {
             problem: true,
           },
+          orderBy: [
+            {
+              sortingOrder: "desc",
+            },
+          ],
         },
       },
     });
@@ -142,7 +147,7 @@ export async function getTrack(trackId: string) {
       await cache.set("Track", [trackId.toString()], track);
       return {
         ...track,
-        problems: track.problems.map((problem) => ({ ...problem.problem })),
+        problems: track.problems.map((problem: any) => ({ ...problem.problem })),
       };
     }
     return null;
@@ -188,15 +193,16 @@ export async function getAllTracks() {
       },
     });
     await cache.set("getAllTracks", [], tracks);
-    return tracks.map((track) => ({
+    return tracks.map((track: any) => ({
       ...track,
-      problems: track.problems.map((problem) => ({ ...problem.problem })),
+      problems: track.problems.map((problem: any) => ({ ...problem.problem })),
     }));
   } catch (e) {
     console.error(e);
     return [];
   }
 }
+
 export async function createTrack(data: {
   id: string;
   title: string;

@@ -1,51 +1,94 @@
 "use client";
-import { Button } from "@repo/ui";
+
 import { Problem, Track } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { DownloadIcon } from "@radix-ui/react-icons";
+import { useParams, useRouter } from "next/navigation";
+import { Button, Card, CardContent, Separator } from "@repo/ui";
 import { ModeToggle } from "./ModeToggle";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import UserAccountDropDown from "./UserAccountDropDown";
-import Pagination from "./Pagination";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { Download, Menu, User, X } from "lucide-react";
 
 export const BlogAppbar = ({
   track,
-  problemIndex
+  problemIndex,
 }: {
   problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
-  problemIndex: number
+  problemIndex: number;
 }) => {
   const router = useRouter();
+  const session = useSession();
+  const user = session.data?.user;
 
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const { trackIds }: { trackIds?: string[] } = useParams();
+  const currentTrack = trackIds ? trackIds.join("/") : "";
+
+  const [isOpen, setIsOpen] = useState<boolean>(() => {
+    const storedPreference = localStorage.getItem("modeToggleIsOpen");
+    return storedPreference === "true" || false;
+  });
   const [visible, setVisible] = useState(true);
-  const [scrollingDown, setScrollingDown] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-  const debounce = (func: any, delay: any) => {
-    let timeoutId: any;
-    return (...args: any) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        func(...args);
-      }, delay);
-    };
+  const handleScroll = () => {
+    if (typeof window !== "undefined") {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down
+        setVisible(false);
+        setIsOpen(false);
+      } else {
+        // Scrolling up
+        setVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    }
   };
 
-  const debouncedHandleScroll = debounce(() => {
-    const currentScrollPos = window.scrollY;
-    setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 50);
-    setScrollingDown(prevScrollPos < currentScrollPos);
-    setPrevScrollPos(currentScrollPos);
-  }, 90);
+  const renderTopics = () => {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ x: -20 }}
+          transition={{ duration: 0.3 }}
+          className={`${visible ? "translate-y-0" : "-translate-y-full"} px-6`}
+        >
+          <Card className="w-fit bg-black/10 backdrop-blur-lg border-primary/10 pt-4 max-h-[50vh] overflow-auto no-scrollbar">
+            {track?.problems?.map((problem: { id: string; title: string }, index: number) => {
+              const isDisabled = currentTrack === `${track.id}/${problem.id}`;
+              return (
+                <CardContent key={index} className={isDisabled ? "opacity-50" : ""}>
+                  <Link
+                    key={problem.id}
+                    prefetch
+                    className="max-w-screen-md w-full"
+                    href={`/tracks/${track.id}/${problem.id}`}
+                    onClick={(e) => isDisabled && e.preventDefault()}
+                  >
+                    {index + 1} - {problem.title}
+                  </Link>
+                </CardContent>
+              );
+            })}
+          </Card>
+        </motion.div>
+      </AnimatePresence>
+    );
+  };
 
   useEffect(() => {
-    window.addEventListener("scroll", debouncedHandleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", debouncedHandleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [prevScrollPos, debouncedHandleScroll]);
+  }, [lastScrollY]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -60,53 +103,95 @@ export const BlogAppbar = ({
       }
     };
 
-    // Add event listener for keydown events
     window.addEventListener("keydown", handleKeyPress);
-
-    // Clean up event listener
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, []); // empty dependency array ensures the effect runs only once
+  }, [problemIndex, router, track]);
 
   return (
-    <div
-      className={`flex flex-col items-center justify-between p-4 border-b shadow-md w-full dark:bg-zinc-950 bg-zinc-50 sticky top-0 z-50 transition-transform duration-300 ${
-        !visible && scrollingDown ? "transform -translate-y-full " : " "
-      }`}
-      style={{ transform: !visible && !scrollingDown ? "translateY(0)" : "" }}
-    >
-      <div className="w-full flex flex-col items-center md:flex-row md:items-center md:justify-between mr-2">
-        <div className="dark:text-zinc-100 text-zinc-950 font-semibold text-3xl mb-2 md:mb-0">
-          <Link href={"/"}>DailyCode</Link>
+    <>
+      <motion.div
+        className={`w-full justify-between z-[50] flex flex-col md:flex-row gap-2 p-6 ${visible ? "translate-y-0" : "-translate-y-full"}`}
+        initial={{ y: 0 }}
+        animate={{ y: visible ? 0 : -100 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="flex gap-2 items-center">
+          {/* menu */}
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className="cursor-pointer flex gap-4 p-3 text-primary bg-black/10 backdrop-blur-lg rounded-lg border border-primary/10 items-center"
+          >
+            {isOpen ? <X className="size-6" /> : <Menu className="size-6" />}
+          </div>
+          {/* track title */}
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10 }}
+            className="flex gap-2 justify-between"
+          >
+            <div
+              className={`flex gap-4 p-2 bg-black/10 backdrop-blur-lg rounded-lg border border-primary/10 items-center transition-all duration-500 ease-in-out `}
+            >
+              <Link href={"/"} className="hidden md:flex items-center gap-4 cursor-pointer">
+                <Image
+                  src={"https://appx-wsb-gcp.akamai.net.in/subject/2023-01-17-0.17044360120951185.jpg"}
+                  alt="Logo"
+                  width={200}
+                  height={200}
+                  className="rounded-full size-8"
+                />
+              </Link>
+              <Separator className="hidden md:flex w-0.5 h-6 bg-primary/25" />
+
+              <h4 className="tracking-tighter flex items-center md:text-lg font-medium gap-2 md:max-w-[50vw]">
+                {track.title}
+                <span className="text-primary/80 text-sm">
+                  {problemIndex + 1} of {track.problems.length}
+                </span>
+              </h4>
+            </div>
+          </motion.div>
         </div>
 
-        <p className="flex-1 justify-center items-center font-medium ml-2 hidden md:flex">
-          {track.title} ({problemIndex + 1} / {track.problems.length})
-        </p>
-        <div className="flex space-x-2 mb-2">
-          <Pagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
-          <ModeToggle />
-          <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
-            <Button variant="outline" className="ml-2 bg-black text-white md:flex hidden">
-              Download
-              <div className="pl-2">
-                <DownloadIcon />
-              </div>
-            </Button>
-            <Button variant="outline" className=" bg-black text-white md:hidden block">
-              <div>
-                <DownloadIcon />
-              </div>
-            </Button>
-          </Link>
-          <UserAccountDropDown />
-        </div>
-      </div>
-
-      <p className="flex-1 justify-center items-center font-medium ml-2 flex md:hidden pt-2 border-t w-full text-center bg-opacity-60">
-        {track.title} ({problemIndex + 1} / {track.problems.length})
-      </p>
-    </div>
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10 }}
+          className="flex gap-2"
+        >
+          <div
+            className={`flex gap-2 p-2 bg-black/10 backdrop-blur-lg rounded-lg border border-primary/10 items-center transition-all duration-500 ease-in-out ${
+              isOpen ? `translate-y-0 opacity-100` : `-translate-y-32 opacity-0`
+            }`}
+          >
+            {!user ? (
+              <Button
+                size={"default"}
+                onClick={async () => {
+                  await signIn();
+                }}
+                className="flex gap-2"
+              >
+                <User className="size-4" />
+                Login
+              </Button>
+            ) : (
+              <UserAccountDropDown />
+            )}
+            <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
+              <Button className="flex gap-2" size={"default"}>
+                Download
+                <Download className="size-4" />
+              </Button>
+            </Link>
+            <ModeToggle />
+          </div>
+        </motion.div>
+      </motion.div>
+      {isOpen && renderTopics()}
+    </>
   );
 };

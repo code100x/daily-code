@@ -6,7 +6,7 @@ import { Categories } from "@prisma/client";
 import { Track } from "@prisma/client";
 
 const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
-  const [newTracks, setNewProblems] = useState<Omit<Track,"inSearch">[]>([]);
+  const [newTracks, setNewProblems] = useState<Omit<Track, "inSearch">[]>([]);
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -88,7 +88,10 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
           className="w-full mt-4"
           onClick={async () => {
             await createTrack({ problems: [], id, title, description, image, hidden, selectedCategory });
-            setNewProblems((prev) => [...prev, { id, title, description, image, hidden, cohort, createdAt: new Date() }]);
+            setNewProblems((prev) => [
+              ...prev,
+              { id, title, description, image, hidden, cohort, createdAt: new Date() },
+            ]);
             toast({
               title: "Added a Track",
               description: "a new Track added",
