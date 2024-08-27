@@ -4,7 +4,7 @@ ARG DATABASE_URL
 WORKDIR /usr/src/app
 
 COPY . .
-RUN npm install
+RUN yarn install
 RUN cd packages/db && DATABASE_URL=$DATABASE_URL npx prisma generate && cd ../..
 RUN DATABASE_URL=$DATABASE_URL npm run build
 

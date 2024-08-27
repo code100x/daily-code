@@ -20,6 +20,8 @@
     "@repo/ui": "*",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "date-fns": "^3.6.0",
+    "framer-motion": "^11.3.30",
     "next": "^14.0.4",
     "next-auth": "^4.24.7",
     "next-themes": "^0.2.1",

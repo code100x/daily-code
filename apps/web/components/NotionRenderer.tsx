@@ -44,7 +44,6 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
       </style>
       <div>
         <NotionRendererLib
-          className="text-red-500 "
           components={{
             Code: CodeBlock,
           }}

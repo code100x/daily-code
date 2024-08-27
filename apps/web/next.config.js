@@ -14,7 +14,7 @@ module.exports = {
   
   transpilePackages: ["@repo/ui", "@repo/common", "@repo/recoil"],
   images: {
-    domains: ["d2szwvl7yo497w.cloudfront.net"], // Add your domain here
+    domains: ["d2szwvl7yo497w.cloudfront.net", "appx-wsb-gcp.akamai.net.in"], // Add your domain here
   },
 
 };
