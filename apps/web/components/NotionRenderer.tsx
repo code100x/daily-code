@@ -1,12 +1,22 @@
 "use client";
+import { useMemo } from "react";
 import { NotionRenderer as NotionRendererLib } from "react-notion-x";
-// import { Code } from "react-notion-x/build/third-party/code";
-import CodeBlock from "./CodeBlock";
 import { useTheme } from "next-themes";
+
+import CodeBlock from "./CodeBlock";
 
 // Week-4-1-647987d9b1894c54ba5c822978377910
 export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
   const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
+
+  const components = useMemo(
+    () => ({
+      Code: CodeBlock,
+      // can add more components that are supported here
+    }),
+    []
+  );
 
   return (
     <div className=".notion_ w-full .notion-bg-black">
@@ -43,15 +53,15 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
         `}
       </style>
       <div>
-        <NotionRendererLib
-          className="text-red-500 "
-          components={{
-            Code: CodeBlock,
-          }}
-          recordMap={recordMap}
-          fullPage={true}
-          darkMode={resolvedTheme === "dark"}
-        />
+      <NotionRendererLib
+        bodyClassName="text-base sm:text-lg"
+        className="pt-12 dark:!bg-[#0a0a0a]"
+        components={components}
+        darkMode={isDarkMode}
+        disableHeader
+        fullPage
+        recordMap={recordMap}
+      />
       </div>
     </div>
   );
