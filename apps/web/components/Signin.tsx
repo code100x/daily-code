@@ -87,6 +87,7 @@ const Signin = () => {
               width={300}
               height={200}
               className="rounded-full size-16"
+              priority
             />
             <div className="flex flex-col">
               <span className="font-bold bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text text-transparent text-4xl tracking-tighter">

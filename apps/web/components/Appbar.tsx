@@ -26,6 +26,7 @@ export const Appbar = () => {
             width={300}
             height={200}
             className="rounded-full size-10"
+            priority
           />
           <span className="text-lg md:text-2xl font-bold tracking-tight text-foreground hidden md:block">
             100xProjects
