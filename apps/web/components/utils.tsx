@@ -135,6 +135,11 @@ export async function getTrack(trackId: string) {
           select: {
             problem: true,
           },
+          orderBy: [
+            {
+              sortingOrder: "desc",
+            },
+          ],
         },
       },
     });
