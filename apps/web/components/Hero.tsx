@@ -3,18 +3,9 @@ import React, { useEffect, useState } from "react";
 import { ContentSearch } from "../components/ContentSearch";
 import { motion } from "framer-motion";
 import { Spotlight } from "@repo/ui";
-import { Track, Problem } from "@prisma/client";
+import { TrackPros } from "./Tracks";
 
-interface TrackProps extends Track {
-  problems: Problem[];
-  categories: {
-    category: {
-      id: string;
-      category: string;
-    };
-  }[];
-}
-export default function Hero({ tracks }: { tracks: TrackProps[] }) {
+export default function Hero({ tracks }: { tracks: TrackPros[] }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (event: MouseEvent) => {

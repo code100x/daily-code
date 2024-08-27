@@ -5,18 +5,9 @@ import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Dialog, DialogClose, DialogContent, Input, Card, CardDescription, CardHeader, CardTitle } from "@repo/ui";
 /* import { getSearchResults } from "../lib/search";
 import Image from "next/image"; */
-import { Track, Problem } from "@prisma/client";
 import Fuse from "fuse.js";
+import { TrackPros } from "./Tracks";
 
-interface TrackProps extends Track {
-  problems: Problem[];
-  categories: {
-    category: {
-      id: string;
-      category: string;
-    };
-  }[];
-}
 type Payload = {
   problemId: string;
   trackTitle: string;
@@ -29,7 +20,7 @@ interface DataItem {
   payload: Payload;
 }
 
-export function ContentSearch({ tracks }: { tracks: TrackProps[] }) {
+export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState<any[]>([]);

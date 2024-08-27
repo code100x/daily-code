@@ -24,7 +24,7 @@ import {
 } from "@repo/ui";
 import { motion } from "framer-motion";
 
-interface TrackPros extends Track {
+export interface TrackPros extends Track {
   problems: Problem[];
   categories: {
     category: {
