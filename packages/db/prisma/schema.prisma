@@ -70,7 +70,7 @@ model Track {
   problems    TrackProblems[]
   inSearch    Boolean         @default(false)
   hidden      Boolean         @default(false)
-  cohort      Int             @default(0)
+  cohort      Int             @default(2)
   createdAt   DateTime        @default(now())
 }
 
