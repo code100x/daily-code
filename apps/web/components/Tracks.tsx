@@ -205,7 +205,6 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
         ) : (
           filteredTracks.map((t) => (
             <motion.li key={t.id} className="w-full" variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}>
-              <p>{t.cohort}</p>
               <TrackCard2 track={t} />
             </motion.li>
           ))
