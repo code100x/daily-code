@@ -54,7 +54,6 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const filterTracks = () => {
     setLoading(true);
     let newFilteredTracks = tracks;
-    console.log(tracks)
     if (cohort3) {
       newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === 3);
     }
@@ -141,10 +140,8 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             size={"lg"}
             variant={"ghost"}
             onClick={() => {
-              console.log(cohort3)
               setCohort2(false)
-              setCohort3(prev => !prev)
-              console.log(cohort3)
+              setCohort3(!cohort3)
             }}
             className={cohort3 ? "bg-blue-600 text-white" : ""}
           >
