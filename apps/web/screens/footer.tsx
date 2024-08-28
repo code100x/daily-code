@@ -101,7 +101,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <h4 className="text-lg tracking-tighter text-primary">100x Links</h4>
+            <h4 className="text-lg tracking-tighter text-primary underline">100x Links</h4>
             <div className="text-lg tracking-tighter flex flex-col gap-1">
               <Link
                 href={"https://app.100xdevs.com"}
@@ -121,7 +121,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <h4 className="text-lg tracking-tighter text-primary">100x Legal</h4>
+            <h4 className="text-lg tracking-tighter text-primary underline">100x Legal</h4>
             <div className="text-lg tracking-tighter flex flex-col gap-1">
               <Link href={"/tnc"} className="text-foreground/75 transition-all duration-300 hover:text-blue-600">
                 Terms & Conditions
