@@ -54,6 +54,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const filterTracks = () => {
     setLoading(true);
     let newFilteredTracks = tracks;
+    console.log(tracks)
     if (cohort3) {
       newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === 3);
     }
@@ -127,7 +128,10 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => setCohort2(!cohort2)}
+            onClick={() => {             
+              setCohort3(false)
+              setCohort2(!cohort2)
+            }}
             className={cohort2 ? "bg-blue-600 text-white" : ""}
           >
             Cohort 2.0
@@ -136,7 +140,12 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => setCohort3(!cohort3)}
+            onClick={() => {
+              console.log(cohort3)
+              setCohort2(false)
+              setCohort3(prev => !prev)
+              console.log(cohort3)
+            }}
             className={cohort3 ? "bg-blue-600 text-white" : ""}
           >
             Cohort 3.0
@@ -199,6 +208,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
         ) : (
           filteredTracks.map((t) => (
             <motion.li key={t.id} className="w-full" variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}>
+              <p>{t.cohort}</p>
               <TrackCard2 track={t} />
             </motion.li>
           ))
