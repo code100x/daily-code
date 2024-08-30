@@ -10,12 +10,14 @@ export const LessonView = async ({
   problem,
   track,
   showAppBar,
+  showPagination = false,
   isPdfRequested,
 }: {
   problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
-  showAppBar?: Boolean;
-  isPdfRequested?: Boolean;
+  showAppBar?: boolean;
+  showPagination?: boolean;
+  isPdfRequested?: boolean;
 }) => {
   const session = await getServerSession(authOptions);
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
@@ -39,11 +41,12 @@ export const LessonView = async ({
   if (problem.type === "Blog") {
     return (
       <Blog
-        problem={problem}
-        track={track}
-        showAppBar={!!showAppBar}
         isPdfRequested={isPdfRequested}
+        problem={problem}
         problemIndex={problemIndex}
+        showAppBar={!!showAppBar}
+        showPagination={showPagination}
+        track={track}
       />
     );
   }
