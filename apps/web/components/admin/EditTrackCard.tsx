@@ -44,6 +44,7 @@ const EditTrackCard = ({ Track, categories }: { Track: TrackCardProps; categorie
     setImage(Track.image);
     setHidden(Track.hidden);
     setIsEditing(Track.hidden);
+    setCohort(Track.cohort);
   }
   return (
     <Card key={Track.id}>
