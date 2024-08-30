@@ -26,7 +26,9 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
   if (problemDetails?.notionDocId && trackDetails?.problems) {
     // notionRecordMaps = await notion.getPage(problemDetails.notionDocId);
     notionRecordMaps = await Promise.all(
-      trackDetails.problems.map(async (problem: any) => await notion.getPage((await getProblem(problem.id))?.notionDocId!))
+      trackDetails.problems.map(
+        async (problem: any) => await notion.getPage((await getProblem(problem.id))?.notionDocId!)
+      )
     );
   }
 
@@ -36,20 +38,20 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
   }
   if (trackDetails && problemDetails) {
     return (
-        <div>
-          {trackDetails?.problems.map((problem: any, i: number) => (
-            <LessonView
-              isPdfRequested={true}
-              track={trackDetails}
-              problem={{
-                ...problemDetails,
-                notionRecordMap: notionRecordMaps[i],
-              }}
-              key={i}
-            />
-          ))}
-          <Print />
-        </div>
+      <div>
+        {trackDetails?.problems.map((problem: any, i: number) => (
+          <LessonView
+            isPdfRequested
+            track={trackDetails}
+            problem={{
+              ...problemDetails,
+              notionRecordMap: notionRecordMaps[i],
+            }}
+            key={i}
+          />
+        ))}
+        <Print />
+      </div>
     );
   }
 }
