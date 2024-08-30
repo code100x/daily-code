@@ -263,6 +263,7 @@ export async function updateTrack(
     selectedCategory?: string[];
     problems?: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
     hidden: boolean;
+    cohort?: number;
   }
 ) {
   try {
@@ -276,6 +277,7 @@ export async function updateTrack(
         description: data.description,
         image: data.image,
         hidden: data.hidden,
+        cohort: data.cohort,
       },
     });
     await db.trackCategory.deleteMany({
