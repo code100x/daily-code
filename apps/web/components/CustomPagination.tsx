@@ -5,19 +5,20 @@ import { Button } from "@repo/ui";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 const CustomPagination = ({
-  allProblems,
-  track,
+  isAtHeader = false,
   problemIndex,
+  track,
 }: {
   allProblems: Problem[];
-  track: Track & { problems: Problem[] };
+  isAtHeader?: boolean;
   problemIndex: number;
+  track: Track & { problems: Problem[] };
 }) => {
   return (
     <div className="flex items-center justify-center space-x-2">
-      <PageToggle allProblems={track.problems} track={track} />
+      <PageToggle allProblems={track.problems} isAtHeader track={track} />
       <Link
-        prefetch={true}
+        prefetch
         href={problemIndex !== 0 ? `/tracks/${track.id}/${track.problems[problemIndex - 1]!.id}` : ``}
         style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
       >
@@ -29,7 +30,7 @@ const CustomPagination = ({
           <div className="pr-2">
             <ChevronLeftIcon />
           </div>
-          Prev
+          <span className={isAtHeader ? "hidden lg:block" : ""}>Prev</span>
         </Button>
         <Button
           variant="outline"
@@ -56,7 +57,7 @@ const CustomPagination = ({
           className="hidden bg-black text-white md:flex"
           disabled={problemIndex + 1 !== track.problems.length ? false : true}
         >
-          Next
+          <span className={isAtHeader ? "hidden lg:block" : ""}>Next</span>
           <div className="pl-2">
             <ChevronRightIcon />
           </div>

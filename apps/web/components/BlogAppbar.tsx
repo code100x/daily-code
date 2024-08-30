@@ -140,7 +140,7 @@ export const BlogAppbar = ({
             {track.title} ({problemIndex + 1} / {track.problems.length})
           </p>
           <div className="flex items-center space-x-2">
-            <CustomPagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
+            <CustomPagination allProblems={track.problems} isAtHeader track={track} problemIndex={problemIndex} />
             <ModeToggle />
             <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
               <Button variant="outline" className="ml-2 hidden bg-black text-white md:flex">

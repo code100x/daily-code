@@ -8,7 +8,15 @@ import { Track, Problem } from "@prisma/client";
 import { isLegacyViewMode } from "@repo/store";
 import { cn } from "@repo/ui/utils";
 
-export function PageToggle({ allProblems, track }: { allProblems: Problem[]; track: Track & { problems: Problem[] } }) {
+export function PageToggle({
+  allProblems,
+  isAtHeader = false,
+  track,
+}: {
+  allProblems: Problem[];
+  isAtHeader?: boolean;
+  track: Track & { problems: Problem[] };
+}) {
   const { trackIds }: { trackIds?: string[] } = useParams();
   const currentTrack = trackIds ? trackIds.join("/") : "";
 
@@ -22,7 +30,7 @@ export function PageToggle({ allProblems, track }: { allProblems: Problem[]; tra
           size={"lg"}
           variant={isLegacyMode ? "outline" : "secondary"}
         >
-          <span className="hidden md:block">Jump To</span>
+          <span className={`hidden ${isAtHeader ? "lg" : "md"}:block`}>Jump To</span>
           <ArrowUpRight className="size-4" />
         </Button>
       </DropdownMenuTrigger>
