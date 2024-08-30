@@ -12,11 +12,11 @@ module.exports = {
   ],
   prefix: "",
   theme: {
-       fontFamily: {
-        "open-talk": ["Open Sans", " sans - serif"],
-        "open-poppins": ["Poppins", "sans-serif"],
-        "open-montserrat": ["Montserrat Alternates", "sans-serif"]
-      },
+    fontFamily: {
+      "open-talk": ["Open Sans", " sans - serif"],
+      "open-poppins": ["Poppins", "sans-serif"],
+      "open-montserrat": ["Montserrat Alternates", "sans-serif"],
+    },
     container: {
       center: true,
       padding: "2rem",

@@ -87,6 +87,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
     return (
       <LessonView
         showAppBar
+        showPagination
         track={trackDetails}
         problem={{
           ...problemDetails,
