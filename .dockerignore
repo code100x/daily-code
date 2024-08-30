@@ -1,2 +1,4 @@
 node_modules
 build
+./apps/web/.env
+./packages/db/.env

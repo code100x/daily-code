@@ -6,6 +6,7 @@
   },
   "scripts": {
     "build": "turbo build",
+    "start": "cd apps/web && yarn run start",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
