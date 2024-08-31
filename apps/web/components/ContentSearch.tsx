@@ -57,6 +57,12 @@ export function ContentSearch({ tracks }: { tracks: (Track & { problems: Problem
   useEffect(() => {
     const fuse = new Fuse(tracks, {
       keys: ["title", "description"],
+      includeScore: true,
+      threshold: 0.4,
+      minMatchCharLength: 2,
+      shouldSort: true,
+      isCaseSensitive: false,
+      includeMatches: true
     });
 
     if (input.length > 0) {
