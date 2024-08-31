@@ -133,7 +133,7 @@ export function ContentSearch({ tracks }: { tracks: (Track & { problems: Problem
                       <img
                         alt={track.title}
                         src={track.image}
-                        className="flex mx-2 w-1/6 rounded-xl"
+                        className="flex mx-2 w-1/6 h-1/6 rounded-xl"
                       />
                       <div>
                         <CardHeader>
