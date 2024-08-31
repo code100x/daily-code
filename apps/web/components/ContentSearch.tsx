@@ -56,7 +56,7 @@ export function ContentSearch({ tracks }: { tracks: (Track & { problems: Problem
 
   useEffect(() => {
     const fuse = new Fuse(tracks, {
-      keys: ["title", "description"],
+      keys: ["title", "description"], // searching for the title and description, remove the description if needed
       includeScore: true,
       threshold: 0.4,
       minMatchCharLength: 2,
