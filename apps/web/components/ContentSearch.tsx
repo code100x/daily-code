@@ -79,6 +79,48 @@ export function ContentSearch({ tracks }: { tracks: (Track & { problems: Problem
     endListening();
   }
 
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      switch (event.code) {
+        case "KeyK":
+          if (event.ctrlKey) {
+            event.preventDefault();
+            setDialogOpen(true);
+          }
+          break;
+        case "ArrowDown":
+          event.preventDefault();
+          setSelectedIndex((prevIndex) => (prevIndex + 1) % searchTracks.length);
+          break;
+        case "ArrowUp":
+          event.preventDefault();
+          setSelectedIndex((prevIndex) => (prevIndex - 1 + searchTracks.length) % searchTracks.length);
+          break;
+        case "Enter":
+          if (selectedIndex !== -1) {
+            event.preventDefault();
+            const selectedTrack = searchTracks[selectedIndex];
+            window.open(`/tracks/${selectedTrack?.id}/${selectedTrack?.id}`, "_blank");
+          }
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [searchTracks, selectedIndex]);
+
+  useEffect(() => {
+    if (selectedIndex !== -1 && scrollableContainerRef.current) {
+      const selectedElement = scrollableContainerRef.current.children[selectedIndex];
+      if (selectedElement) {
+        selectedElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }
+  }, [selectedIndex]);
+
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
       <div
