@@ -1,7 +1,7 @@
 "use client";
 import { TrackCard2 } from "./TrackCard-2";
 import { category } from "@repo/store";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Track, Problem } from "@prisma/client";
 import { useRecoilState } from "recoil";
 import {
@@ -45,11 +45,13 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [visibleTracks, setVisibleTracks] = useState<TrackPros[]>([]);
   const [sortBy, setSortBy] = useState<string>("new");
   const [cohort2, setCohort2] = useState<boolean>(false);
-  const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const [cohort3, setCohort3] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const tracksPerPage = 10;
   const [loading, setLoading] = useState<boolean>(true);
+
+  // Reference to the tracks container
+  const tracksContainerRef = useRef<HTMLDivElement>(null);
 
   const filterTracks = () => {
     setLoading(true);
@@ -100,6 +102,11 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
     const end = start + tracksPerPage;
     setVisibleTracks(filteredTracks.slice(start, end));
     setLoading(false);
+
+    // Scroll to the top of the tracks container when the page changes
+    if (tracksContainerRef.current) {
+      tracksContainerRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [currentPage, filteredTracks]);
 
   const totalPages = Math.ceil(filteredTracks.length / tracksPerPage);
@@ -119,11 +126,12 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10, delay: 0.5 }}
-      className="flex max-w-5xl flex-col gap-4 w-full mx-auto p-4"
+      className="mx-auto flex w-full max-w-5xl flex-col gap-4 p-4"
       id="tracks"
+      ref={tracksContainerRef}
     >
-      <div className="flex w-full gap-4 justify-between items-center flex-col md:flex-row">
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 mx-auto md:mx-0 justify-center">
+      <div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="bg-primary/5 mx-auto flex items-center justify-center gap-2 rounded-lg p-2 md:mx-0">
           <Button
             size={"lg"}
             variant={"ghost"}
@@ -132,7 +140,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           >
             Cohort 2.0
           </Button>
-          <Separator className="w-0.5 h-4 bg-primary/25" />
+          <Separator className="bg-primary/25 h-4 w-0.5" />
           <Button
             size={"lg"}
             variant={"ghost"}
@@ -142,9 +150,9 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             Cohort 3.0
           </Button>
         </div>
-        <div className="flex gap-2 p-2.5 bg-primary/5 rounded-lg w-full md:w-fit">
+        <div className="bg-primary/5 flex w-full gap-2 rounded-lg p-2.5 md:w-fit">
           {/* Filter by Categories */}
-          <div className="flex gap-2 items-center ">
+          <div className="flex items-center gap-2">
             <Select onValueChange={(e) => setSelectedCategory(e === "All" ? "" : e)}>
               <SelectTrigger className="w-[250px]">
                 <SelectValue placeholder={selectedCategory || "All"} />
@@ -178,12 +186,12 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       </div>
 
       {/* Tracks with Animation */}
-      <motion.ul className="flex flex-col gap-4 w-full" variants={trackAnimation} initial="hidden" animate="show">
+      <motion.ul className="flex w-full flex-col gap-4" variants={trackAnimation} initial="hidden" animate="show">
         {loading ? (
           Array.from({ length: tracksPerPage }).map((_, idx) => (
             <div
               key={idx}
-              className="flex items-center space-x-4 w-full h-24 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl"
+              className="flex h-24 w-full items-center space-x-4 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900"
             >
               <Skeleton className="h-12 w-12 rounded-2xl" />
               <div className="space-y-2">
@@ -193,11 +201,11 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             </div>
           ))
         ) : visibleTracks.length === 0 ? (
-          <p className="text-center font-medium tracking-tighter text-lg max-w-screen-sm px-4 mx-auto">
+          <p className="mx-auto max-w-screen-sm px-4 text-center text-lg font-medium tracking-tighter">
             ☹️ Sorry - currently there are no tracks available.
           </p>
         ) : (
-          filteredTracks.map((t) => (
+          visibleTracks.map((t) => (
             <motion.li key={t.id} className="w-full" variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}>
               <TrackCard2 track={t} />
             </motion.li>
@@ -207,7 +215,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
       {/* Skeleton */}
       {filteredTracks.length < tracksPerPage && (
-        <div className="flex items-center space-x-4 w-full h-24 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl">
+        <div className="flex h-24 w-full items-center space-x-4 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900">
           <Skeleton className="h-12 w-12 rounded-2xl" />
           <div className="space-y-2">
             <Skeleton className="h-4 w-[250px]" />
@@ -215,12 +223,14 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           </div>
         </div>
       )}
+
       {/* Pagination Controls */}
-      <div className="flex justify-end items-end mt-4 w-full">
+      <div className="mt-4 flex w-full items-end justify-end">
         <Pagination>
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
+                style={{ cursor: "pointer" }}
                 onClick={() => {
                   setCurrentPage((prev) => Math.max(prev - 1, 1));
                 }}
@@ -228,19 +238,19 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             </PaginationItem>
             {Array.from({ length: totalPages }).map((_, index) => (
               <PaginationItem key={index}>
-                <PaginationLink onClick={() => setCurrentPage(index + 1)}>{index + 1}</PaginationLink>
+                <PaginationLink
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setCurrentPage(index + 1)}
+                  className={currentPage === index + 1 ? "active" : ""}
+                >
+                  {index + 1}
+                </PaginationLink>
               </PaginationItem>
             ))}
-            {totalPages > 5 && (
-              <>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              </>
-            )}
 
             <PaginationItem>
               <PaginationNext
+                style={{ cursor: "pointer" }}
                 onClick={() => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages));
                 }}
