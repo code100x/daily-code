@@ -1,5 +1,4 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { Button } from "../../../packages/ui/src/shad/ui/button";
 import { Dialog, DialogContent } from "../../../packages/ui/src/shad/ui/dailog";
@@ -15,20 +14,7 @@ type TrackPreviewProps = {
 
 
 export function TrackPreview({ showPreview, setShowPreview, track }: TrackPreviewProps) {
-  const [isMediumOrLarger, setIsMediumOrLarger] = useState(false);
-
-  const updateScreenSize = () => {
-    setIsMediumOrLarger(window.innerWidth >= 768);
-  };
-
-  useEffect(() => {
-    updateScreenSize(); // Set the initial state
-    window.addEventListener("resize", updateScreenSize); // Add resize listener
-
-    return () => {
-      window.removeEventListener("resize", updateScreenSize); // Cleanup listener on unmount
-    };
-  }, []);
+  
 
 
 
