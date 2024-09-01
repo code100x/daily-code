@@ -11,14 +11,6 @@ type TrackPreviewProps = {
   track: any;
 };
 
-const truncateDescription = (text: string, wordLimit: number) => {
-  const words = text.split(" ");
-  if (words.length > wordLimit) {
-    return words.slice(0, wordLimit).join(" ") + " ...";
-  }
-  return text;
-};
-
 export function TrackPreview({ showPreview, setShowPreview, track }: TrackPreviewProps) {
   return (
     <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
