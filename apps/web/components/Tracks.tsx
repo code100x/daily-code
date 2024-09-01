@@ -39,26 +39,31 @@ interface TracksWithCategoriesProps {
   categories: { id: string; category: string }[];
 }
 
+enum CohortGroup {
+  One = 1,
+  Two = 2,
+  Three = 3,
+}
+
 export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [selectedCategory, setSelectedCategory] = useRecoilState(category);
   const [filteredTracks, setFilteredTracks] = useState<TrackPros[]>(tracks);
   const [visibleTracks, setVisibleTracks] = useState<TrackPros[]>([]);
   const [sortBy, setSortBy] = useState<string>("new");
-  const [cohort2, setCohort2] = useState<boolean>(false);
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
-  const [cohort3, setCohort3] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const tracksPerPage = 10;
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedCohort, setSelectedCohort] = useState<number | null>(null);
+
+  const tracksPerPage = 10;
+  const isCohort2Selected = selectedCohort === CohortGroup.Two;
+  const isCohort3Selected = selectedCohort === CohortGroup.Three;
 
   const filterTracks = () => {
     setLoading(true);
     let newFilteredTracks = tracks;
-    if (cohort3) {
-      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === 3);
-    }
-    if (cohort2) {
-      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === 2);
+    if (selectedCohort) {
+      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === selectedCohort);
     }
     if (selectedCategory && selectedCategory !== "All") {
       newFilteredTracks = newFilteredTracks.filter((t) =>
@@ -86,9 +91,13 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
     setLoading(false);
   };
 
+  const handleCohortSelection = (cohort: number) => {
+    setSelectedCohort((prevCohort) => (prevCohort === cohort ? null : cohort));
+  };
+
   useEffect(() => {
     filterTracks();
-  }, [selectedCategory, cohort2, cohort3, tracks]);
+  }, [selectedCategory, selectedCohort, tracks]);
 
   useEffect(() => {
     sortTracks(sortBy);
@@ -127,8 +136,8 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => setCohort2(!cohort2)}
-            className={cohort2 ? "bg-blue-600 text-white" : ""}
+            onClick={() => handleCohortSelection(2)}
+            className={isCohort2Selected ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
           >
             Cohort 2.0
           </Button>
@@ -136,8 +145,8 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => setCohort3(!cohort3)}
-            className={cohort3 ? "bg-blue-600 text-white" : ""}
+            onClick={() => handleCohortSelection(3)}
+            className={isCohort3Selected ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
           >
             Cohort 3.0
           </Button>
