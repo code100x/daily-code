@@ -15,7 +15,7 @@
     "CACHE_EXPIRE"
   ],
   "globalDependencies": ["**/.env.*local", "**/.env", ".env", ".env.local", "tsconfig.json"],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]

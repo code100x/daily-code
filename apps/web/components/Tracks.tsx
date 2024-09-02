@@ -127,7 +127,10 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => setCohort2(!cohort2)}
+            onClick={() => {
+              setCohort3(false)
+              setCohort2(!cohort2)
+            }}
             className={cohort2 ? "bg-blue-600 text-white" : ""}
           >
             Cohort 2.0
@@ -136,7 +139,10 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => setCohort3(!cohort3)}
+            onClick={() => {
+              setCohort2(false)
+              setCohort3(!cohort3)
+            }}
             className={cohort3 ? "bg-blue-600 text-white" : ""}
           >
             Cohort 3.0
