@@ -295,6 +295,10 @@ export async function updateTrack(
         });
       });
     }
+
+    await cache.evict("getAllTracks", []);
+    await getAllTracks();
+
     return track;
   } catch (e) {
     console.log(e);
