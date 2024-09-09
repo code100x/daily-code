@@ -47,6 +47,7 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
               ...problemDetails,
               notionRecordMap: notionRecordMaps[i],
             }}
+            isCompleted={false}
             key={i}
           />
         ))}

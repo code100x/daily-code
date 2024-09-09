@@ -42,15 +42,16 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  email         String?      @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
-  admin         Boolean      @default(false)
+  admin         Boolean         @default(false)
   accounts      Account[]
   sessions      Session[]
   quizScores    QuizScore[]
+  trackprogress TrackProgress[]
 }
 
 model VerificationToken {
@@ -62,16 +63,17 @@ model VerificationToken {
 }
 
 model Track {
-  id          String          @id @default(uuid())
-  title       String
-  description String
-  image       String
-  categories  TrackCategory[] // This replaces 'category Categories[]'
-  problems    TrackProblems[]
-  inSearch    Boolean         @default(false)
-  hidden      Boolean         @default(false)
-  cohort      Int             @default(0)
-  createdAt   DateTime        @default(now())
+  id            String          @id @default(uuid())
+  title         String
+  description   String
+  image         String
+  categories    TrackCategory[] // This replaces 'category Categories[]'
+  problems      TrackProblems[]
+  inSearch      Boolean         @default(false)
+  hidden        Boolean         @default(false)
+  cohort        Int             @default(0)
+  createdAt     DateTime        @default(now())
+  trackprogress TrackProgress[]
 }
 
 model Categories {
@@ -90,15 +92,16 @@ model TrackCategory {
 }
 
 model Problem {
-  id               String            @id @default(uuid())
-  title            String
-  description      String
-  notionDocId      String
-  mcqQuestions     MCQQuestion[]
-  type             ProblemType
-  trackProblems    TrackProblems[]
-  quizScores       QuizScore[]
+  id            String          @id @default(uuid())
+  title         String
+  description   String
+  notionDocId   String
+  mcqQuestions  MCQQuestion[]
+  type          ProblemType
+  trackProblems TrackProblems[]
+  quizScores    QuizScore[]
 }
+
 model TrackProblems {
   track   Track  @relation(fields: [trackId], references: [id])
   trackId String
@@ -126,11 +129,25 @@ model MCQQuestion {
 }
 
 model QuizScore {
-  id            String   @id @default(uuid())
-  score         Int
-  user          User?    @relation(fields: [userId], references: [id])
-  userId        String?
-  problem       Problem  @relation(fields: [problemId], references: [id])
-  problemId     String
-  createdAt     DateTime @default(now())
+  id        String   @id @default(uuid())
+  score     Int
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  problem   Problem  @relation(fields: [problemId], references: [id])
+  problemId String
+  createdAt DateTime @default(now())
+}
+
+model TrackProgress {
+  id        String   @id @default(uuid())
+  userId    String
+  trackId   String
+  progress  Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  track Track @relation(fields: [trackId], references: [id])
+
+  @@unique([userId, trackId])
 }

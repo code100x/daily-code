@@ -50,6 +50,27 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const tracksPerPage = 10;
   const [loading, setLoading] = useState<boolean>(true);
+  const [completedTrackIds, setCompletedTrackIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchCompletedTrackIds = async () => {
+      try {
+        const response = await fetch(`/api/tracks/user-completed-tracks`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        if (response.ok) {
+          const { completedTrackIds } = await response.json();
+          setCompletedTrackIds(completedTrackIds);
+        }
+      } catch (error) {
+        console.error('Error while checking the track progress:', error);
+      }
+    }
+    fetchCompletedTrackIds()
+  }, [])
 
   const filterTracks = () => {
     setLoading(true);
@@ -199,7 +220,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
         ) : (
           filteredTracks.map((t) => (
             <motion.li key={t.id} className="w-full" variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}>
-              <TrackCard2 track={t} />
+              <TrackCard2 track={t} completedTrackIds={completedTrackIds} />
             </motion.li>
           ))
         )}

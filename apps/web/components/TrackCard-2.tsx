@@ -14,7 +14,7 @@ interface TrackCardProps extends Track {
   }[];
 }
 
-export function TrackCard2({ track }: { track: TrackCardProps }) {
+export function TrackCard2({ track, completedTrackIds }: { track: TrackCardProps, completedTrackIds: string[] }) {
   const controls = useAnimation();
   const ref = useRef<HTMLDivElement | null>(null);
   const [showPreview, setShowPreview] = useState<boolean>(false);
@@ -39,6 +39,8 @@ export function TrackCard2({ track }: { track: TrackCardProps }) {
       }
     };
   }, [controls]);
+
+  const isCompleted = completedTrackIds.includes(track.id);
 
   const variants = {
     hidden: { opacity: 0 },
@@ -71,6 +73,11 @@ export function TrackCard2({ track }: { track: TrackCardProps }) {
           <div className="flex flex-row md:flex-col gap-2 w-full md:w-[30%] md:items-end items-center">
             <p className="text-primary/80 md:text-lg tracking-tight text-blue-500 font-semibold">
               {track.problems.length} Chapters
+              {isCompleted && (
+                <div className="flex items-center text-green-600">
+                  <span className="font-semibold text-base">Completed</span>
+                </div>
+              )}
             </p>
             <p className="flex tracking-tight gap-2 text-primary/60 text-sm md:text-base">
               {formatDistanceToNow(new Date(track.createdAt), { addSuffix: true })}

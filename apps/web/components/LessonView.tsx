@@ -12,18 +12,20 @@ export const LessonView = async ({
   showAppBar,
   showPagination = false,
   isPdfRequested,
+  isCompleted = false
 }: {
   problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
   showAppBar?: boolean;
   showPagination?: boolean;
   isPdfRequested?: boolean;
+  isCompleted: boolean;
 }) => {
   const session = await getServerSession(authOptions);
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
 
   // eslint-disable-next-line turbo/no-undeclared-env-vars
-  const isInDevMode = process?.env?.NODE_ENV === "development";
+  const isInDevMode = process?.env?.NODE_ENV === "production";
 
   if (!isInDevMode && problemIndex > 1 && (!session || !session.user)) {
     return (
@@ -47,6 +49,7 @@ export const LessonView = async ({
         showAppBar={!!showAppBar}
         showPagination={showPagination}
         track={track}
+        isCompleted={isCompleted}
       />
     );
   }
