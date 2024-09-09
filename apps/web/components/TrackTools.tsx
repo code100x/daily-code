@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@repo/ui";
 import { ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import MarkAsReadButton from "./MarkAsReadButton";
 
 const TrackTools = ({
   track,
@@ -63,6 +64,7 @@ const TrackTools = ({
             <ChevronRight className="size-4" />
           </Button>
         </Link>
+        <MarkAsReadButton trackId={track.id} disabled={!(problemIndex + 1 === track.problems.length)} currentProblemIndex={problemIndex} totalProblems={track.problems.length} />
 
         {/* To Top */}
         <Button className="flex gap-2 dark:bg-[#323232]" onClick={scrollToTop} size={"lg"} variant={"secondary"}>

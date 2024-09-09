@@ -93,6 +93,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
           ...problemDetails,
           notionRecordMap,
         }}
+        isCompleted
       />
     );
   } else {

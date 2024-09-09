@@ -17,6 +17,7 @@ export const Blog = ({
   showPagination,
   isPdfRequested,
   problemIndex,
+  isCompleted,
 }: {
   problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
@@ -24,6 +25,7 @@ export const Blog = ({
   showPagination?: boolean;
   isPdfRequested?: boolean;
   problemIndex: number;
+  isCompleted: boolean;
 }) => {
   const mounted = useMountStatus();
   const isLegacyMode = useRecoilValue(isLegacyViewMode);
@@ -41,6 +43,7 @@ export const Blog = ({
         <NotionRenderer recordMap={problem.notionRecordMap} />
         {showPagination && (
           <div className="justify-center pt-2">
+            {isCompleted}
             <CustomPagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
           </div>
         )}

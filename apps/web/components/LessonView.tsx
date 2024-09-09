@@ -12,12 +12,14 @@ export const LessonView = async ({
   showAppBar,
   showPagination = false,
   isPdfRequested,
+  isCompleted = false
 }: {
   problem: Problem & { notionRecordMap: any };
   track: Track & { problems: Problem[] };
   showAppBar?: boolean;
   showPagination?: boolean;
   isPdfRequested?: boolean;
+  isCompleted: boolean;
 }) => {
   const session = await getServerSession(authOptions);
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
@@ -47,6 +49,7 @@ export const LessonView = async ({
         showAppBar={!!showAppBar}
         showPagination={showPagination}
         track={track}
+        isCompleted={isCompleted}
       />
     );
   }
