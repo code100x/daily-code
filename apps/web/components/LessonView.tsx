@@ -25,7 +25,7 @@ export const LessonView = async ({
   const problemIndex = track.problems.findIndex((p) => p.id === problem.id);
 
   // eslint-disable-next-line turbo/no-undeclared-env-vars
-  const isInDevMode = process?.env?.NODE_ENV === "production";
+  const isInDevMode = process?.env?.NODE_ENV === "development";
 
   if (!isInDevMode && problemIndex > 1 && (!session || !session.user)) {
     return (
