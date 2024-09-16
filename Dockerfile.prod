@@ -6,7 +6,6 @@ WORKDIR /usr/src/app
 COPY . .
 RUN yarn install
 RUN cd packages/db && DATABASE_URL=$DATABASE_URL npx prisma generate && cd ../..
-RUN yarn install
 ENV DATABASE_URL=$DATABASE_URL
 RUN yarn build
 
