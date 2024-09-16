@@ -27,7 +27,7 @@ jobs:
           push: true
           tags: 100xdevs/dailycode:${{ github.sha }}
           build-args: |
-            DATABASE_URL: ${{ secrets.PROD_DATABASE }} 
+            DATABASE_URL=${{ secrets.PROD_DATABASE }} 
       
       - name: Clone staging-ops repo, update, and push
         env:
