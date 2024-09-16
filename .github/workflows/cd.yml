@@ -26,6 +26,8 @@ jobs:
           file: ./Dockerfile.prod
           push: true
           tags: 100xdevs/dailycode-staging:${{ github.sha }}
+          build-args: 
+            DATABASE_URL: ${{ secrets.STAGING_DATABASE }}
       
       - name: Clone staging-ops repo, update, and push
         env:
