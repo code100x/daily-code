@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import { ContentSearch } from "../components/ContentSearch";
 import { motion } from "framer-motion";
 import { Spotlight } from "@repo/ui";
+import { TrackPros } from "./Tracks";
 
-export default function Hero() {
+export default function Hero({ tracks }: { tracks: TrackPros[] }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (event: MouseEvent) => {
@@ -165,7 +166,7 @@ export default function Hero() {
         <p className="text-primary/80 max-w-lg text-center tracking-tight md:text-lg font-light">
           A platform where you'll find the right content to help you improve your skills and grow your knowledge.
         </p>
-        <ContentSearch />
+        <ContentSearch tracks={tracks} />
       </motion.div>
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20 -z-10" fill="blue" />
     </div>

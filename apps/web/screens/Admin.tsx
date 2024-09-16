@@ -24,6 +24,10 @@ export const Admin = async () => {
   });
   return (
     <div className="pt-2">
+      <p className="mb-2 text-center text-sm text-gray-500 dark:text-gray-400">
+        Note: Changes will be reflected at the Client FE but here in Admin you'll have to refresh in order to see the
+        changes
+      </p>
       <div className="flex justify-center">
         <Tabs defaultValue="auto" className="w-full">
           <div className="flex justify-center my-2">
