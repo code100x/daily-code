@@ -2,7 +2,7 @@ import { Track, Problem } from "@prisma/client";
 import { PageToggle } from "./PageToggle";
 import Link from "next/link";
 import { Button } from "@repo/ui";
-import { ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUp, ChevronLeft, ChevronRight, HomeIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
 const TrackTools = ({
@@ -25,9 +25,10 @@ const TrackTools = ({
       className="flex w-full items-center justify-between gap-2 p-6"
     >
       <div className="border-primary/10 flex gap-2 rounded-lg border bg-black/10 p-1 backdrop-blur-lg">
-        <Link href={"/"} className="hidden lg:block">
+        <Link href={"/"}>
           <Button className="flex gap-2 bg-[#323232] font-semibold dark:bg-slate-50" size={"lg"}>
-            Back to home
+            <span className="hidden lg:block">Back to home</span>
+            <HomeIcon className="size-4" />
           </Button>
         </Link>
         <PageToggle allProblems={track.problems} track={track} />
@@ -42,7 +43,7 @@ const TrackTools = ({
             size={"lg"}
           >
             <ChevronLeft className="size-4" />
-            <span className="hidden md:block">Prev</span>
+            <span className="hidden lg:block">Prev</span>
           </Button>
         </Link>
         <Link
@@ -59,14 +60,14 @@ const TrackTools = ({
             disabled={problemIndex + 1 === track.problems.length}
             size={"lg"}
           >
-            <span className="hidden md:block">Next</span>
+            <span className="hidden lg:block">Next</span>
             <ChevronRight className="size-4" />
           </Button>
         </Link>
 
         {/* To Top */}
         <Button className="flex gap-2 dark:bg-[#323232]" onClick={scrollToTop} size={"lg"} variant={"secondary"}>
-          <span className="hidden md:block">Go to Top</span>
+          <span className="hidden lg:block">Go to Top</span>
           <ArrowUp className="size-4" />
         </Button>
       </div>
