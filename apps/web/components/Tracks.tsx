@@ -54,7 +54,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedCohort, setSelectedCohort] = useState<number | null>(null);
 
-  const tracksPerPage = 15; // 15 problems per page
+  const tracksPerPage = 10;
   const isCohort2Selected = selectedCohort === CohortGroup.Two;
   const isCohort3Selected = selectedCohort === CohortGroup.Three;
 
@@ -147,7 +147,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
     >
       {/* Cohort and Filter Buttons */}
       <div className="flex w-full gap-4 justify-between items-center flex-col md:flex-row">
-        <div className="flex items-center gap=2 p-2 rounded-lg bg-primary/5 mx-auto md:mx-0 justify-center">
+        <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 mx-auto md:mx-0 justify-center">
           <Button
             size={"lg"}
             variant={"ghost"}
