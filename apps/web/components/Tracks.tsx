@@ -54,7 +54,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedCohort, setSelectedCohort] = useState<number | null>(null);
 
-  const tracksPerPage = 10;
+  const tracksPerPage = 10; // 10 problems per page
   const isCohort2Selected = selectedCohort === CohortGroup.Two;
   const isCohort3Selected = selectedCohort === CohortGroup.Three;
 
