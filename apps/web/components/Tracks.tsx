@@ -228,7 +228,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       <div className="flex justify-end items-end mt-4 w-full">
         <Pagination>
           <PaginationContent>
-            <PaginationItem>
+            <PaginationItem className="cursor-pointer">
               <PaginationPrevious
                 onClick={() => {
                   setCurrentPage((prev) => Math.max(prev - 1, 1));
@@ -236,7 +236,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
               />
             </PaginationItem>
             {Array.from({ length: totalPages }).map((_, index) => (
-              <PaginationItem key={index}>
+              <PaginationItem key={index} className="cursor-pointer">
                 <PaginationLink onClick={() => setCurrentPage(index + 1)}>{index + 1}</PaginationLink>
               </PaginationItem>
             ))}
@@ -248,7 +248,9 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
               </>
             )}
 
-            <PaginationItem>
+            <PaginationItem
+            className="cursor-pointer"
+            >
               <PaginationNext
                 onClick={() => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages));
