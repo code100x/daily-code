@@ -217,7 +217,6 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           </div>
         </div>
       )}
-      {/* Pagination Controls */}
     </motion.div>
   );
 };
