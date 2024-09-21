@@ -33,6 +33,7 @@ export const Blog = ({
       return null;
     }
   }
+  const bookmarkedTrackIds: string[] = []; // Define the variable
 
   const renderBlog = () =>
     isLegacyMode ? (
@@ -52,7 +53,11 @@ export const Blog = ({
           <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />
         </div>
         <div className="itemsc-center fixed bottom-0 mx-auto w-full justify-center">
-          <TrackTools allProblems={track.problems} track={track} problemIndex={problemIndex} />
+          <TrackTools
+            track={{ ...track, isBookmarked: bookmarkedTrackIds.includes(track.id) }}
+            problemIndex={problemIndex}
+            allProblems={track.problems}
+          />
         </div>
       </div>
     );
