@@ -93,7 +93,7 @@ export const BlogAppbar = ({
           transition={{ duration: 0.3 }}
           className={`${visible ? "translate-y-0" : "-translate-y-full"} px-6`}
         >
-          <Card className="border-primary/10 no-scrollbar max-h-[50vh] w-fit overflow-auto bg-black/10 pt-4 backdrop-blur-lg">
+          <Card className="border-primary/10 no-scrollbar max-h-[50vh] w-fit overflow-auto bg-white/95 dark:bg-black/95 pt-4 backdrop-blur-lg ">
             {track?.problems?.map((problem: { id: string; title: string }, index: number) => {
               const isDisabled = currentTrack === `${track.id}/${problem.id}`;
               return (
