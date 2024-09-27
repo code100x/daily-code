@@ -24,7 +24,7 @@ const TrackTools = ({
       transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10 }}
       className="flex w-full items-center justify-between gap-2 p-6"
     >
-      <div className="border-primary/10 flex gap-2 rounded-lg border bg-black/10 p-1 backdrop-blur-lg">
+      <div className="border-primary/10 flex gap-2 rounded-lg border bg-[#e5e5e5]/95 dark:bg-black/95 p-1 backdrop-blur-lg">
         <Link href={"/"} className="hidden lg:block">
           <Button className="flex gap-2 bg-[#323232] font-semibold dark:bg-slate-50" size={"lg"}>
             Back to home
