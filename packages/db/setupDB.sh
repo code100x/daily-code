@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "=================DB Setup================="
 
 # Defining Default values to variables
