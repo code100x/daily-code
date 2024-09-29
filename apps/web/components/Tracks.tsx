@@ -113,8 +113,6 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
   const totalPages = Math.ceil(filteredTracks.length / tracksPerPage);
 
-  let lastPage = totalPages;
-
   const trackAnimation = {
     hidden: { opacity: 1 },
     show: {
@@ -255,7 +253,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             <PaginationItem
             className="cursor-pointer"
             >{
-              currentPage === lastPage ? (<div></div>) : (<PaginationNext
+              currentPage === totalPages ? (<div></div>) : (<PaginationNext
                 onClick={() => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages));
                 }}
