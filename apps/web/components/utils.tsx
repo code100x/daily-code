@@ -1,7 +1,9 @@
 "use server";
-import { MCQQuestion, Prisma, Problem, Track, TrackProblems } from "@prisma/client";
+import { MCQQuestion, Prisma, Problem, Track, TrackProblems, UserProgress } from "@prisma/client";
 import db from "@repo/db/client";
 import { cache } from "../../../packages/db/Cache";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../lib/auth";
 
 interface Tracks extends Track {
   problems: { problem: Problem }[];
@@ -478,3 +480,66 @@ export async function deleteCategory(categoryId: string) {
     },
   });
 }
+
+export async function setProgress(trackId: string, problemId: string, completed: boolean) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) {
+    throw new Error("User not authenticated");
+  }
+
+  const user = await db.user.findUnique({
+    where: { email: session.user.email },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  await db.userProgress.upsert({
+    where: {
+      userId_trackId_problemId: {
+        userId: user.id,
+        trackId,
+        problemId,
+      },
+    },
+    update: {
+      completed,
+      lastVisited: new Date(),
+    },
+    create: {
+      userId: user.id,
+      trackId,
+      problemId,
+      completed,
+      lastVisited: new Date(),
+    },
+  });
+}
+
+export const getUserProgress = async (): Promise<UserProgress[]> => {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) {
+    return [];
+  }
+
+  let userProgress: UserProgress[] = [];
+
+  if (session?.user?.email) {
+    const user = await db.user.findUnique({
+      where: { email: session.user.email },
+    });
+
+    if (user) {
+      userProgress = await db.userProgress.findMany({
+        where: {
+          userId: user.id,
+        },
+        orderBy: {
+          lastVisited: "desc",
+        },
+      });
+    }
+  }
+  return userProgress;
+};
