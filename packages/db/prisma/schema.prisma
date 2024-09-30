@@ -51,6 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   quizScores    QuizScore[]
+  progress UserProgress[]
 }
 
 model VerificationToken {
@@ -72,6 +73,7 @@ model Track {
   hidden      Boolean         @default(false)
   cohort      Int             @default(0)
   createdAt   DateTime        @default(now())
+  userProgress UserProgress[]
 }
 
 model Categories {
@@ -98,6 +100,7 @@ model Problem {
   type             ProblemType
   trackProblems    TrackProblems[]
   quizScores       QuizScore[]
+  userProgress UserProgress[]
 }
 model TrackProblems {
   track   Track  @relation(fields: [trackId], references: [id])
@@ -133,4 +136,18 @@ model QuizScore {
   problem       Problem  @relation(fields: [problemId], references: [id])
   problemId     String
   createdAt     DateTime @default(now())
+}
+
+model UserProgress {
+  id        String   @id @default(uuid())
+  userId    String
+  trackId   String
+  problemId String
+  completed Boolean  @default(false)
+  lastVisited DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, trackId, problemId])
 }

@@ -5,6 +5,7 @@ import RedirectToLoginCard from "./RedirectToLoginCard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
 import { AppbarClient } from "./AppbarClient";
+import { setProgress } from "./utils";
 
 export const LessonView = async ({
   problem,
@@ -32,6 +33,11 @@ export const LessonView = async ({
         <RedirectToLoginCard />
       </div>
     );
+  }
+
+  // Update progress when the lesson is viewed
+  if (session?.user) {
+    await setProgress(track.id, problem.id, true);
   }
 
   if (problem.type === "MCQ") {
