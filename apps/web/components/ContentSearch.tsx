@@ -3,22 +3,59 @@ import { useEffect, useRef, useState, useDeferredValue } from "react";
 import Link from "next/link";
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Dialog, DialogClose, DialogContent, Input, Card, CardDescription, CardHeader, CardTitle } from "@repo/ui";
-import { getSearchResults } from "../lib/search";
-import Image from "next/image";
+/* import { getSearchResults } from "../lib/search";
+import Image from "next/image"; */
+import Fuse from "fuse.js";
+import { TrackPros } from "./Tracks";
 
-export function ContentSearch() {
+type Payload = {
+  problemId: string;
+  trackTitle: string;
+  problemTitle: string;
+  trackId: string;
+  image: string;
+};
+
+interface DataItem {
+  payload: Payload;
+}
+
+export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [input, setInput] = useState("");
   const [searchTracks, setSearchTracks] = useState<any[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const deferredInput = useDeferredValue(input);
-
+  const [allTracks, setAllTracks] = useState<DataItem[]>([]);
   useEffect(() => {
+    const updatedTracks: DataItem[] = [];
+    tracks.map((t) => {
+      t.problems.map((p) => {
+        updatedTracks.push({
+          payload: {
+            problemId: p.id,
+            trackTitle: t.title,
+            problemTitle: p.title,
+            trackId: t.id,
+            image: t.image,
+          },
+        });
+      });
+    });
+    setAllTracks(updatedTracks);
+  }, []);
+  useEffect(() => {
+    const fuse = new Fuse(allTracks, {
+      keys: ["payload.problemTitle"],
+    });
+
     async function fetchSearchResults() {
       if (deferredInput.length > 0) {
-        const data = await getSearchResults(deferredInput);
-        setSearchTracks(data);
+        /* const data = await getSearchResults(deferredInput); */
+        const data = fuse.search(deferredInput);
+        const items = data.map((result) => result.item);
+        setSearchTracks(items);
       } else {
         setSearchTracks([]);
       }
@@ -119,7 +156,7 @@ export function ContentSearch() {
                 >
                   <Card className="p-2 w-full mx-2">
                     <div className="flex my-2">
-                      <Image
+                      <img
                         alt={track.payload.problemTitle}
                         src={track.payload.image}
                         className="flex mx-2 w-1/6 rounded-xl"

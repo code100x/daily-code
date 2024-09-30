@@ -13,7 +13,7 @@ export async function Landing() {
   return (
     <div className="flex flex-col">
       <AppbarClient />
-      <Hero />
+      <Hero tracks={tracks} />
       <Tracks tracks={tracks} categories={categories} />
       <FooterCTA />
       <Footer />

@@ -24,7 +24,7 @@ import {
 } from "@repo/ui";
 import { motion } from "framer-motion";
 
-interface TrackPros extends Track {
+export interface TrackPros extends Track {
   problems: Problem[];
   categories: {
     category: {
@@ -39,26 +39,31 @@ interface TracksWithCategoriesProps {
   categories: { id: string; category: string }[];
 }
 
+enum CohortGroup {
+  One = 1,
+  Two = 2,
+  Three = 3,
+}
+
 export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [selectedCategory, setSelectedCategory] = useRecoilState(category);
   const [filteredTracks, setFilteredTracks] = useState<TrackPros[]>(tracks);
   const [visibleTracks, setVisibleTracks] = useState<TrackPros[]>([]);
   const [sortBy, setSortBy] = useState<string>("new");
-  const [cohort2, setCohort2] = useState<boolean>(false);
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
-  const [cohort3, setCohort3] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const tracksPerPage = 10;
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedCohort, setSelectedCohort] = useState<number | null>(null);
+
+  const tracksPerPage = 10;
+  const isCohort2Selected = selectedCohort === CohortGroup.Two;
+  const isCohort3Selected = selectedCohort === CohortGroup.Three;
 
   const filterTracks = () => {
     setLoading(true);
     let newFilteredTracks = tracks;
-    if (cohort3) {
-      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === 3);
-    }
-    if (cohort2) {
-      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === 2);
+    if (selectedCohort) {
+      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === selectedCohort);
     }
     if (selectedCategory && selectedCategory !== "All") {
       newFilteredTracks = newFilteredTracks.filter((t) =>
@@ -86,9 +91,13 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
     setLoading(false);
   };
 
+  const handleCohortSelection = (cohort: number) => {
+    setSelectedCohort((prevCohort) => (prevCohort === cohort ? null : cohort));
+  };
+
   useEffect(() => {
     filterTracks();
-  }, [selectedCategory, cohort2, cohort3, tracks]);
+  }, [selectedCategory, selectedCohort, tracks]);
 
   useEffect(() => {
     sortTracks(sortBy);
@@ -119,38 +128,32 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10, delay: 0.5 }}
-      className="flex max-w-5xl flex-col gap-4 w-full mx-auto p-4"
+      className="mx-auto flex w-full max-w-5xl flex-col gap-4 p-4"
       id="tracks"
     >
-      <div className="flex w-full gap-4 justify-between items-center flex-col md:flex-row">
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 mx-auto md:mx-0 justify-center">
+      <div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="bg-primary/5 mx-auto flex items-center justify-center gap-2 rounded-lg p-2 md:mx-0">
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => {
-              setCohort2(!cohort2);
-              cohort3 && setCohort3(!cohort3);
-            }}
-            className={cohort2 ? "bg-blue-600 text-white" : ""}
+            onClick={() => handleCohortSelection(2)}
+            className={isCohort2Selected ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
           >
             Cohort 2.0
           </Button>
-          <Separator className="w-0.5 h-4 bg-primary/25" />
+          <Separator className="bg-primary/25 h-4 w-0.5" />
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => {
-              setCohort3(!cohort3);
-              cohort2 && setCohort2(!cohort2);
-            }}
-            className={cohort3 ? "bg-blue-600 text-white" : ""}
+            onClick={() => handleCohortSelection(3)}
+            className={isCohort3Selected ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
           >
             Cohort 3.0
           </Button>
         </div>
-        <div className="flex gap-2 p-2.5 bg-primary/5 rounded-lg w-full md:w-fit">
+        <div className="bg-primary/5 flex w-full gap-2 rounded-lg p-2.5 md:w-fit">
           {/* Filter by Categories */}
-          <div className="flex gap-2 items-center ">
+          <div className="flex items-center gap-2">
             <Select onValueChange={(e) => setSelectedCategory(e === "All" ? "" : e)}>
               <SelectTrigger className="w-[250px]">
                 <SelectValue placeholder={selectedCategory || "All"} />
@@ -184,12 +187,12 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       </div>
 
       {/* Tracks with Animation */}
-      <motion.ul className="flex flex-col gap-4 w-full" variants={trackAnimation} initial="hidden" animate="show">
+      <motion.ul className="flex w-full flex-col gap-4" variants={trackAnimation} initial="hidden" animate="show">
         {loading ? (
           Array.from({ length: tracksPerPage }).map((_, idx) => (
             <div
               key={idx}
-              className="flex items-center space-x-4 w-full h-24 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl"
+              className="flex h-24 w-full items-center space-x-4 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900"
             >
               <Skeleton className="h-12 w-12 rounded-2xl" />
               <div className="space-y-2">
@@ -199,7 +202,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             </div>
           ))
         ) : visibleTracks.length === 0 ? (
-          <p className="text-center font-medium tracking-tighter text-lg max-w-screen-sm px-4 mx-auto">
+          <p className="mx-auto max-w-screen-sm px-4 text-center text-lg font-medium tracking-tighter">
             ☹️ Sorry - currently there are no tracks available.
           </p>
         ) : (
@@ -213,7 +216,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
       {/* Skeleton */}
       {filteredTracks.length < tracksPerPage && (
-        <div className="flex items-center space-x-4 w-full h-24 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl">
+        <div className="flex h-24 w-full items-center space-x-4 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900">
           <Skeleton className="h-12 w-12 rounded-2xl" />
           <div className="space-y-2">
             <Skeleton className="h-4 w-[250px]" />
@@ -222,10 +225,10 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
         </div>
       )}
       {/* Pagination Controls */}
-      <div className="flex justify-end items-end mt-4 w-full">
+      <div className="mt-4 flex w-full items-end justify-end">
         <Pagination>
           <PaginationContent>
-            <PaginationItem>
+            <PaginationItem className="cursor-pointer">
               <PaginationPrevious
                 onClick={() => {
                   setCurrentPage((prev) => Math.max(prev - 1, 1));
@@ -233,7 +236,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
               />
             </PaginationItem>
             {Array.from({ length: totalPages }).map((_, index) => (
-              <PaginationItem key={index}>
+              <PaginationItem key={index} className="cursor-pointer">
                 <PaginationLink onClick={() => setCurrentPage(index + 1)}>{index + 1}</PaginationLink>
               </PaginationItem>
             ))}
@@ -245,7 +248,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
               </>
             )}
 
-            <PaginationItem>
+            <PaginationItem className="cursor-pointer">
               <PaginationNext
                 onClick={() => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages));

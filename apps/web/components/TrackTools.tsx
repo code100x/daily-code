@@ -22,9 +22,14 @@ const TrackTools = ({
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10 }}
-      className="flex gap-2 justify-between w-full items-center p-6"
+      className="flex w-full items-center justify-between gap-2 p-6"
     >
-      <div className="flex gap-2 p-1 bg-black/10 backdrop-blur-lg rounded-lg border border-primary/10">
+      <div className="border-primary/10 flex gap-2 rounded-lg border bg-black/10 p-1 backdrop-blur-lg">
+        <Link href={"/"} className="hidden lg:block">
+          <Button className="flex gap-2 bg-[#323232] font-semibold dark:bg-slate-50" size={"lg"}>
+            Back to home
+          </Button>
+        </Link>
         <PageToggle allProblems={track.problems} track={track} />
         <Link
           prefetch={true}
@@ -32,7 +37,7 @@ const TrackTools = ({
           style={{ cursor: problemIndex !== 0 ? "pointer" : "not-allowed" }}
         >
           <Button
-            className="flex gap-2 font-semibold dark:bg-slate-50 bg-[#323232]"
+            className="flex gap-2 bg-[#323232] font-semibold dark:bg-slate-50"
             disabled={problemIndex === 0}
             size={"lg"}
           >
@@ -50,7 +55,7 @@ const TrackTools = ({
           style={{ cursor: problemIndex + 1 !== track.problems.length ? "pointer" : "not-allowed" }}
         >
           <Button
-            className="flex gap-2 font-semibold dark:bg-slate-50 bg-[#323232]"
+            className="flex gap-2 bg-[#323232] font-semibold dark:bg-slate-50"
             disabled={problemIndex + 1 === track.problems.length}
             size={"lg"}
           >

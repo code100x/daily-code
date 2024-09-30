@@ -6,6 +6,7 @@
   },
   "scripts": {
     "build": "turbo build",
+    "start": "cd apps/web && yarn run start",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
@@ -26,7 +27,7 @@
     "postcss": "^8.4.33",
     "prettier": "^3.1.1",
     "tailwindcss": "^3.4.1",
-    "turbo": "latest"
+    "turbo": "^2.1.1"
   },
   "engines": {
     "node": ">=18"
@@ -39,6 +40,7 @@
   "dependencies": {
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.30",
+    "fuse.js": "^7.0.0",
     "ioredis": "^5.4.1",
     "nextjs-toploader": "^1.6.11",
     "react": "^18.2.0",

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input } from "@repo/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input, Label } from "@repo/ui";
 import { Track, Categories } from "@prisma/client";
 import { updateTrack } from "../utils";
 
@@ -19,11 +19,12 @@ const EditTrackCard = ({ Track, categories }: { Track: TrackCardProps; categorie
   const [description, setDescription] = useState(Track.description);
   const [image, setImage] = useState(Track.image);
   const [hidden, setHidden] = useState(Track.hidden);
+  const [cohort, setCohort] = useState(Track.cohort);
   const [selectedCategory, setSelectedCategory] = useState<string[]>(Track.categories.map((item) => item.category.id));
 
   function handleEdit(id: string) {
     if (isEditing) {
-      updateTrack(id, { id, title, description, image, hidden, selectedCategory });
+      updateTrack(id, { id, title, description, image, hidden, selectedCategory, cohort });
       return setIsEditing(false);
     }
     setIsEditing(true);
@@ -43,6 +44,7 @@ const EditTrackCard = ({ Track, categories }: { Track: TrackCardProps; categorie
     setImage(Track.image);
     setHidden(Track.hidden);
     setIsEditing(Track.hidden);
+    setCohort(Track.cohort);
   }
   return (
     <Card key={Track.id}>
@@ -89,6 +91,10 @@ const EditTrackCard = ({ Track, categories }: { Track: TrackCardProps; categorie
             </CardDescription>
             <CardDescription>
               <Input onChange={(e) => setImage(e.target.value)} value={image} />
+            </CardDescription>
+            <CardDescription>
+              <Label>Cohort</Label>
+              <Input placeholder="Cohort" onChange={(e) => setCohort(Number(e.target.value))} value={cohort} />
             </CardDescription>
             <CardDescription>
               {categories.map((item, i) => (

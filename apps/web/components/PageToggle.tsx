@@ -1,29 +1,46 @@
 import { useParams } from "next/navigation";
-import { cn } from "@repo/ui/utils";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@repo/ui";
-import { Track, Problem } from "@prisma/client";
 import Link from "next/link";
+import { useRecoilValue } from "recoil";
 import { ArrowUpRight } from "lucide-react";
 
-export function PageToggle({ allProblems, track }: { allProblems: Problem[]; track: Track & { problems: Problem[] } }) {
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@repo/ui";
+import { Track, Problem } from "@prisma/client";
+import { isLegacyViewMode } from "@repo/store";
+import { cn } from "@repo/ui/utils";
+
+export function PageToggle({
+  allProblems,
+  isAtHeader = false,
+  track,
+}: {
+  allProblems: Problem[];
+  isAtHeader?: boolean;
+  track: Track & { problems: Problem[] };
+}) {
   const { trackIds }: { trackIds?: string[] } = useParams();
   const currentTrack = trackIds ? trackIds.join("/") : "";
+
+  const isLegacyMode = useRecoilValue(isLegacyViewMode);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="flex gap-2 font-semibold dark:bg-[#323232]" size={"lg"} variant={"secondary"}>
-          <span className="hidden md:block">Jump To</span>
+        <Button
+          className={`flex gap-2 font-semibold ${isLegacyMode ? "" : "dark:bg-[#323232]"}`}
+          size={"lg"}
+          variant={isLegacyMode ? "outline" : "secondary"}
+        >
+          <span className={`hidden ${isAtHeader ? "lg" : "md"}:block`}>Jump To</span>
           <ArrowUpRight className="size-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className={cn("overflow-y-auto max-h-[80vh] dark:bg-[#151515]")}>
+      <DropdownMenuContent align="start" className={cn("max-h-[80vh] overflow-y-auto dark:bg-[#151515]")}>
         {allProblems.map((problem: { id: string; title: string }, index: number) => (
           <DropdownMenuItem key={index} disabled={currentTrack === `${track.id}/${problem.id}`}>
             <Link
               key={problem.id}
               prefetch={true}
-              className="max-w-screen-md w-full"
+              className="w-full max-w-screen-md"
               href={`/tracks/${track.id}/${problem.id}`}
             >
               {index + 1} - {problem.title}

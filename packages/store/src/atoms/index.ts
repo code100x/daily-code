@@ -1,3 +1,4 @@
 export * from "./filter";
-export * from "./quiz";
 export * from "./profileSidebar";
+export * from "./quiz";
+export * from "./view";
