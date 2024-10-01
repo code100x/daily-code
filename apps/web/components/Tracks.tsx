@@ -61,7 +61,9 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
   const filterTracks = () => {
     setLoading(true);
-    let newFilteredTracks = tracks;
+    let newFilteredTracks = [...tracks].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
     if (selectedCohort) {
       newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === selectedCohort);
     }
@@ -93,6 +95,15 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
   const handleCohortSelection = (cohort: number) => {
     setSelectedCohort((prevCohort) => (prevCohort === cohort ? null : cohort));
+  };
+
+  const handleAllTracks = () => {
+    setLoading(true);
+    setFilteredTracks(tracks);
+    setSelectedCategory("");
+    setSelectedCohort(null);
+    setCurrentPage(1);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -131,8 +142,17 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       className="flex max-w-5xl flex-col gap-4 w-full mx-auto p-4"
       id="tracks"
     >
-      <div className="flex w-full gap-4 justify-between items-center flex-col md:flex-row">
+      <div className="flex w-full gap-4 justify-between items-center flex-col lg:flex-row">
         <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 mx-auto md:mx-0 justify-center">
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => handleAllTracks()}
+            className={!selectedCohort && !selectedCategory ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
+          >
+            All
+          </Button>
+          <Separator className="bg-primary/25 h-4 w-0.5" />
           <Button
             size={"lg"}
             variant={"ghost"}
@@ -151,7 +171,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             Cohort 3.0
           </Button>
         </div>
-        <div className="flex gap-2 p-2.5 bg-primary/5 rounded-lg w-full md:w-fit">
+        <div className="flex gap-2 p-2.5 bg-primary/5 rounded-lg w-fit">
           {/* Filter by Categories */}
           <div className="flex gap-2 items-center ">
             <Select onValueChange={(e) => setSelectedCategory(e === "All" ? "" : e)}>
