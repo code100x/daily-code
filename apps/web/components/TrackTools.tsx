@@ -4,13 +4,14 @@ import Link from "next/link";
 import { Button } from "@repo/ui";
 import { ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { BookmarkButton } from "./bookmarks/BookMarkButton";
 
 const TrackTools = ({
   track,
   problemIndex,
 }: {
   allProblems: Problem[];
-  track: Track & { problems: Problem[] };
+  track: Track & { problems: Problem[]; isBookmarked: boolean };
   problemIndex: number;
 }) => {
   const scrollToTop = () => {
@@ -63,6 +64,7 @@ const TrackTools = ({
             <ChevronRight className="size-4" />
           </Button>
         </Link>
+        <BookmarkButton trackId={track.id} problemId={track.problems[problemIndex]?.id ?? ""} />
 
         {/* To Top */}
         <Button className="flex gap-2 dark:bg-[#323232]" onClick={scrollToTop} size={"lg"} variant={"secondary"}>
