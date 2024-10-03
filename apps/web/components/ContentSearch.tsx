@@ -63,13 +63,20 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
     fetchSearchResults();
   }, [deferredInput]);
 
+  function isMac() {
+    return navigator.platform.toLowerCase().indexOf("mac") !== -1;
+  }
+  function isWindows() {
+    return navigator.platform.toLowerCase().indexOf("win") !== -1;
+  }
+
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       switch (event.code) {
         case "KeyK":
-          if (event.ctrlKey) {
+          if ((isWindows() && event.ctrlKey) || (isMac() && event.metaKey)) {
             event.preventDefault();
-            setDialogOpen(true);
+            setDialogOpen((prev) => !prev);
           }
           break;
         case "ArrowDown":
@@ -115,27 +122,29 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
       <div
-        className="md:max-w-screen border border-primary/15 p-3 rounded-lg cursor-text w-full mx-auto"
+        className="md:max-w-screen border-primary/15 mx-auto w-full cursor-text rounded-lg border p-3"
         onClick={() => setDialogOpen(true)}
       >
-        <div className="md:flex gap-2 items-center hidden justify-between ">
-          <div className="flex gap-2 items-center">
+        <div className="hidden items-center justify-between gap-2 md:flex">
+          <div className="flex items-center gap-2">
             <MagnifyingGlassIcon className="size-4" />
             Search
           </div>
-          <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3">Ctrl + K</kbd>
+          <kbd className="rounded-sm bg-white/15 p-2 text-sm leading-3">
+            <span>{isMac() ? "⌘ " : "Ctrl +"}</span> K
+          </kbd>
         </div>
         <div className="block md:hidden">
           <MagnifyingGlassIcon className="size-4" />
         </div>
       </div>
-      <DialogContent className="p-0 gap-0 max-w-2xl">
-        <div className="flex items-center px-6 py-4 border-b">
+      <DialogContent className="max-w-2xl gap-0 p-0">
+        <div className="flex items-center border-b px-6 py-4">
           <MagnifyingGlassIcon className="size-4" />
           <Input
             type="text"
             placeholder="Search"
-            className="border-none focus-visible:outline-none focus-visible:ring-0 text-base shadow-none"
+            className="border-none text-base shadow-none focus-visible:outline-none focus-visible:ring-0"
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -144,7 +153,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
-        <div className="h-[400px] py-4 space-y-4 overflow-y-scroll" ref={scrollableContainerRef}>
+        <div className="h-[400px] space-y-4 overflow-y-scroll py-4" ref={scrollableContainerRef}>
           {searchTracks.length > 0 &&
             searchTracks.map((track, index) => (
               <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
@@ -154,12 +163,12 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
                   target="_blank"
                   passHref
                 >
-                  <Card className="p-2 w-full mx-2">
-                    <div className="flex my-2">
+                  <Card className="mx-2 w-full p-2">
+                    <div className="my-2 flex">
                       <img
                         alt={track.payload.problemTitle}
                         src={track.payload.image}
-                        className="flex mx-2 w-1/6 rounded-xl"
+                        className="mx-2 flex w-1/6 rounded-xl"
                       />
 
                       <div>
