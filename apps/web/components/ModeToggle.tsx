@@ -34,7 +34,7 @@ export function ModeToggle() {
       <div className="flex items-center gap-2">
         <Sun className={`h-5 w-5 transition-all duration-300 ${isDarkMode ? "text-primary/50" : "text-blue-600"}`} />
         <Switch
-          className="outline outline-2 outline-black"
+          className="outline outline-1 outline-black"
           checked={isDarkMode}
           onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
         />
