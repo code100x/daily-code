@@ -1,4 +1,4 @@
-# Quick Setup Locally
+## Quick Setup Locally
 
 * Docker
 
