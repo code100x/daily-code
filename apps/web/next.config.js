@@ -27,4 +27,5 @@ module.exports = {
   images: {
     domains: ["d2szwvl7yo497w.cloudfront.net", "appx-wsb-gcp.akamai.net.in"], // Add your domain here
   },
+  output: "standalone",
 };
