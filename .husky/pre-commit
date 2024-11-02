@@ -1,5 +1,4 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+
 
 # Define the unwanted lock files
 unwanted_files=("package-lock.json" "pnpm-lock.yaml" "bun.lockb")
