@@ -20,11 +20,14 @@ const EditTrackCard = ({ Track, categories }: { Track: TrackCardProps; categorie
   const [image, setImage] = useState(Track.image);
   const [hidden, setHidden] = useState(Track.hidden);
   const [cohort, setCohort] = useState(Track.cohort);
+  const [trackType, setTrackType] = useState(Track.trackType);
+  const [canvaLink, setCanvaLink] = useState(Track.canvaLink || "");
+
   const [selectedCategory, setSelectedCategory] = useState<string[]>(Track.categories.map((item) => item.category.id));
 
   function handleEdit(id: string) {
     if (isEditing) {
-      updateTrack(id, { id, title, description, image, hidden, selectedCategory, cohort });
+      updateTrack(id, { id, title, description, image, hidden, selectedCategory, cohort, trackType, canvaLink });
       return setIsEditing(false);
     }
     setIsEditing(true);
@@ -50,7 +53,7 @@ const EditTrackCard = ({ Track, categories }: { Track: TrackCardProps; categorie
     <Card key={Track.id}>
       {!isEditing && (
         <div className="grid grid-cols-6">
-          <img src={image} className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl" />
+          <img src={image} className="m-4 flex min-h-[130px] min-w-[130px] rounded-xl sm:h-[130px] sm:w-[130px]" />
           <div className="col-span-5">
             <CardHeader>
               <div className="flex justify-between">
@@ -96,6 +99,24 @@ const EditTrackCard = ({ Track, categories }: { Track: TrackCardProps; categorie
               <Label>Cohort</Label>
               <Input placeholder="Cohort" onChange={(e) => setCohort(Number(e.target.value))} value={cohort} />
             </CardDescription>
+            {trackType === "CANVA" && canvaLink && (
+              <CardDescription>
+                <Label>Canva Link</Label>
+                <Input
+                  placeholder="Canva Link"
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      setCanvaLink("");
+                      setTrackType("NOTION");
+                    } else {
+                      setTrackType("CANVA");
+                      setCanvaLink(e.target.value);
+                    }
+                  }}
+                  value={canvaLink}
+                />
+              </CardDescription>
+            )}
             <CardDescription>
               {categories.map((item, i) => (
                 <Button

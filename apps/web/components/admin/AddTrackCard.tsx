@@ -14,6 +14,7 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
   const [hidden, setHidden] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [cohort, setCohort] = useState(3);
+  const [canvaLink, setCanvaLink] = useState("");
   const { toast } = useToast();
 
   function handleFilterButton(category: string) {
@@ -26,7 +27,7 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
 
   return (
     <div>
-      <Card className="cols-span-4 p-4 m-2 w-full">
+      <Card className="cols-span-4 m-2 w-full p-4">
         <Input
           type="text"
           placeholder="Track Id"
@@ -68,7 +69,16 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
             setCohort(parseInt(event.target.value));
           }}
         />
-        <div className="flex lg:flex-row justify-evenly mx-auto py-1">
+        <Input
+          type="text"
+          placeholder="Canva Link"
+          className="my-2"
+          value={canvaLink}
+          onChange={(event) => {
+            setCanvaLink(event.target.value);
+          }}
+        />
+        <div className="mx-auto flex justify-evenly py-1 lg:flex-row">
           {categories.map((category, i) => (
             <Button
               key={i}
@@ -85,12 +95,32 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
         </Button>
         <Button
           disabled={!title || !description || !image}
-          className="w-full mt-4"
+          className="mt-4 w-full"
           onClick={async () => {
-            await createTrack({ problems: [], id, title, description, image, hidden, selectedCategory });
+            await createTrack({
+              problems: [],
+              id,
+              title,
+              description,
+              image,
+              hidden,
+              selectedCategory,
+              canvaLink,
+              trackType: canvaLink ? "CANVA" : "NOTION",
+            });
             setNewProblems((prev) => [
               ...prev,
-              { id, title, description, image, hidden, cohort, createdAt: new Date() },
+              {
+                id,
+                title,
+                description,
+                image,
+                hidden,
+                cohort,
+                createdAt: new Date(),
+                canvaLink,
+                trackType: canvaLink ? "CANVA" : "NOTION",
+              },
             ]);
             toast({
               title: "Added a Track",
@@ -107,7 +137,7 @@ const AddTrackCard = ({ categories }: { categories: Categories[] }) => {
             <div className="grid grid-cols-6">
               <img
                 src={Track.image}
-                className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"
+                className="m-4 flex min-h-[130px] min-w-[130px] rounded-xl sm:h-[130px] sm:w-[130px]"
               />
               <div className="col-span-5">
                 <CardHeader>
