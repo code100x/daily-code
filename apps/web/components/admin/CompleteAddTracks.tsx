@@ -12,6 +12,8 @@ export interface CompleteTrack {
   trackImage: string;
   selectedCategory: string[];
   cohort: string;
+  canvaLink?: string | undefined;
+  trackType: "NOTION" | "CANVA";
 }
 
 const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
@@ -33,41 +35,58 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
   }
 
   useEffect(() => {
-    setTrackData({ trackId, trackDescription, trackTitle, trackImage, selectedCategory, cohort });
-  }, [trackId, trackDescription, trackTitle, trackImage,selectedCategory]);
+    setTrackData({
+      trackId,
+      trackDescription,
+      trackTitle,
+      trackImage,
+      selectedCategory,
+      cohort,
+      canvaLink: undefined,
+      trackType: "NOTION",
+    });
+  }, [trackId, trackDescription, trackTitle, trackImage, selectedCategory]);
   return (
     <div className="flex flex-col justify-center">
-      <div className="text-5xl text-center mb-4">Track</div>
-      <div className="flex flex-col space-y-5 justify-center my-4">
-        <div className="flex justify-center">
-          <div className="mr-3">{"TrackId: "}</div>
-          <Input className="w-1/3 mr-3" onChange={(e) => setTrackId(e.target.value)} placeholder="TrackId" />
+      <div className="mb-4 text-center text-5xl">Track</div>
+      <div className="my-4 flex flex-col justify-center space-y-5">
+        <div className="flex justify-center items-center">
+          <div className="mr-3 min-w-[100px]">{"TrackId: "}</div>
+          <Input className="mr-3 w-1/3" onChange={(e) => setTrackId(e.target.value)} placeholder="TrackId" />
         </div>
         <div className="flex justify-center">
-          <div className="mr-3">{"TrackTitle: "}</div>
-          <Input className="w-1/3 mr-3" onChange={(e) => setTrackTitle(e.target.value)} placeholder="TrackTitle" />
+          <div className="mr-3 min-w-[100px]">{"TrackTitle: "}</div>
+          <Input className="mr-3 w-1/3" onChange={(e) => setTrackTitle(e.target.value)} placeholder="TrackTitle" />
         </div>
         <div className="flex justify-center">
-          <div className="mr-3">{"Description: "}</div>
+          <div className="mr-3 min-w-[100px]">{"Description: "}</div>
           <Input
-            className="w-1/3 mr-3"
+            className="mr-3 w-1/3"
             onChange={(e) => setTrackDescription(e.target.value)}
             placeholder="TrackDescription"
           />
         </div>
         <div className="flex justify-center">
-          <div className="mr-3">{"TrackImage: "}</div>
-          <Input className="w-1/3 mr-3" onChange={(e) => setTrackImage(e.target.value)} placeholder="TrackImage" />
+          <div className="mr-3 min-w-[100px]">{"TrackImage: "}</div>
+          <Input className="mr-3 w-1/3" onChange={(e) => setTrackImage(e.target.value)} placeholder="TrackImage" />
         </div>
         <div className="flex justify-center">
-          <div className="mr-3">{"NotionId: "}</div>
-          <Input className="w-1/3 mr-3" onChange={(e) => setNotionId(e.target.value)} placeholder="NotionId" />
+          <div className="mr-3 min-w-[100px]">{"NotionId: "}</div>
+          <Input className="mr-3 w-1/3" onChange={(e) => setNotionId(e.target.value)} placeholder="NotionId" />
         </div>
         <div className="flex justify-center">
-          <div className="mr-3">{"Cohort: "}</div>
-          <Input className="w-1/3 mr-3" type="number" value={cohort} onChange={(e) => setCohort(e.target.value)} placeholder="3" />
+          <div className="mr-3 min-w-[100px]">{"Cohort: "}</div>
+          <Input
+            className="mr-3 w-1/3"
+            type="number"
+            value={cohort}
+            onChange={(e) => setCohort(e.target.value)}
+            placeholder="3"
+          />
         </div>
-        <div className="flex lg:flex-row justify-evenly mx-auto py-1">
+
+        <div className="px-14">
+        <div className="mx-auto flex flex-wrap justify-center gap-2 py-1">
           {categories.map((category, i) => (
             <Button
               key={i}
@@ -78,8 +97,10 @@ const CompleteAddTracks = ({ categories }: { categories: Categories[] }) => {
               {category.category}
             </Button>
           ))}
-        <EditCategories categories={categories} />
+          <EditCategories categories={categories} />
         </div>
+        </div>
+
         <div className="flex justify-center">
           <CompleteTrackCard notionId={notionId} TrackData={trackData} />
         </div>

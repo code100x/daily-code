@@ -47,16 +47,16 @@ const AdminSearch = ({
           {!isSubmitting ? "Add Track" : "Adding Track to Search"}
         </Button>
       </div>
-      <div className="grid grid-cols-2">
-        <ScrollArea className="h-screen m-2">
+      <div className="grid md:grid-cols-2 px-14 grid-cols-1">
+        <ScrollArea className="h-full m-2 pb-14">
           <div className="text-3xl text-center mb-4">Not in Search</div>
           <div className="space-y-4">
             {TracksNotinSearch.map((track, i) => (
-              <Card key={track.id}>
-                <div className="grid grid-cols-6">
+              <Card className="w-full" key={track.id}>
+                <div className="flex w-full">
                   <img
                     src={track.image}
-                    className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"
+                    className="flex m-4 size-[130px] rounded-xl"
                   />
                   <div className="col-span-5">
                     <CardHeader>
@@ -76,11 +76,11 @@ const AdminSearch = ({
           <div className="text-3xl text-center mb-4">in Search</div>
           <div className="space-y-4">
             {TracksinSearch.map((track, i) => (
-              <Card key={track.id}>
-                <div className="grid grid-cols-6">
+              <Card className="w-full" key={track.id}>
+                <div className="flex w-full">
                   <img
                     src={track.image}
-                    className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"
+                    className="flex m-4 size-[130px] rounded-xl"
                   />
                   <div className="col-span-5">
                     <CardHeader>

@@ -212,6 +212,8 @@ export async function createTrack(data: {
   problems: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
   hidden: boolean;
   cohort?: number;
+  canvaLink?: string;
+  trackType: "NOTION" | "CANVA";
 }) {
   try {
     await db.problem.createMany({
@@ -225,6 +227,8 @@ export async function createTrack(data: {
         description: data.description,
         image: data.image,
         cohort: data.cohort,
+        canvaLink: data.canvaLink,
+        trackType: data.trackType,
         hidden: data.hidden,
         problems: {
           createMany: {
@@ -264,6 +268,8 @@ export async function updateTrack(
     problems?: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[];
     hidden: boolean;
     cohort?: number;
+    canvaLink?: string;
+    trackType: "NOTION" | "CANVA";
   }
 ) {
   try {
@@ -278,6 +284,8 @@ export async function updateTrack(
         image: data.image,
         hidden: data.hidden,
         cohort: data.cohort,
+        canvaLink: data.canvaLink,
+        trackType: data.trackType,
       },
     });
     await db.trackCategory.deleteMany({

@@ -22,6 +22,7 @@
     "@repo/typescript-config": "*",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.56.0",
+    "eslint-plugin-turbo": "^2.2.3",
     "husky": "^9.0.7",
     "lint-staged": "^15.2.1",
     "postcss": "^8.4.33",

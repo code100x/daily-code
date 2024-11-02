@@ -3,6 +3,7 @@ import { motion, useAnimation } from "framer-motion";
 import { Track, Problem } from "@prisma/client";
 import { TrackPreview } from "./TrackPreview";
 import { formatDistanceToNow } from "date-fns";
+import { useRouter } from "next/navigation";
 
 interface TrackCardProps extends Track {
   problems: Problem[];
@@ -15,9 +16,23 @@ interface TrackCardProps extends Track {
 }
 
 export function TrackCard2({ track }: { track: TrackCardProps }) {
+  const router = useRouter();
   const controls = useAnimation();
   const ref = useRef<HTMLDivElement | null>(null);
   const [showPreview, setShowPreview] = useState<boolean>(false);
+
+  const handleTrackClick = () => {
+    if (track.trackType === "CANVA") {
+      const searchParams = new URLSearchParams();
+      if (track.canvaLink) {
+        searchParams.set("canvaLink", track.canvaLink);
+        searchParams.set("title", track.title);
+      }
+      router.push(`/canva-track/${track.id}?${searchParams.toString()}`);
+    } else {
+      setShowPreview(true);
+    }
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -52,8 +67,8 @@ export function TrackCard2({ track }: { track: TrackCardProps }) {
         initial="hidden"
         animate={controls}
         variants={variants}
-        className="flex items-start flex-row gap-4 cursor-pointer transition-all  bg-primary/5 backdrop-blur-xl duration-300 hover:-translate-y-1 rounded-xl p-4 justify-between md:items-center"
-        onClick={() => setShowPreview(true)}
+        className="bg-primary/5 flex cursor-pointer flex-row items-start justify-between gap-4 rounded-xl p-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 md:items-center"
+        onClick={handleTrackClick}
       >
         <img src={track.image} alt={track.title} className="size-20 aspect-square object-cover rounded-xl" />
         <div className="flex flex-col md:flex-row gap-4 w-full md:items-center justify-between">

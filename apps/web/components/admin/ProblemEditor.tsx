@@ -5,7 +5,7 @@ import AddProblemCard from "./AddProblemCard";
 
 export const ProblemEditor = ({ problems }: { problems: Problem[] }) => {
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2 px-14">
       <ScrollArea className="h-screen m-2">
         <div className="space-y-4">
           {problems.map((problem, i) => (

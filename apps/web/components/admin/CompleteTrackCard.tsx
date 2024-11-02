@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import EditProblem from "../EditProblem";
 import { createTrack } from "../utils";
 import { insertData } from "../../lib/search";
+import Image from "next/image";
 
 interface CompleteTrackCardProps {
   trackId: string;
@@ -12,6 +13,8 @@ interface CompleteTrackCardProps {
   trackImage: string;
   selectedCategory: string[];
   cohort: string;
+  canvaLink?: string | undefined; 
+  trackType: "NOTION" | "CANVA";
 }
 
 export interface Problem {
@@ -22,23 +25,8 @@ export interface Problem {
   description: string;
   type: string;
 }
-const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackData: CompleteTrackCardProps }) => {
-  async function handleAddTrack() {
-    setIsSubmitting(true);
-    await createTrack({
-      id: TrackData.trackId,
-      title: TrackData.trackTitle,
-      description: TrackData.trackDescription,
-      image: TrackData.trackImage,
-      hidden: false,
-      problems: problems,
-      selectedCategory: TrackData.selectedCategory,
-      cohort: parseInt(TrackData.cohort),
-    });
-    await insertData(TrackData.trackId);
-    setIsSubmitting(true);
-  }
 
+const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackData: CompleteTrackCardProps }) => {
   const [addButton, setAddButton] = useState(false);
   const [problems, setProblems] = useState<{ problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,37 +41,54 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
           },
           body: JSON.stringify({ notionId }),
         });
-        if (response.ok) {
-          const data: { notionDocId: string; title: string }[] = await response.json();
 
-          const dbData: { problem: Prisma.ProblemCreateManyInput; sortingOrder: number }[] = [];
+        if (!response.ok) throw new Error("Failed to fetch data");
 
-          for (let i = 0; i < data.length; i++) {
-            let problem = {
-              id: `${TrackData.trackTitle.replace(/[^a-zA-Z0-9]/g, "-")}-${i + 1}`,
-              notionDocId: data[i]?.notionDocId!,
-              title: data[i]?.title!,
-              description: data[i]?.title!,
-              type: ProblemType.Blog,
-            };
-            dbData.push({ problem, sortingOrder: data.length - i });
-          }
+        const data: { notionDocId: string; title: string }[] = await response.json();
+        const dbData = data.map((item, index) => ({
+          problem: {
+            id: `${TrackData.trackTitle.replace(/[^a-zA-Z0-9]/g, "-")}-${index + 1}`,
+            notionDocId: item.notionDocId,
+            title: item.title,
+            description: item.title,
+            type: ProblemType.Blog,
+          },
+          sortingOrder: data.length - index,
+        }));
 
-          setProblems(dbData);
-        } else {
-          throw new Error("Failed to fetch data");
-        }
+        setProblems(dbData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    if (notionId) {
-      fetchData();
+    if (notionId) fetchData();
+  }, [addButton, notionId, TrackData.trackTitle]);
+
+  const handleAddTrack = async () => {
+    setIsSubmitting(true);
+    try {
+      await createTrack({
+        id: TrackData.trackId,
+        title: TrackData.trackTitle,
+        description: TrackData.trackDescription,
+        image: TrackData.trackImage,
+        hidden: false,
+        problems,
+        selectedCategory: TrackData.selectedCategory,
+        cohort: parseInt(TrackData.cohort),
+        canvaLink: TrackData.canvaLink,
+         trackType: TrackData.trackType,
+        
+      });
+      await insertData(TrackData.trackId);
+    } finally {
+      setIsSubmitting(false);
     }
-  }, [addButton]);
+  };
 
   return (
+    <>
     <div>
       <Sheet>
         <SheetTrigger
@@ -97,8 +102,11 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
           <div className="flex justify-center">
             <SheetHeader>
               <div className="grid grid-cols-6">
-                <img
+                <Image
                   src={TrackData.trackImage}
+                  alt={TrackData.trackTitle}
+                  width={130}
+                  height={130}
                   className="flex m-4 min-h-[130px] sm:h-[130px] min-w-[130px] sm:w-[130px] rounded-xl"
                 />
                 <div className="col-span-5 flex items-center space-x-3">
@@ -118,6 +126,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
         </SheetContent>
       </Sheet>
     </div>
+    </>
   );
 };
 
