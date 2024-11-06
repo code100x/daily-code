@@ -54,6 +54,8 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedCohort, setSelectedCohort] = useState<number | null>(null);
+  const [key, setKey] = useState<number>(new Date().getTime());
+  const [value, setValue] = useState<string | undefined>(undefined);
 
   const tracksPerPage = 10;
   const isCohort2Selected = selectedCohort === CohortGroup.Two;
@@ -70,6 +72,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
         t.categories.some((c) => c.category.category === selectedCategory)
       );
     }
+    newFilteredTracks.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     setFilteredTracks(newFilteredTracks);
     setCurrentPage(1); // Reset to first page on filtering
     setLoading(false);
@@ -97,6 +100,9 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
   useEffect(() => {
     filterTracks();
+    setValue(undefined);
+    setKey(new Date().getTime());
+    setSortBy("new");
   }, [selectedCategory, selectedCohort, tracks]);
 
   useEffect(() => {
@@ -170,7 +176,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
           </div>
 
           {/* Sort */}
-          <Select onValueChange={(e) => setSortBy(e)}>
+          <Select key={key} value={value} onValueChange={(e) => setSortBy(e)}>
             <SelectTrigger className="w-[250px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
