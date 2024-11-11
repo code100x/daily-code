@@ -40,7 +40,7 @@ export const Blog = ({
         {showAppBar && <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />}
         <NotionRenderer recordMap={problem.notionRecordMap} />
         {showPagination && (
-          <div className="justify-center pt-2">
+          <div className="justify-center">
             <CustomPagination allProblems={track.problems} track={track} problemIndex={problemIndex} />
           </div>
         )}
@@ -51,7 +51,7 @@ export const Blog = ({
         <div className="fixed top-0 w-full">
           <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />
         </div>
-        <div className="itemsc-center fixed bottom-0 mx-auto w-full justify-center">
+        <div className="items-center fixed bottom-0 mx-auto w-full justify-center">
           <TrackTools allProblems={track.problems} track={track} problemIndex={problemIndex} />
         </div>
       </div>

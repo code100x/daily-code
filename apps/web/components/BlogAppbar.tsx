@@ -17,7 +17,6 @@ import { Button, Card, CardContent, Separator } from "@repo/ui";
 
 import { ModeToggle } from "./ModeToggle";
 import UserAccountDropDown from "./UserAccountDropDown";
-import CustomPagination from "./CustomPagination";
 
 export const BlogAppbar = ({
   track,
@@ -119,7 +118,7 @@ export const BlogAppbar = ({
   const renderUIModeToggleButton = () => (
     <Button onClick={toggleViewMode} className="flex gap-2">
       <span className="hidden lg:block">{`Switch to ${isLegacyMode ? "New" : "Old"} UI`}</span>
-      <RefreshCcwDot size={16} />
+      <RefreshCcwDot size={"lg"} />
     </Button>
   );
 
@@ -140,17 +139,16 @@ export const BlogAppbar = ({
             {track.title} ({problemIndex + 1} / {track.problems.length})
           </p>
           <div className="flex items-center space-x-2">
-            <CustomPagination allProblems={track.problems} isAtHeader track={track} problemIndex={problemIndex} />
             <ModeToggle />
             <Link href={`/pdf/${track.id}/${track.problems[problemIndex]!.id}`} target="_blank">
               <Button variant="outline" className="ml-2 hidden bg-black text-white md:flex">
                 {/* Don't think this is required and its cluttering the AppBar at the top. Uncomment this if its required */}
                 {/* Download */}
-                <DownloadIcon />
+                <DownloadIcon className="size-4"/>
               </Button>
               <Button variant="outline" className="block bg-black text-white md:hidden">
                 <div>
-                  <DownloadIcon />
+                  <DownloadIcon className="size-4" />
                 </div>
               </Button>
             </Link>
