@@ -10,7 +10,7 @@ COPY package.json yarn.lock* ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/ ./packages/
 
-RUN yarn install --frozen-lockfile --ignore-scripts
+RUN yarn install --ignore-scripts
 
 # Stage 2: Rebuild the source code only when needed
 FROM base AS builder
