@@ -126,7 +126,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
           <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3">Ctrl + K</kbd>
         </div>
         <div className="block md:hidden">
-          <MagnifyingGlassIcon className="size-4" />
+          <MagnifyingGlassIcon className="size-6" />
         </div>
       </div>
       <DialogContent className="p-0 gap-0 max-w-2xl">
@@ -144,7 +144,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
-        <div className="h-[400px] py-4 space-y-4 overflow-y-scroll" ref={scrollableContainerRef}>
+        <div className="h-[300px] md:h-[400px] py-4 space-y-4 overflow-y-scroll" ref={scrollableContainerRef}>
           {searchTracks.length > 0 &&
             searchTracks.map((track, index) => (
               <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
