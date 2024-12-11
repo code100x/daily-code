@@ -1,5 +1,7 @@
 "use client";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
+import { useRouter } from "next/navigation";
 
 import { Problem, Track } from "@prisma/client";
 import { isLegacyViewMode } from "@repo/store";
@@ -27,6 +29,12 @@ export const Blog = ({
 }) => {
   const mounted = useMountStatus();
   const isLegacyMode = useRecoilValue(isLegacyViewMode);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Force re-render when problem changes
+    router.refresh();
+  }, [problem.id, router]);
 
   if (isPdfRequested == undefined || !isPdfRequested) {
     if (!mounted) {
