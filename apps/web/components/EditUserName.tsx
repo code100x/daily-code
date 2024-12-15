@@ -1,11 +1,14 @@
 'use client'
 
 import { CheckIcon, Cross1Icon, Pencil1Icon } from '@radix-ui/react-icons'
-import { Button, Input, Label } from '@repo/ui'
+import { Button, Input, Label, useToast } from '@repo/ui'
 import React, { FormEvent, useState } from 'react'
 import { updateUserName } from './utils'
+import { useRouter } from 'next/navigation'
 
 export const EditUserName = ({ userName, userId }: { userName: string, userId: string }) => {
+    const router = useRouter();
+    const {toast} = useToast();
     const [isDisable, setIsDisable] = useState<boolean>(true);
     const [nameInput, setNameInput] = useState<string>('');
     const clickHandler = (e: FormEvent) => {
@@ -14,7 +17,19 @@ export const EditUserName = ({ userName, userId }: { userName: string, userId: s
     }
     const updateHandler = async(e: FormEvent)=>{
         e.preventDefault();
-        await updateUserName(userId, nameInput);
+        try {
+            const res = await updateUserName(userId, nameInput);
+            if(res.id){
+                toast({
+                    description: 'Your name has been updated'
+                })
+            }
+            router.refresh();
+        } catch (error) {
+            toast({
+                description: 'Failed to update name, try again'
+            })
+        }
         setIsDisable(!isDisable)
     }
 
