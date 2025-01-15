@@ -63,7 +63,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
     setLoading(true);
     let newFilteredTracks = tracks;
     if (selectedCohort) {
-      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === selectedCohort);
+      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === selectedCohort || t.cohort === 0);
     }
     if (selectedCategory && selectedCategory !== "All") {
       newFilteredTracks = newFilteredTracks.filter((t) =>
