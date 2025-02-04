@@ -120,15 +120,12 @@ export async function createTrackProblems(data: TrackProblems) {
 
 export async function getTrack(trackId: string) {
   const value: Tracks = await cache.get("Track", [trackId.toString()]);
-
   if (value) {
-    console.log("returning from cache", "get tracks");
     return {
       ...value,
       problems: value.problems.map((problem: { problem: Problem }) => ({ ...problem.problem })),
     };
   }
-  console.log("not in cache", "get tracks");
   try {
     const track = await db.track.findUnique({
       where: {
@@ -162,13 +159,6 @@ export async function getTrack(trackId: string) {
 
 export const getAllTracks = unstable_cache(
   async () => {
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
     try {
       const tracks = await db.track.findMany({
         where: {
