@@ -197,7 +197,7 @@ export const getAllTracks = unstable_cache(
     }
   },
   ["tracks"],
-  { revalidate: parseInt(process.env.CACHE_EXPIRE || "1800", 10), tags: ["tracks"] }
+  { tags: ["tracks"] }
 );
 
 export async function createTrack(data: {
@@ -330,7 +330,7 @@ export const getAllCategories = unstable_cache(
     }
   },
   ["categories"],
-  { revalidate: parseInt(process.env.CACHE_EXPIRE || "1800", 10), tags: ["categories"] }
+  { tags: ["categories"] }
 );
 
 export async function getAllMCQs() {
