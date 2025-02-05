@@ -2,7 +2,7 @@
 import { MCQQuestion, Prisma, Problem, Track, TrackProblems } from "@prisma/client";
 import db from "@repo/db/client";
 import { cache } from "../../../packages/db/Cache";
-import { revalidateTag, unstable_cache } from "next/cache";
+import { revalidateTag, unstable_cache as nextCache } from "next/cache";
 
 interface Tracks extends Track {
   problems: { problem: Problem }[];
@@ -157,7 +157,7 @@ export async function getTrack(trackId: string) {
   }
 }
 
-export const getAllTracks = unstable_cache(
+export const getAllTracks = nextCache(
   async () => {
     try {
       const tracks = await db.track.findMany({
@@ -313,7 +313,7 @@ export async function updateTrack(
   }
 }
 
-export const getAllCategories = unstable_cache(
+export const getAllCategories = nextCache(
   async () => {
     try {
       const categories = await db.categories.findMany({
