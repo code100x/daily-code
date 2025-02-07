@@ -68,10 +68,12 @@ model Track {
   image       String
   categories  TrackCategory[] // This replaces 'category Categories[]'
   problems    TrackProblems[]
-  inSearch    Boolean         @default(false)
-  hidden      Boolean         @default(false)
-  cohort      Int             @default(0)
-  createdAt   DateTime        @default(now())
+  canvaLink   String?
+  trackType   TrackType      @default(NOTION)
+  inSearch    Boolean        @default(false)
+  hidden      Boolean        @default(false)
+  cohort      Int            @default(0)
+  createdAt   DateTime       @default(now())
 }
 
 model Categories {
@@ -133,4 +135,9 @@ model QuizScore {
   problem       Problem  @relation(fields: [problemId], references: [id])
   problemId     String
   createdAt     DateTime @default(now())
+}
+
+enum TrackType {
+  NOTION
+  CANVA
 }
