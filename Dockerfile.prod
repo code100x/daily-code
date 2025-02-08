@@ -1,12 +1,10 @@
 FROM node:20-alpine AS base
 
-# Stage 1: Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
-
 RUN set -ex; \
     apk update; \
     apk add --no-cache \
+    libc6-compat \
     openssl
 
 WORKDIR /usr/src/app
@@ -17,30 +15,25 @@ COPY packages/ ./packages/
 
 RUN yarn install --ignore-scripts
 
-# Stage 2: Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /usr/src/app
 
 COPY --from=deps /usr/src/app/node_modules ./node_modules
-
 COPY . .
 
 RUN yarn global add turbo@^2.1.1
-
-RUN DATABASE_URL=$DATABASE_URL npx prisma generate --schema packages/db/prisma/schema.prisma
+RUN DATABASE_URL=$DATABASE_URL npx prisma@5.12.0 generate --schema packages/db/prisma/schema.prisma
 
 RUN cd apps/web && yarn add sharp
 RUN yarn turbo run build --filter=web...
 
-# Stage 3: Production image
 FROM base AS runner
 WORKDIR /usr/src/app
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
+RUN mkdir .next && chown nextjs:nodejs .next
 
 USER nextjs
 
@@ -50,7 +43,6 @@ COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/web/public ./apps/we
 
 EXPOSE 3000
 ENV NODE_ENV production
-# For Standalone build
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
