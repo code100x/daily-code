@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -8,9 +8,12 @@ export async function GET(req: NextRequest) {
   if (fromQuery != process.env.MY_SECRET_TOKEN) {
     return NextResponse.json({ message: "Invalid token" }, { status: 401 });
   }
+  if (!path) {
+    return NextResponse.json({ message: "Missing path parameter" }, { status: 400 });
+  }
   try {
     if (path) {
-      revalidatePath(path);
+      revalidatePath(path, "page");
       return NextResponse.json({ revalidated: true, now: Date.now() });
     }
   } catch (e) {
