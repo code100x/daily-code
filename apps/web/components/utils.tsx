@@ -158,7 +158,7 @@ export async function getTrack(trackId: string) {
 }
 export async function getAllTracks() {
   try {
-    const getCachedPosts = unstable_cache(
+    const getCachedTracks = unstable_cache(
       async () => {
         return await db.track.findMany({
           where: { hidden: false },
@@ -173,7 +173,7 @@ export async function getAllTracks() {
       { revalidate: 3600, tags: ["tracks"] }
     );
 
-    const tracks = await getCachedPosts();
+    const tracks = await getCachedTracks();
 
     if (!Array.isArray(tracks)) {
       // console.error("Error: getAllTracks did not return an array!", tracks);
@@ -191,8 +191,8 @@ export async function getAllTracks() {
 }
 
 export async function revalidateTracks() {
-  console.log("Revalidating tracks cache...");
   revalidateTag("tracks");
+  revalidateTag("categories");
 }
 
 export async function createTrack(data: {
@@ -310,21 +310,28 @@ export async function updateTrack(
 }
 
 export async function getAllCategories() {
-  const value = await cache.get("getAllCategories", []);
-  if (value) {
-    return value;
-  }
   try {
-    const categories = await db.categories.findMany({
-      select: {
-        id: true,
-        category: true,
+    const getCachedCategories = unstable_cache(
+      async () => {
+        return await db.categories.findMany({
+          select: {
+            id: true,
+            category: true,
+          },
+          distinct: ["category"],
+        });
       },
-      distinct: ["category"],
-    });
+      ["categories"],
+      { tags: ["categories"] }
+    );
+
+    const categories = await getCachedCategories();
+
     await cache.set("getAllCategories", [], categories);
+
     return categories;
   } catch (e) {
+    console.error("Error fetching categories:", e);
     return [];
   }
 }
