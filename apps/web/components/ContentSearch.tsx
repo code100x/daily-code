@@ -144,7 +144,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
-        <div className="h-[400px] py-4 space-y-4 overflow-y-scroll" ref={scrollableContainerRef}>
+        <div className="h-[500px] py-4 space-y-4 overflow-y-scroll" ref={scrollableContainerRef}>
           {searchTracks.length > 0 &&
             searchTracks.map((track, index) => (
               <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
@@ -155,17 +155,18 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
                   passHref
                 >
                   <Card className="p-2 w-full mx-2">
-                    <div className="flex my-2">
-                      <img
-                        alt={track.payload.problemTitle}
-                        src={track.payload.image}
-                        className="flex mx-2 w-1/6 rounded-xl"
-                      />
-
-                      <div>
-                        <CardHeader>
-                          <CardTitle>{track.payload.problemTitle}</CardTitle>
-                          <CardDescription>{track.payload.trackTitle}</CardDescription>
+                    <div className="flex items-center gap-4 py-1 sm:py-2">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 overflow-hidden rounded-xl">
+                        <img
+                          alt={track.payload.problemTitle}
+                          src={track.payload.image}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <CardHeader className="p-0">
+                          <CardTitle className="text-base sm:text-lg md:text-xl">{track.payload.problemTitle}</CardTitle>
+                          <CardDescription className="text-sm truncate">Track: {track.payload.trackTitle}</CardDescription>
                         </CardHeader>
                       </div>
                     </div>

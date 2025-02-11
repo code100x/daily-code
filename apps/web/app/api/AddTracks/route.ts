@@ -14,7 +14,10 @@ export async function POST(req: NextRequest) {
   const notion = new NotionAPI();
   try {
     const recordMap = await notion.getPage(notionId);
-    const data = Object.keys(recordMap.block).map((key) => {
+    const data = Object.keys(recordMap.block).filter((key) => {
+      const block = recordMap.block[key];
+      return block?.role !== "none"
+    }).map((key) => {
       const block = recordMap.block[key];
       return {
         notionDocId: block?.value.id,

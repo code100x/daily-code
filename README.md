@@ -1,43 +1,43 @@
 # Quick Setup Locally
 
-* Docker
+## Option 1: Using Docker
 
-```
+```bash
 docker compose watch
 ```
 
-    OR
+## Option 2: Manual Setup
 
-> Install the Dependencies
-
-```
+### 1. Install Dependencies
+```bash
 cd daily-code
 yarn install
 ```
 
-> Setup DB
-For Mac and Linux users
-```
+### 2. Setup Database
+
+#### For Mac and Linux users
+```bash
 cd packages/db
 chmod +x ./setupDB.sh
 ./setupDB.sh
 ```
 
-For Windows users (using docker to start db locally)
-```
+#### For Windows users
+```bash
 cd packages/db
 copy .env.example .env
 docker-compose up
 
-now, write the connection string in DATABASE_URL
+# Configure the database connection
+# Add your connection string to DATABASE_URL
 
 yarn prisma migrate dev
 yarn prisma db seed
 ```
 
-> Run locally
-
-```
+### 3. Run Locally
+```bash
 cd ../..
 yarn run dev
 ```

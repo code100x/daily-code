@@ -52,9 +52,9 @@ const EditTrackCard = ({ Track, categories }: { Track: TrackCardProps; categorie
   return (
     <Card key={Track.id} className="w-full">
       {!isEditing && (
-        <div className="flex w-full">
-          <img src={image} className="relative m-4 size-[130px]" />
-          <div className="col-span-4">
+        <div className="grid grid-cols-6">
+          <img src={image} className="m-4 flex min-h-[130px] min-w-[130px] rounded-xl sm:h-[130px] sm:w-[130px]" />
+          <div className="col-span-5">
             <CardHeader>
               <div className="flex justify-between">
                 <CardTitle>{title}</CardTitle>
