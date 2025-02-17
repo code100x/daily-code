@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }): JSX.Element {
   return (
-    <div className="min-h-screen bg-background font-sans antialiased">
+    <div className="bg-background min-h-screen font-sans antialiased">
       <AppbarClient />
-      <div className="max-w-screen-xl flex p-4 m-auto">
-        <div className="p-2 w-full grid grid-cols-8 gap-2">
+      <div className="m-auto flex max-w-screen-xl p-4">
+        <div className="grid w-full grid-cols-8 gap-2 p-2">
           <ProfileSidebar />
           <ProfileChilldren>{children}</ProfileChilldren>
         </div>
