@@ -12,7 +12,7 @@ export const Appbar = () => {
   const user = session.data?.user;
 
   return (
-    <nav className="sticky mx-auto wrapper top-0 z-50 flex items-center gap-2 py-6 w-full">
+    <nav className="mx-auto wrapper top-0 z-50 flex items-center gap-2 py-6 w-full">
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
