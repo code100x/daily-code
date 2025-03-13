@@ -5,6 +5,7 @@ import { Button } from "../../../packages/ui/src/shad/ui/button";
 import { Dialog, DialogContent } from "../../../packages/ui/src/shad/ui/dailog";
 import { ArrowRight } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { Separator } from "@repo/ui";
 
 type TrackPreviewProps = {
   showPreview: boolean;
@@ -40,9 +41,11 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
 
   return (
     <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
-      <DialogContent className="flex items-center gap-4">
-        <div className="flex flex-col gap-4 w-full">
-          <img src={track.image} className="h-[25vh] w-full object-cover rounded-lg" />
+      <DialogContent className="flex items-center gap-4 max-h-[90vh] overflow-scroll no-scrollbar">
+        <div className="flex flex-col space-y-4 w-full">
+          <Separator className="w-full" />
+          <Separator className="w-full" />
+          <img src={track.image} alt={track.title} className="rounded-md mx-auto max-h-[30vh] pt-12" />
           <div className="flex flex-col gap-4 bg-primary/5 rounded-lg p-4">
             <div className="flex flex-col gap-4">
               <h3 className="text-xl md:text-2xl font-semibold w-full tracking-tight">{track.title}</h3>
@@ -68,7 +71,7 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
                 {formatDistanceToNow(new Date(track.createdAt), { addSuffix: true })}
               </p>
             </div>
-            <div className="max-h-[25vh] overflow-y-auto flex flex-col gap-3 w-full py-2">
+            <div className="max-h-[25vh] overflow-y-auto flex flex-col gap-3 w-full py-2 no-scrollbar">
               {track.problems.map((topic: any, idx: number) => (
                 <Link key={topic.id} href={`/tracks/${track.id}/${track.problems[idx]?.id}`}>
                   <div className="cursor-pointer hover:-translate-y-1 flex items-center justify-between bg-primary/5 rounded-lg px-4 py-3 hover:bg-primary/10 transition-all duration-300 scroll-smooth w-full">
