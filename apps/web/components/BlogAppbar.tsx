@@ -101,7 +101,7 @@ export const BlogAppbar = ({
                   <Link
                     key={problem.id}
                     prefetch
-                    className="w-full max-w-screen-md"
+                    className="w-full max-w-screen-md hover:opacity-70"
                     href={`/tracks/${track.id}/${problem.id}`}
                     onClick={(e) => isDisabled && e.preventDefault()}
                   >
