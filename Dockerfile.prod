@@ -1,18 +1,23 @@
 FROM node:20-alpine
 ARG DATABASE_URL
 
+RUN set -ex; \
+    apk update; \
+    apk add --no-cache \
+    openssl
+
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npm install
-RUN cd packages/db && DATABASE_URL=$DATABASE_URL npx prisma generate && cd ../..
+RUN yarn
+RUN cd packages/db && DATABASE_URL=$DATABASE_URL npx prisma@5.12.0 generate && cd ../..
 ## put DATABASE_URL in apps/web/.env
 RUN echo DATABASE_URL=$DATABASE_URL >> apps/web/.env
-RUN DATABASE_URL=$DATABASE_URL npm run build
+RUN DATABASE_URL=$DATABASE_URL yarn build
 ## Remove .env file
 RUN rm apps/web/.env
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]

@@ -34,6 +34,7 @@ const CompleteTrackCard = ({ notionId, TrackData }: { notionId: string; TrackDat
       problems: problems,
       selectedCategory: TrackData.selectedCategory,
       cohort: parseInt(TrackData.cohort),
+      trackType: "NOTION",
     });
     await insertData(TrackData.trackId);
     setIsSubmitting(true);

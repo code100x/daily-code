@@ -61,16 +61,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
   const filterTracks = () => {
     setLoading(true);
-    let newFilteredTracks = tracks;
-    if (selectedCohort) {
-      newFilteredTracks = newFilteredTracks.filter((t) => t.cohort === selectedCohort);
-    }
-    if (selectedCategory && selectedCategory !== "All") {
-      newFilteredTracks = newFilteredTracks.filter((t) =>
-        t.categories.some((c) => c.category.category === selectedCategory)
-      );
-    }
-    setFilteredTracks(newFilteredTracks);
+    setFilteredTracks(tracks.filter((t) => selectedCohort === 3 ? t.cohort === 3 : t.cohort !== 3));
     setCurrentPage(1); // Reset to first page on filtering
     setLoading(false);
   };
