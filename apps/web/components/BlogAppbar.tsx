@@ -91,7 +91,7 @@ export const BlogAppbar = ({
           animate={{ opacity: 1, x: 0 }}
           exit={{ x: -20 }}
           transition={{ duration: 0.3 }}
-          className={`${visible ? "translate-y-0" : "-translate-y-full"} px-6`}
+          className={`${visible ? "translate-y-0" : "-translate-y-full"} mt-6 px-6`}
         >
           <Card className="border-primary/10 no-scrollbar max-h-[50vh] w-fit overflow-auto bg-black/10 pt-4 backdrop-blur-lg">
             {track?.problems?.map((problem: { id: string; title: string }, index: number) => {
@@ -101,7 +101,7 @@ export const BlogAppbar = ({
                   <Link
                     key={problem.id}
                     prefetch
-                    className="w-full max-w-screen-md"
+                    className="w-full max-w-screen-md hover:opacity-70"
                     href={`/tracks/${track.id}/${problem.id}`}
                     onClick={(e) => isDisabled && e.preventDefault()}
                   >
@@ -166,7 +166,7 @@ export const BlogAppbar = ({
     ) : (
       <>
         <motion.div
-          className={`z-[50] flex w-full flex-col justify-between gap-2 p-6 md:flex-row ${visible ? "translate-y-0" : "-translate-y-full"}`}
+          className={`z-[50] flex w-full flex-col justify-between gap-2 px-6 pt-6 md:flex-row ${visible ? "translate-y-0" : "-translate-y-full"}`}
           initial={{ y: 0 }}
           animate={{ y: visible ? 0 : -100 }}
           transition={{ duration: 0.3 }}
