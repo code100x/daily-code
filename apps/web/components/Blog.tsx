@@ -51,7 +51,7 @@ export const Blog = ({
         <div className="fixed top-0 w-full">
           <BlogAppbar problem={problem} track={track} problemIndex={problemIndex} />
         </div>
-        <div className="itemsc-center fixed bottom-0 mx-auto w-full justify-center">
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 flex items-center justify-center">
           <TrackTools allProblems={track.problems} track={track} problemIndex={problemIndex} />
         </div>
       </div>
