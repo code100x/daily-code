@@ -166,7 +166,7 @@ export const BlogAppbar = ({
     ) : (
       <>
         <motion.div
-          className={`z-[50] flex w-full flex-col justify-between gap-2 p-6 md:flex-row ${visible ? "translate-y-0" : "-translate-y-full"}`}
+          className={`z-[50] flex w-full flex-col justify-between gap-2 pt-6 px-6 pb-0 md:flex-row ${visible ? "translate-y-0" : "-translate-y-full"}`}
           initial={{ y: 0 }}
           animate={{ y: visible ? 0 : -100 }}
           transition={{ duration: 0.3 }}
