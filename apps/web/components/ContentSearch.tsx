@@ -66,11 +66,9 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       switch (event.code) {
-        case "KeyK":
-          if (event.ctrlKey) {
+        case "Slash":
             event.preventDefault();
             setDialogOpen(true);
-          }
           break;
         case "ArrowDown":
           event.preventDefault();
@@ -123,7 +121,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
             <MagnifyingGlassIcon className="size-4" />
             Search
           </div>
-          <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3">Ctrl + K</kbd>
+          <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3">/</kbd>
         </div>
         <div className="block md:hidden">
           <MagnifyingGlassIcon className="size-4" />
