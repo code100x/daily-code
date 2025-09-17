@@ -40,14 +40,14 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
   };
 
   return (
-    <div className="flex flex-col gap-6 h-[50vh] md:h-[75vh] size-screen mx-auto justify-center">
+    <div className="size-screen mx-auto flex h-[50vh] flex-col justify-center gap-6 md:h-[75vh]">
       <div className="relative w-full">
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
           aria-label="TypeScript"
           role="img"
           viewBox="0 0 512 512"
-          className="hidden lg:block size-12 absolute -top-10 -left-24 -rotate-12 drop-shadow-[0_20px_32px_rgba(49,120,198,0.4)] hover:drop-shadow-[0_24px_40px_rgba(49,120,198,0.5)] transition-all duration-300"
+          className="absolute -left-24 -top-10 hidden size-12 -rotate-12 drop-shadow-[0_20px_32px_rgba(49,120,198,0.4)] transition-all duration-300 hover:drop-shadow-[0_24px_40px_rgba(49,120,198,0.5)] lg:block"
           style={{
             x: mousePosition.x * 0.04,
             y: mousePosition.y * 0.04,
@@ -63,7 +63,7 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
           />
         </motion.svg>
         <motion.svg
-          className="hidden lg:block size-12 absolute top-80 -left-32 drop-shadow-[0_20px_32px_rgba(0,122,255,0.4)] hover:drop-shadow-[0_24px_40px_rgba(0,122,255,0.5)] transition-all duration-300"
+          className="absolute -left-32 top-80 hidden size-12 drop-shadow-[0_20px_32px_rgba(0,122,255,0.4)] transition-all duration-300 hover:drop-shadow-[0_24px_40px_rgba(0,122,255,0.5)] lg:block"
           style={{
             x: mousePosition.x * 0.02,
             y: mousePosition.y * 0.02,
@@ -97,7 +97,7 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
           variants={floatingVariant}
           initial="initial"
           animate="animate"
-          className="hidden lg:block size-16 absolute bottom-20 right-0 rotate-12 drop-shadow-[0_20px_32px_rgba(160,79,18,0.4)] hover:drop-shadow-[0_24px_40px_rgba(160,79,18,0.5)] transition-all duration-300"
+          className="absolute bottom-20 right-0 hidden size-16 rotate-12 drop-shadow-[0_20px_32px_rgba(160,79,18,0.4)] transition-all duration-300 hover:drop-shadow-[0_24px_40px_rgba(160,79,18,0.5)] lg:block"
           fill="none"
           viewBox="0, 0, 32, 32"
           xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +126,7 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
           </defs>
         </motion.svg>
         <motion.svg
-          className="hidden lg:block size-14 absolute top-96 -right-32 rotate-12 drop-shadow-[0_20px_32px_rgba(247,147,20,0.4)] hover:drop-shadow-[0_24px_40px_rgba(247,147,20,0.5)] transition-all duration-300"
+          className="absolute -right-32 top-96 hidden size-14 rotate-12 drop-shadow-[0_20px_32px_rgba(247,147,20,0.4)] transition-all duration-300 hover:drop-shadow-[0_24px_40px_rgba(247,147,20,0.5)] lg:block"
           style={{
             x: mousePosition.x * 0.04,
             y: mousePosition.y * 0.04,
@@ -150,25 +150,22 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], type: "spring", damping: 12, delay: 0.3 }}
         initial={{ y: -20, opacity: 0 }}
-        className="max-w-7xl mx-auto px-4 flex flex-col gap-6 items-center justify-center"
+        className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-6 px-4"
       >
         <div className="flex flex-col items-center justify-center">
-          <span className="tracking-tighter text-2xl md:text-3xl text-center font-medium text-primary/80">
+          <span className="text-primary/80 text-center text-2xl font-medium tracking-tighter md:text-3xl">
             Welcome to
           </span>
-          <h1 className="tracking-tighter text-6xl md:text-7xl xl:text-8xl text-center font-bold my-2">
-            <span className="font-bold gradient-text-rainbow text-glow drop-shadow-lg hover-glow">
-              100x
-            </span>{" "}
-            Projects.
+          <h1 className="my-2 text-center text-6xl font-bold tracking-tighter md:text-7xl xl:text-8xl">
+            <span className="gradient-text-rainbow text-glow hover-glow font-bold drop-shadow-lg">100x</span> Projects.
           </h1>
         </div>
-        <p className="text-primary/80 max-w-lg text-center tracking-tight md:text-lg font-light leading-relaxed hover:text-foreground transition-colors duration-500 hover:scale-105 transform">
+        <p className="text-primary/80 hover:text-foreground max-w-lg transform text-center font-light leading-relaxed tracking-tight transition-colors duration-500 hover:scale-105 md:text-lg">
           A platform where you'll find the right content to help you improve your skills and grow your knowledge.
         </p>
         <ContentSearch tracks={tracks} />
       </motion.div>
-      <Spotlight className="-top-40 left-0 md:left-60 md:-top-20 -z-10" fill="blue" />
+      <Spotlight className="-top-40 left-0 -z-10 md:-top-20 md:left-60" fill="blue" />
     </div>
   );
 }

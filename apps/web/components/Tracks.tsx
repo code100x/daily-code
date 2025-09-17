@@ -61,7 +61,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
   const filterTracks = () => {
     setLoading(true);
-    setFilteredTracks(tracks.filter((t) => selectedCohort === 3 ? t.cohort === 3 : t.cohort !== 3));
+    setFilteredTracks(tracks.filter((t) => (selectedCohort === 3 ? t.cohort === 3 : t.cohort !== 3)));
     setCurrentPage(1); // Reset to first page on filtering
     setLoading(false);
   };
@@ -119,34 +119,34 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], type: "spring", damping: 12, delay: 0.5 }}
-      className="flex max-w-5xl flex-col gap-6 w-full mx-auto p-4"
+      className="mx-auto flex w-full max-w-5xl flex-col gap-6 p-4"
       id="tracks"
     >
-      <div className="flex w-full gap-4 justify-between items-center flex-col md:flex-row">
-        <div className="flex items-center gap-3 p-3 rounded-xl glass-card-premium mx-auto md:mx-0 justify-center shadow-soft hover:shadow-medium transition-all duration-500 shimmer hover-glow">
+      <div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="glass-card-premium shadow-soft hover:shadow-medium shimmer hover-glow mx-auto flex items-center justify-center gap-3 rounded-xl p-3 transition-all duration-500 md:mx-0">
           <Button
             size={"lg"}
             variant={"ghost"}
             onClick={() => handleCohortSelection(2)}
-            className={`hover-lift transition-all duration-500 relative overflow-hidden group ${isCohort2Selected ? "gradient-primary text-white hover:opacity-90 shadow-glow pulse-glow" : "hover:bg-primary/10 shimmer"}`}
+            className={`hover-lift group relative overflow-hidden transition-all duration-500 ${isCohort2Selected ? "gradient-primary shadow-glow pulse-glow text-white hover:opacity-90" : "hover:bg-primary/10 shimmer"}`}
           >
             Cohort 2.0
           </Button>
-          <Separator className="w-0.5 h-5 bg-primary/20" />
+          <Separator className="bg-primary/20 h-5 w-0.5" />
           <Button
             size={"lg"}
             variant={"ghost"}
             onClick={() => handleCohortSelection(3)}
-            className={`hover-lift transition-all duration-500 relative overflow-hidden group ${isCohort3Selected ? "gradient-primary text-white hover:opacity-90 shadow-glow pulse-glow" : "hover:bg-primary/10 shimmer"}`}
+            className={`hover-lift group relative overflow-hidden transition-all duration-500 ${isCohort3Selected ? "gradient-primary shadow-glow pulse-glow text-white hover:opacity-90" : "hover:bg-primary/10 shimmer"}`}
           >
             Cohort 3.0
           </Button>
         </div>
-        <div className="flex gap-3 p-3 glass-card-premium rounded-xl w-full md:w-fit shadow-soft hover:shadow-medium transition-all duration-500 shimmer hover-glow">
+        <div className="glass-card-premium shadow-soft hover:shadow-medium shimmer hover-glow flex w-full gap-3 rounded-xl p-3 transition-all duration-500 md:w-fit">
           {/* Filter by Categories */}
-          <div className="flex gap-2 items-center ">
+          <div className="flex items-center gap-2">
             <Select onValueChange={(e) => setSelectedCategory(e === "All" ? "" : e)}>
-              <SelectTrigger className="w-[250px] hover:border-primary/30 transition-colors duration-200">
+              <SelectTrigger className="hover:border-primary/30 w-[250px] transition-colors duration-200">
                 <SelectValue placeholder={selectedCategory || "All"} />
               </SelectTrigger>
               <SelectContent>
@@ -162,7 +162,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
           {/* Sort */}
           <Select onValueChange={(e) => setSortBy(e)}>
-            <SelectTrigger className="w-[250px] hover:border-primary/30 transition-colors duration-200">
+            <SelectTrigger className="hover:border-primary/30 w-[250px] transition-colors duration-200">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -178,12 +178,12 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       </div>
 
       {/* Tracks with Animation */}
-      <motion.ul className="flex flex-col gap-5 w-full" variants={trackAnimation} initial="hidden" animate="show">
+      <motion.ul className="flex w-full flex-col gap-5" variants={trackAnimation} initial="hidden" animate="show">
         {loading ? (
           Array.from({ length: tracksPerPage }).map((_, idx) => (
             <div
               key={idx}
-              className="flex items-center space-x-4 w-full h-24 glass-card p-4 rounded-xl shadow-soft animate-pulse"
+              className="glass-card shadow-soft flex h-24 w-full animate-pulse items-center space-x-4 rounded-xl p-4"
             >
               <Skeleton className="h-12 w-12 rounded-2xl" />
               <div className="space-y-2">
@@ -193,7 +193,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             </div>
           ))
         ) : visibleTracks.length === 0 ? (
-          <p className="text-center font-medium tracking-tighter text-lg max-w-screen-sm px-4 mx-auto">
+          <p className="mx-auto max-w-screen-sm px-4 text-center text-lg font-medium tracking-tighter">
             ☹️ Sorry - currently there are no tracks available.
           </p>
         ) : (
@@ -207,7 +207,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
       {/* Skeleton */}
       {filteredTracks.length < tracksPerPage && (
-        <div className="flex items-center space-x-4 w-full h-24 glass-card p-4 rounded-xl shadow-soft animate-pulse">
+        <div className="glass-card shadow-soft flex h-24 w-full animate-pulse items-center space-x-4 rounded-xl p-4">
           <Skeleton className="h-12 w-12 rounded-2xl" />
           <div className="space-y-2">
             <Skeleton className="h-4 w-[250px]" />
@@ -216,7 +216,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
         </div>
       )}
       {/* Pagination Controls */}
-      <div className="flex justify-end items-end mt-4 w-full">
+      <div className="mt-4 flex w-full items-end justify-end">
         <Pagination>
           <PaginationContent>
             <PaginationItem className="cursor-pointer">
@@ -239,9 +239,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
               </>
             )}
 
-            <PaginationItem
-            className="cursor-pointer"
-            >
+            <PaginationItem className="cursor-pointer">
               <PaginationNext
                 onClick={() => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages));
