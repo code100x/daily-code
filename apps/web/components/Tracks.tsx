@@ -118,35 +118,35 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
     <motion.div
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10, delay: 0.5 }}
-      className="flex max-w-5xl flex-col gap-4 w-full mx-auto p-4"
+      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], type: "spring", damping: 12, delay: 0.5 }}
+      className="flex max-w-5xl flex-col gap-6 w-full mx-auto p-4"
       id="tracks"
     >
       <div className="flex w-full gap-4 justify-between items-center flex-col md:flex-row">
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 mx-auto md:mx-0 justify-center">
+        <div className="flex items-center gap-3 p-3 rounded-xl glass-card mx-auto md:mx-0 justify-center shadow-soft hover:shadow-medium transition-all duration-300">
           <Button
             size={"lg"}
             variant={"ghost"}
             onClick={() => handleCohortSelection(2)}
-            className={isCohort2Selected ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
+            className={`hover-lift transition-all duration-300 ${isCohort2Selected ? "gradient-primary text-white hover:opacity-90 shadow-glow" : "hover:bg-primary/10"}`}
           >
             Cohort 2.0
           </Button>
-          <Separator className="w-0.5 h-4 bg-primary/25" />
+          <Separator className="w-0.5 h-5 bg-primary/20" />
           <Button
             size={"lg"}
             variant={"ghost"}
             onClick={() => handleCohortSelection(3)}
-            className={isCohort3Selected ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
+            className={`hover-lift transition-all duration-300 ${isCohort3Selected ? "gradient-primary text-white hover:opacity-90 shadow-glow" : "hover:bg-primary/10"}`}
           >
             Cohort 3.0
           </Button>
         </div>
-        <div className="flex gap-2 p-2.5 bg-primary/5 rounded-lg w-full md:w-fit">
+        <div className="flex gap-3 p-3 glass-card rounded-xl w-full md:w-fit shadow-soft hover:shadow-medium transition-all duration-300">
           {/* Filter by Categories */}
           <div className="flex gap-2 items-center ">
             <Select onValueChange={(e) => setSelectedCategory(e === "All" ? "" : e)}>
-              <SelectTrigger className="w-[250px]">
+              <SelectTrigger className="w-[250px] hover:border-primary/30 transition-colors duration-200">
                 <SelectValue placeholder={selectedCategory || "All"} />
               </SelectTrigger>
               <SelectContent>
@@ -162,7 +162,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
           {/* Sort */}
           <Select onValueChange={(e) => setSortBy(e)}>
-            <SelectTrigger className="w-[250px]">
+            <SelectTrigger className="w-[250px] hover:border-primary/30 transition-colors duration-200">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -178,12 +178,12 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       </div>
 
       {/* Tracks with Animation */}
-      <motion.ul className="flex flex-col gap-4 w-full" variants={trackAnimation} initial="hidden" animate="show">
+      <motion.ul className="flex flex-col gap-5 w-full" variants={trackAnimation} initial="hidden" animate="show">
         {loading ? (
           Array.from({ length: tracksPerPage }).map((_, idx) => (
             <div
               key={idx}
-              className="flex items-center space-x-4 w-full h-24 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl"
+              className="flex items-center space-x-4 w-full h-24 glass-card p-4 rounded-xl shadow-soft animate-pulse"
             >
               <Skeleton className="h-12 w-12 rounded-2xl" />
               <div className="space-y-2">
@@ -207,7 +207,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
       {/* Skeleton */}
       {filteredTracks.length < tracksPerPage && (
-        <div className="flex items-center space-x-4 w-full h-24 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl">
+        <div className="flex items-center space-x-4 w-full h-24 glass-card p-4 rounded-xl shadow-soft animate-pulse">
           <Skeleton className="h-12 w-12 rounded-2xl" />
           <div className="space-y-2">
             <Skeleton className="h-4 w-[250px]" />

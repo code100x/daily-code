@@ -28,7 +28,7 @@ const Signin = () => {
         initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10 }}
-        className="flex flex-col gap-12 justify-between bg-primary/5 p-8 rounded-2xl border border-primary/10 shadow-xl shadow-primary/5 min-w-[30vw]"
+        className="flex flex-col gap-12 justify-between glass-card p-8 rounded-2xl border border-primary/15 shadow-strong min-w-[30vw]"
       >
         <div className="flex flex-col gap-12">
           <div className="flex flex-col text-center">

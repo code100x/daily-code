@@ -43,7 +43,7 @@ export default function UserAccountDropDown() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="bg-secondary/15 hover:bg-secondary/25 flex items-center gap-2 rounded-xl px-3 py-2 shadow-sm transition-all duration-200 hover:shadow-md"
+          className="glass-card hover:bg-primary/10 flex items-center gap-2 rounded-xl px-3 py-2 shadow-soft hover:shadow-medium transition-all duration-300"
         >
           <div className="border-primary/20 h-8 w-8 overflow-hidden rounded-full border-2">
             {user.image ? (
@@ -61,7 +61,7 @@ export default function UserAccountDropDown() {
         {isOpen && (
           <DropdownMenuContent
             forceMount
-            className="bg-secondary/15 border-primary/10 rounded-2xl border p-2 shadow-lg shadow-neutral-600/5 backdrop-blur-lg"
+            className="glass-card border-primary/15 rounded-2xl border p-2 shadow-medium"
             align="end"
           >
             <motion.div
@@ -89,7 +89,7 @@ export default function UserAccountDropDown() {
               {dropDownData.map((item, index) => (
                 <DropdownMenuItem
                   key={index}
-                  className="focus:bg-secondary/25 hover:bg-secondary/25 flex cursor-pointer items-center space-x-3 rounded-lg p-3 transition-all duration-200 hover:shadow-md"
+                  className="focus:bg-primary/10 hover:bg-primary/10 flex cursor-pointer items-center space-x-3 rounded-lg p-3 transition-all duration-300 hover:shadow-soft"
                   onClick={() => router.push(item.href)}
                 >
                   <span className="text-foreground">{item.icon}</span>

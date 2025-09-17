@@ -121,13 +121,13 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
           <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
         </div>
       </Button>
-      <DialogContent className="max-w-2xl gap-0 p-0 ">
-        <div className="flex items-center px-4 py-2 border-b">
+      <DialogContent className="max-w-2xl gap-0 p-0 glass-card shadow-strong">
+        <div className="flex items-center px-4 py-2 border-b border-primary/10">
           <MagnifyingGlassIcon className="h-[1.5rem] w-[1.5rem]" />
           <Input
             type="text"
             placeholder="Type title"
-            className="text-base border-none shadow-none focus-visible:outline-none focus-visible:ring-0"
+            className="text-base border-none shadow-none focus-visible:outline-none focus-visible:ring-0 transition-all duration-200"
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -141,7 +141,7 @@ export function SearchDialog({ tracks }: { tracks: (Track & { problems: Problem[
         </div>
         <div className="h-[400px] overflow-y-scroll" ref={scrollableContainerRef}>
           {searchTracks.map((track, index) => (
-            <div key={track.id} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
+            <div key={track.id} className={`p-2 transition-all duration-300 hover:shadow-soft hover:-translate-y-0.5 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
               <Link href={`/tracks/${track.id}`} passHref>
                 <p id={`track-link-${index}`} tabIndex={-1} style={{ display: "none" }}>
                   Navigate

@@ -40,16 +40,16 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
   };
 
   return (
-    <div className="flex flex-col gap-4 h-[50vh] md:h-[75vh] size-screen mx-auto justify-center">
+    <div className="flex flex-col gap-6 h-[50vh] md:h-[75vh] size-screen mx-auto justify-center">
       <div className="relative w-full">
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
           aria-label="TypeScript"
           role="img"
           viewBox="0 0 512 512"
-          className="hidden lg:block size-12 absolute -top-10 -left-24 -rotate-12 drop-shadow-[0_16px_24px_rgba(49,120,198,0.35)]"
+          className="hidden lg:block size-12 absolute -top-10 -left-24 -rotate-12 drop-shadow-[0_20px_32px_rgba(49,120,198,0.4)] hover:drop-shadow-[0_24px_40px_rgba(49,120,198,0.5)] transition-all duration-300"
           style={{
-            x: mousePosition.x * 0.04, // Parallax effect based on mouse position
+            x: mousePosition.x * 0.04,
             y: mousePosition.y * 0.04,
           }}
           variants={floatingVariant}
@@ -63,9 +63,9 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
           />
         </motion.svg>
         <motion.svg
-          className="hidden lg:block size-12 absolute top-80 -left-32 drop-shadow-[0_16px_24px_rgba(0,0,255,0.35)] "
+          className="hidden lg:block size-12 absolute top-80 -left-32 drop-shadow-[0_20px_32px_rgba(0,122,255,0.4)] hover:drop-shadow-[0_24px_40px_rgba(0,122,255,0.5)] transition-all duration-300"
           style={{
-            x: mousePosition.x * 0.02, // Parallax effect based on mouse position
+            x: mousePosition.x * 0.02,
             y: mousePosition.y * 0.02,
           }}
           variants={floatingVariant}
@@ -91,13 +91,13 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
         </motion.svg>
         <motion.svg
           style={{
-            x: mousePosition.x * 0.02, // Parallax effect based on mouse position
+            x: mousePosition.x * 0.02,
             y: mousePosition.y * 0.02,
           }}
           variants={floatingVariant}
           initial="initial"
           animate="animate"
-          className="hidden lg:block size-16 absolute bottom-20 right-0 rotate-12 drop-shadow-[0_16px_24px_rgba(160,79,18,0.35)]"
+          className="hidden lg:block size-16 absolute bottom-20 right-0 rotate-12 drop-shadow-[0_20px_32px_rgba(160,79,18,0.4)] hover:drop-shadow-[0_24px_40px_rgba(160,79,18,0.5)] transition-all duration-300"
           fill="none"
           viewBox="0, 0, 32, 32"
           xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +126,7 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
           </defs>
         </motion.svg>
         <motion.svg
-          className="hidden lg:block size-14 absolute top-96 -right-32 rotate-12 drop-shadow-[0_16px_24px_rgba(247,147,20,0.35)]"
+          className="hidden lg:block size-14 absolute top-96 -right-32 rotate-12 drop-shadow-[0_20px_32px_rgba(247,147,20,0.4)] hover:drop-shadow-[0_24px_40px_rgba(247,147,20,0.5)] transition-all duration-300"
           style={{
             x: mousePosition.x * 0.04,
             y: mousePosition.y * 0.04,
@@ -148,22 +148,22 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
       </div>
       <motion.div
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10, delay: 0.3 }}
+        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], type: "spring", damping: 12, delay: 0.3 }}
         initial={{ y: -20, opacity: 0 }}
-        className="max-w-7xl mx-auto px-4 flex flex-col gap-4 items-center justify-center"
+        className="max-w-7xl mx-auto px-4 flex flex-col gap-6 items-center justify-center"
       >
         <div className="flex flex-col items-center justify-center">
-          <span className="tracking-tighter text-2xl md:text-3xl text-center font-medium text-primary/80 ">
+          <span className="tracking-tighter text-2xl md:text-3xl text-center font-medium text-primary/80">
             Welcome to
           </span>
           <h1 className="tracking-tighter text-6xl md:text-7xl xl:text-8xl text-center font-bold my-2">
-            <span className="font-bold bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text text-transparent">
+            <span className="font-bold text-gradient drop-shadow-lg">
               100x
             </span>{" "}
             Projects.
           </h1>
         </div>
-        <p className="text-primary/80 max-w-lg text-center tracking-tight md:text-lg font-light">
+        <p className="text-primary/80 max-w-lg text-center tracking-tight md:text-lg font-light leading-relaxed">
           A platform where you'll find the right content to help you improve your skills and grow your knowledge.
         </p>
         <ContentSearch tracks={tracks} />

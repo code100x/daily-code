@@ -67,24 +67,24 @@ export function TrackCard2({ track }: { track: TrackCardProps }) {
         initial="hidden"
         animate={controls}
         variants={variants}
-        className="bg-primary/5 flex cursor-pointer flex-row items-start justify-between gap-4 rounded-xl p-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 md:items-center"
+        className="glass-card flex cursor-pointer flex-row items-start justify-between gap-4 rounded-xl p-5 hover-lift shadow-soft hover:shadow-medium md:items-center"
         onClick={handleTrackClick}
       >
-        <img src={track.image} alt={track.title} className="size-20 aspect-square object-cover rounded-xl" />
+        <img src={track.image} alt={track.title} className="size-20 aspect-square object-cover rounded-xl shadow-soft hover:shadow-medium transition-all duration-300" />
         <div className="flex flex-col md:flex-row gap-4 w-full md:items-center justify-between">
           <div className="flex flex-col gap-2">
-            <h3 className="text-xl md:text-2xl tracking-tighter font-semibold lg:line-clamp-1">{track.title}</h3>
+            <h3 className="text-xl md:text-2xl tracking-tighter font-semibold lg:line-clamp-1 hover:text-gradient transition-all duration-300">{track.title}</h3>
             {track.categories.map((item) => (
               <p
                 key={item.category.id}
-                className="bg-secondary/25 border border-primary/10 rounded-lg px-3 py-2 text-sm w-fit cursor-default"
+                className="glass-card border border-primary/15 rounded-lg px-3 py-2 text-sm w-fit cursor-default shadow-soft hover:shadow-medium transition-all duration-300"
               >
                 {item.category.category}
               </p>
             ))}
           </div>
           <div className="flex flex-row md:flex-col gap-2 w-full md:w-[30%] md:items-end items-center">
-            <p className="text-primary/80 md:text-lg tracking-tight text-blue-500 font-semibold">
+            <p className="text-gradient md:text-lg tracking-tight font-semibold">
               {track.problems.length} Chapters
             </p>
             <p className="flex tracking-tight gap-2 text-primary/60 text-sm md:text-base">

@@ -115,7 +115,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
       <div
-        className="md:max-w-screen border border-primary/15 p-3 rounded-lg cursor-text w-full mx-auto"
+        className="md:max-w-screen glass-card border-primary/20 p-3 rounded-xl cursor-text w-full mx-auto shadow-soft hover:shadow-medium hover:border-primary/30 transition-all duration-300"
         onClick={() => setDialogOpen(true)}
       >
         <div className="md:flex gap-2 items-center hidden justify-between ">
@@ -123,19 +123,19 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
             <MagnifyingGlassIcon className="size-4" />
             Search
           </div>
-          <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3">Ctrl + K</kbd>
+          <kbd className="bg-white/15 p-2 rounded-sm text-sm leading-3 shadow-soft">Ctrl + K</kbd>
         </div>
         <div className="block md:hidden">
           <MagnifyingGlassIcon className="size-4" />
         </div>
       </div>
-      <DialogContent className="p-0 gap-0 max-w-2xl">
-        <div className="flex items-center px-6 py-4 border-b">
+      <DialogContent className="p-0 gap-0 max-w-2xl glass-card shadow-strong">
+        <div className="flex items-center px-6 py-4 border-b border-primary/10">
           <MagnifyingGlassIcon className="size-4" />
           <Input
             type="text"
             placeholder="Search"
-            className="border-none focus-visible:outline-none focus-visible:ring-0 text-base shadow-none"
+            className="border-none focus-visible:outline-none focus-visible:ring-0 text-base shadow-none transition-all duration-200"
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -147,7 +147,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
         <div className="h-[500px] py-4 space-y-4 overflow-y-scroll" ref={scrollableContainerRef}>
           {searchTracks.length > 0 &&
             searchTracks.map((track, index) => (
-              <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
+              <div key={track.payload.problemId} className={`p-2 transition-all duration-300 hover:shadow-soft hover:-translate-y-0.5 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
                 <Link
                   className="flex"
                   href={`/tracks/${track.payload.trackId}/${track.payload.problemId}`}
