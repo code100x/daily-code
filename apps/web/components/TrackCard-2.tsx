@@ -67,7 +67,7 @@ export function TrackCard2({ track }: { track: TrackCardProps }) {
         initial="hidden"
         animate={controls}
         variants={variants}
-        className="glass-card-ultra gradient-border sparkle-effect hover-lift shadow-soft hover:shadow-medium shimmer hover-glow group relative flex cursor-pointer flex-row items-start justify-between gap-4 overflow-hidden rounded-xl p-5 md:items-center breathe-animation"
+        className="glass-card-ultra gradient-border sparkle-effect hover-lift shadow-soft hover:shadow-medium shimmer hover-glow breathe-animation group relative flex cursor-pointer flex-row items-start justify-between gap-4 overflow-hidden rounded-xl p-5 md:items-center"
         onClick={handleTrackClick}
       >
         <img

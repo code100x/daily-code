@@ -157,7 +157,9 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
             Welcome to
           </span>
           <h1 className="my-2 text-center text-6xl font-bold tracking-tighter md:text-7xl xl:text-8xl">
-            <span className="gradient-text-rainbow text-shadow-glow hover-glow breathe-animation font-bold drop-shadow-lg">100x</span>{" "}
+            <span className="gradient-text-rainbow text-shadow-glow hover-glow breathe-animation font-bold drop-shadow-lg">
+              100x
+            </span>{" "}
             <span className="sparkle-effect">Projects.</span>
           </h1>
         </div>
