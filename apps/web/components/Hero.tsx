@@ -152,15 +152,16 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
         initial={{ y: -20, opacity: 0 }}
         className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-6 px-4"
       >
-        <div className="flex flex-col items-center justify-center">
-          <span className="text-primary/80 text-center text-2xl font-medium tracking-tighter md:text-3xl">
+        <div className="sparkle-effect flex flex-col items-center justify-center">
+          <span className="breathe-animation text-primary/80 text-center text-2xl font-medium tracking-tighter md:text-3xl">
             Welcome to
           </span>
           <h1 className="my-2 text-center text-6xl font-bold tracking-tighter md:text-7xl xl:text-8xl">
-            <span className="gradient-text-rainbow text-glow hover-glow font-bold drop-shadow-lg">100x</span> Projects.
+            <span className="gradient-text-rainbow text-shadow-glow hover-glow breathe-animation font-bold drop-shadow-lg">100x</span>{" "}
+            <span className="sparkle-effect">Projects.</span>
           </h1>
         </div>
-        <p className="text-primary/80 hover:text-foreground max-w-lg transform text-center font-light leading-relaxed tracking-tight transition-colors duration-500 hover:scale-105 md:text-lg">
+        <p className="sparkle-effect text-primary/80 hover:text-foreground text-shadow-glow max-w-lg transform text-center font-light leading-relaxed tracking-tight transition-all duration-500 hover:scale-105 md:text-lg">
           A platform where you'll find the right content to help you improve your skills and grow your knowledge.
         </p>
         <ContentSearch tracks={tracks} />

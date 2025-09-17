@@ -67,7 +67,7 @@ export function TrackCard2({ track }: { track: TrackCardProps }) {
         initial="hidden"
         animate={controls}
         variants={variants}
-        className="glass-card-premium hover-lift shadow-soft hover:shadow-medium shimmer hover-glow group relative flex cursor-pointer flex-row items-start justify-between gap-4 overflow-hidden rounded-xl p-5 md:items-center"
+        className="glass-card-ultra gradient-border sparkle-effect hover-lift shadow-soft hover:shadow-medium shimmer hover-glow group relative flex cursor-pointer flex-row items-start justify-between gap-4 overflow-hidden rounded-xl p-5 md:items-center breathe-animation"
         onClick={handleTrackClick}
       >
         <img
@@ -77,13 +77,13 @@ export function TrackCard2({ track }: { track: TrackCardProps }) {
         />
         <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
           <div className="flex flex-col gap-2">
-            <h3 className="gradient-text-rainbow text-glow text-xl font-semibold tracking-tighter transition-all duration-500 group-hover:scale-105 md:text-2xl lg:line-clamp-1">
+            <h3 className="gradient-text-rainbow text-shadow-glow sparkle-effect text-xl font-semibold tracking-tighter transition-all duration-500 group-hover:scale-105 md:text-2xl lg:line-clamp-1">
               {track.title}
             </h3>
             {track.categories.map((item) => (
               <p
                 key={item.category.id}
-                className="glass-card-premium border-primary/15 shadow-soft hover:shadow-medium hover-glow shimmer w-fit cursor-default rounded-lg border px-3 py-2 text-sm transition-all duration-500"
+                className="glass-card-ultra gradient-border sparkle-effect border-primary/15 shadow-soft hover:shadow-medium hover-glow shimmer w-fit cursor-default rounded-lg border px-3 py-2 text-sm transition-all duration-500"
               >
                 {item.category.category}
               </p>

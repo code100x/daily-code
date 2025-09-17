@@ -17,7 +17,7 @@ export const Appbar = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], type: "spring", damping: 12 }}
-        className="glass-card-premium shadow-medium hover:shadow-strong hover:border-primary/20 shimmer mx-auto flex w-full justify-between rounded-2xl p-6 transition-all duration-500"
+        className="glass-card-ultra gradient-border sparkle-effect shadow-medium hover:shadow-strong hover:border-primary/20 shimmer mx-auto flex w-full justify-between rounded-2xl p-6 transition-all duration-500"
       >
         <Link href={"/"} className="flex cursor-pointer items-center gap-2">
           <Image
@@ -27,7 +27,7 @@ export const Appbar = () => {
             height={200}
             className="size-10 rounded-full"
           />
-          <span className="gradient-text-rainbow text-glow shimmer hidden text-lg font-bold tracking-tight transition-all duration-500 hover:scale-110 md:block md:text-2xl">
+          <span className="gradient-text-rainbow text-shadow-glow shimmer sparkle-effect breathe-animation hidden text-lg font-bold tracking-tight transition-all duration-500 hover:scale-110 md:block md:text-2xl">
             100xProjects
           </span>
         </Link>

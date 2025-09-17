@@ -291,6 +291,116 @@
   .animate-rotate-slow {
     animation: rotate-slow 20s linear infinite;
   }
+  
+  /* Ultra-premium visual effects */
+  .sparkle-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sparkle-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 1px, transparent 1px),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.3) 1px, transparent 1px),
+                radial-gradient(circle at 40% 60%, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 50px 50px, 30px 30px, 70px 70px;
+    animation: sparkle 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+  
+  .breathe-animation {
+    animation: breathe 4s ease-in-out infinite;
+  }
+  
+  .aurora-bg {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: aurora 15s ease infinite;
+  }
+  
+  .glass-card-ultra {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(180%) brightness(110%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .text-shadow-glow {
+    text-shadow: 
+      0 0 10px rgba(59, 130, 246, 0.5),
+      0 0 20px rgba(59, 130, 246, 0.3),
+      0 0 30px rgba(59, 130, 246, 0.2);
+  }
+  
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+    background-size: 300% 300%;
+    animation: aurora 8s ease infinite;
+    padding: 2px;
+    border-radius: 12px;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--background);
+    border-radius: 10px;
+    z-index: -1;
+  }
+  
+  .morphing-gradient {
+    animation: morphing-gradient 8s ease-in-out infinite;
+  }
+  
+  .wave-animation {
+    animation: wave 2s ease-in-out;
+  }
+  
+  /* Additional keyframes */
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+  
+  @keyframes wave {
+    0% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    30% { transform: rotate(14deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(10deg); }
+    60% { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); }
+  }
+  
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  @keyframes aurora {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes morphing-gradient {
+    0% { background: linear-gradient(45deg, #ff6b6b, #4ecdc4); }
+    25% { background: linear-gradient(45deg, #4ecdc4, #45b7d1); }
+    50% { background: linear-gradient(45deg, #45b7d1, #96ceb4); }
+    75% { background: linear-gradient(45deg, #96ceb4, #feca57); }
+    100% { background: linear-gradient(45deg, #feca57, #ff6b6b); }
+  }
 }
 
 * {

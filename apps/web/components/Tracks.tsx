@@ -123,7 +123,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       id="tracks"
     >
       <div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
-        <div className="glass-card-premium shadow-soft hover:shadow-medium shimmer hover-glow mx-auto flex items-center justify-center gap-3 rounded-xl p-3 transition-all duration-500 md:mx-0">
+        <div className="glass-card-ultra gradient-border sparkle-effect breathe-animation shadow-soft hover:shadow-medium shimmer hover-glow mx-auto flex items-center justify-center gap-3 rounded-xl p-3 transition-all duration-500 md:mx-0">
           <Button
             size={"lg"}
             variant={"ghost"}
@@ -142,7 +142,7 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             Cohort 3.0
           </Button>
         </div>
-        <div className="glass-card-premium shadow-soft hover:shadow-medium shimmer hover-glow flex w-full gap-3 rounded-xl p-3 transition-all duration-500 md:w-fit">
+        <div className="glass-card-ultra gradient-border sparkle-effect breathe-animation shadow-soft hover:shadow-medium shimmer hover-glow flex w-full gap-3 rounded-xl p-3 transition-all duration-500 md:w-fit">
           {/* Filter by Categories */}
           <div className="flex items-center gap-2">
             <Select onValueChange={(e) => setSelectedCategory(e === "All" ? "" : e)}>
