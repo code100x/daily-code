@@ -157,13 +157,13 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
             Welcome to
           </span>
           <h1 className="tracking-tighter text-6xl md:text-7xl xl:text-8xl text-center font-bold my-2">
-            <span className="font-bold text-gradient drop-shadow-lg">
+            <span className="font-bold gradient-text-rainbow text-glow drop-shadow-lg hover-glow">
               100x
             </span>{" "}
             Projects.
           </h1>
         </div>
-        <p className="text-primary/80 max-w-lg text-center tracking-tight md:text-lg font-light leading-relaxed">
+        <p className="text-primary/80 max-w-lg text-center tracking-tight md:text-lg font-light leading-relaxed hover:text-foreground transition-colors duration-500 hover:scale-105 transform">
           A platform where you'll find the right content to help you improve your skills and grow your knowledge.
         </p>
         <ContentSearch tracks={tracks} />

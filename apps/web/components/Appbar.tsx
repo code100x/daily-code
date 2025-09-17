@@ -17,7 +17,7 @@ export const Appbar = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], type: "spring", damping: 12 }}
-        className="flex w-full justify-between mx-auto glass-nav shadow-medium hover:shadow-strong p-6 rounded-2xl transition-all duration-300 hover:border-primary/20"
+        className="flex w-full justify-between mx-auto glass-card-premium shadow-medium hover:shadow-strong p-6 rounded-2xl transition-all duration-500 hover:border-primary/20 shimmer"
       >
         <Link href={"/"} className="flex items-center gap-2 cursor-pointer">
           <Image
@@ -27,7 +27,7 @@ export const Appbar = () => {
             height={200}
             className="rounded-full size-10"
           />
-          <span className="text-lg md:text-2xl font-bold tracking-tight text-gradient hidden md:block">
+          <span className="text-lg md:text-2xl font-bold tracking-tight gradient-text-rainbow text-glow hidden md:block shimmer hover:scale-110 transition-all duration-500">
             100xProjects
           </span>
         </Link>

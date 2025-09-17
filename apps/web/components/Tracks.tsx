@@ -123,12 +123,12 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       id="tracks"
     >
       <div className="flex w-full gap-4 justify-between items-center flex-col md:flex-row">
-        <div className="flex items-center gap-3 p-3 rounded-xl glass-card mx-auto md:mx-0 justify-center shadow-soft hover:shadow-medium transition-all duration-300">
+        <div className="flex items-center gap-3 p-3 rounded-xl glass-card-premium mx-auto md:mx-0 justify-center shadow-soft hover:shadow-medium transition-all duration-500 shimmer hover-glow">
           <Button
             size={"lg"}
             variant={"ghost"}
             onClick={() => handleCohortSelection(2)}
-            className={`hover-lift transition-all duration-300 ${isCohort2Selected ? "gradient-primary text-white hover:opacity-90 shadow-glow" : "hover:bg-primary/10"}`}
+            className={`hover-lift transition-all duration-500 relative overflow-hidden group ${isCohort2Selected ? "gradient-primary text-white hover:opacity-90 shadow-glow pulse-glow" : "hover:bg-primary/10 shimmer"}`}
           >
             Cohort 2.0
           </Button>
@@ -137,12 +137,12 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             size={"lg"}
             variant={"ghost"}
             onClick={() => handleCohortSelection(3)}
-            className={`hover-lift transition-all duration-300 ${isCohort3Selected ? "gradient-primary text-white hover:opacity-90 shadow-glow" : "hover:bg-primary/10"}`}
+            className={`hover-lift transition-all duration-500 relative overflow-hidden group ${isCohort3Selected ? "gradient-primary text-white hover:opacity-90 shadow-glow pulse-glow" : "hover:bg-primary/10 shimmer"}`}
           >
             Cohort 3.0
           </Button>
         </div>
-        <div className="flex gap-3 p-3 glass-card rounded-xl w-full md:w-fit shadow-soft hover:shadow-medium transition-all duration-300">
+        <div className="flex gap-3 p-3 glass-card-premium rounded-xl w-full md:w-fit shadow-soft hover:shadow-medium transition-all duration-500 shimmer hover-glow">
           {/* Filter by Categories */}
           <div className="flex gap-2 items-center ">
             <Select onValueChange={(e) => setSelectedCategory(e === "All" ? "" : e)}>
