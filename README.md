@@ -26,7 +26,7 @@ chmod +x ./setupDB.sh
 #### For Windows users
 ```bash
 cd packages/db
-copy .env.example .env
+cp .env.example .env
 docker-compose up
 
 # Configure the database connection
