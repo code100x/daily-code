@@ -32,7 +32,7 @@ export default function CodeBlock({ block }: { block: any }) {
         <code className="language-javascript">{code}</code>
       </pre>
       <button className="text-gray-500 p-2 absolute top-2 right-2 hover:opacity-80" onClick={handleCopyClick}>
-        <Copy className="size-5 text-primary/50" />
+        <Copy className="size-5 " />
       </button>
     </div>
   );
