@@ -119,34 +119,33 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeInOut", type: "spring", damping: 10, delay: 0.5 }}
-      className="flex max-w-5xl flex-col gap-4 w-full mx-auto p-4"
+      className="flex max-w-6xl flex-col gap-8 w-full mx-auto p-4 md:p-6"
       id="tracks"
     >
       <div className="flex w-full gap-4 justify-between items-center flex-col md:flex-row">
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 mx-auto md:mx-0 justify-center">
+        <div className="flex items-center gap-3 p-2 rounded-2xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border border-primary/10 mx-auto md:mx-0 justify-center shadow-sm">
           <Button
             size={"lg"}
             variant={"ghost"}
             onClick={() => handleCohortSelection(2)}
-            className={isCohort2Selected ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
+            className={isCohort2Selected ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg" : "hover:bg-white/50 dark:hover:bg-white/10"}
           >
             Cohort 2.0
           </Button>
-          <Separator className="w-0.5 h-4 bg-primary/25" />
+          <Separator className="w-0.5 h-6 bg-primary/20" />
           <Button
             size={"lg"}
             variant={"ghost"}
             onClick={() => handleCohortSelection(3)}
-            className={isCohort3Selected ? "bg-blue-600 text-white hover:bg-blue-600" : ""}
+            className={isCohort3Selected ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg" : "hover:bg-white/50 dark:hover:bg-white/10"}
           >
             Cohort 3.0
           </Button>
         </div>
-        <div className="flex gap-2 p-2.5 bg-primary/5 rounded-lg w-full md:w-fit">
-          {/* Filter by Categories */}
-          <div className="flex gap-2 items-center ">
+        <div className="flex gap-3 p-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border border-primary/10 rounded-2xl w-full md:w-fit shadow-sm">
+          <div className="flex gap-2 items-center">
             <Select onValueChange={(e) => setSelectedCategory(e === "All" ? "" : e)}>
-              <SelectTrigger className="w-[250px]">
+              <SelectTrigger className="w-[250px] bg-white/80 dark:bg-neutral-900/80 border-primary/20 hover:border-blue-500/30 transition-colors">
                 <SelectValue placeholder={selectedCategory || "All"} />
               </SelectTrigger>
               <SelectContent>
@@ -160,9 +159,8 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
             </Select>
           </div>
 
-          {/* Sort */}
           <Select onValueChange={(e) => setSortBy(e)}>
-            <SelectTrigger className="w-[250px]">
+            <SelectTrigger className="w-[250px] bg-white/80 dark:bg-neutral-900/80 border-primary/20 hover:border-blue-500/30 transition-colors">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -177,25 +175,29 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
         </div>
       </div>
 
-      {/* Tracks with Animation */}
-      <motion.ul className="flex flex-col gap-4 w-full" variants={trackAnimation} initial="hidden" animate="show">
+      <motion.ul className="flex flex-col gap-6 w-full" variants={trackAnimation} initial="hidden" animate="show">
         {loading ? (
           Array.from({ length: tracksPerPage }).map((_, idx) => (
             <div
               key={idx}
-              className="flex items-center space-x-4 w-full h-24 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl"
+              className="flex items-center space-x-4 w-full h-28 bg-gradient-to-br from-neutral-100 to-neutral-50 dark:from-neutral-900 dark:to-neutral-800 p-6 rounded-2xl border border-primary/5 animate-pulse"
             >
-              <Skeleton className="h-12 w-12 rounded-2xl" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-16 w-16 rounded-2xl" />
+              <div className="space-y-3 flex-1">
+                <Skeleton className="h-5 w-[300px]" />
                 <Skeleton className="h-4 w-[200px]" />
               </div>
             </div>
           ))
         ) : visibleTracks.length === 0 ? (
-          <p className="text-center font-medium tracking-tighter text-lg max-w-screen-sm px-4 mx-auto">
-            ☹️ Sorry - currently there are no tracks available.
-          </p>
+          <div className="text-center py-16">
+            <p className="text-2xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              No tracks found
+            </p>
+            <p className="text-primary/60">
+              Try adjusting your filters or check back later for new content.
+            </p>
+          </div>
         ) : (
           filteredTracks.map((t) => (
             <motion.li key={t.id} className="w-full" variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}>
@@ -205,12 +207,11 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
         )}
       </motion.ul>
 
-      {/* Skeleton */}
-      {filteredTracks.length < tracksPerPage && (
-        <div className="flex items-center space-x-4 w-full h-24 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl">
-          <Skeleton className="h-12 w-12 rounded-2xl" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
+      {filteredTracks.length < tracksPerPage && filteredTracks.length > 0 && (
+        <div className="flex items-center space-x-4 w-full h-28 bg-gradient-to-br from-neutral-100 to-neutral-50 dark:from-neutral-900 dark:to-neutral-800 p-6 rounded-2xl border border-primary/5 animate-pulse">
+          <Skeleton className="h-16 w-16 rounded-2xl" />
+          <div className="space-y-3 flex-1">
+            <Skeleton className="h-5 w-[300px]" />
             <Skeleton className="h-4 w-[200px]" />
           </div>
         </div>

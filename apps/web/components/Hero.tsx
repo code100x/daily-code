@@ -40,7 +40,8 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
   };
 
   return (
-    <div className="flex flex-col gap-4 h-[50vh] md:h-[75vh] size-screen mx-auto justify-center">
+    <div className="flex flex-col gap-4 h-[60vh] md:h-[85vh] size-screen mx-auto justify-center relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 dark:from-blue-950/20 dark:via-transparent dark:to-purple-950/20" />
       <div className="relative w-full">
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
@@ -152,19 +153,19 @@ export default function Hero({ tracks }: { tracks: TrackPros[] }) {
         initial={{ y: -20, opacity: 0 }}
         className="max-w-7xl mx-auto px-4 flex flex-col gap-4 items-center justify-center"
       >
-        <div className="flex flex-col items-center justify-center">
-          <span className="tracking-tighter text-2xl md:text-3xl text-center font-medium text-primary/80 ">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <span className="tracking-tight text-xl md:text-2xl text-center font-semibold text-primary/60 uppercase text-sm md:text-base">
             Welcome to
           </span>
-          <h1 className="tracking-tighter text-6xl md:text-7xl xl:text-8xl text-center font-bold my-2">
-            <span className="font-bold bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text text-transparent">
+          <h1 className="tracking-tighter text-6xl md:text-7xl xl:text-9xl text-center font-bold my-4 leading-none">
+            <span className="font-bold bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 bg-clip-text text-transparent drop-shadow-sm">
               100x
             </span>{" "}
-            Projects.
+            <span className="text-foreground">Projects</span>
           </h1>
         </div>
-        <p className="text-primary/80 max-w-lg text-center tracking-tight md:text-lg font-light">
-          A platform where you'll find the right content to help you improve your skills and grow your knowledge.
+        <p className="text-primary/70 max-w-2xl text-center tracking-tight text-lg md:text-xl font-normal px-4">
+          A curated platform to master coding through structured tracks and hands-on projects. Level up your skills, one challenge at a time.
         </p>
         <ContentSearch tracks={tracks} />
       </motion.div>

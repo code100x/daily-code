@@ -5,34 +5,37 @@ import { Separator } from "@repo/ui";
 const Footer = () => {
   return (
     <>
-      <Separator className="my-4 mx-auto " />
-      <div className=" mx-auto wrapper bottom-0 flex flex-col items-center gap-2 w-full mb-16">
-        <div className="flex flex-col md:flex-row w-full justify-between mx-auto p-4 gap-12">
+      <Separator className="my-8 mx-auto bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      <div className="mx-auto wrapper bottom-0 flex flex-col items-center gap-6 w-full mb-16">
+        <div className="flex flex-col md:flex-row w-full justify-between mx-auto p-6 gap-12">
           <div className="flex flex-col gap-12 text-primary">
-            <Link href={"/"} className="flex items-center gap-2 cursor-pointer">
-              <Image
-                src={"https://appx-wsb-gcp.akamai.net.in/subject/2023-01-17-0.17044360120951185.jpg"}
-                alt="Logo"
-                width={300}
-                height={200}
-                className="rounded-full size-16"
-              />
+            <Link href={"/"} className="flex items-center gap-3 cursor-pointer group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
+                <Image
+                  src={"https://appx-wsb-gcp.akamai.net.in/subject/2023-01-17-0.17044360120951185.jpg"}
+                  alt="Logo"
+                  width={300}
+                  height={200}
+                  className="rounded-full size-16 relative z-10 ring-2 ring-primary/10 group-hover:ring-blue-500/30 transition-all duration-300"
+                />
+              </div>
               <div className="flex flex-col">
-                <span className="font-bold bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text text-transparent text-4xl tracking-tighter">
+                <span className="font-extrabold bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 bg-clip-text text-transparent text-4xl tracking-tight">
                   100xdevs
                 </span>
-                <p className="text-primary tracking-tight text-lg leading-none">because 10x ain't enough.</p>
+                <p className="text-primary/80 tracking-tight text-lg leading-none font-medium">because 10x ain't enough.</p>
               </div>
             </Link>
-            <div className="flex flex-col gap-2">
-              <h4 className="tracking-tight font-semibold text-foreground">Follow us</h4>
-              <div className="flex gap-4">
-                <Link target="_blank" href={"https://twitter.com/kirat_tw"}>
+            <div className="flex flex-col gap-4">
+              <h4 className="tracking-tight font-bold text-foreground text-lg">Follow us</h4>
+              <div className="flex gap-5">
+                <Link target="_blank" href={"https://twitter.com/kirat_tw"} className="group">
                   <svg
                     viewBox="-0.5 -0.5 16 16"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="text-primary transition-all duration-300 hover:text-blue-600 size-6"
+                    className="text-primary transition-all duration-300 hover:text-blue-600 size-7 group-hover:scale-110"
                   >
                     <path
                       d="M11.133375000000001 14.11 1.2831875000000001 1.445375c-0.23112500000000002 -0.2970625 -0.019375 -0.73 0.35700000000000004 -0.73h1.869375c0.1395625 0 0.2713125 0.0644375 0.35700000000000004 0.17462499999999997l9.85025 12.6645625c0.23112500000000002 0.2971875 0.019375 0.7300625 -0.35700000000000004 0.7300625h-1.8693125c-0.139625 0 -0.271375 -0.0644375 -0.357125 -0.17462499999999997Z"
@@ -47,12 +50,12 @@ const Footer = () => {
                     ></path>
                   </svg>
                 </Link>
-                <Link target="_blank" href={"https://www.instagram.com/kirat_ins/"}>
+                <Link target="_blank" href={"https://www.instagram.com/kirat_ins/"} className="group">
                   <svg
                     viewBox="-0.5 -0.5 16 16"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="text-primary transition-all duration-300 hover:text-blue-600 size-6"
+                    className="text-primary transition-all duration-300 hover:text-blue-600 size-7 group-hover:scale-110"
                   >
                     <path
                       d="M7.5 10.515375c1.6653125 0 3.015375 -1.3500625 3.015375 -3.015375 0 -1.665375 -1.3500625 -3.015375 -3.015375 -3.015375 -1.665375 0 -3.015375 1.35 -3.015375 3.015375 0 1.6653125 1.35 3.015375 3.015375 3.015375Z"
@@ -75,12 +78,12 @@ const Footer = () => {
                     ></path>
                   </svg>
                 </Link>
-                <Link target="_blank" href={"https://www.youtube.com/@harkirat1"}>
+                <Link target="_blank" href={"https://www.youtube.com/@harkirat1"} className="group">
                   <svg
                     viewBox="-0.5 -0.5 16 16"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="text-primary transition-all duration-300 hover:text-blue-600 size-6"
+                    className="text-primary transition-all duration-300 hover:text-blue-600 size-7 group-hover:scale-110"
                   >
                     <path
                       d="m8.867437500000001 7.5000625 -2.3930000000000002 1.3674374999999999V6.132625000000001l2.3930000000000002 1.3674374999999999Z"
@@ -100,13 +103,13 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <h4 className="text-lg tracking-tighter text-primary">100x Links</h4>
-            <div className="text-lg tracking-tighter flex flex-col gap-1">
+          <div className="flex flex-col gap-4">
+            <h4 className="text-lg tracking-tight font-bold text-foreground">100x Links</h4>
+            <div className="text-base tracking-tight flex flex-col gap-3">
               <Link
                 href={"https://app.100xdevs.com"}
                 target="_blank"
-                className="text-foreground/75 transition-all duration-300 hover:text-blue-600"
+                className="text-foreground/70 hover:text-blue-600 transition-all duration-300 font-medium hover:translate-x-1 inline-block"
               >
                 App
               </Link>
@@ -114,25 +117,25 @@ const Footer = () => {
               <Link
                 href={"https://report-100xdevs.vercel.app/"}
                 target="_blank"
-                className="text-foreground/75 transition-all duration-300 hover:text-blue-600"
+                className="text-foreground/70 hover:text-blue-600 transition-all duration-300 font-medium hover:translate-x-1 inline-block"
               >
                 Report
               </Link>
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <h4 className="text-lg tracking-tighter text-primary">100x Legal</h4>
-            <div className="text-lg tracking-tighter flex flex-col gap-1">
-              <Link href={"/tnc"} className="text-foreground/75 transition-all duration-300 hover:text-blue-600">
+          <div className="flex flex-col gap-4">
+            <h4 className="text-lg tracking-tight font-bold text-foreground">100x Legal</h4>
+            <div className="text-base tracking-tight flex flex-col gap-3">
+              <Link href={"/tnc"} className="text-foreground/70 hover:text-blue-600 transition-all duration-300 font-medium hover:translate-x-1 inline-block">
                 Terms & Conditions
               </Link>
               <Link
                 href={"/privacy-policy"}
-                className="text-foreground/75 transition-all duration-300 hover:text-blue-600"
+                className="text-foreground/70 hover:text-blue-600 transition-all duration-300 font-medium hover:translate-x-1 inline-block"
               >
                 Privacy Policy
               </Link>
-              <Link href={"/refund"} className="text-foreground/75 transition-all duration-300 hover:text-blue-600">
+              <Link href={"/refund"} className="text-foreground/70 hover:text-blue-600 transition-all duration-300 font-medium hover:translate-x-1 inline-block">
                 Refund & Cancellation
               </Link>
             </div>
