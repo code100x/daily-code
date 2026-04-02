@@ -1,5 +1,4 @@
 FROM node:20-alpine
-ARG DATABASE_URL
 
 RUN apk update && apk add --no-cache openssl
 
@@ -8,12 +7,8 @@ WORKDIR /usr/src/app
 COPY . .
 
 RUN npm install --legacy-peer-deps
-RUN cd packages/db && DATABASE_URL=$DATABASE_URL npx prisma generate && cd ../..
-## put DATABASE_URL in apps/web/.env
-RUN echo DATABASE_URL=$DATABASE_URL >> apps/web/.env
-RUN DATABASE_URL=$DATABASE_URL npm run build
-## Remove .env file
-RUN rm apps/web/.env
+RUN npx prisma generate --schema packages/db/prisma/schema.prisma
+RUN npm run build
 
 EXPOSE 3000
 
