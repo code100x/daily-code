@@ -8,15 +8,19 @@ const notion = new NotionAPI();
 export const dynamic = "force-dynamic";
 
 // Normalize Notion record map to handle nested value.value structure
+// and remove blocks with no actual data (role-only entries)
 function normalizeRecordMap(recordMap: any) {
   if (!recordMap?.block) return recordMap;
   const normalizedBlock: any = {};
   for (const [key, block] of Object.entries(recordMap.block) as any) {
     if (block?.value?.value) {
+      // Fix double-nested value.value structure
       normalizedBlock[key] = { ...block, value: block.value.value };
-    } else {
+    } else if (block?.value?.type) {
+      // Normal block with type - keep as is
       normalizedBlock[key] = block;
     }
+    // Skip blocks with no type (role-only entries like { value: { role: "none" } })
   }
   return { ...recordMap, block: normalizedBlock };
 }
