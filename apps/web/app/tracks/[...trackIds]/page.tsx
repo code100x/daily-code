@@ -1,12 +1,11 @@
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
 import { NotionAPI } from "notion-client";
 import { redirect, notFound } from "next/navigation";
-import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
-import { cache } from "react";
+import { getProblem, getTrack } from "../../../components/utils";
 import { LessonView } from "../../../components/LessonView";
 
 const notion = new NotionAPI();
-export const dynamic = "auto";
+export const dynamic = "force-dynamic";
 // Dynamic Metadata
 export async function generateMetadata({ params }: { params: { trackIds: string[] } }) {
   const trackId = params.trackIds[0] || "";
@@ -21,7 +20,7 @@ export async function generateMetadata({ params }: { params: { trackIds: string[
         description: track.description,
         images: [
           {
-            url: track.image || "/default-thumbnail.jpg", // Fallback to a default image if thumbnail is not available
+            url: track.image || "/default-thumbnail.jpg",
             alt: `${track.title} Thumbnail`,
           },
         ],
@@ -36,32 +35,12 @@ export async function generateMetadata({ params }: { params: { trackIds: string[
         description: "The track you are looking for does not exist.",
         images: [
           {
-            url: "/default-thumbnail.jpg", // Use a default image if the track is not found
+            url: "/default-thumbnail.jpg",
             alt: "Default Thumbnail",
           },
         ],
       },
     };
-  }
-}
-
-export async function generateStaticParams() {
-  try {
-    const tracks = await cache(getAllTracks)();
-    const allPages = tracks.map((t: any) =>
-      t.problems.map((p: any) => {
-        if (p.type === "Blog") {
-          return {
-            trackIds: [t.id, p.id],
-          };
-        }
-      })
-    );
-
-    return allPages.flat();
-  } catch (e) {
-    console.log(e);
-    return [];
   }
 }
 
