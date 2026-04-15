@@ -6,6 +6,7 @@ import { getProblem, getTrack } from "../../../components/utils";
 import { LessonView } from "../../../components/LessonView";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../lib/auth";
+import { fetchNotionPage } from "../../../lib/notion";
 
 const notion = new NotionAPI();
 
@@ -24,10 +25,9 @@ export default async function TrackComponent({ params }: { params: { pdfId: stri
   }
 
   if (problemDetails?.notionDocId && trackDetails?.problems) {
-    // notionRecordMaps = await notion.getPage(problemDetails.notionDocId);
     notionRecordMaps = await Promise.all(
       trackDetails.problems.map(
-        async (problem: any) => await notion.getPage((await getProblem(problem.id))?.notionDocId!)
+        async (problem: any) => fetchNotionPage(notion, (await getProblem(problem.id))?.notionDocId!)
       )
     );
   }

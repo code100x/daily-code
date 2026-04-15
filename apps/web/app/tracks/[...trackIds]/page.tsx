@@ -3,27 +3,10 @@ import { NotionAPI } from "notion-client";
 import { redirect, notFound } from "next/navigation";
 import { getProblem, getTrack } from "../../../components/utils";
 import { LessonView } from "../../../components/LessonView";
+import { fetchNotionPage } from "../../../lib/notion";
 
 const notion = new NotionAPI();
 export const dynamic = "force-dynamic";
-
-// Normalize Notion record map to handle nested value.value structure
-// and remove blocks with no actual data (role-only entries)
-function normalizeRecordMap(recordMap: any) {
-  if (!recordMap?.block) return recordMap;
-  const normalizedBlock: any = {};
-  for (const [key, block] of Object.entries(recordMap.block) as any) {
-    if (block?.value?.value) {
-      // Fix double-nested value.value structure
-      normalizedBlock[key] = { ...block, value: block.value.value };
-    } else if (block?.value?.type) {
-      // Normal block with type - keep as is
-      normalizedBlock[key] = block;
-    }
-    // Skip blocks with no type (role-only entries like { value: { role: "none" } })
-  }
-  return { ...recordMap, block: normalizedBlock };
-}
 
 // Dynamic Metadata
 export async function generateMetadata({ params }: { params: { trackIds: string[] } }) {
@@ -78,8 +61,7 @@ export default async function TrackComponent({ params }: { params: { trackIds: s
   }
 
   if (problemDetails?.notionDocId) {
-    const rawRecordMap = await notion.getPage(problemDetails.notionDocId);
-    notionRecordMap = normalizeRecordMap(rawRecordMap);
+    notionRecordMap = await fetchNotionPage(notion, problemDetails.notionDocId);
   }
 
   if (trackDetails && problemDetails) {
