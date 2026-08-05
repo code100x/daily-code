@@ -22,7 +22,7 @@ export async function scrapeData({ trackId }: { trackId: string }) {
     track?.problems.map(async (problem: any) => {
       const notionDocId = problem.notionDocId;
       const notionPage = await fetchNotionPage(notion, notionDocId);
-      const titles = Object.values(notionPage?.block ?? {})
+      const titles = Object.values<any>(notionPage?.block ?? {})
         .map((block) => {
           const title = block?.value?.properties?.title;
           if (title && title[0] && title[0][0]) {
