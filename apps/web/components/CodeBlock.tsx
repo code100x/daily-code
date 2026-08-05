@@ -10,7 +10,7 @@ import { Copy } from "lucide-react";
 export default function CodeBlock({ block }: { block: any }) {
   const { toast } = useToast();
 
-  const code: string = block.properties.title[0].toString();
+  const code: string = block?.properties?.title?.[0]?.toString() ?? "";
   hljs.registerLanguage("javascript", javascript);
 
   useEffect(() => {
