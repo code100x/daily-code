@@ -14,7 +14,8 @@
     "NEXTAUTH_SECRET",
     "CACHE_EXPIRE",
     "NOTION_TOKEN_V2",
-    "NOTION_ACTIVE_USER"
+    "NOTION_ACTIVE_USER",
+    "NOTION_PROXY_URL"
   ],
   "globalDependencies": ["**/.env.*local", "**/.env", ".env", ".env.local", "tsconfig.json"],
   "tasks": {

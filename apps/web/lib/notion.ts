@@ -1,4 +1,5 @@
 import { NotionAPI } from "notion-client";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 function normalizeBlocks(block: any) {
   if (!block) return {};
@@ -63,6 +64,21 @@ export function getNotionClient(): NotionAPI {
   return notionSingleton;
 }
 
+// Optional egress proxy. Because Notion's Cloudflare block is IP-reputation based, the
+// fully-robust fix is to route requests through a clean/non-datacenter IP. When
+// NOTION_PROXY_URL is set (e.g. http://user:pass@host:port), all Notion calls tunnel
+// through it — which also unblocks the endpoints loadCachedPageChunkV2 can't cover
+// (images via getSignedFileUrls, embedded DBs via queryCollection). Inert when unset.
+let gotOptionsCache: { agent: { https: HttpsProxyAgent<string> } } | undefined | null = null;
+
+function getGotOptions() {
+  if (gotOptionsCache !== null) return gotOptionsCache;
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  const proxy = process.env.NOTION_PROXY_URL;
+  gotOptionsCache = proxy ? { agent: { https: new HttpsProxyAgent(proxy) } } : undefined;
+  return gotOptionsCache;
+}
+
 // Two-tier cache: `fresh` entries are served within TTL; `stale` entries never expire and
 // are the fallback when Notion is unreachable/blocked, so a transient block degrades to
 // slightly-stale content instead of a 500. Long TTL keeps refetch volume (and IP-flag
@@ -109,6 +125,7 @@ async function loadPageViaCachedChunk(notion: NotionAPI, pageId: string): Promis
   const res: any = await notion.fetch({
     endpoint: "loadCachedPageChunkV2",
     body: { pageId, limit: 100, cursor: { stack: [] }, chunkNumber: 0, verticalColumns: false },
+    gotOptions: getGotOptions(),
   });
 
   const recordMap = res?.recordMap ?? {};
