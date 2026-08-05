@@ -27,7 +27,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
     return (
       <div className="flex flex-col items-center justify-center gap-2 py-24 text-center">
         <p className="text-lg font-medium">This lesson is temporarily unavailable</p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           We couldn&apos;t load the content right now. Please refresh in a little while.
         </p>
       </div>
