@@ -61,7 +61,17 @@ export const Tracks = ({ tracks, categories }: TracksWithCategoriesProps) => {
 
   const filterTracks = () => {
     setLoading(true);
-    setFilteredTracks(tracks.filter((t) => selectedCohort === 3 ? t.cohort === 3 : t.cohort !== 3));
+    setFilteredTracks(tracks.filter((t) => {
+      // First check the cohort condition
+      const cohortCondition = selectedCohort === 3 ? t.cohort === 3 : t.cohort !== 3;
+      
+      // Then check if the track has the selected category
+      const categoryCondition = selectedCategory === "" || 
+        t.categories.some(cat => cat.category.category === selectedCategory);
+      
+      // A track must satisfy both conditions
+      return cohortCondition && categoryCondition;
+    }));
     setCurrentPage(1); // Reset to first page on filtering
     setLoading(false);
   };
