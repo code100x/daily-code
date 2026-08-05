@@ -40,9 +40,9 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
 
   return (
     <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
-      <DialogContent className="flex items-center gap-4">
-        <div className="flex flex-col gap-4 w-full">
-          <img src={track.image} className="h-[25vh] w-full object-cover rounded-lg" />
+      <DialogContent className="flex items-center gap-3 ">
+        <div className="flex flex-col items-center justify-center gap-2 w-full">
+          <img src={track.image} className="h-[25vh] w-[40%] rounded-lg" />
           <div className="flex flex-col gap-4 bg-primary/5 rounded-lg p-4">
             <div className="flex flex-col gap-4">
               <h3 className="text-xl md:text-2xl font-semibold w-full tracking-tight">{track.title}</h3>
@@ -59,7 +59,7 @@ export function TrackPreview({ showPreview, setShowPreview, track }: TrackPrevie
             </div>
             <p className="md:text-lg tracking-tighter line-clamp-3 text-primary/60">{truncatedDescription}</p>
           </div>
-          <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-3 w-full">
             <div className="flex gap-2 items-center">
               <p className="flex tracking-tighter gap-2 text-primary text-lg md:text-xl font-semibold">
                 {track.problems.length} Chapters
