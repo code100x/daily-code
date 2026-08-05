@@ -32,6 +32,7 @@ docker-compose up
 # Configure the database connection
 # Add your connection string to DATABASE_URL
 
+yarn prisma generate
 yarn prisma migrate dev
 yarn prisma db seed
 ```
