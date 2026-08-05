@@ -1,5 +1,5 @@
 "use server";
-import { NotionAPI } from "notion-client";
+import { getNotionClient } from "./notion";
 import { getTrack } from "../components/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { QdrantClient } from "@qdrant/js-client-rest";
@@ -16,7 +16,7 @@ const model = genAI.getGenerativeModel({ model: "embedding-001"});
 const VECTOR_SIZE = parseInt(process.env.VECTOR_SIZE!) || 768;
 
 export async function scrapeData({ trackId }: { trackId: string }) {
-  const notion = new NotionAPI();
+  const notion = getNotionClient();
   const track = await getTrack(trackId);
   const data = await Promise.all(
     track?.problems.map(async (problem: any) => {

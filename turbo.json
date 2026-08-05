@@ -12,7 +12,9 @@
     "GOOGLEAI_URL",
     "VECTOR_SIZE",
     "NEXTAUTH_SECRET",
-    "CACHE_EXPIRE"
+    "CACHE_EXPIRE",
+    "NOTION_TOKEN_V2",
+    "NOTION_ACTIVE_USER"
   ],
   "globalDependencies": ["**/.env.*local", "**/.env", ".env", ".env.local", "tsconfig.json"],
   "tasks": {

@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { NotionAPI } from "notion-client";
+import { getNotionClient } from "../../../lib/notion";
 import { authOptions } from "../../../lib/auth";
 
 export async function POST(req: NextRequest) {
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   }
   const body = await req.json();
   const notionId = body.notionId;
-  const notion = new NotionAPI();
+  const notion = getNotionClient();
   try {
     const recordMap = await notion.getPage(notionId);
     const data = Object.keys(recordMap.block).filter((key) => {

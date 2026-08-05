@@ -1,12 +1,11 @@
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
-import { NotionAPI } from "notion-client";
 import { redirect, notFound } from "next/navigation";
 import { getAllTracks, getProblem, getTrack } from "../../../components/utils";
 import { cache } from "react";
 import { LessonView } from "../../../components/LessonView";
-import { fetchNotionPage } from "../../../lib/notion";
+import { fetchNotionPage, getNotionClient } from "../../../lib/notion";
 
-const notion = new NotionAPI();
+const notion = getNotionClient();
 
 export const dynamic = "auto";
 // Dynamic Metadata

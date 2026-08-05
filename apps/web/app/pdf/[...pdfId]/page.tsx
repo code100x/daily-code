@@ -1,14 +1,13 @@
 import { RedirectToLastSolved } from "../../../components/RedirectToLastSolved";
-import { NotionAPI } from "notion-client";
 import { redirect } from "next/navigation";
 import { Print } from "../../../components/Print";
 import { getProblem, getTrack } from "../../../components/utils";
 import { LessonView } from "../../../components/LessonView";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../lib/auth";
-import { fetchNotionPage } from "../../../lib/notion";
+import { fetchNotionPage, getNotionClient } from "../../../lib/notion";
 
-const notion = new NotionAPI();
+const notion = getNotionClient();
 
 export default async function TrackComponent({ params }: { params: { pdfId: string[] } }) {
   const trackId: string = params.pdfId[0] || "";
