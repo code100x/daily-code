@@ -3,7 +3,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    container_name: daily-code-docker
+    container_name: daily-code-app
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
     ports:

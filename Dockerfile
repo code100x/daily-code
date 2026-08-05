@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+RUN apk add --no-cache openssl
+
 RUN  yarn install
 
 EXPOSE 3000
