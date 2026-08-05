@@ -36,7 +36,7 @@ const FooterCTA = () => {
                 Download Our App!
               </Button>
             </Link>
-            <Link href={"https://harkirat.classx.co.in/new-courses"} target="_blank">
+            <Link href={"https://100xdevs.com/new-courses"} target="_blank">
               <Button size={"lg"} variant={"secondary"} className="w-fit flex items-center gap-2">
                 <Sparkles className="size-4" />
                 Join Now!
