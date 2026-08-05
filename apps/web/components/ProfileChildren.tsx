@@ -9,13 +9,13 @@ export default function ProfileChilldren({ children }: { children: React.ReactNo
   const [sidebarToggle, setSidebarToggle] = useRecoilState(profileSidebar);
   return (
     <div
-      className={`border-2 h-[88vh] lg:h-auto overflow-y-auto rounded-md ${sidebarToggle ? "col-span-8 lg:col-span-6" : "col-span-8 lg:col-span-6"}  w-full`}
+      className={`h-[88vh] overflow-y-auto rounded-md border-2 lg:h-auto ${sidebarToggle ? "col-span-8 lg:col-span-6" : "col-span-8 lg:col-span-6"} w-full`}
     >
       <div
         onClick={() => setSidebarToggle((prev) => !prev)}
-        className="absolute cursor-pointer top-[7rem] right-[4rem] block lg:hidden"
+        className="absolute right-[4rem] top-[7rem] block cursor-pointer lg:hidden"
       >
-        <Menu />
+        {/* <Menu /> */}
       </div>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <Providers>{children}</Providers>
