@@ -9,9 +9,11 @@ function normalizeBlocks(block: any) {
     const value = b.value;
     if (!value.type && value.value?.type) {
       normalizedBlock[key] = { ...b, value: value.value };
-    } else {
+    } else if (value.type) {
       normalizedBlock[key] = b;
     }
+    // else: drop role-only/placeholder entries (e.g. inaccessible blocks) that have no
+    // `type`/`id` — react-notion-x calls uuidToId(block.id) and crashes on them.
   }
   return normalizedBlock;
 }
