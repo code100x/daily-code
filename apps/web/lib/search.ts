@@ -1,5 +1,5 @@
 "use server";
-import { getNotionClient } from "./notion";
+import { fetchNotionPage, getNotionClient } from "./notion";
 import { getTrack } from "../components/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { QdrantClient } from "@qdrant/js-client-rest";
@@ -21,8 +21,8 @@ export async function scrapeData({ trackId }: { trackId: string }) {
   const data = await Promise.all(
     track?.problems.map(async (problem: any) => {
       const notionDocId = problem.notionDocId;
-      const notionPage = await notion.getPage(notionDocId);
-      const titles = Object.values(notionPage.block)
+      const notionPage = await fetchNotionPage(notion, notionDocId);
+      const titles = Object.values(notionPage?.block ?? {})
         .map((block) => {
           const title = block?.value?.properties?.title;
           if (title && title[0] && title[0][0]) {
