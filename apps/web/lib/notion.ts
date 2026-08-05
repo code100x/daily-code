@@ -120,7 +120,18 @@ function isForbidden(err: any): boolean {
   return status === 403 || /403/.test(err?.message || "");
 }
 
-async function loadPageViaCachedChunk(notion: NotionAPI, pageId: string): Promise<any> {
+// notionDocIds come in several shapes: bare 32-char hex, dashed UUID, or slug-prefixed
+// ("Some-Title-<32hex>"). loadCachedPageChunkV2 wants a dashed UUID and 400s otherwise,
+// so normalize to that (notion-client's getPage does the equivalent via parsePageId).
+function normalizePageId(pageId: string): string {
+  const hex = pageId.replace(/[^0-9a-fA-F]/g, "");
+  if (hex.length < 32) return pageId;
+  const id = hex.slice(-32).toLowerCase();
+  return `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20)}`;
+}
+
+async function loadPageViaCachedChunk(notion: NotionAPI, rawPageId: string): Promise<any> {
+  const pageId = normalizePageId(rawPageId);
   // notion-client's typed `fetch` reuses auth (token_v2 cookie) and error handling.
   const res: any = await notion.fetch({
     endpoint: "loadCachedPageChunkV2",
