@@ -1,8 +1,20 @@
 "use client";
 import { useEffect, useRef, useState, useDeferredValue } from "react";
 import Link from "next/link";
-import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Dialog, DialogClose, DialogContent, Input, Card, CardDescription, CardHeader, CardTitle } from "@repo/ui";
+import { CheckIcon, CopyIcon, Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  Input,
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Tabs,
+  TabsContent,
+  TabsList, TabsTrigger, Button,
+} from "@repo/ui";
 /* import { getSearchResults } from "../lib/search";
 import Image from "next/image"; */
 import Fuse from "fuse.js";
@@ -23,11 +35,16 @@ interface DataItem {
 export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [searchProblems, setSearchProblems] = useState<any[]>([]);
   const [searchTracks, setSearchTracks] = useState<any[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const deferredInput = useDeferredValue(input);
   const [allTracks, setAllTracks] = useState<DataItem[]>([]);
+  const [activeTab, setActiveTab] = useState("tracks");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+
   useEffect(() => {
     const updatedTracks: DataItem[] = [];
     tracks.map((t) => {
@@ -45,23 +62,30 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
     });
     setAllTracks(updatedTracks);
   }, []);
+
   useEffect(() => {
-    const fuse = new Fuse(allTracks, {
+    const fuseProblems = new Fuse(allTracks, {
       keys: ["payload.problemTitle"],
+      threshold: 0.5,
+      ignoreLocation: true,
     });
 
-    async function fetchSearchResults() {
-      if (deferredInput.length > 0) {
-        /* const data = await getSearchResults(deferredInput); */
-        const data = fuse.search(deferredInput);
-        const items = data.map((result) => result.item);
-        setSearchTracks(items);
-      } else {
-        setSearchTracks([]);
-      }
+    const fuseTracks = new Fuse(allTracks, {
+      keys: ["payload.trackTitle"],
+      threshold: 0.5,
+      ignoreLocation: true,
+    });
+
+    if (deferredInput.length > 0) {
+      const problemResults = fuseProblems.search(deferredInput);
+      setSearchProblems(problemResults.map(problemResult => problemResult.item));
+      const tracksResults = fuseTracks.search(deferredInput)
+      setSearchTracks(tracksResults.map(tracksResult => tracksResult.item).filter((item, index,self) => self.findIndex(i => i.payload.trackId === item.payload.trackId) === index))
+    } else {
+      setSearchProblems([]);
+      setSearchTracks([]);
     }
-    fetchSearchResults();
-  }, [deferredInput]);
+  }, [deferredInput, allTracks]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -74,17 +98,22 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
           break;
         case "ArrowDown":
           event.preventDefault();
-          setSelectedIndex((prevIndex) => (prevIndex + 1) % searchTracks.length);
+          setSelectedIndex((prevIndex) => (prevIndex + 1) % searchProblems.length);
           break;
         case "ArrowUp":
           event.preventDefault();
-          setSelectedIndex((prevIndex) => (prevIndex - 1 + searchTracks.length) % searchTracks.length);
+          setSelectedIndex((prevIndex) => (prevIndex - 1 + searchProblems.length) % searchProblems.length);
           break;
         case "Enter":
           if (selectedIndex !== -1) {
             event.preventDefault();
-            const selectedTrack = searchTracks[selectedIndex];
-            window.open(`/tracks/${selectedTrack?.payload.trackId}/${selectedTrack?.payload.problemId}`, "_blank");
+            if (activeTab === "problems") {
+              const selectedProblem = searchProblems[selectedIndex];
+              window.open(`/tracks/${selectedProblem?.payload.trackId}/${selectedProblem?.payload.problemId}`, "_blank");
+            } else {
+              const selectedTrack = searchTracks[selectedIndex];
+              window.open(`/tracks/${selectedTrack?.payload.trackId}/${selectedTrack?.payload.problemId}`, "_blank");
+            }
           }
           break;
         default:
@@ -94,7 +123,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [searchTracks, selectedIndex]);
+  }, [searchProblems, selectedIndex]);
 
   useEffect(() => {
     if (selectedIndex !== -1 && scrollableContainerRef.current) {
@@ -109,8 +138,18 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
     if (!open) {
       setDialogOpen(false);
       setInput("");
+      setSearchProblems([]);
+      setSearchTracks([]);
     }
   };
+
+  const handleCopy = (e: any, trackId : string, problemId : string) => {
+      e.preventDefault()
+    const id = `${trackId}-${problemId}`;
+    navigator.clipboard.writeText(`${window.location.href}/tracks/${trackId}/${problemId}`);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 1500);
+  }
 
   return (
     <Dialog open={dialogOpen} onOpenChange={handleClose}>
@@ -144,37 +183,96 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
             <span className="sr-only">Close</span>
           </DialogClose>
         </div>
-        <div className="h-[500px] py-4 space-y-4 overflow-y-scroll" ref={scrollableContainerRef}>
-          {searchTracks.length > 0 &&
-            searchTracks.map((track, index) => (
-              <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
-                <Link
-                  className="flex"
-                  href={`/tracks/${track.payload.trackId}/${track.payload.problemId}`}
-                  target="_blank"
-                  passHref
-                >
-                  <Card className="p-2 w-full mx-2">
-                    <div className="flex items-center gap-4 py-1 sm:py-2">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 overflow-hidden rounded-xl">
-                        <img
-                          alt={track.payload.problemTitle}
-                          src={track.payload.image}
-                          className="w-full h-full object-cover"
-                        />
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} >
+          <TabsList className="w-full flex items-center justify-between py-4">
+            <TabsTrigger value="tracks">Tracks</TabsTrigger>
+            <TabsTrigger value="problems">Problems</TabsTrigger>
+          </TabsList>
+          <TabsContent value={"problems"} ref={scrollableContainerRef}  className="max-h-[500px] py-4 space-y-4 overflow-y-auto">
+            {searchProblems.length > 0 ? (
+              searchProblems.map((track, index) => (
+                <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
+                  <Link
+                    className="flex"
+                    href={`/tracks/${track.payload.trackId}/${track.payload.problemId}`}
+                    target="_blank"
+                    passHref
+                  >
+                    <Card className="p-2 w-full mx-2">
+                      <div className="flex items-center gap-4 py-1 sm:py-2">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 overflow-hidden rounded-xl">
+                          <img
+                            alt={track.payload.problemTitle}
+                            src={track.payload.image}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <CardHeader className="p-0">
+                            <CardTitle className="text-base sm:text-lg md:text-xl">{track.payload.problemTitle}</CardTitle>
+                            <CardDescription className="text-sm truncate">Track: {track.payload.trackTitle}</CardDescription>
+                          </CardHeader>
+                        </div>
+                        <Button variant={"ghost"} size={"icon"} onClick={(e) => handleCopy(e, track.payload.trackId, track.payload.problemId)}>
+                          {
+                            copiedId === `${track.payload.trackId}-${track.payload.problemId}` ? (<CheckIcon /> ) : ( <CopyIcon/>)
+                          }
+                        </Button>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <CardHeader className="p-0">
-                          <CardTitle className="text-base sm:text-lg md:text-xl">{track.payload.problemTitle}</CardTitle>
-                          <CardDescription className="text-sm truncate">Track: {track.payload.trackTitle}</CardDescription>
-                        </CardHeader>
-                      </div>
-                    </div>
-                  </Card>
-                </Link>
+                    </Card>
+                  </Link>
+                </div>
+              ))) : (
+              <div className="text-center py-10 text-gray-500">
+                No problems found
               </div>
-            ))}
-        </div>
+            )}
+
+          </TabsContent>
+          <TabsContent value={"tracks"} ref={scrollableContainerRef}  className="max-h-[500px] py-4 space-y-4 overflow-y-auto">
+            {searchTracks.length > 0 ? (
+              searchTracks.map((track, index) => (
+                <div key={track.payload.problemId} className={`p-2 ${index === selectedIndex ? "bg-blue-600/20" : ""}`}>
+                  <Link
+                    className="flex"
+                    href={`/tracks/${track.payload.trackId}/${track.payload.problemId}`}
+                    target="_blank"
+                    passHref
+                  >
+                    <Card className="p-2 w-full mx-2">
+                      <div className="flex items-center gap-4 py-1 sm:py-2">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 overflow-hidden rounded-xl">
+                          <img
+                            alt={track.payload.problemTitle}
+                            src={track.payload.image}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <CardHeader className="p-0">
+                            <CardTitle className="text-base sm:text-lg md:text-xl">Track: {track.payload.trackTitle}</CardTitle>
+
+                          </CardHeader>
+                        </div>
+
+                        <Button variant={"ghost"} size={"icon"} onClick={(e) => handleCopy(e, track.payload.trackId, track.payload.problemId)}>
+                          {
+                            copiedId === `${track.payload.trackId}-${track.payload.problemId}` ? (<CheckIcon /> ) : ( <CopyIcon/>)
+                          }
+                        </Button>
+                      </div>
+                    </Card>
+                  </Link>
+                </div>
+              ))) : (
+              <div className="text-center py-10 text-gray-500">
+                No tracks found
+              </div>
+            )}
+
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
