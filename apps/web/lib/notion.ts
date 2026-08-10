@@ -18,6 +18,28 @@ function normalizeBlocks(block: any) {
   return normalizedBlock;
 }
 
+const EMPTY_RECORD_MAP_KEYS = [
+  "collection",
+  "collection_view",
+  "notion_user",
+  "collection_query",
+  "signed_urls",
+] as const;
+
+function normalizeRecordMap(recordMap: any) {
+  const normalized = recordMap ?? {};
+  normalized.block = normalizeBlocks(normalized.block);
+  for (const key of EMPTY_RECORD_MAP_KEYS) normalized[key] = normalized[key] ?? {};
+  return normalized;
+}
+
+function mergeRecordMaps(target: any, source: any) {
+  for (const [key, value] of Object.entries(source ?? {})) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) continue;
+    target[key] = { ...(target[key] ?? {}), ...value };
+  }
+}
+
 function collectContentBlockIds(recordMap: any): string[] {
   const blocks = recordMap?.block;
   if (!blocks) return [];
@@ -47,12 +69,11 @@ function collectContentBlockIds(recordMap: any): string[] {
 // page on the endpoints notion-client normally uses (`loadPageChunk`, `syncRecordValues`,
 // `queryCollection`), which took down every track/problem page with a 500.
 //
-// Empirically, `loadCachedPageChunkV2` is NOT blocked from the cluster and returns the
-// full page recordMap in a single request, so we fetch through that endpoint directly
-// (via the client's public `fetch`) instead of `getPage`. We also authenticate with
-// NOTION_TOKEN_V2 (private-page access) and aggressively throttle + cache, because the
-// block is IP-reputation based: bursts of requests re-trigger a broader Cloudflare block,
-// so keeping request volume low is what keeps this endpoint working.
+// Empirically, `loadCachedPageChunkV2` is NOT blocked from the cluster, so we fetch
+// through that endpoint directly (via the client's public `fetch`) instead of `getPage`.
+// Some toggle descendants need a second cached-chunk request rooted at the missing block.
+// We also authenticate with NOTION_TOKEN_V2 (private-page access) and aggressively
+// throttle + cache, because bursts can re-trigger a broader Cloudflare block.
 let notionSingleton: NotionAPI | null = null;
 
 export function getNotionClient(): NotionAPI {
@@ -97,6 +118,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // problem of a track in parallel, so we cap concurrency and space requests out.
 const MAX_CONCURRENCY = 2;
 const MIN_GAP_MS = 250;
+const MAX_MISSING_BLOCK_FETCHES = 50;
 let active = 0;
 let lastStart = 0;
 const waiters: Array<() => void> = [];
@@ -141,25 +163,45 @@ async function loadPageViaCachedChunk(notion: NotionAPI, rawPageId: string): Pro
     gotOptions: getGotOptions(),
   });
 
-  const recordMap = res?.recordMap ?? {};
-  recordMap.block = normalizeBlocks(recordMap.block);
-  // react-notion-x expects these maps to exist even when empty.
-  recordMap.collection = recordMap.collection ?? {};
-  recordMap.collection_view = recordMap.collection_view ?? {};
-  recordMap.notion_user = recordMap.notion_user ?? {};
-  recordMap.collection_query = recordMap.collection_query ?? {};
-  recordMap.signed_urls = recordMap.signed_urls ?? {};
+  const recordMap = normalizeRecordMap(res?.recordMap);
 
   if (!recordMap.block || Object.keys(recordMap.block).length === 0) {
     throw new Error(`Notion page not found "${pageId}"`);
   }
 
-  const missing = collectContentBlockIds(recordMap).filter((id) => !recordMap.block[id]);
+  // Notion sometimes excludes toggle children from the root cached chunk. Its regular
+  // syncRecordValues endpoint is blocked by Cloudflare from our cluster, but the same
+  // cached endpoint can load a missing block as a small rooted chunk. Resolve those
+  // descendants iteratively so react-notion-x receives the complete toggle tree.
+  const fetched = new Set<string>();
+  let missing = collectContentBlockIds(recordMap).filter((id) => !recordMap.block[id]);
+  while (missing.length && fetched.size < MAX_MISSING_BLOCK_FETCHES) {
+    const blockId = missing.find((id) => !fetched.has(id));
+    if (!blockId) break;
+    fetched.add(blockId);
+
+    if (fetched.size > 1) await sleep(MIN_GAP_MS);
+    try {
+      const childRes: any = await notion.fetch({
+        endpoint: "loadCachedPageChunkV2",
+        body: {
+          pageId: blockId,
+          limit: 100,
+          cursor: { stack: [] },
+          chunkNumber: 0,
+          verticalColumns: false,
+        },
+        gotOptions: getGotOptions(),
+      });
+      mergeRecordMaps(recordMap, normalizeRecordMap(childRes?.recordMap));
+    } catch (err) {
+      console.warn(`[notion] ${pageId}: failed to load nested block ${blockId}: ${(err as Error)?.message}`);
+    }
+    missing = collectContentBlockIds(recordMap).filter((id) => !recordMap.block[id]);
+  }
+
   if (missing.length) {
-    // loadCachedPageChunkV2 returns the full page tree in practice; if a handful of nested
-    // blocks are missing we render what we have rather than hitting the (blocked)
-    // syncRecordValues endpoint.
-    console.warn(`[notion] ${pageId}: ${missing.length} nested block(s) missing from cached chunk`);
+    console.warn(`[notion] ${pageId}: ${missing.length} nested block(s) still missing after cached chunk fallback`);
   }
 
   return recordMap;

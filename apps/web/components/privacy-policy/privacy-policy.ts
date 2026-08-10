@@ -26,7 +26,7 @@ export const privacyPolicyContent = [
     {
       id: 6,
       description:
-        'You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable. Company (referred to as either “the Company”, “We”, “Us” or “Our” in this Agreement) refers to harkirat.classx.co.in.',
+        'You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable. Company (referred to as either “the Company”, “We”, “Us” or “Our” in this Agreement) refers to 100xdevs.com.',
     },
     {
       id: 7,
@@ -36,7 +36,7 @@ export const privacyPolicyContent = [
     {
       id: 8,
       description:
-        'Website refers to harkirat.classx.co.in, accessible fromharkirat.classx.co.in Service refers to the Website. Country refers to: Uttar Pradesh, India Service Provider means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used. Third-party Social Media Service refers to any website or any social network website through which a User can log in or create an account to use the Service.',
+        'Website refers to 100xdevs.com, accessible from 100xdevs.com. Service refers to the Website. Country refers to: Uttar Pradesh, India Service Provider means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used. Third-party Social Media Service refers to any website or any social network website through which a User can log in or create an account to use the Service.',
     },
     {
       id: 9,
@@ -219,4 +219,3 @@ export const privacyPolicyContent = [
         'You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.',
     },
   ];
-  
