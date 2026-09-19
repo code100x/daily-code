@@ -44,10 +44,13 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
       });
     });
     setAllTracks(updatedTracks);
-  }, []);
+  }, [tracks]);
   useEffect(() => {
     const fuse = new Fuse(allTracks, {
-      keys: ["payload.problemTitle"],
+      keys: [
+        { name: "payload.trackTitle", weight: 0.7 },
+        { name: "payload.problemTitle", weight: 0.3 },
+      ],
     });
 
     async function fetchSearchResults() {
@@ -61,7 +64,7 @@ export function ContentSearch({ tracks }: { tracks: TrackPros[] }) {
       }
     }
     fetchSearchResults();
-  }, [deferredInput]);
+  }, [allTracks, deferredInput]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
